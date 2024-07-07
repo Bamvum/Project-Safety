@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Cinemachine;
+using System.Runtime.ExceptionServices;
 
 public class Interact : MonoBehaviour
 {
@@ -14,16 +16,24 @@ public class Interact : MonoBehaviour
     [SerializeField] Transform handTarget;
 
     [Header("Scripts")]     
+    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] Examine examine;
+    [SerializeField] Stamina stamina;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
     Item item;
-    public DialogueTrigger dialogueTrigger;
+
+    [HideInInspector] public DialogueTrigger dialogueTrigger;
 
     
     [Header("Interact")]     
+    [SerializeField] GameObject playerHUD;
     [SerializeField] float interactRange = 2.5f;
+    [HideInInspector] public GameObject interactObject;
     RaycastHit hit;
 
     
-    [Header("Interact HUD")]     
+    [Header("Interact/Examine HUD")]     
+    [SerializeField] GameObject examineHUD;
     [SerializeField] Image leftInteractHUDImage; 
     [SerializeField] Image rightInteractHUDImage; 
     [SerializeField] Sprite interactSprite;
@@ -45,6 +55,7 @@ public class Interact : MonoBehaviour
         playerControls.Player.Enable();
     }
 
+    #region - TO INTERACT -
 
     private void ToInteract(InputAction.CallbackContext context)
     {   
@@ -52,9 +63,12 @@ public class Interact : MonoBehaviour
         {
             if(item != null)
             {
-                handIKTarget.position = hit.collider.transform.position;
-                playerAnim.SetTrigger("Interact");
-                Debug.Log("Item Interact!");
+                if(item.itemSO.isTakable)
+                {
+                    handIKTarget.position = hit.collider.transform.position;
+                    playerAnim.SetTrigger("Interact");
+                    Debug.Log("Item Interact!");
+                }
             }
             else if (dialogueTrigger != null)
             {
@@ -68,14 +82,37 @@ public class Interact : MonoBehaviour
         }
     }
     
+    #endregion
+
+    #region - TO EXAMINE -
+
     private void ToExamine(InputAction.CallbackContext context)
     {
         if(hit.collider != null && item != null)
         {
             Debug.Log("Item Examine!!");
+
+            // handIKTarget.position = hit.collider.transform.position;
+            // playerAnim.SetTrigger("Interact");
+            
+            interactObject = hit.collider.gameObject;
+
+            playerHUD.SetActive(false);
+            examineHUD.SetActive(true);
+
+            // TODO - DISABLE SCRIPT
+            this.enabled = false;
+            playerMovement.enabled = false;
+            stamina.enabled = false;
+            cinemachineInputProvider.enabled = false;
+            
+            // TODO - ENABLE SCRIPT
+            examine.enabled = true;
         }
     }
     
+    #endregion
+
     void OnDisable()
     {
         playerControls.Player.Disable();
@@ -107,6 +144,10 @@ public class Interact : MonoBehaviour
                 {
                     ChangeImageStatus(true, true, interactSprite);
                 }
+                else
+                {
+                    ChangeImageStatus(true, false, null);
+                }
             }
         
             #endregion
@@ -131,7 +172,5 @@ public class Interact : MonoBehaviour
         leftInteractHUDImage.gameObject.SetActive(activeLeftIMGStatus);
         rightInteractHUDImage.gameObject.SetActive(activeRightIMGStatus);
         rightInteractHUDImage.sprite = imgSprite;
-
-        
     }
 }

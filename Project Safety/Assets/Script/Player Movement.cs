@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     
 
     [Header("Animation")]
-    [SerializeField] Animator playerAnim;
+    public Animator playerAnim;
     bool hasAnim;
     int xVelocityHash;
     int yVelocityHash;

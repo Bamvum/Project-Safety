@@ -328,9 +328,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""b56fbaaf-9e4b-4acc-9e7e-225d2b9f7b69"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Lock"",
                     ""type"": ""Button"",
                     ""id"": ""c906acd6-3cd4-424b-a77b-e90ae8886927"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""95b6795f-b3ed-4fa6-939c-2bc4a203fe28"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Gamepad Rotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""dcdb7bf6-9dee-4793-a068-ae37483059af"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Read"",
+                    ""type"": ""Button"",
+                    ""id"": ""689e73a9-e957-4a30-9ca7-29e4efff7607"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""faa6b704-a643-4e35-93c9-4548a7a901b0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -341,11 +377,88 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""33421041-c900-45d1-af5e-8c53fd3c4d79"",
-                    ""path"": """",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e44d668-d708-469a-8509-0b011c1a7918"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""318fafb9-c513-42de-a66a-31f18be736ec"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d60e27f8-4067-45c4-933e-05bab0e56b72"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gamepad Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86ccaf20-a5ed-42e9-92fa-6e7d6f57adee"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Read"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6760022-9f97-4dff-8c2b-6948dad324cc"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Read"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""982b3208-1f17-470b-a689-42fac24efdf1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9b80b81-c2e3-4341-8ae5-6ecbea42e8ef"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -498,7 +611,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Examine = m_Player.FindAction("Examine", throwIfNotFound: true);
         // Examine
         m_Examine = asset.FindActionMap("Examine", throwIfNotFound: true);
-        m_Examine_Newaction = m_Examine.FindAction("New action", throwIfNotFound: true);
+        m_Examine_Lock = m_Examine.FindAction("Lock", throwIfNotFound: true);
+        m_Examine_Rotation = m_Examine.FindAction("Rotation", throwIfNotFound: true);
+        m_Examine_GamepadRotation = m_Examine.FindAction("Gamepad Rotation", throwIfNotFound: true);
+        m_Examine_Read = m_Examine.FindAction("Read", throwIfNotFound: true);
+        m_Examine_Back = m_Examine.FindAction("Back", throwIfNotFound: true);
         // Speech Dialogue
         m_SpeechDialogue = asset.FindActionMap("Speech Dialogue", throwIfNotFound: true);
         m_SpeechDialogue_Action = m_SpeechDialogue.FindAction("Action", throwIfNotFound: true);
@@ -668,12 +785,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Examine
     private readonly InputActionMap m_Examine;
     private List<IExamineActions> m_ExamineActionsCallbackInterfaces = new List<IExamineActions>();
-    private readonly InputAction m_Examine_Newaction;
+    private readonly InputAction m_Examine_Lock;
+    private readonly InputAction m_Examine_Rotation;
+    private readonly InputAction m_Examine_GamepadRotation;
+    private readonly InputAction m_Examine_Read;
+    private readonly InputAction m_Examine_Back;
     public struct ExamineActions
     {
         private @PlayerControls m_Wrapper;
         public ExamineActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Examine_Newaction;
+        public InputAction @Lock => m_Wrapper.m_Examine_Lock;
+        public InputAction @Rotation => m_Wrapper.m_Examine_Rotation;
+        public InputAction @GamepadRotation => m_Wrapper.m_Examine_GamepadRotation;
+        public InputAction @Read => m_Wrapper.m_Examine_Read;
+        public InputAction @Back => m_Wrapper.m_Examine_Back;
         public InputActionMap Get() { return m_Wrapper.m_Examine; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -683,16 +808,40 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ExamineActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ExamineActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Lock.started += instance.OnLock;
+            @Lock.performed += instance.OnLock;
+            @Lock.canceled += instance.OnLock;
+            @Rotation.started += instance.OnRotation;
+            @Rotation.performed += instance.OnRotation;
+            @Rotation.canceled += instance.OnRotation;
+            @GamepadRotation.started += instance.OnGamepadRotation;
+            @GamepadRotation.performed += instance.OnGamepadRotation;
+            @GamepadRotation.canceled += instance.OnGamepadRotation;
+            @Read.started += instance.OnRead;
+            @Read.performed += instance.OnRead;
+            @Read.canceled += instance.OnRead;
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
         }
 
         private void UnregisterCallbacks(IExamineActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Lock.started -= instance.OnLock;
+            @Lock.performed -= instance.OnLock;
+            @Lock.canceled -= instance.OnLock;
+            @Rotation.started -= instance.OnRotation;
+            @Rotation.performed -= instance.OnRotation;
+            @Rotation.canceled -= instance.OnRotation;
+            @GamepadRotation.started -= instance.OnGamepadRotation;
+            @GamepadRotation.performed -= instance.OnGamepadRotation;
+            @GamepadRotation.canceled -= instance.OnGamepadRotation;
+            @Read.started -= instance.OnRead;
+            @Read.performed -= instance.OnRead;
+            @Read.canceled -= instance.OnRead;
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
         }
 
         public void RemoveCallbacks(IExamineActions instance)
@@ -793,7 +942,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IExamineActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnLock(InputAction.CallbackContext context);
+        void OnRotation(InputAction.CallbackContext context);
+        void OnGamepadRotation(InputAction.CallbackContext context);
+        void OnRead(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
     public interface ISpeechDialogueActions
     {

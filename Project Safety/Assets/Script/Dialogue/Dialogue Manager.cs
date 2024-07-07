@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] Interact interact;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
 
     [Header("Dialogue")]
     bool actionInput;
@@ -24,27 +25,32 @@ public class DialogueManager : MonoBehaviour
     int currentDialogueIndex;
 
     [Header("Dialogue HUD")]
+    [SerializeField] GameObject playerHUD;
     [SerializeField] GameObject dialogueHUD;
     [SerializeField] RectTransform dialogueBackground;
     [SerializeField] TMP_Text dialogueText;
+    // [SerializeField] bool isTyping;
 
 
     [Space(10)]
-    // [SerializeField] Image actionImage;
+    [SerializeField] GameObject actionOption;
     [SerializeField] GameObject leftOption;
     [SerializeField] GameObject upOption;
     [SerializeField] GameObject rightOption;
 
     [Space(10)]
+    [SerializeField] Image actionImageHUD;
     [SerializeField] Image choice1ImageHUD;
     [SerializeField] Image choice2ImageHUD;
     [SerializeField] Image choice3ImageHUD;
 
     [Space(10)]
+    [SerializeField] Sprite spaceSprite;
     [SerializeField] Sprite oneSprite;
     [SerializeField] Sprite twoSprite;
     [SerializeField] Sprite threeSprite;
     [Space(5)]
+    [SerializeField] Sprite XSprite;
     [SerializeField] Sprite squareSprite;
     [SerializeField] Sprite triangleSprite;
     [SerializeField] Sprite circleSprite;
@@ -95,12 +101,14 @@ public class DialogueManager : MonoBehaviour
                 choice1ImageHUD.sprite = oneSprite;
                 choice2ImageHUD.sprite = twoSprite;
                 choice3ImageHUD.sprite = threeSprite;
+                actionImageHUD.sprite = spaceSprite;
             }
             else if (DeviceManager.instance.gamepadDevice)
             {
                 choice1ImageHUD.sprite = squareSprite;
                 choice2ImageHUD.sprite = triangleSprite;
                 choice3ImageHUD.sprite = circleSprite;
+                actionImageHUD.sprite = XSprite;
             }
         }
     }
@@ -108,14 +116,17 @@ public class DialogueManager : MonoBehaviour
     public void DialogueStart(List<DialogueProperties> textToPrint)
     {
         isInDialogue = true;
+
+        // DISABLE OTHER SCRIPTS
+        playerMovement.enabled = false;
+        playerMovement.playerAnim.enabled = false;
+        interact.enabled = true;
+        cinemachineInputProvider.enabled = false;
+
         DialogueHUDShow();
 
         dialogueList = textToPrint;
         currentDialogueIndex = 0; 
-
-        leftOption.SetActive(false);
-        upOption.SetActive(false);
-        rightOption.SetActive(false);
 
         StartCoroutine(PrintDialogue());
     }
@@ -136,25 +147,18 @@ public class DialogueManager : MonoBehaviour
             {
                 yield return StartCoroutine(TypeText(line.dialogue));
 
-                // leftOption.SetActive(true);
-                // rightOption.SetActive(true);
-
-                // ChoiceHUDStatus(true, false);
-
                 leftOption.GetComponentInChildren<TMP_Text>().text = line.answerOption1;
                 rightOption.GetComponentInChildren<TMP_Text>().text = line.answerOption3;
 
 
                 if(line.is3Question)
                 {
-                    // upOption.SetActive(true);
-                     ChoiceHUDStatus(true, true);
+                    ChoiceHUDStatus(true, true);
 
                     upOption.GetComponentInChildren<TMP_Text>().text = line.answerOption2;
                 }
                 else
                 {
-                    // upOption.SetActive(false);
                     ChoiceHUDStatus(true, false);
                 }
 
@@ -177,6 +181,9 @@ public class DialogueManager : MonoBehaviour
     IEnumerator TypeText(string text)
     {
         dialogueText.text = string.Empty;
+        // isTyping = true;
+        actionOption.SetActive(false);
+        dialogueBackground.gameObject.SetActive(true);
 
         foreach(char letter in text.ToCharArray())
         {
@@ -184,8 +191,19 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        if(!dialogueList[currentDialogueIndex].isQuestion)
+        if(dialogueList[currentDialogueIndex].isQuestion)
         {
+            actionOption.SetActive(true);
+            
+            // TODO - MAKE DIALOGUE BACKGROUND TWEENING WHEN DISAPPEARING AND APPEARING DURING QUESTIONS
+            
+            yield return new WaitUntil(() => actionInput == true);
+            dialogueBackground.gameObject.SetActive(false);
+
+        }
+        else
+        {
+            actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
         }
 
@@ -236,22 +254,17 @@ public class DialogueManager : MonoBehaviour
     void DialogueStop()
     {
         StopAllCoroutines();
-        Debug.Log("Dialogue Stop!");
+
         dialogueText.text = string.Empty;
         isInDialogue = false;
 
+        playerMovement.enabled = true;
+        playerMovement.playerAnim.enabled = true;
+        interact.enabled = true;
+        cinemachineInputProvider.enabled = true;
+
         // DOTWEENING
         DialogueHUDHide();
-
-
-        // DEVICE MANAGER
-        //Cursor.lockState = CursorLockMode.Locked;
-
-        // ENABLE SCRIPT
-        //playerMovement.enabled = true; // ALWAYS PUT PLAYERMOVEMENT SCRIPT IN EVENT TO TRUE
-
-        // interact.enabled = true;
-        //stamina.enabled = true;
 
         if (interact.dialogueTrigger != null)
         {
@@ -268,28 +281,33 @@ public class DialogueManager : MonoBehaviour
     void DialogueHUDShow()
     {
         dialogueHUD.SetActive(true);
+        playerHUD.SetActive(false);
+    
         dialogueBackground.localScale = Vector3.zero;
 
         dialogueBackground.DOScale(Vector3.one, 0.1f).OnComplete(() => 
         {
-            dialogueBackground.DOPunchScale(Vector3.one * punchScale, punchDuration, 10, 1);
+            dialogueBackground.DOPunchScale(Vector3.one * punchScale, punchDuration, 10, 1).SetEase(Ease.InFlash);
         });
     }
 
     void DialogueHUDHide()
-    { 
+    {
         dialogueBackground.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack).OnComplete(() => 
         {
             dialogueHUD.SetActive(false);
+            playerHUD.SetActive(true);
         });
     }
 
+    
     void ChoiceHUDStatus(bool activeStatus, bool is3Question)
     {
+        // TODO - FIX CODE MAKE IT SHORTER
+
         RectTransform leftOptionRectTransform = leftOption.GetComponent<RectTransform>();
         RectTransform upOptionRectTransform = upOption.GetComponent<RectTransform>();
         RectTransform rightOptionRectTransform = rightOption.GetComponent<RectTransform>();
-
 
         leftOptionRectTransform.localScale = Vector3.zero;
         upOptionRectTransform.localScale = Vector3.zero;

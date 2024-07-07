@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Full First Person.sln"
+    "dotnet.defaultSolution": "Project Safety.sln"
 }
