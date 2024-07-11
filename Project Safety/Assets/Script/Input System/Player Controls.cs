@@ -595,6 +595,107 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Contact"",
+            ""id"": ""168a6701-7035-4a01-b356-89b45b07ae0a"",
+            ""actions"": [
+                {
+                    ""name"": ""Contact1"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd8b738d-37b0-4d24-b05d-462c61447d23"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Contact2"",
+                    ""type"": ""Button"",
+                    ""id"": ""05c61052-2594-460c-9cfd-cf4cb7cf7d58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Contact3"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a534dbc-2d6f-4453-99c0-1d1670cfaabc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7ec3ba97-480f-4cdf-8d41-6737ba57e0b9"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""275fcd06-cab1-44db-af26-c686e5a156ab"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""669567a3-75a8-407e-a674-6ce8679cc279"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea12db92-d5ca-4674-a7d4-bb4b5c4409dc"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19dc2301-37ce-4487-82e5-9d3651232a87"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd546b30-0a56-4291-bdae-e95046ceb520"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Contact3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -622,6 +723,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_SpeechDialogue_Option1 = m_SpeechDialogue.FindAction("Option 1", throwIfNotFound: true);
         m_SpeechDialogue_Option2 = m_SpeechDialogue.FindAction("Option 2", throwIfNotFound: true);
         m_SpeechDialogue_Option3 = m_SpeechDialogue.FindAction("Option 3", throwIfNotFound: true);
+        // Contact
+        m_Contact = asset.FindActionMap("Contact", throwIfNotFound: true);
+        m_Contact_Contact1 = m_Contact.FindAction("Contact1", throwIfNotFound: true);
+        m_Contact_Contact2 = m_Contact.FindAction("Contact2", throwIfNotFound: true);
+        m_Contact_Contact3 = m_Contact.FindAction("Contact3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -929,6 +1035,68 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public SpeechDialogueActions @SpeechDialogue => new SpeechDialogueActions(this);
+
+    // Contact
+    private readonly InputActionMap m_Contact;
+    private List<IContactActions> m_ContactActionsCallbackInterfaces = new List<IContactActions>();
+    private readonly InputAction m_Contact_Contact1;
+    private readonly InputAction m_Contact_Contact2;
+    private readonly InputAction m_Contact_Contact3;
+    public struct ContactActions
+    {
+        private @PlayerControls m_Wrapper;
+        public ContactActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Contact1 => m_Wrapper.m_Contact_Contact1;
+        public InputAction @Contact2 => m_Wrapper.m_Contact_Contact2;
+        public InputAction @Contact3 => m_Wrapper.m_Contact_Contact3;
+        public InputActionMap Get() { return m_Wrapper.m_Contact; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ContactActions set) { return set.Get(); }
+        public void AddCallbacks(IContactActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ContactActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ContactActionsCallbackInterfaces.Add(instance);
+            @Contact1.started += instance.OnContact1;
+            @Contact1.performed += instance.OnContact1;
+            @Contact1.canceled += instance.OnContact1;
+            @Contact2.started += instance.OnContact2;
+            @Contact2.performed += instance.OnContact2;
+            @Contact2.canceled += instance.OnContact2;
+            @Contact3.started += instance.OnContact3;
+            @Contact3.performed += instance.OnContact3;
+            @Contact3.canceled += instance.OnContact3;
+        }
+
+        private void UnregisterCallbacks(IContactActions instance)
+        {
+            @Contact1.started -= instance.OnContact1;
+            @Contact1.performed -= instance.OnContact1;
+            @Contact1.canceled -= instance.OnContact1;
+            @Contact2.started -= instance.OnContact2;
+            @Contact2.performed -= instance.OnContact2;
+            @Contact2.canceled -= instance.OnContact2;
+            @Contact3.started -= instance.OnContact3;
+            @Contact3.performed -= instance.OnContact3;
+            @Contact3.canceled -= instance.OnContact3;
+        }
+
+        public void RemoveCallbacks(IContactActions instance)
+        {
+            if (m_Wrapper.m_ContactActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IContactActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ContactActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ContactActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ContactActions @Contact => new ContactActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -954,5 +1122,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOption1(InputAction.CallbackContext context);
         void OnOption2(InputAction.CallbackContext context);
         void OnOption3(InputAction.CallbackContext context);
+    }
+    public interface IContactActions
+    {
+        void OnContact1(InputAction.CallbackContext context);
+        void OnContact2(InputAction.CallbackContext context);
+        void OnContact3(InputAction.CallbackContext context);
     }
 }
