@@ -98,17 +98,11 @@ public class DialogueManager : MonoBehaviour
         {
             if(DeviceManager.instance.keyboardDevice)
             {
-                choice1ImageHUD.sprite = oneSprite;
-                choice2ImageHUD.sprite = twoSprite;
-                choice3ImageHUD.sprite = threeSprite;
-                actionImageHUD.sprite = spaceSprite;
+                ChangeImageStatus(spaceSprite, oneSprite, twoSprite, threeSprite);
             }
             else if (DeviceManager.instance.gamepadDevice)
             {
-                choice1ImageHUD.sprite = squareSprite;
-                choice2ImageHUD.sprite = triangleSprite;
-                choice3ImageHUD.sprite = circleSprite;
-                actionImageHUD.sprite = XSprite;
+                ChangeImageStatus(XSprite, squareSprite, triangleSprite, circleSprite);
             }
         }
     }
@@ -199,7 +193,6 @@ public class DialogueManager : MonoBehaviour
             
             yield return new WaitUntil(() => actionInput == true);
             dialogueBackground.gameObject.SetActive(false);
-
         }
         else
         {
@@ -361,9 +354,13 @@ public class DialogueManager : MonoBehaviour
 
         }
     }
-
-    
-
-
     #endregion
+
+    void ChangeImageStatus(Sprite actionSprite, Sprite choice1Sprite, Sprite choice2Sprite, Sprite choice3Sprite)
+    {
+        actionImageHUD.sprite = actionSprite;
+        choice1ImageHUD.sprite = choice1Sprite;
+        choice2ImageHUD.sprite = choice2Sprite;
+        choice3ImageHUD.sprite = choice3Sprite;
+    }
 }

@@ -83,21 +83,24 @@ public class PlayerMovement : MonoBehaviour
         playerControls.Player.Enable();
     }
 
-    private void ToJump(InputAction.CallbackContext context)
-    {
-        throw new NotImplementedException();
-        
-    }
-
     void OnDisable()
     {
-        
+        ResetInputValue();   
         playerControls.Player.Disable();
     }
 
     void  ResetInputValue()
     {
-        // TODO
+        playerAnim.SetFloat(xVelocityHash, 0);
+        movementInput = Vector3.zero;
+        horizontalMovementInput = 0;
+        verticalMovementInput = 0;
+
+        playerAnim.SetFloat(yVelocityHash, 0);
+        lookInput = Vector3.zero;
+        horizontalLookInput = 0;
+        verticalLookInput = 0;
+
     }
 
     void Start()
