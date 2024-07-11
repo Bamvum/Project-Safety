@@ -66,6 +66,9 @@ public class DialogueProperties
     public bool is3Question;
     public string answerOption3;
     public int option3IndexJump;
+    [Space(10)]
+    public bool otherEvent;
+
 
     [Header("Trigger Event")]
     public UnityEvent startDialogueEvent;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using DG.Tweening;
+using RootMotion.FinalIK;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,8 +31,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject dialogueHUD;
     [SerializeField] RectTransform dialogueBackground;
     [SerializeField] TMP_Text dialogueText;
-    // [SerializeField] bool isTyping;
-
 
     [Space(10)]
     [SerializeField] GameObject actionOption;
@@ -59,6 +58,7 @@ public class DialogueManager : MonoBehaviour
     [Space(10)]
  
     bool isInDialogue;
+    bool isSpecialEvent;
 
     [Header("DoTween")]
     [SerializeField] float punchDuration = 0.3f;
@@ -134,7 +134,7 @@ public class DialogueManager : MonoBehaviour
         while (currentDialogueIndex < dialogueList.Count)
         {
             DialogueProperties line = dialogueList[currentDialogueIndex];
-
+            isSpecialEvent =  dialogueList[currentDialogueIndex].otherEvent;
             // npcName.text = line.npcName;
 
             line.startDialogueEvent?.Invoke();
@@ -171,7 +171,15 @@ public class DialogueManager : MonoBehaviour
 
         }
         
-        DialogueStop();
+        if(!isSpecialEvent)
+        {
+            DialogueStop();
+        }
+        else
+        {
+            StopAllCoroutines();
+            DialogueHUDHide();
+        }
     }    
     
     IEnumerator TypeText(string text)
@@ -206,6 +214,11 @@ public class DialogueManager : MonoBehaviour
         {
             dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();
             DialogueStop();
+        }
+
+        if(isSpecialEvent)
+        {
+            dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();
         }
 
         currentDialogueIndex++;
@@ -293,7 +306,10 @@ public class DialogueManager : MonoBehaviour
         dialogueBackground.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack).OnComplete(() => 
         {
             dialogueHUD.SetActive(false);
-            playerHUD.SetActive(true);
+            if(!isSpecialEvent)
+            {
+                playerHUD.SetActive(true);
+            }
         });
     }
 
