@@ -20,7 +20,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") && !speechTrigger)
         {
-            // dialogueManager.DialogueStart(dialogueProperties);
+            dialogueManager.DialogueStart(dialogueProperties);
             speechTrigger = true;
         }
     }

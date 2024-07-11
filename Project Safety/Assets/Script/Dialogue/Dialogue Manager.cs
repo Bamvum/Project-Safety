@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] Interact interact;
+    [SerializeField] Stamina stamina;
     [SerializeField] CinemachineInputProvider cinemachineInputProvider;
 
     [Header("Dialogue")]
@@ -113,8 +114,9 @@ public class DialogueManager : MonoBehaviour
 
         // DISABLE OTHER SCRIPTS
         playerMovement.enabled = false;
-        playerMovement.playerAnim.enabled = false;
-        interact.enabled = true;
+        // playerMovement.playerAnim.enabled = false;
+        interact.enabled = false;
+        stamina.enabled = false;
         cinemachineInputProvider.enabled = false;
 
         DialogueHUDShow();
@@ -252,8 +254,10 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = false;
 
         playerMovement.enabled = true;
-        playerMovement.playerAnim.enabled = true;
+        // playerMovement.playerAnim.enabled = true;
+        // playerMovement.playerAnim.enabled = true;
         interact.enabled = true;
+        stamina.enabled = true;
         cinemachineInputProvider.enabled = true;
 
         // DOTWEENING
