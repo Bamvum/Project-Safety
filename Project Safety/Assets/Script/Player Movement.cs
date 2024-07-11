@@ -91,16 +91,15 @@ public class PlayerMovement : MonoBehaviour
 
     void  ResetInputValue()
     {
-        playerAnim.SetFloat(xVelocityHash, 0);
-        movementInput = Vector3.zero;
-        horizontalMovementInput = 0;
-        verticalMovementInput = 0;
+        // playerAnim.SetFloat(xVelocityHash, 0);
+        // movementInput = Vector3.zero;
+        // horizontalMovementInput = 0;
+        // verticalMovementInput = 0;
 
-        playerAnim.SetFloat(yVelocityHash, 0);
-        lookInput = Vector3.zero;
-        horizontalLookInput = 0;
-        verticalLookInput = 0;
-
+        // playerAnim.SetFloat(yVelocityHash, 0);
+        // lookInput = Vector3.zero;
+        // horizontalLookInput = 0;
+        // verticalLookInput = 0;
     }
 
     void Start()

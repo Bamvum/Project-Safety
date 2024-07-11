@@ -13,6 +13,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] Interact interact;
+    [SerializeField] Stamina stamina;
     [SerializeField] CinemachineInputProvider cinemachineInputProvider;
 
     [Header("Dialogue")]
@@ -58,6 +59,7 @@ public class DialogueManager : MonoBehaviour
     [Space(10)]
  
     bool isInDialogue;
+    bool isSpecialEvent;
 
     [Header("DoTween")]
     [SerializeField] float punchDuration = 0.3f;
@@ -112,10 +114,12 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = true;
 
         // DISABLE OTHER SCRIPTS
-        playerMovement.enabled = false;
-        playerMovement.playerAnim.enabled = false;
-        interact.enabled = true;
+        playerMovement.enabled = false;    
+        interact.enabled = false;
+        stamina.enabled = false;
         cinemachineInputProvider.enabled = false;
+
+        playerMovement.playerAnim.SetBool("Idle", true);
 
         DialogueHUDShow();
 
@@ -132,7 +136,8 @@ public class DialogueManager : MonoBehaviour
         while (currentDialogueIndex < dialogueList.Count)
         {
             DialogueProperties line = dialogueList[currentDialogueIndex];
-
+            isSpecialEvent = dialogueList[currentDialogueIndex].otherEvent;
+            
             // npcName.text = line.npcName;
 
             line.startDialogueEvent?.Invoke();
@@ -166,10 +171,21 @@ public class DialogueManager : MonoBehaviour
             }
         
         line.endDialogueEvent?.Invoke();
+        
 
         }
         
-        DialogueStop();
+        // DialogueStop();
+
+        if(!isSpecialEvent)
+        {
+            DialogueStop();
+        }
+        else
+        {
+            dialogueHUD.SetActive(false);
+            StopAllCoroutines();
+        }
     }    
     
     IEnumerator TypeText(string text)
@@ -204,6 +220,11 @@ public class DialogueManager : MonoBehaviour
         {
             dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();
             DialogueStop();
+        }
+
+        if(dialogueList[currentDialogueIndex].otherEvent)
+        {
+            dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();
         }
 
         currentDialogueIndex++;
@@ -252,9 +273,11 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = false;
 
         playerMovement.enabled = true;
-        playerMovement.playerAnim.enabled = true;
         interact.enabled = true;
+        stamina.enabled = true;
         cinemachineInputProvider.enabled = true;
+
+        playerMovement.playerAnim.SetBool("Idle", false);
 
         // DOTWEENING
         DialogueHUDHide();
