@@ -696,6 +696,114 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Extinguisher"",
+            ""id"": ""2230b633-33ef-4baa-81b5-4419c0e4e34a"",
+            ""actions"": [
+                {
+                    ""name"": ""Twist"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f32ba36-86e0-464b-815e-aa4671696ca9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pull"",
+                    ""type"": ""Button"",
+                    ""id"": ""a629a1c5-509a-402c-a8fa-10d1039a55b6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""b083d617-37ad-46fb-9a72-94d57e2a214b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Squeeze"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f17fd27-678f-4f00-9d11-5ddcba76d63d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sweep"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f7c8143-55ad-43e1-ae11-857495cc6b42"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""94cb8fae-fa96-4d28-93bc-283a51486743"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Twist"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd0dfd2c-301a-4d7e-aa8e-411b823b377c"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pull"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4060e14-d9db-443f-b98d-b18dc1906140"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f50fd96a-5d57-4db5-a567-597d66ecf351"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Squeeze"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e65cc18b-b2e8-445f-b2c9-ef3a787b70b6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sweep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -728,6 +836,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Contact_Contact1 = m_Contact.FindAction("Contact1", throwIfNotFound: true);
         m_Contact_Contact2 = m_Contact.FindAction("Contact2", throwIfNotFound: true);
         m_Contact_Contact3 = m_Contact.FindAction("Contact3", throwIfNotFound: true);
+        // Extinguisher
+        m_Extinguisher = asset.FindActionMap("Extinguisher", throwIfNotFound: true);
+        m_Extinguisher_Twist = m_Extinguisher.FindAction("Twist", throwIfNotFound: true);
+        m_Extinguisher_Pull = m_Extinguisher.FindAction("Pull", throwIfNotFound: true);
+        m_Extinguisher_Aim = m_Extinguisher.FindAction("Aim", throwIfNotFound: true);
+        m_Extinguisher_Squeeze = m_Extinguisher.FindAction("Squeeze", throwIfNotFound: true);
+        m_Extinguisher_Sweep = m_Extinguisher.FindAction("Sweep", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1097,6 +1212,84 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public ContactActions @Contact => new ContactActions(this);
+
+    // Extinguisher
+    private readonly InputActionMap m_Extinguisher;
+    private List<IExtinguisherActions> m_ExtinguisherActionsCallbackInterfaces = new List<IExtinguisherActions>();
+    private readonly InputAction m_Extinguisher_Twist;
+    private readonly InputAction m_Extinguisher_Pull;
+    private readonly InputAction m_Extinguisher_Aim;
+    private readonly InputAction m_Extinguisher_Squeeze;
+    private readonly InputAction m_Extinguisher_Sweep;
+    public struct ExtinguisherActions
+    {
+        private @PlayerControls m_Wrapper;
+        public ExtinguisherActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Twist => m_Wrapper.m_Extinguisher_Twist;
+        public InputAction @Pull => m_Wrapper.m_Extinguisher_Pull;
+        public InputAction @Aim => m_Wrapper.m_Extinguisher_Aim;
+        public InputAction @Squeeze => m_Wrapper.m_Extinguisher_Squeeze;
+        public InputAction @Sweep => m_Wrapper.m_Extinguisher_Sweep;
+        public InputActionMap Get() { return m_Wrapper.m_Extinguisher; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ExtinguisherActions set) { return set.Get(); }
+        public void AddCallbacks(IExtinguisherActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Add(instance);
+            @Twist.started += instance.OnTwist;
+            @Twist.performed += instance.OnTwist;
+            @Twist.canceled += instance.OnTwist;
+            @Pull.started += instance.OnPull;
+            @Pull.performed += instance.OnPull;
+            @Pull.canceled += instance.OnPull;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
+            @Squeeze.started += instance.OnSqueeze;
+            @Squeeze.performed += instance.OnSqueeze;
+            @Squeeze.canceled += instance.OnSqueeze;
+            @Sweep.started += instance.OnSweep;
+            @Sweep.performed += instance.OnSweep;
+            @Sweep.canceled += instance.OnSweep;
+        }
+
+        private void UnregisterCallbacks(IExtinguisherActions instance)
+        {
+            @Twist.started -= instance.OnTwist;
+            @Twist.performed -= instance.OnTwist;
+            @Twist.canceled -= instance.OnTwist;
+            @Pull.started -= instance.OnPull;
+            @Pull.performed -= instance.OnPull;
+            @Pull.canceled -= instance.OnPull;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
+            @Squeeze.started -= instance.OnSqueeze;
+            @Squeeze.performed -= instance.OnSqueeze;
+            @Squeeze.canceled -= instance.OnSqueeze;
+            @Sweep.started -= instance.OnSweep;
+            @Sweep.performed -= instance.OnSweep;
+            @Sweep.canceled -= instance.OnSweep;
+        }
+
+        public void RemoveCallbacks(IExtinguisherActions instance)
+        {
+            if (m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IExtinguisherActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ExtinguisherActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ExtinguisherActions @Extinguisher => new ExtinguisherActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1128,5 +1321,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnContact1(InputAction.CallbackContext context);
         void OnContact2(InputAction.CallbackContext context);
         void OnContact3(InputAction.CallbackContext context);
+    }
+    public interface IExtinguisherActions
+    {
+        void OnTwist(InputAction.CallbackContext context);
+        void OnPull(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
+        void OnSqueeze(InputAction.CallbackContext context);
+        void OnSweep(InputAction.CallbackContext context);
     }
 }
