@@ -729,7 +729,18 @@
                 {
                     "name": "",
                     "id": "94cb8fae-fa96-4d28-93bc-283a51486743",
-                    "path": "",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Twist",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce6ccbde-e941-4d37-b05a-205aefdd416d",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -740,7 +751,18 @@
                 {
                     "name": "",
                     "id": "dd0dfd2c-301a-4d7e-aa8e-411b823b377c",
-                    "path": "",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pull",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4406bd70-3065-4556-9eae-b4f193cd1d9b",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -751,7 +773,18 @@
                 {
                     "name": "",
                     "id": "d4060e14-d9db-443f-b98d-b18dc1906140",
-                    "path": "",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf8e6d48-c421-4db2-91cb-5670ecd36bb8",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -762,7 +795,7 @@
                 {
                     "name": "",
                     "id": "f50fd96a-5d57-4db5-a567-597d66ecf351",
-                    "path": "",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -773,11 +806,92 @@
                 {
                     "name": "",
                     "id": "e65cc18b-b2e8-445f-b2c9-ef3a787b70b6",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Sweep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a693136d-2196-4a93-a262-91d056290dae",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sweep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "TwistFE",
+            "id": "178c81df-3667-4958-9eda-ca4f09c81fea",
+            "actions": [
+                {
+                    "name": "Button 1",
+                    "type": "Button",
+                    "id": "b39f2e73-efa0-4c3b-8620-ae48e0671590",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Button 2",
+                    "type": "Button",
+                    "id": "dce60e61-afc7-4267-ab35-695d6928890a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "304336a5-6102-4eb9-b53f-c39a72e815db",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82a619a1-db1a-435d-a93c-25f8d4faeb3a",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "66bd61e8-0f33-4931-b2cc-39363b7b3fe6",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "210db986-504b-440e-aeed-0494c3503c54",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
