@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using System.Runtime.ExceptionServices;
 
 public class Interact : MonoBehaviour
 {
@@ -115,6 +114,7 @@ public class Interact : MonoBehaviour
 
     void OnDisable()
     {
+        
         playerControls.Player.Disable();
     }
 
