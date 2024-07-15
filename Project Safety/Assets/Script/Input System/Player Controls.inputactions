@@ -848,13 +848,31 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Button 3",
+                    "type": "Button",
+                    "id": "4dd55d80-e77e-43e9-b65e-7f5aa85a8a04",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Button 4",
+                    "type": "Button",
+                    "id": "4d38640f-8fe6-44d8-b78a-a2bd045dd4a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "304336a5-6102-4eb9-b53f-c39a72e815db",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -865,7 +883,7 @@
                 {
                     "name": "",
                     "id": "82a619a1-db1a-435d-a93c-25f8d4faeb3a",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -876,7 +894,7 @@
                 {
                     "name": "",
                     "id": "66bd61e8-0f33-4931-b2cc-39363b7b3fe6",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -887,11 +905,55 @@
                 {
                     "name": "",
                     "id": "210db986-504b-440e-aeed-0494c3503c54",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Button 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ebbf5c3b-182f-4c00-b0ae-c3bdabf40ddc",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "41b67be7-f773-465f-94bb-0ce05a92ef0b",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f4baa1a-6a55-4554-9571-f261ac5e47ae",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57721457-bbf7-4e50-abf1-64d6febec4c4",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Button 4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

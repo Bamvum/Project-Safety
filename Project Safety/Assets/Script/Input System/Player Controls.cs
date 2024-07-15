@@ -870,13 +870,31 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""4dd55d80-e77e-43e9-b65e-7f5aa85a8a04"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d38640f-8fe6-44d8-b78a-a2bd045dd4a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""304336a5-6102-4eb9-b53f-c39a72e815db"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -887,7 +905,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""82a619a1-db1a-435d-a93c-25f8d4faeb3a"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -898,7 +916,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""66bd61e8-0f33-4931-b2cc-39363b7b3fe6"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -909,11 +927,55 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""210db986-504b-440e-aeed-0494c3503c54"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Button 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ebbf5c3b-182f-4c00-b0ae-c3bdabf40ddc"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41b67be7-f773-465f-94bb-0ce05a92ef0b"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f4baa1a-6a55-4554-9571-f261ac5e47ae"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57721457-bbf7-4e50-abf1-64d6febec4c4"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -961,6 +1023,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_TwistFE = asset.FindActionMap("TwistFE", throwIfNotFound: true);
         m_TwistFE_Button1 = m_TwistFE.FindAction("Button 1", throwIfNotFound: true);
         m_TwistFE_Button2 = m_TwistFE.FindAction("Button 2", throwIfNotFound: true);
+        m_TwistFE_Button3 = m_TwistFE.FindAction("Button 3", throwIfNotFound: true);
+        m_TwistFE_Button4 = m_TwistFE.FindAction("Button 4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1414,12 +1478,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ITwistFEActions> m_TwistFEActionsCallbackInterfaces = new List<ITwistFEActions>();
     private readonly InputAction m_TwistFE_Button1;
     private readonly InputAction m_TwistFE_Button2;
+    private readonly InputAction m_TwistFE_Button3;
+    private readonly InputAction m_TwistFE_Button4;
     public struct TwistFEActions
     {
         private @PlayerControls m_Wrapper;
         public TwistFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Button1 => m_Wrapper.m_TwistFE_Button1;
         public InputAction @Button2 => m_Wrapper.m_TwistFE_Button2;
+        public InputAction @Button3 => m_Wrapper.m_TwistFE_Button3;
+        public InputAction @Button4 => m_Wrapper.m_TwistFE_Button4;
         public InputActionMap Get() { return m_Wrapper.m_TwistFE; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1435,6 +1503,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Button2.started += instance.OnButton2;
             @Button2.performed += instance.OnButton2;
             @Button2.canceled += instance.OnButton2;
+            @Button3.started += instance.OnButton3;
+            @Button3.performed += instance.OnButton3;
+            @Button3.canceled += instance.OnButton3;
+            @Button4.started += instance.OnButton4;
+            @Button4.performed += instance.OnButton4;
+            @Button4.canceled += instance.OnButton4;
         }
 
         private void UnregisterCallbacks(ITwistFEActions instance)
@@ -1445,6 +1519,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Button2.started -= instance.OnButton2;
             @Button2.performed -= instance.OnButton2;
             @Button2.canceled -= instance.OnButton2;
+            @Button3.started -= instance.OnButton3;
+            @Button3.performed -= instance.OnButton3;
+            @Button3.canceled -= instance.OnButton3;
+            @Button4.started -= instance.OnButton4;
+            @Button4.performed -= instance.OnButton4;
+            @Button4.canceled -= instance.OnButton4;
         }
 
         public void RemoveCallbacks(ITwistFEActions instance)
@@ -1506,5 +1586,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnButton1(InputAction.CallbackContext context);
         void OnButton2(InputAction.CallbackContext context);
+        void OnButton3(InputAction.CallbackContext context);
+        void OnButton4(InputAction.CallbackContext context);
     }
 }
