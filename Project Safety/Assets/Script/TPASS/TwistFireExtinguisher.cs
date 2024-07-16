@@ -19,6 +19,8 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] GameObject twistFEHUD;
     [SerializeField] RectTransform instructionHUD;
     [SerializeField] CanvasGroup twistFEGameplay;
+    [Space(10)]
+    [SerializeField] Image blackImage;
 
     [Space(10)]
     [SerializeField] Image[] imageHUD;
@@ -35,7 +37,7 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] bool[] buttonPressed;
     bool canInput;
     public bool objectiveComplete;
-    
+
 
     void Awake()
     {
@@ -48,7 +50,7 @@ public class TwistFireExtinguisher : MonoBehaviour
         playerControls.TwistFE.Button2.performed += Button2Pressed;
         playerControls.TwistFE.Button3.performed += Button3Pressed;
         playerControls.TwistFE.Button4.performed += Button4Pressed;
-        
+
         playerControls.TwistFE.Enable();
 
         TwistFireExtinguisherTrigger();
@@ -57,9 +59,9 @@ public class TwistFireExtinguisher : MonoBehaviour
     private void Button1Pressed(InputAction.CallbackContext context)
     {
         if (canInput && !buttonPressed[1] && !buttonPressed[2] && !buttonPressed[3] && (buttonPressed[0] || inputsPerformed != inputNeedToFinish))
-        {   
+        {
             Debug.Log("Button 1 is Pressed!");
-                        
+
             imageHUD[0].color = new Color(imageHUD[0].color.r, imageHUD[0].color.g, imageHUD[0].color.b, .3f);
             imageHUD[1].color = new Color(imageHUD[1].color.r, imageHUD[1].color.g, imageHUD[1].color.b, 1);
             imageHUD[2].color = new Color(imageHUD[2].color.r, imageHUD[2].color.g, imageHUD[2].color.b, .3f);
@@ -71,14 +73,14 @@ public class TwistFireExtinguisher : MonoBehaviour
             buttonPressed[3] = false;
 
             inputsPerformed++;
-            
+
         }
 
     }
 
     private void Button2Pressed(InputAction.CallbackContext context)
     {
-        if(canInput && !buttonPressed[0] && !buttonPressed[2] && !buttonPressed[3] && (buttonPressed[1] || inputsPerformed != inputNeedToFinish))
+        if (canInput && !buttonPressed[0] && !buttonPressed[2] && !buttonPressed[3] && (buttonPressed[1] || inputsPerformed != inputNeedToFinish))
         {
             Debug.Log("Button 2 is Pressed!");
 
@@ -98,7 +100,7 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     private void Button3Pressed(InputAction.CallbackContext context)
     {
-        if(canInput && !buttonPressed[0] && !buttonPressed[1] && !buttonPressed[3] && (buttonPressed[2] || inputsPerformed != inputNeedToFinish))
+        if (canInput && !buttonPressed[0] && !buttonPressed[1] && !buttonPressed[3] && (buttonPressed[2] || inputsPerformed != inputNeedToFinish))
         {
             Debug.Log("Button 3 is Pressed!");
 
@@ -146,7 +148,7 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     void Update()
     {
-        if(DeviceManager.instance.keyboardDevice)
+        if (DeviceManager.instance.keyboardDevice)
         {
             ChangeImageStatus(keyboardSprite[0], keyboardSprite[1], keyboardSprite[2], keyboardSprite[3]);
         }
@@ -177,11 +179,10 @@ public class TwistFireExtinguisher : MonoBehaviour
             sequence.Join(twistFEGameplay.DOFade(1f, 1f));
             Debug.Log("Sequence Completed!");
 
-            // twistFEGameplay.alpha = 1;
             canInput = true;
         });
     }
-    
+
     void ChangeImageStatus(Sprite button1Sprite, Sprite button2Sprite, Sprite button3Sprite, Sprite button4Sprite)
     {
         imageHUD[0].sprite = button1Sprite;
@@ -192,32 +193,44 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     void TimerFunction()
     {
-        if(inputsPerformed > inputNeedToFinish)
+        if (inputsPerformed > inputNeedToFinish)
         {
             inputsPerformed = inputNeedToFinish;
 
             objectiveComplete = true;
             playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
 
+            // blackImage.DOFade(1, tpass.inspectExtinguisherAnimLength).OnComplete(() =>
+            // {
+
+            //     blackImage.DOFade(1, tpass.inspectExtinguisherAnimLength).OnComplete(() =>
+            //     {
+            //         // FADE
+            //         blackImage.DOFade(0, tpass.inspectExtinguisherAnimLength);
+            //     });
+            // });
             this.enabled = false;
         }
-        
-        if(canInput)
+
+
+        if (canInput)
         {
             twistTime -= 5 * Time.deltaTime;
             timer.fillAmount = twistTime / maxTwistTime;
         }
 
-        if(twistTime == 0 )
+        if (twistTime == 0)
         {
             twistTime = 0;
             Debug.LogError("Time Ended");
         }
     }
 
-    
+
     // TODO - GAME OVER (TIMER ENDED)
     //      - DOTWEEN WHEN FINISH
     //      - FADE IN AND OUT WHEN FINISH
 
 }
+
+

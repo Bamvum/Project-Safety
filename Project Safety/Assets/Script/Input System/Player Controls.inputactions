@@ -958,6 +958,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PullFE",
+            "id": "85be5eb6-0ae8-4a2a-bcd6-f5886c706f53",
+            "actions": [
+                {
+                    "name": "Action",
+                    "type": "Button",
+                    "id": "99f7896b-b28e-4c5d-8baa-6c026a34d2e9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action Lock",
+                    "type": "Button",
+                    "id": "c83f9c82-b5c5-47a5-bf1e-d3a385ffc7ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b20e7ed6-4fb2-41d8-8261-4413a8a4588b",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b144feeb-0509-4ed3-8e67-dc9cec3d8829",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5279220b-0310-40d4-a698-c768d7ba8dac",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action Lock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71dc329d-ed78-4681-bb13-556685a42852",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action Lock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

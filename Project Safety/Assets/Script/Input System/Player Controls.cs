@@ -980,6 +980,76 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PullFE"",
+            ""id"": ""85be5eb6-0ae8-4a2a-bcd6-f5886c706f53"",
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""99f7896b-b28e-4c5d-8baa-6c026a34d2e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action Lock"",
+                    ""type"": ""Button"",
+                    ""id"": ""c83f9c82-b5c5-47a5-bf1e-d3a385ffc7ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b20e7ed6-4fb2-41d8-8261-4413a8a4588b"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b144feeb-0509-4ed3-8e67-dc9cec3d8829"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5279220b-0310-40d4-a698-c768d7ba8dac"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71dc329d-ed78-4681-bb13-556685a42852"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1025,6 +1095,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_TwistFE_Button2 = m_TwistFE.FindAction("Button 2", throwIfNotFound: true);
         m_TwistFE_Button3 = m_TwistFE.FindAction("Button 3", throwIfNotFound: true);
         m_TwistFE_Button4 = m_TwistFE.FindAction("Button 4", throwIfNotFound: true);
+        // PullFE
+        m_PullFE = asset.FindActionMap("PullFE", throwIfNotFound: true);
+        m_PullFE_Action = m_PullFE.FindAction("Action", throwIfNotFound: true);
+        m_PullFE_ActionLock = m_PullFE.FindAction("Action Lock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1542,6 +1616,60 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public TwistFEActions @TwistFE => new TwistFEActions(this);
+
+    // PullFE
+    private readonly InputActionMap m_PullFE;
+    private List<IPullFEActions> m_PullFEActionsCallbackInterfaces = new List<IPullFEActions>();
+    private readonly InputAction m_PullFE_Action;
+    private readonly InputAction m_PullFE_ActionLock;
+    public struct PullFEActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PullFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_PullFE_Action;
+        public InputAction @ActionLock => m_Wrapper.m_PullFE_ActionLock;
+        public InputActionMap Get() { return m_Wrapper.m_PullFE; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PullFEActions set) { return set.Get(); }
+        public void AddCallbacks(IPullFEActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PullFEActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PullFEActionsCallbackInterfaces.Add(instance);
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+            @ActionLock.started += instance.OnActionLock;
+            @ActionLock.performed += instance.OnActionLock;
+            @ActionLock.canceled += instance.OnActionLock;
+        }
+
+        private void UnregisterCallbacks(IPullFEActions instance)
+        {
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+            @ActionLock.started -= instance.OnActionLock;
+            @ActionLock.performed -= instance.OnActionLock;
+            @ActionLock.canceled -= instance.OnActionLock;
+        }
+
+        public void RemoveCallbacks(IPullFEActions instance)
+        {
+            if (m_Wrapper.m_PullFEActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPullFEActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PullFEActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PullFEActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PullFEActions @PullFE => new PullFEActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1588,5 +1716,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnButton2(InputAction.CallbackContext context);
         void OnButton3(InputAction.CallbackContext context);
         void OnButton4(InputAction.CallbackContext context);
+    }
+    public interface IPullFEActions
+    {
+        void OnAction(InputAction.CallbackContext context);
+        void OnActionLock(InputAction.CallbackContext context);
     }
 }

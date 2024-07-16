@@ -18,15 +18,17 @@ public class TPASS : MonoBehaviour
     [SerializeField] CinemachineInputProvider cinemachineInputProvider;
     [Space(10)]
     [SerializeField] TwistFireExtinguisher twistFE;
+    [SerializeField] PullFireExtinguisher pullFE;
 
     [Header("Animation")]
     [SerializeField] AnimationClip inspectExtinguisherAnim;
-    float inspectExtinguisherAnimLength;
+    public float inspectExtinguisherAnimLength;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera playerVC;
     [SerializeField] CinemachineVirtualCamera inspectExtinguisherVC;
     [SerializeField] CinemachineVirtualCamera twistExtinguisherVC;
+    [SerializeField] CinemachineVirtualCamera pullExtinguisherVC;
 
     [Header("HUD")]
     [SerializeField] GameObject playerHUD;
@@ -101,10 +103,38 @@ public class TPASS : MonoBehaviour
     }
     private void ToPull(InputAction.CallbackContext context)
     {
-        if(inspectExtinguisherMode)
+        if(!pullFE.objectiveComplete)
         {
-            Debug.Log("To Pull Method!");
-            inspectExtinguisherMode = false;
+            if (inspectExtinguisherMode)
+            {
+                Debug.Log("To Pull Method!");
+                extinguisherHUD.SetActive(false);
+
+                blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                {
+                    // CINEMACHINE 
+                    inspectExtinguisherVC.Priority = 0;
+                    pullExtinguisherVC.Priority = 10;
+
+                    // ANIMATION
+                    // playerMovement.playerAnim.SetBool("PullExtinguisher", true);
+                    playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
+
+                    // EXTINGUISHER GAME OBJECT
+                    fireExitinguisher[0].SetActive(false);
+                    fireExitinguisher[1].SetActive(true);
+
+                    blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                    {
+                        // FADE
+                        blackImage.DOFade(0, inspectExtinguisherAnimLength);
+                        pullFE.enabled = true;
+                        this.enabled = false;
+                    });
+                });
+
+                inspectExtinguisherMode = false;
+            }
         }
     }
 
@@ -156,7 +186,8 @@ public class TPASS : MonoBehaviour
         // CINEMACHINE
         playerVC.Priority = 0;
         inspectExtinguisherVC.Priority = 10;
-
+        twistExtinguisherVC.Priority = 0;
+        pullExtinguisherVC.Priority = 0;        
 
         // DISABLE SCRIPT
         playerMovement.enabled = false;
@@ -184,6 +215,11 @@ public class TPASS : MonoBehaviour
         if(twistFE.objectiveComplete)
         {
             TPASSHUD[0].gameObject.SetActive(false);
+        }
+
+        if(pullFE.objectiveComplete)
+        {
+            TPASSHUD[1].gameObject.SetActive(false);
         }
     }
 
