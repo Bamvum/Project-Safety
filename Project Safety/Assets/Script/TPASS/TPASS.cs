@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 public class TPASS : MonoBehaviour
 {
