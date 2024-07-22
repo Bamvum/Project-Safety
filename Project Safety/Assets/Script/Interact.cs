@@ -20,8 +20,8 @@ public class Interact : MonoBehaviour
     [SerializeField] Stamina stamina;
     [SerializeField] CinemachineInputProvider cinemachineInputProvider;
     Item item;
-
     [HideInInspector] public DialogueTrigger dialogueTrigger;
+    Interactable interactable;
 
     
     [Header("Interact")]     
@@ -78,6 +78,18 @@ public class Interact : MonoBehaviour
                 // In Dialogue Trigger script, Make sure to assign PlayerMovement, Interact,
                 // and Camera Movement script to Dialogue Event and disable the script. 
             }
+            else if(interactable != null)
+            {  
+                Debug.Log("Interactable Interact!");
+                
+                if(interactable.isLightSwitch)
+                {
+                    Debug.Log("Light Switch Interacted!");
+                    interactable.LightSwitchTrigger();
+                }
+
+                 
+            }
         }
     }
     
@@ -126,6 +138,7 @@ public class Interact : MonoBehaviour
         {
             item = null;
             dialogueTrigger = null;
+            interactable = null;
 
             // REMOVE SPRITE IN IMAGE 
             ChangeImageStatus(false, false, null);
@@ -163,6 +176,17 @@ public class Interact : MonoBehaviour
                 ChangeImageStatus(false, true, talkSprite);
             }
         
+            #endregion
+
+            #region - INTERACTABLE ENVIRONMENT RAYCAST -
+
+            if(hit.collider.gameObject.layer == 8)
+            {
+                interactable = hit.collider.GetComponent<Interactable>();
+
+                ChangeImageStatus(false, true, interactSprite);
+            }
+
             #endregion
         }
     }
