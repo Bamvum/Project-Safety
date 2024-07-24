@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.iOS;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerMovement : MonoBehaviour
@@ -18,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform playerBody;
     
     [Header("POV/Camera")]
+    [SerializeField] CinemachineVirtualCamera playerVC;
+    [Space(10)]
     [SerializeField] GameObject cameraRoot;
     [SerializeField] float upperLimit = -40f;
     [SerializeField] float bottomLimit = 70f;
@@ -62,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         playerControls = new PlayerControls();
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void OnEnable()
@@ -111,7 +114,9 @@ public class PlayerMovement : MonoBehaviour
         jumpHash = Animator.StringToHash("Jump");
         groundHash = Animator.StringToHash("Grounded");
         fallingHash = Animator.StringToHash("Falling");
-        crouchHash = Animator.StringToHash("Crouch");   
+        crouchHash = Animator.StringToHash("Crouch");
+
+        Cursor.lockState = CursorLockMode.Locked;  
     }
 
     void FixedUpdate()
@@ -119,6 +124,23 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         
     }
+
+    void Update()
+    {
+        var pov = playerVC.GetCinemachineComponent<CinemachinePOV>();
+        
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            pov.m_VerticalAxis.m_MaxSpeed = .1f;
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            pov.m_VerticalAxis.m_MaxSpeed = 1f;
+        }
+        
+        Debug.Log(pov.m_VerticalAxis.m_MaxSpeed);
+    }
+
     void LateUpdate()
     {
         CamMovement();
@@ -173,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
 
             playerAnim.SetBool(crouchHash, true);
         }
-        else if(runInput && !stamina.outOfStamina)
+        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput && !stamina.outOfStamina)
         {
             movementSpeed = runSpeed;
             playerAnim.SetBool(crouchHash, false);
