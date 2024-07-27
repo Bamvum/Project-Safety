@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 
 public class PrologueSceneManager : MonoBehaviour
 {
     [Header("Script")]
     [SerializeField] TransitionManager transitionManager;
-
+    [SerializeField] Mission mission;
 
     [Header("Instruction HUD")]
     [SerializeField] GameObject instructionHUD;
@@ -25,7 +26,25 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] Sprite[] keyboardSprite;
     [SerializeField] Sprite[] gamepadSprite;
 
+    [Header("Mission HUD")]
+    [SerializeField] TMP_Text missionText;
+    [SerializeField] RectTransform missionRT;
+    [SerializeField] CanvasGroup missionCG;
+    int missionIndex;
 
+    [Header("SFX")]
+    [SerializeField] AudioSource missionSFX;
+
+    [Header("Flags")]
+    public bool interactedLightSwitch;
+
+
+
+    void Start()
+    {
+        missionCG.alpha = 0f;
+        missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
+    }
 
     void Update()
     {
@@ -58,13 +77,8 @@ public class PrologueSceneManager : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            // Display mission #1
-        }       
     }
 
-    
     void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite, 
                             Sprite interactSprite, Sprite examineSprite)
     {
@@ -82,5 +96,35 @@ public class PrologueSceneManager : MonoBehaviour
         imageHUD[0].sprite = crouchSprite;
         imageHUD[1].sprite = interactSprite;
         imageHUD[2].sprite = examineSprite;
+    }
+    
+    public void DisplayMission()
+    {
+        missionText.text = mission.missionSO.missions[missionIndex];
+        missionSFX.Play();
+
+        missionCG.DOFade(1, 1f);
+        missionRT.DOAnchorPos(new Vector2(325, missionRT.anchoredPosition.y), 1);
+    }
+
+    public void HideMission()
+    {
+        // missionCG.DOFade(0, 1f).OnComplete(() =>
+        // {
+        //     if(missionIndex < mission.missionSO.missions.Length - 1)
+        //     {
+        //         missionIndex++;
+        //     }
+        //     DisplayMission();
+        // });
+
+        missionRT.DOAnchorPos(new Vector2(-325, missionRT.anchoredPosition.y), 1f).OnComplete(() =>
+        {
+            if (missionIndex < mission.missionSO.missions.Length - 1)
+            {
+                missionIndex++;
+            }
+            DisplayMission();
+        });
     }
 }

@@ -137,8 +137,6 @@ public class PlayerMovement : MonoBehaviour
         {
             pov.m_VerticalAxis.m_MaxSpeed = 1f;
         }
-        
-        Debug.Log(pov.m_VerticalAxis.m_MaxSpeed);
     }
 
     void LateUpdate()

@@ -12,20 +12,17 @@ public class TransitionManager : MonoBehaviour
     [Header("How to Play (Instruction)")]
     public CanvasGroup instructionHUD;
 
-
-    public bool isDoneTransition;
-
     void Start()
     {
-        transitionImage.DOFade(0, 2).OnComplete(() =>
-        {
-            DisplayInstruction();
-        });
+        // transitionImage.DOFade(0, 2).OnComplete(() =>
+        // {
+        //     DisplayInstruction();
+        // });
     }
 
-    void DisplayInstruction()
+    public void DisplayInstruction()
     {
-        instructionHUD.DOFade(1, 1.5f);
+        instructionHUD.DOFade(1, 1);
     }
 
     public void TransitionFadeIn()

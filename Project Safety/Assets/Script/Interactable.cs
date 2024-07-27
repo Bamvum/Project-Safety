@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    [Header("Script")]
+    [SerializeField] PrologueSceneManager prologueSceneManager;
+
     [Header("Flags")]
     public bool isLightSwitch;
     [SerializeField] bool isDoor;
@@ -13,10 +16,12 @@ public class Interactable : MonoBehaviour
     [SerializeField] GameObject switchOn;
     [SerializeField] GameObject switchOff;
     [Space(10)]
-    [SerializeField] bool isSwitchActive;
+    [SerializeField] bool isInteracted;
+    
 
     public void LightSwitchTrigger()
     {
+        Debug.Log("Light Switch Trigger");
         if(lightSource.activeSelf)
         {
             lightSource.SetActive(false);
@@ -28,6 +33,15 @@ public class Interactable : MonoBehaviour
             lightSource.SetActive(true);
             switchOn.SetActive(true);
             switchOff.SetActive(false);
+
+            
+            if(!isInteracted)
+            {
+                prologueSceneManager.HideMission();
+                isInteracted = true;
+            }
         }
     }
+    
+    
 }
