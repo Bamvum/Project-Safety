@@ -87,6 +87,18 @@ public class Interact : MonoBehaviour
                     Debug.Log("Light Switch Interacted!");
                     interactable.LightSwitchTrigger();
                 }
+                else if(interactable.isDoor)
+                {
+
+                }
+                else if(interactable.isPC)
+                {
+                    interactable.PC();
+                }
+                else if(interactable.isMonitor)
+                {
+                    interactable.AccessMonitor();
+                }
 
                  
             }

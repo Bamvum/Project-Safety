@@ -7,7 +7,7 @@ using DG.Tweening;
 public class TransitionManager : MonoBehaviour
 {
     [Header("Transition")]
-    [SerializeField] Image transitionImage;
+    public  Image transitionImage;
 
     [Header("How to Play (Instruction)")]
     public CanvasGroup instructionHUD;

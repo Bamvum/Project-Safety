@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Interactable : MonoBehaviour
 {
@@ -9,7 +11,9 @@ public class Interactable : MonoBehaviour
 
     [Header("Flags")]
     public bool isLightSwitch;
-    [SerializeField] bool isDoor;
+     public bool isDoor;
+    public bool isPC;
+    public bool isMonitor;
 
     [Header("Light Switch")]
     [SerializeField] GameObject lightSource;
@@ -39,9 +43,33 @@ public class Interactable : MonoBehaviour
             {
                 prologueSceneManager.HideMission();
                 isInteracted = true;
+
+                if(SceneManager.GetActiveScene().name == "Prologue")
+                {
+                    this.enabled = false;
+                }
             }
         }
     }
     
-    
+    public void PC()
+    {
+        prologueSceneManager.PC.layer = 0;
+        prologueSceneManager.monitorScreen[0].SetActive(true);
+        Invoke("DelayStartPC", 20);
+    }
+
+    void DelayStartPC()
+    {
+        prologueSceneManager.monitor.layer = 8;
+        prologueSceneManager.monitorScreen[0].SetActive(false);
+        prologueSceneManager.monitorScreen[1].SetActive(true);
+        prologueSceneManager.monitorSFX.Play();
+    }
+
+    public void AccessMonitor()
+    {
+        Debug.Log("Player Accessed the Monitor!");
+        prologueSceneManager.TransitionToHomeworkQuiz();
+    }
 }

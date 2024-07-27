@@ -13,6 +13,11 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] TransitionManager transitionManager;
     [SerializeField] Mission mission;
 
+    [Header("Prologue Game Object")]
+    public GameObject PC;
+    public GameObject monitor;
+    public GameObject[] monitorScreen;
+
     [Header("Instruction HUD")]
     [SerializeField] GameObject instructionHUD;
     [Space(10)]
@@ -34,11 +39,10 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("SFX")]
     [SerializeField] AudioSource missionSFX;
+    public AudioSource monitorSFX;
 
     [Header("Flags")]
     public bool interactedLightSwitch;
-
-
 
     void Start()
     {
@@ -105,19 +109,20 @@ public class PrologueSceneManager : MonoBehaviour
 
         missionCG.DOFade(1, 1f);
         missionRT.DOAnchorPos(new Vector2(325, missionRT.anchoredPosition.y), 1);
+
+        if(missionIndex == 1)
+        {
+            PC.layer = 8;
+            
+        }
+        else
+        {
+            PC.layer = 0;
+        }
     }
 
     public void HideMission()
     {
-        // missionCG.DOFade(0, 1f).OnComplete(() =>
-        // {
-        //     if(missionIndex < mission.missionSO.missions.Length - 1)
-        //     {
-        //         missionIndex++;
-        //     }
-        //     DisplayMission();
-        // });
-
         missionRT.DOAnchorPos(new Vector2(-325, missionRT.anchoredPosition.y), 1f).OnComplete(() =>
         {
             if (missionIndex < mission.missionSO.missions.Length - 1)
@@ -126,5 +131,25 @@ public class PrologueSceneManager : MonoBehaviour
             }
             DisplayMission();
         });
+    }
+
+    public void TransitionToHomeworkQuiz()
+    {
+        transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
+        {
+            transitionManager.transitionImage.DOFade(1, 2f).OnComplete(() =>
+            {
+                transitionManager.transitionImage.DOFade(1,1f).OnComplete(() =>
+                {
+                    HomeworkQuiz();
+                });
+                
+            });
+        });
+    }
+
+    void HomeworkQuiz()
+    {
+
     }
 }
