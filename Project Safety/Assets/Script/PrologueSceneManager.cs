@@ -139,6 +139,8 @@ public class PrologueSceneManager : MonoBehaviour
         {
             transitionManager.transitionImage.DOFade(1, 2f).OnComplete(() =>
             {
+                // DISPLAY HOMEWORK HUD
+                
                 transitionManager.transitionImage.DOFade(1,1f).OnComplete(() =>
                 {
                     HomeworkQuiz();
