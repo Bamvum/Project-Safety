@@ -16,7 +16,7 @@ public class AnswerKey : MonoBehaviour
         }
         else
         {        
-            homeworkManager.Correct();
+            homeworkManager.Wrong();
             Debug.Log("Answer is Wrong!");
         }
     }

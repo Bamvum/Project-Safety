@@ -20,6 +20,7 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("Instruction HUD")]
     [SerializeField] GameObject instructionHUD;
+
     [Space(10)]
     [SerializeField] GameObject keyboardInstruction;
     [SerializeField] GameObject gamepadInstruction;
@@ -30,6 +31,9 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] Image[] imageHUD;
     [SerializeField] Sprite[] keyboardSprite;
     [SerializeField] Sprite[] gamepadSprite;
+    
+    [Header("Homework HUD")]
+    [SerializeField] GameObject homeworkHUD;
 
     [Header("Mission HUD")]
     [SerializeField] TMP_Text missionText;
@@ -83,25 +87,6 @@ public class PrologueSceneManager : MonoBehaviour
         }
     }
 
-    void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite, 
-                            Sprite interactSprite, Sprite examineSprite)
-    {
-        if(DeviceManager.instance.keyboardDevice)
-        {
-            Cursor.lockState = CursorLockMode.None; 
-        }
-        else if (DeviceManager.instance.gamepadDevice)
-        {
-            Cursor.lockState = CursorLockMode.Locked; 
-        }
-        
-        keyboardInstruction.SetActive(keyboardActive);
-        gamepadInstruction.SetActive(gamepadActive);
-        imageHUD[0].sprite = crouchSprite;
-        imageHUD[1].sprite = interactSprite;
-        imageHUD[2].sprite = examineSprite;
-    }
-    
     public void DisplayMission()
     {
         missionText.text = mission.missionSO.missions[missionIndex];
@@ -137,11 +122,11 @@ public class PrologueSceneManager : MonoBehaviour
     {
         transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
         {
-            transitionManager.transitionImage.DOFade(1, 2f).OnComplete(() =>
+            transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
             {
                 // DISPLAY HOMEWORK HUD
-                
-                transitionManager.transitionImage.DOFade(1,1f).OnComplete(() =>
+                homeworkHUD.SetActive(true);
+                transitionManager.transitionImage.DOFade(0, 1f).OnComplete(() =>
                 {
                     HomeworkQuiz();
                 });
@@ -152,6 +137,26 @@ public class PrologueSceneManager : MonoBehaviour
 
     void HomeworkQuiz()
     {
-
+        Debug.Log("Currently in HomeworkHUD!");
     }
+
+        void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite, 
+                            Sprite interactSprite, Sprite examineSprite)
+    {
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            Cursor.lockState = CursorLockMode.None; 
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            Cursor.lockState = CursorLockMode.Locked; 
+        }
+        
+        keyboardInstruction.SetActive(keyboardActive);
+        gamepadInstruction.SetActive(gamepadActive);
+        imageHUD[0].sprite = crouchSprite;
+        imageHUD[1].sprite = interactSprite;
+        imageHUD[2].sprite = examineSprite;
+    }
+    
 }

@@ -8,6 +8,7 @@ public class Interactable : MonoBehaviour
 {
     [Header("Script")]
     [SerializeField] PrologueSceneManager prologueSceneManager;
+    [SerializeField] DialogueTrigger dialogueTrigger;
 
     [Header("Flags")]
     public bool isLightSwitch;
@@ -22,6 +23,10 @@ public class Interactable : MonoBehaviour
     [Space(10)]
     [SerializeField] bool isInteracted;
     
+    void Update()
+    {
+
+    }
 
     public void LightSwitchTrigger()
     {
@@ -47,6 +52,7 @@ public class Interactable : MonoBehaviour
                 if(SceneManager.GetActiveScene().name == "Prologue")
                 {
                     this.enabled = false;
+                    this.gameObject.layer = 0;
                 }
             }
         }
@@ -70,6 +76,7 @@ public class Interactable : MonoBehaviour
     public void AccessMonitor()
     {
         Debug.Log("Player Accessed the Monitor!");
-        prologueSceneManager.TransitionToHomeworkQuiz();
+        // prologueSceneManager.TransitionToHomeworkQuiz();
+        dialogueTrigger.StartDialogue();
     }
 }

@@ -167,11 +167,19 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -3.5f;
         }
 
-        if(jumpInput && !crouchInput && characterController.isGrounded)
+        if(SceneManager.GetActiveScene().name != "Prologue")
         {
-            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-            playerAnim.SetTrigger("Jump");
+            if (jumpInput && !crouchInput && characterController.isGrounded)
+            {
+                velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+                playerAnim.SetTrigger("Jump");
+            }
         }
+        else
+        {
+            Debug.Log("Player is not in Prologue Scene");
+        }
+
 
         #endregion
 

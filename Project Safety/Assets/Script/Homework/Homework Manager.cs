@@ -1,25 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 public class HomeworkManager : MonoBehaviour
 {
+    [Header("Script")]
+    [SerializeField] PrologueSceneManager prologueSceneManager;
+
+    [Header("Homework HUDs")]
+    [SerializeField] GameObject homeworkHUD;
+    [SerializeField] GameObject homeworkScoreHUD;
+    [SerializeField] TMP_Text homeworkScoreText;
     [SerializeField] List<QuestionandAnswer> QnA;
+    
     [SerializeField] GameObject[] choices;
+    [SerializeField] GameObject choiceSelected;
     [SerializeField] int currentQuestion;
 
     [SerializeField] TMP_Text questionText;
 
+    int score = 0;
+    int totalOfQuestions;
+    bool isGamepad;
+
     void Start()
     {
+        totalOfQuestions = QnA.Count;
         GenerateQuestions();
     }
     
-    // void Update()
-    // {
-    //     Debug.Log("Choi");
-    // }
+    void Update()
+    {
+        Debug.Log(QnA.Count);
+
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            EventSystem.current.SetSelectedGameObject(null);
+            isGamepad = false;
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+
+            // Make this if Statement occur only once
+            if(!isGamepad)
+            {
+                EventSystem.current.SetSelectedGameObject(choiceSelected);
+                isGamepad = true;
+            }
+        }
+    }
+    
     
     void SetAnswer()
     {
@@ -41,12 +77,16 @@ public class HomeworkManager : MonoBehaviour
         {
             currentQuestion = Random.Range(0, QnA.Count);
             questionText.text = QnA[currentQuestion].question;
-
+            
             SetAnswer();
         }
         else 
         {
             Debug.Log("Out of Questions");
+            // TODO - METHOD TO END HOMEWORK SCRIPT/HUD
+            //      - ENABLE PLAYER SCRIPTS
+
+            PreEndOfHomework();
         }
 
     }
@@ -54,11 +94,28 @@ public class HomeworkManager : MonoBehaviour
     public void Correct()
     {
         QnA.RemoveAt(currentQuestion);
+        score++;
         GenerateQuestions();
     }
 
     public void Wrong()
     {
         QnA.RemoveAt(currentQuestion);
+        GenerateQuestions();
+    }
+
+    void PreEndOfHomework()
+    {
+        homeworkScoreHUD.SetActive(true);
+        homeworkHUD.SetActive(false);
+        homeworkScoreText.text = score + " / "  + totalOfQuestions;
+
+        Invoke("EndOfHomework", 3);
+    }
+
+    void EndOfHomework()
+    {
+        prologueSceneManager.HideMission();
     }
 }
+
