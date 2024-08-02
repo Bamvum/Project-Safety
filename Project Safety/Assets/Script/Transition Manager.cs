@@ -27,11 +27,20 @@ public class TransitionManager : MonoBehaviour
 
     public void TransitionFadeIn()
     {
-        transitionImage.DOFade(1, 2).SetEase(Ease.InBack);
+        transitionImage.DOFade(1, 2);
     }
 
     public void TransitionFadeOut()
     {
         transitionImage.DOFade(0, 2);
     }
+
+    public void TransitionFadeInAndOut()
+    {
+        transitionImage.DOFade(1, 2).OnComplete(() =>
+        {
+            transitionImage.DOFade(0, 2);
+        });
+    }
+
 }

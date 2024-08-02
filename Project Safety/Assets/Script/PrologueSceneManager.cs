@@ -5,11 +5,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Cinemachine;
+using Synty.AnimationBaseLocomotion.Samples;
 
 
 public class PrologueSceneManager : MonoBehaviour
 {
     [Header("Script")]
+    [SerializeField] PlayerMovement playerMovement;
     [SerializeField] TransitionManager transitionManager;
     [SerializeField] Mission mission;
 
@@ -20,6 +23,10 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("Instruction HUD")]
     [SerializeField] GameObject instructionHUD;
+    [SerializeField] GameObject instructionHUDContent;
+    CanvasGroup instructionHUDContentCG;
+    [SerializeField] Image instructionBG;
+    RectTransform instructionBGRT;
 
     [Space(10)]
     [SerializeField] GameObject keyboardInstruction;
@@ -34,6 +41,7 @@ public class PrologueSceneManager : MonoBehaviour
     
     [Header("Homework HUD")]
     [SerializeField] GameObject homeworkHUD;
+
 
     [Header("Mission HUD")]
     [SerializeField] TMP_Text missionText;
@@ -50,13 +58,18 @@ public class PrologueSceneManager : MonoBehaviour
 
     void Start()
     {
+        instructionBGRT = instructionBG.GetComponent<RectTransform>();
+        instructionHUDContentCG = instructionHUDContent.GetComponent<CanvasGroup>();
+
+        instructionBGRT.sizeDelta = new Vector2(0, instructionBGRT.sizeDelta.y); 
+        instructionHUDContentCG.alpha = 0;
         missionCG.alpha = 0f;
         missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
     }
 
     void Update()
     {
-        if(instructionHUD.activeSelf)
+        if(instructionHUDContent.activeSelf)
         {
             if (DeviceManager.instance.keyboardDevice)
             {
@@ -85,8 +98,10 @@ public class PrologueSceneManager : MonoBehaviour
                 }
             }
         }
-    }
 
+        
+    }
+    
     public void DisplayMission()
     {
         missionText.text = mission.missionSO.missions[missionIndex];
@@ -140,8 +155,41 @@ public class PrologueSceneManager : MonoBehaviour
         Debug.Log("Currently in HomeworkHUD!");
     }
 
-        void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite, 
-                            Sprite interactSprite, Sprite examineSprite)
+    public void DisplayInstruction()
+    {
+        instructionHUD.SetActive(true);
+        instructionBGRT.DOSizeDelta(new Vector2(1920, instructionBGRT.sizeDelta.y), .5f).SetEase(Ease.InQuad).OnComplete(() =>
+        {
+            instructionHUDContent.SetActive(true);
+            instructionHUDContentCG.DOFade(1, .75f);
+            // Change to CanvasGroup
+        });
+    } 
+
+    public void HideInstruction()
+    {
+        instructionHUDContentCG.DOFade(1, .75f).OnComplete(() =>
+        {
+            instructionHUDContent.SetActive(false);
+            instructionBGRT.DOSizeDelta(new Vector2(0, instructionBGRT.sizeDelta.y), .5f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                instructionHUD.SetActive(false);
+
+                // BACKEND PLAYER MOVEMENT
+                playerMovement.enabled = true;
+                playerMovement.playerAnim.enabled = true;
+                playerMovement.playerVC.enabled = true;
+                playerMovement.interact.enabled = true;
+
+                playerMovement.playerHUD.SetActive(true);
+
+                DisplayMission();
+            });
+        });
+    }
+
+    void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
+                        Sprite interactSprite, Sprite examineSprite)
     {
         if(DeviceManager.instance.keyboardDevice)
         {

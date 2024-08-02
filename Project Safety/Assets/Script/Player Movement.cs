@@ -3,24 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.iOS;
 using UnityEngine.SceneManagement;
 
 
 public class PlayerMovement : MonoBehaviour
 {
     PlayerControls playerControls;
+    public GameObject playerHUD;
 
     [Header("Scripts")]
-    [SerializeField] Stamina stamina;
+    public Interact interact;
+    public Examine examine;
+    public Stamina stamina;
     
     [Header("Player")]
     [SerializeField] CharacterController characterController;
     [SerializeField] Transform playerBody;
     
     [Header("POV/Camera")]
-    [SerializeField] CinemachineVirtualCamera playerVC;
+    public CinemachineVirtualCamera playerVC;
     [Space(10)]
     [SerializeField] GameObject cameraRoot;
     [SerializeField] float upperLimit = -40f;
@@ -60,8 +61,7 @@ public class PlayerMovement : MonoBehaviour
     int crouchHash;
     float xRotation;
     Vector2 currentVelocity;
-    
-    public Vector3 velocity;
+    Vector3 velocity;
 
     void Awake()
     {
@@ -175,11 +175,6 @@ public class PlayerMovement : MonoBehaviour
                 playerAnim.SetTrigger("Jump");
             }
         }
-        else
-        {
-            Debug.Log("Player is not in Prologue Scene");
-        }
-
 
         #endregion
 

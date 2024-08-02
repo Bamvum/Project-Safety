@@ -84,7 +84,7 @@ public class Interact : MonoBehaviour
                 
                 if(interactable.isLightSwitch)
                 {
-                    Debug.Log("Light Switch Interacted!");
+                    handIKTarget.position = hit.collider.transform.position;
                     interactable.LightSwitchTrigger();
                 }
                 else if(interactable.isDoor)
@@ -93,10 +93,12 @@ public class Interact : MonoBehaviour
                 }
                 else if(interactable.isPC)
                 {
+                    handIKTarget.position = hit.collider.transform.position;
                     interactable.PC();
                 }
                 else if(interactable.isMonitor)
                 {
+                    handIKTarget.position = hit.collider.transform.position;
                     interactable.AccessMonitor();
                 }
 

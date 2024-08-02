@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 
 public class HomeworkManager : MonoBehaviour
 {
     [Header("Script")]
     [SerializeField] PrologueSceneManager prologueSceneManager;
+    [SerializeField] TransitionManager transitionManager;
+    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] Interact interact;
+    [SerializeField] DialogueTrigger dialogueTrigger;
 
     [Header("Homework HUDs")]
     [SerializeField] GameObject homeworkHUD;
+    [SerializeField] GameObject homeworkQnAHUD;
     [SerializeField] GameObject homeworkScoreHUD;
     [SerializeField] TMP_Text homeworkScoreText;
     [SerializeField] List<QuestionandAnswer> QnA;
@@ -107,7 +112,7 @@ public class HomeworkManager : MonoBehaviour
     void PreEndOfHomework()
     {
         homeworkScoreHUD.SetActive(true);
-        homeworkHUD.SetActive(false);
+        homeworkQnAHUD.SetActive(false);
         homeworkScoreText.text = score + " / "  + totalOfQuestions;
 
         Invoke("EndOfHomework", 3);
@@ -115,7 +120,17 @@ public class HomeworkManager : MonoBehaviour
 
     void EndOfHomework()
     {
-        prologueSceneManager.HideMission();
+        transitionManager.transitionImage.DOFade(1, 2).OnComplete(() =>
+        {
+            homeworkHUD.SetActive(false);
+            transitionManager.transitionImage.DOFade(0,2).OnComplete(() =>
+            {
+                Debug.Log("Display Dialogou!");
+                dialogueTrigger.StartDialogue();
+            });
+        });
+
+       
     }
 }
 
