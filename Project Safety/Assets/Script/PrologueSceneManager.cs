@@ -7,6 +7,7 @@ using DG.Tweening;
 using TMPro;
 using Cinemachine;
 using Synty.AnimationBaseLocomotion.Samples;
+using UnityEngine.iOS;
 
 
 public class PrologueSceneManager : MonoBehaviour
@@ -33,7 +34,10 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] GameObject gamepadInstruction;
     [Space(10)]
     [SerializeField] GameObject[] instructionHUDPage;
-    [SerializeField] Button[] instructionButton;
+    [Space(10)]
+    [SerializeField] GameObject instructionButtonLeft;
+    [SerializeField] GameObject instructionButtonRight;
+    [SerializeField] GameObject instructionButtonDone;
     [Space(10)]
     [SerializeField] Image[] imageHUD;
     [SerializeField] Sprite[] keyboardSprite;
@@ -55,6 +59,8 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("Flags")]
     public bool interactedLightSwitch;
+    bool isGamepad;
+    bool isLastPageReached;
 
     void Start()
     {
@@ -63,43 +69,50 @@ public class PrologueSceneManager : MonoBehaviour
 
         instructionBGRT.sizeDelta = new Vector2(0, instructionBGRT.sizeDelta.y); 
         instructionHUDContentCG.alpha = 0;
+        
         missionCG.alpha = 0f;
         missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
+        
+        ChangeInstructionPageButtons(false, true, false);
     }
 
     void Update()
     {
-        if(instructionHUDContent.activeSelf)
-        {
+       if(instructionHUD.activeSelf)
+       {
             if (DeviceManager.instance.keyboardDevice)
             {
                 ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
                 EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
             }
             else if (DeviceManager.instance.gamepadDevice)
-            {
+            {   
                 ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
+                
+                if(!isGamepad)
+                {
+                    if (instructionButtonRight.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(instructionButtonRight);
+                    }
+                    else
+                    {
+                        EventSystem.current.SetSelectedGameObject(instructionButtonDone);
+                    }
 
-                if (instructionHUDPage[0].activeSelf)
-                {
-                    EventSystem.current.SetSelectedGameObject(instructionButton[0].gameObject);
-                }
-                else if (instructionHUDPage[1].activeSelf)
-                {
-                    EventSystem.current.SetSelectedGameObject(instructionButton[1].gameObject);
-                }
-                else if (instructionHUDPage[2].activeSelf)
-                {
-                    EventSystem.current.SetSelectedGameObject(instructionButton[2].gameObject);
-                }
-                else
-                {
-                    EventSystem.current.SetSelectedGameObject(null);
+                    isGamepad = true;
                 }
             }
-        }
+       }
 
-        
+       if(!isLastPageReached)
+       {
+            if(instructionHUDPage[2].activeSelf)
+            {
+                isLastPageReached = true;
+            }
+       }
     }
     
     public void DisplayMission()
@@ -107,7 +120,7 @@ public class PrologueSceneManager : MonoBehaviour
         missionText.text = mission.missionSO.missions[missionIndex];
         missionSFX.Play();
 
-        missionCG.DOFade(1, 1f);
+        missionCG.DOFade(1, 1f); 
         missionRT.DOAnchorPos(new Vector2(325, missionRT.anchoredPosition.y), 1);
 
         if(missionIndex == 1)
@@ -143,16 +156,11 @@ public class PrologueSceneManager : MonoBehaviour
                 homeworkHUD.SetActive(true);
                 transitionManager.transitionImage.DOFade(0, 1f).OnComplete(() =>
                 {
-                    HomeworkQuiz();
+                
                 });
                 
             });
         });
-    }
-
-    void HomeworkQuiz()
-    {
-        Debug.Log("Currently in HomeworkHUD!");
     }
 
     public void DisplayInstruction()
@@ -178,7 +186,7 @@ public class PrologueSceneManager : MonoBehaviour
                 // BACKEND PLAYER MOVEMENT
                 playerMovement.enabled = true;
                 playerMovement.playerAnim.enabled = true;
-                playerMovement.playerVC.enabled = true;
+                playerMovement.cinemachineInputProvider.enabled = true;
                 playerMovement.interact.enabled = true;
 
                 playerMovement.playerHUD.SetActive(true);
@@ -186,6 +194,79 @@ public class PrologueSceneManager : MonoBehaviour
                 DisplayMission();
             });
         });
+    }
+
+    public void instructionNextPage()
+    {
+        // FALSE = LEFT
+        // TRUE = RIGHT
+
+        if(instructionHUDPage[0].activeSelf)
+        {
+            if(isLastPageReached)
+            {
+                ChangeInstructionPageButtons(true, true, true);
+            }
+            else
+            {
+                ChangeInstructionPageButtons(true, true, false);
+            }
+            
+            instructionHUDPage[0].SetActive(false);
+            instructionHUDPage[1].SetActive(true);
+
+            EventSystem.current.SetSelectedGameObject(instructionButtonRight);
+        }
+        else if(instructionHUDPage[1].activeSelf)
+        {
+            ChangeInstructionPageButtons(true, false, true);
+
+            instructionHUDPage[1].SetActive(false);
+            instructionHUDPage[2].SetActive(true);
+            EventSystem.current.SetSelectedGameObject(instructionButtonDone);
+        }
+        else if(instructionHUDPage[2].activeSelf)
+        {
+           
+        }
+    }
+
+    public void instructionPreviousPage()
+    {
+        if(instructionHUDPage[0].activeSelf)
+        {
+            
+        }
+        else if(instructionHUDPage[1].activeSelf)
+        {
+            if(isLastPageReached)
+            {
+                ChangeInstructionPageButtons(false, true, true);
+            }
+            else
+            {
+                ChangeInstructionPageButtons(false, true, false);
+            }
+            instructionHUDPage[0].SetActive(true);
+            instructionHUDPage[1].SetActive(false);
+
+            EventSystem.current.SetSelectedGameObject(instructionButtonRight);
+        }
+        else if(instructionHUDPage[2].activeSelf)
+        {
+            if (isLastPageReached)
+            {
+                ChangeInstructionPageButtons(true, false, true);
+            }
+            else
+            {
+                ChangeInstructionPageButtons(true, false, false);
+            }
+            instructionHUDPage[1].SetActive(true);
+            instructionHUDPage[2].SetActive(false);
+
+            EventSystem.current.SetSelectedGameObject(instructionButtonLeft);
+        }
     }
 
     void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
@@ -207,4 +288,47 @@ public class PrologueSceneManager : MonoBehaviour
         imageHUD[2].sprite = examineSprite;
     }
     
+    void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
+    {
+        instructionButtonLeft.SetActive(leftButton);
+        instructionButtonRight.SetActive(rightButton);
+        instructionButtonDone.SetActive(doneButton);
+    }
 }
+
+// if (instructionHUDContent.activeSelf)
+// {
+//     if (DeviceManager.instance.keyboardDevice)
+//     {
+//         ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
+//         EventSystem.current.SetSelectedGameObject(null);
+//         isGamepad = false;
+//     }
+//     else if (DeviceManager.instance.gamepadDevice)
+//     {
+//         ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
+
+//         if (!isGamepad)
+//         {
+//             if (instructionHUDPage[0].activeSelf)
+//             {
+//                 EventSystem.current.SetSelectedGameObject(instructionButton[0].gameObject);
+//             }
+//             else if (instructionHUDPage[1].activeSelf)
+//             {
+//                 EventSystem.current.SetSelectedGameObject(instructionButton[1].gameObject);
+//             }
+//             else if (instructionHUDPage[2].activeSelf)
+//             {
+//                 EventSystem.current.SetSelectedGameObject(instructionButton[2].gameObject);
+//             }
+//             else
+//             {
+//                 EventSystem.current.SetSelectedGameObject(null);
+//             }
+
+
+//             isGamepad = true;
+//         }
+//     }
+// }

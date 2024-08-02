@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public Interact interact;
     public Examine examine;
     public Stamina stamina;
+    public CinemachineInputProvider cinemachineInputProvider;
     
     [Header("Player")]
     [SerializeField] CharacterController characterController;
