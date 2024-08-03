@@ -104,7 +104,6 @@ public class PlayerMovement : MonoBehaviour
         lookInput = Vector3.zero;
         horizontalLookInput = 0;
         verticalLookInput = 0;
-
     }
 
     void Start()
@@ -123,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
-        
     }
 
     void Update()

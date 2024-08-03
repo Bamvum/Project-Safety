@@ -21,7 +21,7 @@ public class Interactable : MonoBehaviour
     [SerializeField] GameObject switchOn;
     [SerializeField] GameObject switchOff;
     [Space(10)]
-    [SerializeField] bool isInteracted;
+    bool isInteracted;
     
     void Update()
     {
@@ -57,7 +57,25 @@ public class Interactable : MonoBehaviour
             }
         }
     }
-    
+
+    public void DoorTrigger()
+    {
+        // TODO ANIMATION OF OPENING THE DOORS
+
+        
+
+        // TODO FLAG TO NOT TRIGGER DIALOGUE AGAIN (ELSE PLAY SFX - LOCKED DOOR)
+        if(SceneManager.GetActiveScene().name == "Prologue")
+        {
+            if(!isInteracted)
+            {
+                dialogueTrigger.StartDialogue();
+                isInteracted = true;
+            }
+        }
+    }
+
+
     public void PC()
     {
         prologueSceneManager.PC.layer = 0;

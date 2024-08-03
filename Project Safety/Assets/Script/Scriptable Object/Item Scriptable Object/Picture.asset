@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 848492e4dac25d24ab12a0515c534f69, type: 3}
-  m_Name: Prologue Mission
+  m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
+  m_Name: Picture
   m_EditorClassIdentifier: 
-  missions:
-  - Turn on the lights
-  - Access the PC
-  - Go downstair to get a food
-  missionCompleted: {fileID: 8300000, guid: 6b042e33af33ec2479a8ee28d7aa9ac8, type: 3}
+  itemName: Picture of people
+  itemDescription: 
+  itemDistanceToPlayer: 0
+  itemYoffset: 0
+  isTakable: 1
+  isReadble: 1

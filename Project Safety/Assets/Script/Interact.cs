@@ -80,29 +80,26 @@ public class Interact : MonoBehaviour
             }
             else if(interactable != null)
             {  
+
                 Debug.Log("Interactable Interact!");
                 
                 if(interactable.isLightSwitch)
                 {
-                    handIKTarget.position = hit.collider.transform.position;
+                    
                     interactable.LightSwitchTrigger();
                 }
                 else if(interactable.isDoor)
                 {
-
+                    interactable.DoorTrigger();
                 }
                 else if(interactable.isPC)
                 {
-                    handIKTarget.position = hit.collider.transform.position;
                     interactable.PC();
                 }
                 else if(interactable.isMonitor)
                 {
-                    handIKTarget.position = hit.collider.transform.position;
                     interactable.AccessMonitor();
                 }
-
-                 
             }
         }
     }

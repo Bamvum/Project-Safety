@@ -115,6 +115,24 @@ public class PrologueSceneManager : MonoBehaviour
        }
     }
     
+
+
+    public void TransitionToHomeworkQuiz()
+    {
+        transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
+        {
+            transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
+            {
+                // DISPLAY HOMEWORK HUD
+                homeworkHUD.SetActive(true);
+                transitionManager.transitionImage.DOFade(0, 1f);
+                
+            });
+        });
+    }
+
+    #region - MISSION -
+
     public void DisplayMission()
     {
         missionText.text = mission.missionSO.missions[missionIndex];
@@ -146,24 +164,11 @@ public class PrologueSceneManager : MonoBehaviour
         });
     }
 
-    public void TransitionToHomeworkQuiz()
-    {
-        transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-        {
-            transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-            {
-                // DISPLAY HOMEWORK HUD
-                homeworkHUD.SetActive(true);
-                transitionManager.transitionImage.DOFade(0, 1f).OnComplete(() =>
-                {
-                
-                });
-                
-            });
-        });
-    }
+    #endregion
 
-    public void DisplayInstruction()
+    #region - INSTRUCTION -
+
+     public void DisplayInstruction()
     {
         instructionHUD.SetActive(true);
         instructionBGRT.DOSizeDelta(new Vector2(1920, instructionBGRT.sizeDelta.y), .5f).SetEase(Ease.InQuad).OnComplete(() =>
@@ -198,9 +203,6 @@ public class PrologueSceneManager : MonoBehaviour
 
     public void instructionNextPage()
     {
-        // FALSE = LEFT
-        // TRUE = RIGHT
-
         if(instructionHUDPage[0].activeSelf)
         {
             if(isLastPageReached)
@@ -269,6 +271,15 @@ public class PrologueSceneManager : MonoBehaviour
         }
     }
 
+    void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
+    {
+        instructionButtonLeft.SetActive(leftButton);
+        instructionButtonRight.SetActive(rightButton);
+        instructionButtonDone.SetActive(doneButton);
+    }
+
+    #endregion
+
     void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
                         Sprite interactSprite, Sprite examineSprite)
     {
@@ -288,47 +299,4 @@ public class PrologueSceneManager : MonoBehaviour
         imageHUD[2].sprite = examineSprite;
     }
     
-    void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
-    {
-        instructionButtonLeft.SetActive(leftButton);
-        instructionButtonRight.SetActive(rightButton);
-        instructionButtonDone.SetActive(doneButton);
-    }
 }
-
-// if (instructionHUDContent.activeSelf)
-// {
-//     if (DeviceManager.instance.keyboardDevice)
-//     {
-//         ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
-//         EventSystem.current.SetSelectedGameObject(null);
-//         isGamepad = false;
-//     }
-//     else if (DeviceManager.instance.gamepadDevice)
-//     {
-//         ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
-
-//         if (!isGamepad)
-//         {
-//             if (instructionHUDPage[0].activeSelf)
-//             {
-//                 EventSystem.current.SetSelectedGameObject(instructionButton[0].gameObject);
-//             }
-//             else if (instructionHUDPage[1].activeSelf)
-//             {
-//                 EventSystem.current.SetSelectedGameObject(instructionButton[1].gameObject);
-//             }
-//             else if (instructionHUDPage[2].activeSelf)
-//             {
-//                 EventSystem.current.SetSelectedGameObject(instructionButton[2].gameObject);
-//             }
-//             else
-//             {
-//                 EventSystem.current.SetSelectedGameObject(null);
-//             }
-
-
-//             isGamepad = true;
-//         }
-//     }
-// }
