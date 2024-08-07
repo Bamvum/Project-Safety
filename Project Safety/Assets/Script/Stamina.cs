@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Stamina : MonoBehaviour
 {
-    [Header("Scripts")]
-    [SerializeField] PlayerMovement playerMovement;
     
     [Header("Stamina")]
     [SerializeField] Image staminaBar;
@@ -24,7 +22,7 @@ public class Stamina : MonoBehaviour
 
     void Update()
     {
-        if(playerMovement.runInput && !playerMovement.crouchInput && !outOfStamina)
+        if(PlayerManager.instance.playerMovement.runInput && !PlayerManager.instance.playerMovement.crouchInput && !outOfStamina)
         {
             stamina -= staminaCost * Time.deltaTime;
             staminaBar.fillAmount = stamina/maxStamina;

@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Cinemachine;
-
 public class Interact : MonoBehaviour
 {
-    PlayerControls playerControls;
 
     [SerializeField] Animator playerAnim;
     [SerializeField] Transform handIKTarget;
@@ -34,15 +31,15 @@ public class Interact : MonoBehaviour
     {
         playerAnim = GetComponent<Animator>();
 
-        playerControls = new PlayerControls();
+        PlayerManager.instance.playerControls = new PlayerControls();
     }
     
     void OnEnable()
     {
-        playerControls.Player.Interact.performed += ToInteract;
-        playerControls.Player.Examine.performed += ToExamine;
+        PlayerManager.instance.playerControls.Player.Interact.performed += ToInteract;
+        PlayerManager.instance.playerControls.Player.Examine.performed += ToExamine;
 
-        playerControls.Player.Enable();
+        PlayerManager.instance.playerControls.Player.Enable();
     }
 
     #region - TO INTERACT -
@@ -130,7 +127,7 @@ public class Interact : MonoBehaviour
     void OnDisable()
     {
         
-        playerControls.Player.Disable();
+        PlayerManager.instance.playerControls.Player.Disable();
     }
 
     void Update()

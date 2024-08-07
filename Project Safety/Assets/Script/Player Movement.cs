@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    PlayerControls playerControls;
-    
     [Header("Player")]
     [SerializeField] CharacterController characterController;
     [SerializeField] Transform playerBody;
@@ -57,33 +55,28 @@ public class PlayerMovement : MonoBehaviour
     Vector2 currentVelocity;
     Vector3 velocity;
 
-    void Awake()
-    {
-        playerControls = new PlayerControls();
-    }
-
     void OnEnable()
     {
-        playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+        PlayerManager.instance.playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
 
-        playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        PlayerManager.instance.playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
 
-        playerControls.Player.Sprint.performed += ctx => runInput = true;
-        playerControls.Player.Sprint.canceled += ctx => runInput = false;
+        PlayerManager.instance.playerControls.Player.Sprint.performed += ctx => runInput = true;
+        PlayerManager.instance.playerControls.Player.Sprint.canceled += ctx => runInput = false;
 
-        playerControls.Player.Jump.performed += ctx => jumpInput = true;
-        playerControls.Player.Jump.canceled += ctx => jumpInput = false;
+        PlayerManager.instance.playerControls.Player.Jump.performed += ctx => jumpInput = true;
+        PlayerManager.instance.playerControls.Player.Jump.canceled += ctx => jumpInput = false;
 
-        playerControls.Player.Crouch.performed += ctx => crouchInput = true;
-        playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
+        PlayerManager.instance.playerControls.Player.Crouch.performed += ctx => crouchInput = true;
+        PlayerManager.instance.playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
         
-        playerControls.Player.Enable();
+        PlayerManager.instance.playerControls.Player.Enable();
     }
 
     void OnDisable()
     {
         ResetInputValue();   
-        playerControls.Player.Disable();
+        PlayerManager.instance.playerControls.Player.Disable();
     }
 
     void  ResetInputValue()

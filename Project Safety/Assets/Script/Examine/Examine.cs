@@ -3,67 +3,77 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.iOS;
 
 
 public class Examine : MonoBehaviour
 {
-    PlayerControls playerControls;
-
     [Header("Script")]
     Item item;
     
     [Header("Examine")]
-    [SerializeField] GameObject itemDescriptionHUD, itemNameHUD;
-    [SerializeField] TMP_Text itemNameText, itemDescriptionText;
+    [SerializeField] GameObject itemDescriptionHUD;
+    [SerializeField] GameObject itemNameHUD;
+    [SerializeField] TMP_Text itemNameText;
+    [SerializeField] TMP_Text itemDescriptionText;
     bool examineMode;
     
     [Space(5)]
     [SerializeField] GameObject[] examineInstruction;
 
     [Space(5)]
-    Image[] sprite;
+    [SerializeField] Image[] sprite;
     [Space(5)]
-    [SerializeField] Sprite[] keyboardSprite, gamepadSprite;
+    [SerializeField] Sprite[] keyboardSprite;
+
+    [Space(5)]
+    [SerializeField] Sprite[] gamepadSprite;
+
 
     // EXAMINE OBJECT POSITION AND ROTATION
     [Space(10)]
-    Vector3 originalPosition, originalRotation, targetPosition;
-
+    Vector3 originalPosition;
+    Vector3 originalRotation;
+    Vector3 targetPosition;
+    
     // LERP
     [Space(10)]
-    [SerializeField]float lerpStartTime, lerpDuration = 2f;
+    [SerializeField]float lerpStartTime;
+    [SerializeField]float lerpDuration = 2f;
     [SerializeField]bool isLerping;
     
     // EXAMINED ITEM OBJECT
     [Space(10)]
     [SerializeField] float rotationSpeed;
-    Vector2 rotationInput, gamepadRotationInput;
-    float xAxis, yAxis;
+    Vector2 rotationInput;
+    Vector2 gamepadRotationInput;
+    float xAxis;
+    float yAxis;
     bool isLock;
 
     void Awake()
     {
-        playerControls = new PlayerControls();
-
         sprite[0] = examineInstruction[0].GetComponent<Image>();
         sprite[1] = examineInstruction[1].GetComponent<Image>();
         sprite[2] = examineInstruction[2].GetComponent<Image>();
         sprite[3] = examineInstruction[4].GetComponent<Image>();
+     
+        PlayerManager.instance.playerControls = new PlayerControls();
     }
 
     void OnEnable()
     {
-        playerControls.Examine.Lock.performed += ctx => isLock = true;
-        playerControls.Examine.Lock.canceled += ctx => isLock = false;
+        PlayerManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
+        PlayerManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
 
-        playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
+        PlayerManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
 
-        playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
+        PlayerManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
         
-        playerControls.Examine.Read.performed += ToRead;
-        playerControls.Examine.Back.performed += ToBack;
+        PlayerManager.instance.playerControls.Examine.Read.performed += ToRead;
+        PlayerManager.instance.playerControls.Examine.Back.performed += ToBack;
 
-        playerControls.Examine.Enable();
+        PlayerManager.instance.playerControls.Examine.Enable();
     }
 
     #region - TO READ -
@@ -121,7 +131,7 @@ public class Examine : MonoBehaviour
 
     void OnDisable()
     {   
-        playerControls.Examine.Disable();
+        PlayerManager.instance.playerControls.Examine.Disable();
     }
 
     void Update()
@@ -179,7 +189,7 @@ public class Examine : MonoBehaviour
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            ChangeImageStatus(false, item.itemSO.isReadble, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3]);
+            ChangeImageStatus(true, item.itemSO.isReadble, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3]);
         }        
     }
 
@@ -204,7 +214,7 @@ public class Examine : MonoBehaviour
         }
     }
 
-    void ChangeImageStatus(bool leftShoulderActive, bool isReadble, Sprite returnSprite, Sprite readSprite, Sprite rotateSprite1, Sprite rotateSprite2)
+    void ChangeImageStatus(bool isActiveImageHUD, bool isReadble, Sprite returnSprite, Sprite readSprite, Sprite rotateSprite1, Sprite rotateSprite2)
     {
         // [SerializeField] GameObject[] examineInstruction;
         //  [0] - Return
@@ -214,10 +224,21 @@ public class Examine : MonoBehaviour
         //  [4] - Rotate Text
         //  [5] - Rotate 2
 
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            examineInstruction[3].SetActive(false);
+            examineInstruction[4].SetActive(false);
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            examineInstruction[3].SetActive(true);
+            examineInstruction[4].SetActive(true);
+        }
+
         examineInstruction[1].SetActive(isReadble);
         examineInstruction[2].SetActive(isReadble);
-        examineInstruction[3].SetActive(leftShoulderActive);
-        examineInstruction[4].SetActive(leftShoulderActive);
+        examineInstruction[3].SetActive(isActiveImageHUD);
+        examineInstruction[4].SetActive(isActiveImageHUD);
 
         // rotateImage1HUD.gameObject.SetActive(leftShoulderActive);
         // rotateGameObjectText.SetActive(leftShoulderActive);

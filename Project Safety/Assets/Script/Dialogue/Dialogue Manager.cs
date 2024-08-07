@@ -10,14 +10,6 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    PlayerControls playerControls;
-    [SerializeField] CinemachineBrain cinemachineBrain;
-    [Header("Scripts")]
-    [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] Interact interact;
-    [SerializeField] Stamina stamina;
-    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
-
     [Header("Dialogue")]
     bool actionInput;
     bool option1Input;
@@ -28,33 +20,36 @@ public class DialogueManager : MonoBehaviour
     int currentDialogueIndex;
 
     [Header("Dialogue HUD")]
-    [SerializeField] GameObject playerHUD;
-    [SerializeField] GameObject dialogueHUD;
     [SerializeField] RectTransform dialogueBackground;
     [SerializeField] TMP_Text dialogueText;
 
     [Space(10)]
+    [SerializeField] GameObject[] dialogueChoices;
     [SerializeField] GameObject actionOption;
     [SerializeField] GameObject leftOption;
     [SerializeField] GameObject upOption;
     [SerializeField] GameObject rightOption;
 
     [Space(10)]
+    [SerializeField] Image[] choicesImage;
     [SerializeField] Image actionImageHUD;
-    [SerializeField] Image choice1ImageHUD;
-    [SerializeField] Image choice2ImageHUD;
-    [SerializeField] Image choice3ImageHUD;
+    // [SerializeField] Image choice1ImageHUD;
+    // [SerializeField] Image choice2ImageHUD;
+    // [SerializeField] Image choice3ImageHUD;
 
     [Space(10)]
-    [SerializeField] Sprite spaceSprite;
-    [SerializeField] Sprite oneSprite;
-    [SerializeField] Sprite twoSprite;
-    [SerializeField] Sprite threeSprite;
+    [SerializeField] Sprite[] keyboardSprite;
+    // [SerializeField] Sprite spaceSprite;
+    // [SerializeField] Sprite oneSprite;
+    // [SerializeField] Sprite twoSprite;
+    // [SerializeField] Sprite threeSprite;
+
     [Space(5)]
-    [SerializeField] Sprite XSprite;
-    [SerializeField] Sprite squareSprite;
-    [SerializeField] Sprite triangleSprite;
-    [SerializeField] Sprite circleSprite;
+    [SerializeField] Sprite[] gamepadSprite;
+    // [SerializeField] Sprite XSprite;
+    // [SerializeField] Sprite squareSprite;
+    // [SerializeField] Sprite triangleSprite;
+    // [SerializeField] Sprite circleSprite;
 
     [Space(10)]
     
@@ -70,29 +65,29 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
         
-        playerControls = new PlayerControls();
+        PlayerManager.instance.playerControls = new PlayerControls();
     }
 
     void OnEnable()
     {
-        playerControls.SpeechDialogue.Action.performed += ctx => actionInput = true;
-        playerControls.SpeechDialogue.Action.canceled += ctx => actionInput = false;
+        PlayerManager.instance.playerControls.SpeechDialogue.Action.performed += ctx => actionInput = true;
+        PlayerManager.instance.playerControls.SpeechDialogue.Action.canceled += ctx => actionInput = false;
 
-        playerControls.SpeechDialogue.Option1.performed += ctx => option1Input = true;
-        playerControls.SpeechDialogue.Option1.canceled += ctx => option1Input = false;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option1.performed += ctx => option1Input = true;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option1.canceled += ctx => option1Input = false;
 
-        playerControls.SpeechDialogue.Option2.performed += ctx => option2Input = true;
-        playerControls.SpeechDialogue.Option2.canceled += ctx => option2Input = false;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option2.performed += ctx => option2Input = true;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option2.canceled += ctx => option2Input = false;
 
-        playerControls.SpeechDialogue.Option3.performed += ctx => option3Input = true;
-        playerControls.SpeechDialogue.Option3.canceled += ctx => option3Input = false;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option3.performed += ctx => option3Input = true;
+        PlayerManager.instance.playerControls.SpeechDialogue.Option3.canceled += ctx => option3Input = false;
 
-        playerControls.SpeechDialogue.Enable();
+        PlayerManager.instance.playerControls.SpeechDialogue.Enable();
     }
 
     void OnDisable()
     {
-        playerControls.SpeechDialogue.Disable();
+        PlayerManager.instance.playerControls.SpeechDialogue.Disable();
     }
     
     void Update()
@@ -101,11 +96,12 @@ public class DialogueManager : MonoBehaviour
         {
             if(DeviceManager.instance.keyboardDevice)
             {
-                ChangeImageStatus(spaceSprite, oneSprite, twoSprite, threeSprite);
+                // ChangeImageStatus(spaceSprite, oneSprite, twoSprite, threeSprite);
+                ChangeImageStatus(keyboardSprite[0], keyboardSprite[1], keyboardSprite[2], keyboardSprite[3]);
             }
             else if (DeviceManager.instance.gamepadDevice)
             {
-                ChangeImageStatus(XSprite, squareSprite, triangleSprite, circleSprite);
+                ChangeImageStatus(gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3]);
             }
         }
     }
@@ -115,11 +111,11 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = true;
 
         // DISABLE OTHER SCRIPTS
-        playerMovement.enabled = false;
+        PlayerManager.instance.playerMovement.enabled = false;
         // playerMovement.playerAnim.enabled = false;
-        interact.enabled = false;
-        stamina.enabled = false;
-        cinemachineInputProvider.enabled = false;
+        PlayerManager.instance.interact.enabled = false;
+        PlayerManager.instance.stamina.enabled = false;
+        PlayerManager.instance.cinemachineInputProvider.enabled = false;
 
         DialogueHUDShow();
 
@@ -273,19 +269,19 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = string.Empty;
         isInDialogue = false;
 
-        playerMovement.enabled = true;
+        PlayerManager.instance.playerMovement.enabled = true;
         // playerMovement.playerAnim.enabled = true;
         // playerMovement.playerAnim.enabled = true;
-        interact.enabled = true;
-        stamina.enabled = true;
-        cinemachineInputProvider.enabled = true;
+        PlayerManager.instance.interact.enabled = true;
+        PlayerManager.instance.stamina.enabled = true;
+        PlayerManager.instance.cinemachineInputProvider.enabled = true;
 
         // DOTWEENING
         DialogueHUDHide();
 
-        if (interact.dialogueTrigger != null)
+        if (PlayerManager.instance.interact.dialogueTrigger != null)
         {
-            interact.dialogueTrigger.isSpeaking = false;
+            PlayerManager.instance.interact.dialogueTrigger.isSpeaking = false;
         }
         else
         {
@@ -297,8 +293,8 @@ public class DialogueManager : MonoBehaviour
 
     void DialogueHUDShow()
     {
-        dialogueHUD.SetActive(true);
-        playerHUD.SetActive(false);
+        HUDManager.instance.dialogueHUD.SetActive(true);
+        HUDManager.instance.playerHUD.SetActive(false);
     
         dialogueBackground.localScale = Vector3.zero;
 
@@ -312,10 +308,10 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueBackground.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack).OnComplete(() => 
         {
-            dialogueHUD.SetActive(false);
+            HUDManager.instance.dialogueHUD.SetActive(false);
             if(!isSpecialEvent)
             {
-                playerHUD.SetActive(true);
+                HUDManager.instance.playerHUD.SetActive(true);
             }
         });
     }
@@ -386,8 +382,12 @@ public class DialogueManager : MonoBehaviour
     void ChangeImageStatus(Sprite actionSprite, Sprite choice1Sprite, Sprite choice2Sprite, Sprite choice3Sprite)
     {
         actionImageHUD.sprite = actionSprite;
-        choice1ImageHUD.sprite = choice1Sprite;
-        choice2ImageHUD.sprite = choice2Sprite;
-        choice3ImageHUD.sprite = choice3Sprite;
+        // choice1ImageHUD.sprite = choice1Sprite;
+        // choice2ImageHUD.sprite = choice2Sprite;
+        // choice3ImageHUD.sprite = choice3Sprite;
+
+        choicesImage[0].sprite = choice1Sprite;
+        choicesImage[1].sprite = choice2Sprite;
+        choicesImage[2].sprite = choice3Sprite;
     }
 }

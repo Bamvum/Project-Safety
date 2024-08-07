@@ -18,9 +18,13 @@ public class PlayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        playerControls = new PlayerControls();
     }
 
     [Header("Scripts")]
+
+    public PlayerControls playerControls;
     public PlayerMovement playerMovement;
     public CinemachineInputProvider cinemachineInputProvider;
     public Interact interact;
