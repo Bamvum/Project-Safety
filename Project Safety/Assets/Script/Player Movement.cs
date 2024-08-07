@@ -9,13 +9,6 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     PlayerControls playerControls;
-    public GameObject playerHUD;
-
-    [Header("Scripts")]
-    public Interact interact;
-    public Examine examine;
-    public Stamina stamina;
-    public CinemachineInputProvider cinemachineInputProvider;
     
     [Header("Player")]
     [SerializeField] CharacterController characterController;
@@ -195,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
 
             playerAnim.SetBool(crouchHash, true);
         }
-        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput && !stamina.outOfStamina)
+        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput && !PlayerManager.instance.stamina.outOfStamina)
         {
             movementSpeed = runSpeed;
             playerAnim.SetBool(crouchHash, false);

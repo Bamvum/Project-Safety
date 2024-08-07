@@ -1,82 +1,54 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
 using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
+
 
 public class Examine : MonoBehaviour
 {
     PlayerControls playerControls;
 
     [Header("Script")]
-    [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] Interact interact;
-    [SerializeField] Stamina stamina;
-    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
-    [Space(10)]
     Item item;
     
     [Header("Examine")]
-    [SerializeField] GameObject playerHUD;
-    [SerializeField] GameObject examineHUD;
-    [SerializeField] GameObject itemDescriptionHUD;
-    [SerializeField] GameObject itemNameHUD;
-    [SerializeField] TMP_Text itemNameText;
-    [SerializeField] TMP_Text itemDescriptionText;
+    [SerializeField] GameObject itemDescriptionHUD, itemNameHUD;
+    [SerializeField] TMP_Text itemNameText, itemDescriptionText;
     bool examineMode;
     
     [Space(5)]
-    [SerializeField] Image returnImageHUD;
-    [SerializeField] Image readImageHUD;
-    [SerializeField] GameObject readGameObjectText;
-    [SerializeField] Image rotateImage1HUD;
-    [SerializeField] GameObject rotateGameObjectText;
-    [SerializeField] Image rotateImage2HUD;
+    [SerializeField] GameObject[] examineInstruction;
 
     [Space(5)]
-    [SerializeField] Sprite escSprite;
-    [SerializeField] Sprite eSprite;
-    [SerializeField] Sprite lmbSprite;
-
+    Image[] sprite;
     [Space(5)]
-    [SerializeField] Sprite circleSprite;
-    [SerializeField] Sprite triangleSprite;
-    [SerializeField] Sprite leftShoulderSprite;
-    [SerializeField] Sprite rightStickSprite;
+    [SerializeField] Sprite[] keyboardSprite, gamepadSprite;
 
     // EXAMINE OBJECT POSITION AND ROTATION
     [Space(10)]
-    // GameObject examineObject;
-    Vector3 originalPosition;
-    Vector3 originalRotation;
-    Vector3 targetPosition;
-    
+    Vector3 originalPosition, originalRotation, targetPosition;
+
     // LERP
     [Space(10)]
-    [SerializeField]float lerpStartTime;
-    [SerializeField]float lerpDuration = 2f;
+    [SerializeField]float lerpStartTime, lerpDuration = 2f;
     [SerializeField]bool isLerping;
     
     // EXAMINED ITEM OBJECT
     [Space(10)]
     [SerializeField] float rotationSpeed;
-    Vector2 rotationInput;
-    Vector2 gamepadRotationInput;
-    float xAxis;
-    float yAxis;
+    Vector2 rotationInput, gamepadRotationInput;
+    float xAxis, yAxis;
     bool isLock;
-    // [Header("DoTween")]
-    // [SerializeField] float punchDuration = 0.3f;
-    // [SerializeField] float punchScale = 0.2f;
 
     void Awake()
     {
         playerControls = new PlayerControls();
+
+        sprite[0] = examineInstruction[0].GetComponent<Image>();
+        sprite[1] = examineInstruction[1].GetComponent<Image>();
+        sprite[2] = examineInstruction[2].GetComponent<Image>();
+        sprite[3] = examineInstruction[4].GetComponent<Image>();
     }
 
     void OnEnable()
@@ -123,25 +95,25 @@ public class Examine : MonoBehaviour
         {
             examineMode = false;
 
-            interact.interactObject.transform.position = originalPosition;
-            interact.interactObject.transform.eulerAngles = originalRotation;
+            PlayerManager.instance.interact.interactObject.transform.position = originalPosition;
+            PlayerManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
 
-            interact.interactObject = null;
+            PlayerManager.instance.interact.interactObject = null;
             // examineObject = null;
             item = null;
-            playerMovement.playerAnim.enabled = true;
+            PlayerManager.instance.playerMovement.playerAnim.enabled = true;
 
-            playerHUD.SetActive(true);
-            examineHUD.SetActive(false);
+            HUDManager.instance.playerHUD.SetActive(true);
+            HUDManager.instance.examineHUD.SetActive(false);
 
             // DISABLE SCRIPT
             this.enabled = false;
 
             // ENABLE SCRIPT
-            playerMovement.enabled = true;
-            interact.enabled = true;
-            stamina.enabled = true;
-            cinemachineInputProvider.enabled = true;
+            PlayerManager.instance.playerMovement.enabled = true;
+            PlayerManager.instance.interact.enabled = true;
+            PlayerManager.instance.stamina.enabled = true;
+            PlayerManager.instance.cinemachineInputProvider.enabled = true;
         }
     }
 
@@ -154,14 +126,15 @@ public class Examine : MonoBehaviour
 
     void Update()
     {
+        
         if (!examineMode && !isLerping)
         {
-            item = interact.interactObject.GetComponent<Item>();
+            item = PlayerManager.instance.interact.interactObject.GetComponent<Item>();
 
             itemNameText.text = item.itemSO.itemName;
 
-            originalPosition = interact.interactObject.transform.position;
-            originalRotation = interact.interactObject.transform.rotation.eulerAngles;
+            originalPosition = PlayerManager.instance.interact.interactObject.transform.position;
+            originalRotation = PlayerManager.instance.interact.interactObject.transform.rotation.eulerAngles;
             //targetObjectPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer) - (Camera.main.transform.right * xOffset);
             targetPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer);
 
@@ -181,15 +154,15 @@ public class Examine : MonoBehaviour
             float t = Mathf.Clamp01(lerpTime / lerpDuration);
 
             // Interpolate the position
-            interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
+            PlayerManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
 
             if (t >= 1f)
             {
                 // Ensure object reaches exactly to the target position
-                interact.interactObject.transform.position = targetPosition;
+                PlayerManager.instance.interact.interactObject.transform.position = targetPosition;
                 isLerping = false;
                 examineMode = true;
-                playerMovement.playerAnim.enabled = false;
+                PlayerManager.instance.playerMovement.playerAnim.enabled = false;
             }
         }
 
@@ -202,17 +175,11 @@ public class Examine : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            ChangeImageStatus(false, item.itemSO.isReadble,escSprite, eSprite, null, lmbSprite);
-
+            ChangeImageStatus(false, item.itemSO.isReadble, keyboardSprite[0], keyboardSprite[1], null, keyboardSprite[2]);
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            ChangeImageStatus(true, item.itemSO.isReadble, circleSprite, triangleSprite, leftShoulderSprite, rightStickSprite);
-            
-            // if(item.itemSO.isReadble)
-            // {
-            //     ChangeImageStatus(true, circleSprite, triangleSprite, leftShoulderSprite, rightStickSprite);
-            // }
+            ChangeImageStatus(false, item.itemSO.isReadble, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3]);
         }        
     }
 
@@ -232,22 +199,39 @@ public class Examine : MonoBehaviour
                 yAxis = gamepadRotationInput.y * (rotationSpeed * 20f);
             }
             
-            interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
-            interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
+            PlayerManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
+            PlayerManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
         }
     }
 
     void ChangeImageStatus(bool leftShoulderActive, bool isReadble, Sprite returnSprite, Sprite readSprite, Sprite rotateSprite1, Sprite rotateSprite2)
     {
-        rotateImage1HUD.gameObject.SetActive(leftShoulderActive);
-        rotateGameObjectText.SetActive(leftShoulderActive);
-        readImageHUD.gameObject.SetActive(isReadble);
-        readGameObjectText.SetActive(isReadble);
+        // [SerializeField] GameObject[] examineInstruction;
+        //  [0] - Return
+        //  [1] - Read
+        //  [2] - Read Text
+        //  [3] - Rotate 1
+        //  [4] - Rotate Text
+        //  [5] - Rotate 2
 
-        returnImageHUD.sprite = returnSprite;
-        readImageHUD.sprite = readSprite;
-        rotateImage1HUD.sprite = rotateSprite1;
-        rotateImage2HUD.sprite = rotateSprite2;
+        examineInstruction[1].SetActive(isReadble);
+        examineInstruction[2].SetActive(isReadble);
+        examineInstruction[3].SetActive(leftShoulderActive);
+        examineInstruction[4].SetActive(leftShoulderActive);
+
+        // rotateImage1HUD.gameObject.SetActive(leftShoulderActive);
+        // rotateGameObjectText.SetActive(leftShoulderActive);
+        // readImageHUD.gameObject.SetActive(isReadble);
+        // readGameObjectText.SetActive(isReadble);
+
+        sprite[0].sprite = returnSprite;
+        sprite[1].sprite = readSprite;
+        sprite[2].sprite = rotateSprite1;
+        sprite[3].sprite = rotateSprite2;
+        // returnImageHUD.sprite = returnSprite;
+        // readImageHUD.sprite = readSprite;
+        // rotateImage1HUD.sprite = rotateSprite1;
+        // rotateImage2HUD.sprite = rotateSprite2;
     }
 }
 

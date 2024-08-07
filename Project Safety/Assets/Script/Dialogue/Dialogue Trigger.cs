@@ -41,11 +41,6 @@ public class DialogueTrigger : MonoBehaviour
 
     #endregion
 
-    // public void SpeechTriggerStatus(bool _status)
-    // {
-    //     speechTrigger = _status;
-    // }
-
 }
 
 [System.Serializable]
@@ -56,18 +51,25 @@ public class DialogueProperties
     public string dialogue;
     public bool isEnd;
 
-    [Header("Branch")]
-    public bool isQuestion;
-    public string answerOption1;
-    public string answerOption2;
-    public int option1IndexJump;
-    public int option2IndexJump;
+    [Header("Choices")]
+    public bool isDialogueAQuestion; // DEFAULT CHOICES TO CHOOSE IS 2
+    public bool isDialogueA3ChoicesQuestion;
+
+    [Space(20)]
+    public string choiceAnswer1;
+    public int choice1JumpTo;
+    
     [Space(10)]
-    public bool is3Question;
-    public string answerOption3;
-    public int option3IndexJump;
+    public string choiceAnswer2;
+    public int choice2JumpTo;
+
     [Space(10)]
-    public bool otherEvent;
+    public string choiceAnswer3;
+    public int choice3JumpTo;
+
+    [Space(20)]
+    public AudioClip dialogouAudio;
+    public bool isOtherEvent; // DEFAULT IS AUTOMATATIC ENABLING PLAYER SCRIPTS
 
 
     [Header("Trigger Event")]

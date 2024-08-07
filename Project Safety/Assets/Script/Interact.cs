@@ -15,29 +15,20 @@ public class Interact : MonoBehaviour
     [SerializeField] Transform handTarget;
 
     [Header("Scripts")]     
-    [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] Examine examine;
-    [SerializeField] Stamina stamina;
-    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
     Item item;
     [HideInInspector] public DialogueTrigger dialogueTrigger;
     Interactable interactable;
 
     
     [Header("Interact")]     
-    [SerializeField] GameObject playerHUD;
     [SerializeField] float interactRange = 2.5f;
     [HideInInspector] public GameObject interactObject;
     RaycastHit hit;
 
     
     [Header("Interact/Examine HUD")]     
-    [SerializeField] GameObject examineHUD;
-    [SerializeField] Image leftInteractHUDImage; 
-    [SerializeField] Image rightInteractHUDImage; 
-    [SerializeField] Sprite interactSprite;
-    [SerializeField] Sprite talkSprite;
-    [SerializeField] Sprite examineSprite;
+    [SerializeField] Image[] interactImage;
+    [SerializeField] Sprite[] sprite;
 
     void Awake()
     {
@@ -64,6 +55,8 @@ public class Interact : MonoBehaviour
             {
                 if(item.itemSO.isTakable)
                 {
+                    // ITEM INTRACTION
+
                     handIKTarget.position = hit.collider.transform.position;
                     playerAnim.SetTrigger("Interact");
                     Debug.Log("Item Interact!");
@@ -71,16 +64,15 @@ public class Interact : MonoBehaviour
             }
             else if (dialogueTrigger != null)
             {
+                // NPC INTRACTION
+                
                 Debug.Log("NPC Interact!");
-                dialogueTrigger.StartDialogue();
-
-                // NOTE:
-                // In Dialogue Trigger script, Make sure to assign PlayerMovement, Interact,
-                // and Camera Movement script to Dialogue Event and disable the script. 
+                dialogueTrigger.StartDialogue(); 
             }
             else if(interactable != null)
             {  
-
+                // INTERACTABLE INTRACTION
+                
                 Debug.Log("Interactable Interact!");
                 
                 if(interactable.isLightSwitch)
@@ -119,17 +111,17 @@ public class Interact : MonoBehaviour
             
             interactObject = hit.collider.gameObject;
 
-            playerHUD.SetActive(false);
-            examineHUD.SetActive(true);
+            HUDManager.instance.playerHUD.SetActive(false);
+            HUDManager.instance.examineHUD.SetActive(true);
 
             // TODO - DISABLE SCRIPT
             this.enabled = false;
-            playerMovement.enabled = false;
-            stamina.enabled = false;
-            cinemachineInputProvider.enabled = false;
+            PlayerManager.instance.playerMovement.enabled = false;
+            PlayerManager.instance.stamina.enabled = false;
+            PlayerManager.instance.cinemachineInputProvider.enabled = false;
             
             // TODO - ENABLE SCRIPT
-            examine.enabled = true;
+            PlayerManager.instance.examine.enabled = true;
         }
     }
     
@@ -166,7 +158,7 @@ public class Interact : MonoBehaviour
 
                 if(item.itemSO.isTakable)
                 {
-                    ChangeImageStatus(true, true, interactSprite);
+                    ChangeImageStatus(true, true, sprite[0]);
                 }
                 else
                 {
@@ -184,7 +176,7 @@ public class Interact : MonoBehaviour
 
                 Debug.Log("NPC Name: " + hit.collider.name);
 
-                ChangeImageStatus(false, true, talkSprite);
+                ChangeImageStatus(false, true, sprite[1]);
             }
         
             #endregion
@@ -195,7 +187,7 @@ public class Interact : MonoBehaviour
             {
                 interactable = hit.collider.GetComponent<Interactable>();
 
-                ChangeImageStatus(false, true, interactSprite);
+                ChangeImageStatus(false, true, sprite[0]);
             }
 
             #endregion
@@ -204,8 +196,8 @@ public class Interact : MonoBehaviour
 
     void ChangeImageStatus(bool activeLeftIMGStatus, bool activeRightIMGStatus, Sprite imgSprite)
     {
-        leftInteractHUDImage.gameObject.SetActive(activeLeftIMGStatus);
-        rightInteractHUDImage.gameObject.SetActive(activeRightIMGStatus);
-        rightInteractHUDImage.sprite = imgSprite;
+        interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
+        interactImage[1].gameObject.SetActive(activeRightIMGStatus);
+        interactImage[1].sprite = imgSprite;
     }
 }

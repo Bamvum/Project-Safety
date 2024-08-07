@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Cinemachine;
 using DG.Tweening;
-using RootMotion.FinalIK;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     PlayerControls playerControls;
+    [SerializeField] CinemachineBrain cinemachineBrain;
     [Header("Scripts")]
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] Interact interact;
@@ -56,7 +57,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Sprite circleSprite;
 
     [Space(10)]
- 
+    
+    [SerializeField] AudioSource dialogueSFX;
     bool isInDialogue;
     bool isSpecialEvent;
 
@@ -134,24 +136,28 @@ public class DialogueManager : MonoBehaviour
         while (currentDialogueIndex < dialogueList.Count)
         {
             DialogueProperties line = dialogueList[currentDialogueIndex];
-            isSpecialEvent =  dialogueList[currentDialogueIndex].otherEvent;
-            // npcName.text = line.npcName;
+            isSpecialEvent =  dialogueList[currentDialogueIndex].isOtherEvent;
+            dialogueSFX.clip = dialogueList[currentDialogueIndex].dialogouAudio;
+            dialogueSFX.Play();
+            Debug.Log(dialogueSFX.clip);
+
+            // npcName.text = line.npcName
 
             line.startDialogueEvent?.Invoke();
-
-            if(line.isQuestion)
+            
+            if(line.isDialogueAQuestion)
             {
                 yield return StartCoroutine(TypeText(line.dialogue));
 
-                leftOption.GetComponentInChildren<TMP_Text>().text = line.answerOption1;
-                rightOption.GetComponentInChildren<TMP_Text>().text = line.answerOption3;
+                leftOption.GetComponentInChildren<TMP_Text>().text = line.choiceAnswer1;
+                rightOption.GetComponentInChildren<TMP_Text>().text = line.choiceAnswer3;
 
 
-                if(line.is3Question)
+                if(line.isDialogueA3ChoicesQuestion)
                 {
                     ChoiceHUDStatus(true, true);
 
-                    upOption.GetComponentInChildren<TMP_Text>().text = line.answerOption2;
+                    upOption.GetComponentInChildren<TMP_Text>().text = line.choiceAnswer2;
                 }
                 else
                 {
@@ -195,17 +201,20 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        if(dialogueList[currentDialogueIndex].isQuestion)
+        if(dialogueList[currentDialogueIndex].isOtherEvent)
         {
+            yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+
             actionOption.SetActive(true);
-            
-            // TODO - MAKE DIALOGUE BACKGROUND TWEENING WHEN DISAPPEARING AND APPEARING DURING QUESTIONS
-            
             yield return new WaitUntil(() => actionInput == true);
             dialogueBackground.gameObject.SetActive(false);
         }
         else
         {
+            // IF STATEMENT ACTION INPUT IF AUDIO IS STOP PLAYING
+            // if()
+            yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+            
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
         }
@@ -228,17 +237,17 @@ public class DialogueManager : MonoBehaviour
     {
         if (option1Input)
         {
-            HandleOptionSelected(line.option1IndexJump);
+            HandleOptionSelected(line.choice1JumpTo);
             return true;
         }
         else if (option3Input)
         {
-            HandleOptionSelected(line.option3IndexJump);
+            HandleOptionSelected(line.choice3JumpTo);
             return true;
         }
-        else if (line.is3Question && option2Input)
+        else if (line.isDialogueA3ChoicesQuestion && option2Input)
         {
-            HandleOptionSelected(line.option2IndexJump);
+            HandleOptionSelected(line.choice2JumpTo);
             return true;
         }
 
@@ -253,8 +262,6 @@ public class DialogueManager : MonoBehaviour
         leftOption.SetActive(false);
         upOption.SetActive(false);
         rightOption.SetActive(false);
-
-        // ChoiceHUDHide(false);
 
         currentDialogueIndex = indexJump;
     }

@@ -188,13 +188,13 @@ public class PrologueSceneManager : MonoBehaviour
             {
                 instructionHUD.SetActive(false);
 
-                // BACKEND PLAYER MOVEMENT
-                playerMovement.enabled = true;
-                playerMovement.playerAnim.enabled = true;
-                playerMovement.cinemachineInputProvider.enabled = true;
-                playerMovement.interact.enabled = true;
+                PlayerManager.instance.playerMovement.enabled = true;
+                PlayerManager.instance.playerMovement.playerAnim.enabled = true;
+                PlayerManager.instance.interact.enabled = true;
+                PlayerManager.instance.cinemachineInputProvider.enabled = true;
 
-                playerMovement.playerHUD.SetActive(true);
+                // playerMovement.playerHUD.SetActive(true);
+                HUDManager.instance.playerHUD.SetActive(true);
 
                 DisplayMission();
             });
