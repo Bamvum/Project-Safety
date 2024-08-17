@@ -22,7 +22,7 @@ public class Stamina : MonoBehaviour
 
     void Update()
     {
-        if(PlayerManager.instance.playerMovement.runInput && !PlayerManager.instance.playerMovement.crouchInput && !outOfStamina)
+        if(ScriptManager.instance.playerMovement.runInput && !ScriptManager.instance.playerMovement.crouchInput && !outOfStamina)
         {
             stamina -= staminaCost * Time.deltaTime;
             staminaBar.fillAmount = stamina/maxStamina;

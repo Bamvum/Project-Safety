@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class ScriptManager : MonoBehaviour
 {
-    public static PlayerManager instance { get; private set;}
+    public static ScriptManager instance { get; private set;}
 
     void Awake()
     {
@@ -23,7 +23,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     [Header("Scripts")]
-
     public PlayerControls playerControls;
     public PlayerMovement playerMovement;
     public CinemachineInputProvider cinemachineInputProvider;
@@ -33,4 +32,9 @@ public class PlayerManager : MonoBehaviour
     
     [Space(10)]
     public DialogueManager dialogueManager;
+
+    [Space(10)]
+    public TransitionManager transitionManager;
+    public Mission mission;
+
 }

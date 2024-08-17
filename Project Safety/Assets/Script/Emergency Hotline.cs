@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class EmergencyHotline : MonoBehaviour
 {
-
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera playerVC;
     [SerializeField] CinemachineVirtualCamera phoneVC;
@@ -34,16 +33,16 @@ public class EmergencyHotline : MonoBehaviour
     {
         phoneAnimLength = phoneAnim.length;
         
-        PlayerManager.instance.playerControls = new PlayerControls();
+        ScriptManager.instance.playerControls = new PlayerControls();
     }
 
     void OnEnable()
     {
-        PlayerManager.instance.playerControls.Contact.Contact1.performed += AccessContact1;
-        PlayerManager.instance.playerControls.Contact.Contact2.performed += AccessContact2;
-        PlayerManager.instance.playerControls.Contact.Contact3.performed += AccessContact3;
+        ScriptManager.instance.playerControls.Contact.Contact1.performed += AccessContact1;
+        ScriptManager.instance.playerControls.Contact.Contact2.performed += AccessContact2;
+        ScriptManager.instance.playerControls.Contact.Contact3.performed += AccessContact3;
 
-        PlayerManager.instance.playerControls.Contact.Enable();
+        ScriptManager.instance.playerControls.Contact.Enable();
     }
 
     private void AccessContact1(InputAction.CallbackContext context)
@@ -78,7 +77,7 @@ public class EmergencyHotline : MonoBehaviour
 
     void OnDisable()
     {
-        PlayerManager.instance.playerControls.Contact.Disable();
+        ScriptManager.instance.playerControls.Contact.Disable();
     }
 
     public void PhoneTrigger()
@@ -87,8 +86,8 @@ public class EmergencyHotline : MonoBehaviour
         phoneGO.SetActive(true);
 
         // ANIMATION
-        PlayerManager.instance.playerMovement.playerAnim.SetBool("Idle", true);
-        PlayerManager.instance.playerMovement.playerAnim.SetBool("Phone", true);
+        ScriptManager.instance.playerMovement.playerAnim.SetBool("Idle", true);
+        ScriptManager.instance.playerMovement.playerAnim.SetBool("Phone", true);
 
         // CINEMACHINE
         playerVC.Priority = 0;
@@ -98,10 +97,10 @@ public class EmergencyHotline : MonoBehaviour
         HUDManager.instance.playerHUD.SetActive(false);
 
         // DISABLE SCRIPTS
-        PlayerManager.instance.playerMovement.enabled = false;
-        PlayerManager.instance.interact.enabled = false;
-        PlayerManager.instance.stamina.enabled = false;
-        PlayerManager.instance.cinemachineInputProvider.enabled = false;
+        ScriptManager.instance.playerMovement.enabled = false;
+        ScriptManager.instance.interact.enabled = false;
+        ScriptManager.instance.stamina.enabled = false;
+        ScriptManager.instance.cinemachineInputProvider.enabled = false;
         
         // DISABLE SCRIPTS
         this.enabled = true;
@@ -134,7 +133,7 @@ public class EmergencyHotline : MonoBehaviour
     void PreEndOfPhoneCall()
     {
         //ANIMATION
-        PlayerManager.instance.playerMovement.playerAnim.SetBool("Phone", false);
+        ScriptManager.instance.playerMovement.playerAnim.SetBool("Phone", false);
 
         // HUD
         contactHUD.SetActive(false);
@@ -148,7 +147,7 @@ public class EmergencyHotline : MonoBehaviour
         phoneGO.SetActive(false);
         
         //ANIMATION
-        PlayerManager.instance.playerMovement.playerAnim.SetBool("Idle", false);
+        ScriptManager.instance.playerMovement.playerAnim.SetBool("Idle", false);
         
         // CINEMACHINE
         playerVC.Priority = 10;
@@ -158,10 +157,10 @@ public class EmergencyHotline : MonoBehaviour
         HUDManager.instance.playerHUD.SetActive(true);
 
         // ENABLE SCRIPTS
-        PlayerManager.instance.playerMovement.enabled = true;
-        PlayerManager.instance.interact.enabled = true;
-        PlayerManager.instance.stamina.enabled = true;
-        PlayerManager.instance.cinemachineInputProvider.enabled = true;
+        ScriptManager.instance.playerMovement.enabled = true;
+        ScriptManager.instance.interact.enabled = true;
+        ScriptManager.instance.stamina.enabled = true;
+        ScriptManager.instance.cinemachineInputProvider.enabled = true;
 
         // DISABLE SCRIPTS
         this.enabled = false;

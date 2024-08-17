@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.iOS;
 
 
 public class Examine : MonoBehaviour
@@ -51,29 +50,19 @@ public class Examine : MonoBehaviour
     float yAxis;
     bool isLock;
 
-    void Awake()
-    {
-        sprite[0] = examineInstruction[0].GetComponent<Image>();
-        sprite[1] = examineInstruction[1].GetComponent<Image>();
-        sprite[2] = examineInstruction[2].GetComponent<Image>();
-        sprite[3] = examineInstruction[4].GetComponent<Image>();
-     
-        PlayerManager.instance.playerControls = new PlayerControls();
-    }
-
     void OnEnable()
     {
-        PlayerManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
-        PlayerManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
+        ScriptManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
+        ScriptManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
 
-        PlayerManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
+        ScriptManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
 
-        PlayerManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
+        ScriptManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
         
-        PlayerManager.instance.playerControls.Examine.Read.performed += ToRead;
-        PlayerManager.instance.playerControls.Examine.Back.performed += ToBack;
+        ScriptManager.instance.playerControls.Examine.Read.performed += ToRead;
+        ScriptManager.instance.playerControls.Examine.Back.performed += ToBack;
 
-        PlayerManager.instance.playerControls.Examine.Enable();
+        ScriptManager.instance.playerControls.Examine.Enable();
     }
 
     #region - TO READ -
@@ -105,13 +94,13 @@ public class Examine : MonoBehaviour
         {
             examineMode = false;
 
-            PlayerManager.instance.interact.interactObject.transform.position = originalPosition;
-            PlayerManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
+            ScriptManager.instance.interact.interactObject.transform.position = originalPosition;
+            ScriptManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
 
-            PlayerManager.instance.interact.interactObject = null;
+            ScriptManager.instance.interact.interactObject = null;
             // examineObject = null;
             item = null;
-            PlayerManager.instance.playerMovement.playerAnim.enabled = true;
+            ScriptManager.instance.playerMovement.playerAnim.enabled = true;
 
             HUDManager.instance.playerHUD.SetActive(true);
             HUDManager.instance.examineHUD.SetActive(false);
@@ -120,10 +109,10 @@ public class Examine : MonoBehaviour
             this.enabled = false;
 
             // ENABLE SCRIPT
-            PlayerManager.instance.playerMovement.enabled = true;
-            PlayerManager.instance.interact.enabled = true;
-            PlayerManager.instance.stamina.enabled = true;
-            PlayerManager.instance.cinemachineInputProvider.enabled = true;
+            ScriptManager.instance.playerMovement.enabled = true;
+            ScriptManager.instance.interact.enabled = true;
+            ScriptManager.instance.stamina.enabled = true;
+            ScriptManager.instance.cinemachineInputProvider.enabled = true;
         }
     }
 
@@ -131,7 +120,7 @@ public class Examine : MonoBehaviour
 
     void OnDisable()
     {   
-        PlayerManager.instance.playerControls.Examine.Disable();
+        ScriptManager.instance.playerControls.Examine.Disable();
     }
 
     void Update()
@@ -139,12 +128,12 @@ public class Examine : MonoBehaviour
         
         if (!examineMode && !isLerping)
         {
-            item = PlayerManager.instance.interact.interactObject.GetComponent<Item>();
+            item = ScriptManager.instance.interact.interactObject.GetComponent<Item>();
 
             itemNameText.text = item.itemSO.itemName;
 
-            originalPosition = PlayerManager.instance.interact.interactObject.transform.position;
-            originalRotation = PlayerManager.instance.interact.interactObject.transform.rotation.eulerAngles;
+            originalPosition = ScriptManager.instance.interact.interactObject.transform.position;
+            originalRotation = ScriptManager.instance.interact.interactObject.transform.rotation.eulerAngles;
             //targetObjectPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer) - (Camera.main.transform.right * xOffset);
             targetPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer);
 
@@ -164,15 +153,15 @@ public class Examine : MonoBehaviour
             float t = Mathf.Clamp01(lerpTime / lerpDuration);
 
             // Interpolate the position
-            PlayerManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
+            ScriptManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
 
             if (t >= 1f)
             {
                 // Ensure object reaches exactly to the target position
-                PlayerManager.instance.interact.interactObject.transform.position = targetPosition;
+                ScriptManager.instance.interact.interactObject.transform.position = targetPosition;
                 isLerping = false;
                 examineMode = true;
-                PlayerManager.instance.playerMovement.playerAnim.enabled = false;
+                ScriptManager.instance.playerMovement.playerAnim.enabled = false;
             }
         }
 
@@ -209,8 +198,8 @@ public class Examine : MonoBehaviour
                 yAxis = gamepadRotationInput.y * (rotationSpeed * 20f);
             }
             
-            PlayerManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
-            PlayerManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
+            ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
+            ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
         }
     }
 

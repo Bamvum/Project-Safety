@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
-
     [SerializeField] Animator playerAnim;
     [SerializeField] Transform handIKTarget;
     [SerializeField] Transform handTarget;
@@ -27,19 +26,20 @@ public class Interact : MonoBehaviour
     [SerializeField] Image[] interactImage;
     [SerializeField] Sprite[] sprite;
 
+
     void Awake()
     {
         playerAnim = GetComponent<Animator>();
 
-        PlayerManager.instance.playerControls = new PlayerControls();
+        ScriptManager.instance.playerControls = new PlayerControls();
     }
     
     void OnEnable()
     {
-        PlayerManager.instance.playerControls.Player.Interact.performed += ToInteract;
-        PlayerManager.instance.playerControls.Player.Examine.performed += ToExamine;
+        ScriptManager.instance.playerControls.Player.Interact.performed += ToInteract;
+        ScriptManager.instance.playerControls.Player.Examine.performed += ToExamine;
 
-        PlayerManager.instance.playerControls.Player.Enable();
+        ScriptManager.instance.playerControls.Player.Enable();
     }
 
     #region - TO INTERACT -
@@ -55,7 +55,7 @@ public class Interact : MonoBehaviour
                     // ITEM INTRACTION
 
                     handIKTarget.position = hit.collider.transform.position;
-                    playerAnim.SetTrigger("Interact");
+                    playerAnim.SetTrigger("Grab");
                     Debug.Log("Item Interact!");
                 }
             }
@@ -67,25 +67,24 @@ public class Interact : MonoBehaviour
                 dialogueTrigger.StartDialogue(); 
             }
             else if(interactable != null)
-            {  
+            {
                 // INTERACTABLE INTRACTION
-                
-                Debug.Log("Interactable Interact!");
-                
-                if(interactable.isLightSwitch)
+                // handIKTarget.position = hit.collider.transform.position;
+                // playerAnim.SetTrigger("Interact");
+
+                if (interactable.isLightSwitch)
                 {
-                    
                     interactable.LightSwitchTrigger();
                 }
-                else if(interactable.isDoor)
+                else if (interactable.isDoor)
                 {
                     interactable.DoorTrigger();
                 }
-                else if(interactable.isPC)
+                else if (interactable.isPC)
                 {
                     interactable.PC();
                 }
-                else if(interactable.isMonitor)
+                else if (interactable.isMonitor)
                 {
                     interactable.AccessMonitor();
                 }
@@ -113,12 +112,12 @@ public class Interact : MonoBehaviour
 
             // TODO - DISABLE SCRIPT
             this.enabled = false;
-            PlayerManager.instance.playerMovement.enabled = false;
-            PlayerManager.instance.stamina.enabled = false;
-            PlayerManager.instance.cinemachineInputProvider.enabled = false;
+            ScriptManager.instance.playerMovement.enabled = false;
+            ScriptManager.instance.stamina.enabled = false;
+            ScriptManager.instance.cinemachineInputProvider.enabled = false;
             
             // TODO - ENABLE SCRIPT
-            PlayerManager.instance.examine.enabled = true;
+            ScriptManager.instance.examine.enabled = true;
         }
     }
     
@@ -126,8 +125,7 @@ public class Interact : MonoBehaviour
 
     void OnDisable()
     {
-        
-        PlayerManager.instance.playerControls.Player.Disable();
+        ScriptManager.instance.playerControls.Player.Disable();
     }
 
     void Update()
@@ -139,6 +137,8 @@ public class Interact : MonoBehaviour
             item = null;
             dialogueTrigger = null;
             interactable = null;
+
+            playerAnim.SetBool("Interact", false);
 
             // REMOVE SPRITE IN IMAGE 
             ChangeImageStatus(false, false, null);

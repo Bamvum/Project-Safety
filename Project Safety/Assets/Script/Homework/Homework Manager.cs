@@ -4,19 +4,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 
 public class HomeworkManager : MonoBehaviour
 {
     [Header("Script")]
-    [SerializeField] PrologueSceneManager prologueSceneManager;
-    [SerializeField] TransitionManager transitionManager;
-    [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] Interact interact;
+    // [SerializeField] PrologueSceneManager prologueSceneManager;
+    // [SerializeField] TransitionManager transitionManager;
+    // [SerializeField] PlayerMovement playerMovement;
+    // [SerializeField] Interact interact;
     [SerializeField] DialogueTrigger dialogueTrigger;
 
     [Header("Homework HUDs")]
-    [SerializeField] GameObject homeworkHUD;
+    // [SerializeField] GameObject homeworkHUD;
     [SerializeField] GameObject homeworkQnAHUD;
     [SerializeField] GameObject homeworkScoreHUD;
     [SerializeField] TMP_Text homeworkScoreText;
@@ -61,6 +62,11 @@ public class HomeworkManager : MonoBehaviour
         }
     }
     
+    void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     
     void SetAnswer()
     {
@@ -114,18 +120,20 @@ public class HomeworkManager : MonoBehaviour
         homeworkScoreHUD.SetActive(true);
         homeworkQnAHUD.SetActive(false);
         homeworkScoreText.text = score + " / "  + totalOfQuestions;
+        
 
         Invoke("EndOfHomework", 3);
     }
 
     void EndOfHomework()
     {
-        transitionManager.transitionImage.DOFade(1, 2).OnComplete(() =>
+        ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 2).OnComplete(() =>
         {
-            homeworkHUD.SetActive(false);
-            transitionManager.transitionImage.DOFade(0,2).OnComplete(() =>
+            HUDManager.instance.homeworkHUD.SetActive(false);
+            ScriptManager.instance.transitionManager.transitionImage.DOFade(0,2).OnComplete(() =>
             {
-                Debug.Log("Display Dialogou!");
+                // Debug.Log("Display Dialogou!");
+                this.enabled = false;
                 dialogueTrigger.StartDialogue();
             });
         });

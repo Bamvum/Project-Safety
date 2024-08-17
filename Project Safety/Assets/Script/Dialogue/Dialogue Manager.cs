@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -10,6 +8,8 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    PlayerControls playerControls;
+    
     [Header("Dialogue")]
     bool actionInput;
     bool option1Input;
@@ -33,23 +33,12 @@ public class DialogueManager : MonoBehaviour
     [Space(10)]
     [SerializeField] Image[] choicesImage;
     [SerializeField] Image actionImageHUD;
-    // [SerializeField] Image choice1ImageHUD;
-    // [SerializeField] Image choice2ImageHUD;
-    // [SerializeField] Image choice3ImageHUD;
 
     [Space(10)]
     [SerializeField] Sprite[] keyboardSprite;
-    // [SerializeField] Sprite spaceSprite;
-    // [SerializeField] Sprite oneSprite;
-    // [SerializeField] Sprite twoSprite;
-    // [SerializeField] Sprite threeSprite;
 
     [Space(5)]
     [SerializeField] Sprite[] gamepadSprite;
-    // [SerializeField] Sprite XSprite;
-    // [SerializeField] Sprite squareSprite;
-    // [SerializeField] Sprite triangleSprite;
-    // [SerializeField] Sprite circleSprite;
 
     [Space(10)]
     
@@ -65,29 +54,29 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
         
-        PlayerManager.instance.playerControls = new PlayerControls();
+        playerControls = new PlayerControls();
     }
 
     void OnEnable()
     {
-        PlayerManager.instance.playerControls.SpeechDialogue.Action.performed += ctx => actionInput = true;
-        PlayerManager.instance.playerControls.SpeechDialogue.Action.canceled += ctx => actionInput = false;
+        playerControls.SpeechDialogue.Action.performed += ctx => actionInput = true;
+        playerControls.SpeechDialogue.Action.canceled += ctx => actionInput = false;
 
-        PlayerManager.instance.playerControls.SpeechDialogue.Option1.performed += ctx => option1Input = true;
-        PlayerManager.instance.playerControls.SpeechDialogue.Option1.canceled += ctx => option1Input = false;
+        playerControls.SpeechDialogue.Option1.performed += ctx => option1Input = true;
+        playerControls.SpeechDialogue.Option1.canceled += ctx => option1Input = false;
 
-        PlayerManager.instance.playerControls.SpeechDialogue.Option2.performed += ctx => option2Input = true;
-        PlayerManager.instance.playerControls.SpeechDialogue.Option2.canceled += ctx => option2Input = false;
+        playerControls.SpeechDialogue.Option2.performed += ctx => option2Input = true;
+        playerControls.SpeechDialogue.Option2.canceled += ctx => option2Input = false;
 
-        PlayerManager.instance.playerControls.SpeechDialogue.Option3.performed += ctx => option3Input = true;
-        PlayerManager.instance.playerControls.SpeechDialogue.Option3.canceled += ctx => option3Input = false;
+        playerControls.SpeechDialogue.Option3.performed += ctx => option3Input = true;
+        playerControls.SpeechDialogue.Option3.canceled += ctx => option3Input = false;
 
-        PlayerManager.instance.playerControls.SpeechDialogue.Enable();
+        playerControls.SpeechDialogue.Enable();
     }
 
     void OnDisable()
     {
-        PlayerManager.instance.playerControls.SpeechDialogue.Disable();
+        playerControls.SpeechDialogue.Disable();
     }
     
     void Update()
@@ -111,11 +100,11 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = true;
 
         // DISABLE OTHER SCRIPTS
-        PlayerManager.instance.playerMovement.enabled = false;
+        ScriptManager.instance.playerMovement.enabled = false;
         // playerMovement.playerAnim.enabled = false;
-        PlayerManager.instance.interact.enabled = false;
-        PlayerManager.instance.stamina.enabled = false;
-        PlayerManager.instance.cinemachineInputProvider.enabled = false;
+        ScriptManager.instance.interact.enabled = false;
+        ScriptManager.instance.stamina.enabled = false;
+        ScriptManager.instance.cinemachineInputProvider.enabled = false;
 
         DialogueHUDShow();
 
@@ -213,6 +202,7 @@ public class DialogueManager : MonoBehaviour
             
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
+            dialogueBackground.gameObject.SetActive(false);
         }
 
         if(dialogueList[currentDialogueIndex].isEnd)
@@ -269,19 +259,19 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = string.Empty;
         isInDialogue = false;
 
-        PlayerManager.instance.playerMovement.enabled = true;
+        ScriptManager.instance.playerMovement.enabled = true;
         // playerMovement.playerAnim.enabled = true;
         // playerMovement.playerAnim.enabled = true;
-        PlayerManager.instance.interact.enabled = true;
-        PlayerManager.instance.stamina.enabled = true;
-        PlayerManager.instance.cinemachineInputProvider.enabled = true;
+        ScriptManager.instance.interact.enabled = true;
+        ScriptManager.instance.stamina.enabled = true;
+        ScriptManager.instance.cinemachineInputProvider.enabled = true;
 
         // DOTWEENING
         DialogueHUDHide();
 
-        if (PlayerManager.instance.interact.dialogueTrigger != null)
+        if (ScriptManager.instance.interact.dialogueTrigger != null)
         {
-            PlayerManager.instance.interact.dialogueTrigger.isSpeaking = false;
+            ScriptManager.instance.interact.dialogueTrigger.isSpeaking = false;
         }
         else
         {
@@ -386,8 +376,8 @@ public class DialogueManager : MonoBehaviour
         // choice2ImageHUD.sprite = choice2Sprite;
         // choice3ImageHUD.sprite = choice3Sprite;
 
-        choicesImage[0].sprite = choice1Sprite;
-        choicesImage[1].sprite = choice2Sprite;
-        choicesImage[2].sprite = choice3Sprite;
+        choicesImage[1].sprite = choice1Sprite;
+        choicesImage[2].sprite = choice2Sprite;
+        choicesImage[3].sprite = choice3Sprite;
     }
 }

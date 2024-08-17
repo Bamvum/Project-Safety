@@ -7,25 +7,20 @@ using DG.Tweening;
 
 public class Fade : MonoBehaviour
 {
-    [SerializeField] Image blackImage;
+    PlayerControls playerControls;
 
-    // [Header("Tweening")]
-    // [SerializeField] float fadeInDuration = 1f;
-    // [SerializeField] float fadeOutDuration = 1f;
-    // [SerializeField] float delayBeforeFadeOut = 1f;
-
-    void Start()
+    void Awake()
     {
-
+        playerControls = new PlayerControls();
     }
 
-    public void FadeIn(float fadeInDuration)
+    void OnEnable()
     {
-        blackImage.DOFade(1, fadeInDuration);
+        playerControls.Player.Enable();
     }
 
-    public void FadeOut(float fadeOutDuration)
+    void OnDisable()
     {
-        blackImage.DOFade(0, fadeOutDuration);
+        playerControls.Player.Disable();
     }
 }
