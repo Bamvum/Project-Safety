@@ -6,18 +6,18 @@ public class HUDManager : MonoBehaviour
 {
     public static HUDManager instance { get; private set;}
 
-    void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    // void Awake()
+    // {
+    //     if(instance == null)
+    //     {
+    //         instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    //     else
+    //     {
+    //         Destroy(gameObject);
+    //     }
+    // }
 
     [Header("Loading")]
     public GameObject loadingUI;
@@ -33,5 +33,8 @@ public class HUDManager : MonoBehaviour
 
     [Header("Prologue HUD/UI")]
     public GameObject homeworkHUD;
-
+    
+    public GameObject logInUI;
+    public GameObject mainMenuUI;
+    public GameObject loadingScreenUI;
 }

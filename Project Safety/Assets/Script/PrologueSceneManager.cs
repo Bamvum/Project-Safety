@@ -1,4 +1,4 @@
- using System.Collections;
+   using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -55,60 +55,65 @@ public class PrologueSceneManager : MonoBehaviour
 
     void Start()
     {
-        instructionBGRT = instructionBG.GetComponent<RectTransform>();
-        instructionHUDContentCG = instructionHUDContent.GetComponent<CanvasGroup>();
+        // instructionBGRT = instructionBG.GetComponent<RectTransform>();
+        // instructionHUDContentCG = instructionHUDContent.GetComponent<CanvasGroup>();
 
-        instructionBGRT.sizeDelta = new Vector2(0, instructionBGRT.sizeDelta.y); 
-        instructionHUDContentCG.alpha = 0;
+        // instructionBGRT.sizeDelta = new Vector2(0, instructionBGRT.sizeDelta.y); 
+        // instructionHUDContentCG.alpha = 0;
         
-        missionCG.alpha = 0f;
-        missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
+        // missionCG.alpha = 0f;
+        // missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
         
-        ChangeInstructionPageButtons(false, true, false);
+        // ChangeInstructionPageButtons(false, true, false);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(0, 2).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            Debug.Log("Welcome to Prologue!!");
+        });
     }
 
-    void Update()
-    {
-       if(HUDManager.instance.instructionHUD.activeSelf)
-       {
-            if (DeviceManager.instance.keyboardDevice)
-            {
-                ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
-                EventSystem.current.SetSelectedGameObject(null);
-                isGamepad = false;
-            }
-            else if (DeviceManager.instance.gamepadDevice)
-            {   
-                ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
+    // void Update()
+    // {
+    //    if(HUDManager.instance.instructionHUD.activeSelf)
+    //    {
+    //         if (DeviceManager.instance.keyboardDevice)
+    //         {
+    //             ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
+    //             EventSystem.current.SetSelectedGameObject(null);
+    //             isGamepad = false;
+    //         }
+    //         else if (DeviceManager.instance.gamepadDevice)
+    //         {   
+    //             ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
                 
-                if(!isGamepad)
-                {
-                    if (instructionButtonRight.activeSelf)
-                    {
-                        EventSystem.current.SetSelectedGameObject(instructionButtonRight);
-                    }
-                    else
-                    {
-                        EventSystem.current.SetSelectedGameObject(instructionButtonDone);
-                    }
+    //             if(!isGamepad)
+    //             {
+    //                 if (instructionButtonRight.activeSelf)
+    //                 {
+    //                     EventSystem.current.SetSelectedGameObject(instructionButtonRight);
+    //                 }
+    //                 else
+    //                 {
+    //                     EventSystem.current.SetSelectedGameObject(instructionButtonDone);
+    //                 }
 
-                    isGamepad = true;
-                }
-            }
-       }
-       else
-       {
-            Cursor.lockState = CursorLockMode.Locked;
-       }
+    //                 isGamepad = true;
+    //             }
+    //         }
+    //    }
+    //    else
+    //    {
+    //         Cursor.lockState = CursorLockMode.Locked;
+    //    }
 
-       if(!isLastPageReached)
-       {
-            if(instructionHUDPage[2].activeSelf)
-            {
-                isLastPageReached = true;
-            }
-       }
-    }
+    //    if(!isLastPageReached)
+    //    {
+    //         if(instructionHUDPage[2].activeSelf)
+    //         {
+    //             isLastPageReached = true;
+    //         }
+    //    }
+    // }
     
 
 

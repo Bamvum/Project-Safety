@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using UnityEditor.Search;
 
 
 public class LoadingSceneManager : MonoBehaviour
@@ -22,6 +21,11 @@ public class LoadingSceneManager : MonoBehaviour
     public GameObject loadingScreen; 
     public Image fadeImage;
     [SerializeField] Image progressBar;
+    [SerializeField] GameObject intruction;
+    
+    [Space(10)]
+    [SerializeField] TMP_Text dykText;
+    [SerializeField] LoadingSO loadingSO;
     
     void Awake()
     {
@@ -39,7 +43,10 @@ public class LoadingSceneManager : MonoBehaviour
     
     void Start()
     {
-        fadeImage.DOFade(0,2).OnComplete(() =>
+        string RandomDYK = PickRandomDYK(loadingSO);
+        dykText.text = RandomDYK;
+
+        fadeImage.DOFade(0,2).SetEase(Ease.Linear).OnComplete(() =>
         {
             Debug.Log("Scene to be Load: " + sceneName);
             StartCoroutine(LoadSceneCoroutine(sceneName));
@@ -64,6 +71,9 @@ public class LoadingSceneManager : MonoBehaviour
             
             if (asyncOperation.progress >= 0.9f)
             {
+                progressBar.gameObject.SetActive(false);
+                intruction.SetActive(true);
+                
                 Debug.Log("PRESS SPACE TO CONTINUE!!");
 
                 if(Input.GetKeyDown(KeyCode.Space))
@@ -73,13 +83,19 @@ public class LoadingSceneManager : MonoBehaviour
                         asyncOperation.allowSceneActivation = true;
 
                         sceneName = string.Empty;
-                        // HUDManager.instance.loadingUI.SetActive(false);
-                        // loadingScreen.SetActive(false);
+                        loadingScreen.SetActive(false);
                         this.enabled = false;
                     });
                 }
             }
             yield return null;
         }
+    }
+
+    string PickRandomDYK(LoadingSO DYKData)
+    {
+        int randomIndex = Random.Range(0, DYKData.loadingText.Length);
+        
+        return DYKData.loadingText[randomIndex];
     }
 }
