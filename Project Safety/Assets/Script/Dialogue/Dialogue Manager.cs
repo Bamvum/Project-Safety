@@ -124,7 +124,6 @@ public class DialogueManager : MonoBehaviour
             isSpecialEvent =  dialogueList[currentDialogueIndex].isOtherEvent;
             dialogueSFX.clip = dialogueList[currentDialogueIndex].dialogouAudio;
             dialogueSFX.Play();
-            Debug.Log(dialogueSFX.clip);
 
             // npcName.text = line.npcName
 

@@ -14,10 +14,7 @@ public class TransitionManager : MonoBehaviour
 
     void Start()
     {
-        // transitionImage.DOFade(0, 2).OnComplete(() =>
-        // {
-        //     DisplayInstruction();
-        // });
+
     }
 
     public void DisplayInstruction()

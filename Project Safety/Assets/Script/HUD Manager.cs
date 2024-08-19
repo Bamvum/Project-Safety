@@ -19,6 +19,9 @@ public class HUDManager : MonoBehaviour
         }
     }
 
+    [Header("Loading")]
+    public GameObject loadingUI;
+    
     [Header("HUD/UI")]
     public GameObject playerHUD;
     public GameObject examineHUD;
