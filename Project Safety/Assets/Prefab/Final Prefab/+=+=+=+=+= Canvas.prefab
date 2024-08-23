@@ -15297,12 +15297,16 @@ MonoBehaviour:
   missionText: {fileID: 8229526162931711305}
   missionRectTransform: {fileID: 4878659536248681942}
   missionCG: {fileID: 7418364300455696092}
-  homeworkHUD: {fileID: 0}
-  homeworkQnA: {fileID: 0}
-  homeworkScore: {fileID: 0}
-  homeworkScoreText: {fileID: 0}
-  questionText: {fileID: 0}
-  homeworkChoices: []
+  homeworkHUD: {fileID: 3800298771281129588}
+  homeworkQnA: {fileID: 8028360912615122299}
+  homeworkScore: {fileID: 911348411917163117}
+  homeworkScoreText: {fileID: 5036192248531599418}
+  questionText: {fileID: 4484584303978819908}
+  homeworkChoices:
+  - {fileID: 1049349311993739129}
+  - {fileID: 5477038305863396415}
+  - {fileID: 7423436586682633501}
+  - {fileID: 2128656641181008167}
 --- !u!114 &7916829208231704321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15310,14 +15314,86 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6732743448747996528}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2424d099f95bf864b989bcfe0a3a190c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueTrigger: {fileID: 0}
-  QnA: []
-  choiceSelected: {fileID: 0}
+  QnA:
+  - question: What is the first letter of the alphabet?
+    answer:
+    - W
+    - A
+    - S
+    - D
+    correctAnswer: 2
+  - question: What is the last letter of the alphabet?
+    answer:
+    - X
+    - Y
+    - V
+    - Z
+    correctAnswer: 4
+  - question: '"________ is a permanent solution, to a temporary problem."'
+    answer:
+    - Suicide
+    - Alchocol
+    - Meditate
+    - Sleep
+    correctAnswer: 1
+  - question: In which city in the Philippines was the first fire station established?
+    answer:
+    - 'Makati '
+    - Taguig
+    - Manila
+    - Davao
+    correctAnswer: 3
+  - question: How many classes of fire are there?
+    answer:
+    - 5
+    - 3
+    - 4
+    - 6
+    correctAnswer: 1
+  - question: Which of the following should NOT be done during a fire drill?
+    answer:
+    - Evacuate the building immediately
+    - Use the nearest exit
+    - Stay calm and orderly
+    - Gather belongings before leaving
+    correctAnswer: 4
+  - question: Which type of fire extinguisher should be used on electrical fires?
+    answer:
+    - Foam
+    - ' Dry Powder'
+    - ' Water'
+    - CO2 (Carbon Dioxide)
+    correctAnswer: 4
+  - question: What is the safest way to exit a building during a fire?
+    answer:
+    - Use the elevator
+    - Run quickly through the nearest door
+    - Crawl low under the smoke
+    - Break a window
+    correctAnswer: 3
+  - question: Which of the following is the best first action to take if you are
+      trapped in a room during a fire and cannot reach an exit?
+    answer:
+    - Open the door and try to escape
+    - Break the window and jump out
+    - Call 911 and wait by the door
+    - Seal the door with wet towels and signal for help at the window
+    correctAnswer: 4
+  - question: ' If a pan catches fire in the kitchen, what is the safest way to extinguish
+      it?'
+    answer:
+    - Throw water on the fire
+    - Cover the pan with a metal lid or a fire blanket
+    - Move the pan to the sink and turn on the tap
+    - Use a fan to blow the fire out
+    correctAnswer: 2
+  choiceSelected: {fileID: 1049349311993739129}
   currentQuestion: 0
 --- !u!1 &6754267944268585666
 GameObject:

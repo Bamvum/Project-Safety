@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform playerBody;
     
     [Header("POV/Camera")]
-    public CinemachineVirtualCamera playerVC;
+    // public CinemachineVirtualCamera playerVC;
     [Space(10)]
     [SerializeField] GameObject cameraRoot;
     [SerializeField] float upperLimit = -40f;
@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        var pov = playerVC.GetCinemachineComponent<CinemachinePOV>();
+        var pov = PlayerScript.instance.playerVC.GetCinemachineComponent<CinemachinePOV>();
         
         if(DeviceManager.instance.keyboardDevice)
         {

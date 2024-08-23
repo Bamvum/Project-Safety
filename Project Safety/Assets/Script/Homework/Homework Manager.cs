@@ -52,7 +52,7 @@ public class HomeworkManager : MonoBehaviour
     
     void OnDisable()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.lockState = CursorLockMode.Locked;
     }
 
     

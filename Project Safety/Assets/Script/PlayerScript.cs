@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour
 
     [Header("Player")]
     public PlayerMovement playerMovement;
+    [Space(10)]
+    public CinemachineVirtualCamera playerVC;
     public CinemachineInputProvider cinemachineInputProvider;
     public Interact interact;
     public Examine examine;

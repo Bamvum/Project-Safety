@@ -11,13 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Prologue.unity
     guid: 320ff14afb4d8a9439281947c095077a
+  - enabled: 1
+    path: Assets/Scenes/Loading Scene.unity
+    guid: 62e7fa0fbb4dd2340bd63ba0140ac3f8
   - enabled: 0
     path: Assets/Scenes/Prologue Test.unity
     guid: 08ebc98be851a0d44af8690a5bee12ae
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/Loading Scene.unity
-    guid: 62e7fa0fbb4dd2340bd63ba0140ac3f8
   m_configObjects: {}
