@@ -78,23 +78,32 @@ public class Interactable : MonoBehaviour
 
     public void PC()
     {
-        // prologueSceneManager.PC.layer = 0;
-        // prologueSceneManager.monitorScreen[0].SetActive(true);
+        prologueSceneManager.PC.layer = 0;
+        prologueSceneManager.monitorScreen[0].SetActive(true);
         Invoke("DelayStartPC", 20);
     }
 
     void DelayStartPC()
     {
-        // prologueSceneManager.monitor.layer = 8;
-        // prologueSceneManager.monitorScreen[0].SetActive(false);
-        // prologueSceneManager.monitorScreen[1].SetActive(true);
-        // prologueSceneManager.monitorSFX.Play();
+        prologueSceneManager.monitor.layer = 8;
+        prologueSceneManager.monitorScreen[0].SetActive(false);
+        prologueSceneManager.monitorScreen[1].SetActive(true);
+        prologueSceneManager.monitorSFX.Play();
     }
 
     public void AccessMonitor()
     {
         Debug.Log("Player Accessed the Monitor!");
-        // prologueSceneManager.TransitionToHomeworkQuiz();
-        dialogueTrigger.StartDialogue();
+        prologueSceneManager.TransitionToHomeworkQuiz();
+        // dialogueTrigger.StartDialogue();
+
+        // DISABLE SCRIPTS
+
+        PlayerScript.instance.playerMovement.enabled = false;
+        // PlayerScript.instance.playerMovement.playerAnim.enabled = false;
+        PlayerScript.instance.cinemachineInputProvider.enabled = false;
+        PlayerScript.instance.interact.enabled = false;
+        // PlayerScript.instance.examine.enabled = false;
+
     }
 }

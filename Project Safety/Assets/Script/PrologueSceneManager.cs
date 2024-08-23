@@ -9,7 +9,17 @@ using TMPro;
 
 public class PrologueSceneManager : MonoBehaviour
 {
+    public static PrologueSceneManager instance {get; private set;}
+
+    void Awake()
+    {
+        instance = this;
+    }
+    
     [SerializeField] MissionSO missionSO;
+
+    [Header("Script")]
+    [SerializeField] HomeworkManager homeworkManager;
 
     [Header("Player")]
     [SerializeField] GameObject player;
@@ -24,6 +34,7 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] DialogueTrigger startDialogueTrigger;
     
     [Space(15)]
+    public AudioSource monitorSFX;
     [SerializeField] AudioSource playerAudio;
     [SerializeField] AudioClip alarmAndWakeSFX;
 
@@ -140,17 +151,6 @@ public class PrologueSceneManager : MonoBehaviour
 
     public void TransitionToHomeworkQuiz()
     {
-        // ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-        // {
-        //     ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-        //     {
-        //         // DISPLAY HOMEWORK HUD
-        //         HUDManager.instance.homeworkHUD.SetActive(true);
-        //         ScriptManager.instance.transitionManager.transitionImage.DOFade(0, 1f);
-                
-        //     });
-        // });
-
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
         // FADEIN EFFECTS
@@ -158,11 +158,13 @@ public class PrologueSceneManager : MonoBehaviour
             .OnComplete(() =>
         {
             HUDManager.instance.homeworkHUD.SetActive(true);
+            homeworkManager.enabled = true;
             
             // FADEOUT EFFECTS
             LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration).OnComplete(() =>
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                
             });
         });
     }
@@ -180,28 +182,12 @@ public class PrologueSceneManager : MonoBehaviour
         
         if(missionIndex == 1)
         {
-            // PC.layer = 8;
+            PC.layer = 8;
         }
         else
         {
-            // PC.layer = 0;
+            PC.layer = 0;
         }
-
-        // missionText.text = ScriptManager.instance.mission.missionSO.missions[missionIndex];
-        // missionSFX.Play();
-
-        // missionCG.DOFade(1, 1f); 
-        // missionRT.DOAnchorPos(new Vector2(225.5f, missionRT.anchoredPosition.y), 1);
-
-        // if(missionIndex == 1)
-        // {
-        //     PC.layer = 8;
-            
-        // }
-        // else
-        // {
-        //     PC.layer = 0;
-        // }
     }
 
     public void HideMission()
@@ -363,6 +349,7 @@ public class PrologueSceneManager : MonoBehaviour
         HUDManager.instance.imageHUD[2].sprite = examineSprite;
     }
     
+    #region - SCENE MANAGEMENT -
 
     public void RotatePlayer()
     {
@@ -382,4 +369,6 @@ public class PrologueSceneManager : MonoBehaviour
         //      -   START SUSPENCE SOUND
 
     }
+
+    #endregion
 }

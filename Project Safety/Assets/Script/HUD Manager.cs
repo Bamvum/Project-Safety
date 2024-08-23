@@ -7,9 +7,6 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
     public static HUDManager instance { get; private set;}
-
-    // [Header("Dialogue Manager")]
-    // public GameObject triggerDialogues;
     
     void Awake()
     {
@@ -25,7 +22,7 @@ public class HUDManager : MonoBehaviour
     }
 
     // TODO -   CURSOR STATE
-    //      -   IF STATEMENT (DIALOGUE HUD, PLAYER HUD,  IS ACTIVE) 
+    //      -   IF STATEMENT (DIALOGUE HUD, PLAYER HUD, HOMEWORK HUD  IS ACTIVE) 
 
 
     [Header("Player Related HUD")]
@@ -69,6 +66,12 @@ public class HUDManager : MonoBehaviour
     
     [Header("Homework HUD")]
     public GameObject homeworkHUD;
+    public GameObject homeworkQnA;
+    public GameObject homeworkScore;
+    public TMP_Text homeworkScoreText;
+    public TMP_Text questionText;
+    public GameObject[] homeworkChoices;
+
 
     void Start()
     {
@@ -91,5 +94,5 @@ public class HUDManager : MonoBehaviour
         // ASSIGN
         missionRectTransform.anchoredPosition = new Vector2(-325, missionRectTransform.anchoredPosition.y);
         missionCG.alpha = 0;
-    }
+    } 
 }

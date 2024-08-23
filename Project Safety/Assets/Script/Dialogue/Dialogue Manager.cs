@@ -267,12 +267,11 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = string.Empty;
         isInDialogue = false;
 
-        // ScriptManager.instance.playerMovement.enabled = true;
+        PlayerScript.instance.playerMovement.enabled = true;
+        PlayerScript.instance.interact.enabled = true;
+        PlayerScript.instance.cinemachineInputProvider.enabled = true;
         // playerMovement.playerAnim.enabled = true;
-        // playerMovement.playerAnim.enabled = true;
-        // ScriptManager.instance.interact.enabled = true;
         // ScriptManager.instance.stamina.enabled = true;
-        // ScriptManager.instance.cinemachineInputProvider.enabled = true;
 
         // DOTWEENING
         DialogueHUDHide();
@@ -377,10 +376,6 @@ public class DialogueManager : MonoBehaviour
     void ChangeImageStatus(Sprite actionSprite, Sprite choice1Sprite, Sprite choice2Sprite, Sprite choice3Sprite)
     {
         actionImageHUD.sprite = actionSprite;
-        // choice1ImageHUD.sprite = choice1Sprite;
-        // choice2ImageHUD.sprite = choice2Sprite;
-        // choice3ImageHUD.sprite = choice3Sprite;
-
         choicesImage[1].sprite = choice1Sprite;
         choicesImage[2].sprite = choice2Sprite;
         choicesImage[3].sprite = choice3Sprite;
