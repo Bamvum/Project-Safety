@@ -78,17 +78,17 @@ public class Interactable : MonoBehaviour
 
     public void PC()
     {
-        prologueSceneManager.PC.layer = 0;
-        prologueSceneManager.monitorScreen[0].SetActive(true);
+        // prologueSceneManager.PC.layer = 0;
+        // prologueSceneManager.monitorScreen[0].SetActive(true);
         Invoke("DelayStartPC", 20);
     }
 
     void DelayStartPC()
     {
-        prologueSceneManager.monitor.layer = 8;
-        prologueSceneManager.monitorScreen[0].SetActive(false);
-        prologueSceneManager.monitorScreen[1].SetActive(true);
-        prologueSceneManager.monitorSFX.Play();
+        // prologueSceneManager.monitor.layer = 8;
+        // prologueSceneManager.monitorScreen[0].SetActive(false);
+        // prologueSceneManager.monitorScreen[1].SetActive(true);
+        // prologueSceneManager.monitorSFX.Play();
     }
 
     public void AccessMonitor()

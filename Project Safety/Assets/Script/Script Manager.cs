@@ -19,22 +19,24 @@ public class ScriptManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        playerControls = new PlayerControls();
+        // playerControls = new PlayerControls();
     }
-
-    [Header("Scripts")]
-    public PlayerControls playerControls;
-    public PlayerMovement playerMovement;
-    public CinemachineInputProvider cinemachineInputProvider;
-    public Interact interact;
-    public Examine examine;
-    public Stamina stamina;
     
-    [Space(10)]
-    public DialogueManager dialogueManager;
+    // [Header("Player")]
+    // public PlayerControls playerControls;
+    // public PlayerMovement playerMovement;
 
-    [Space(10)]
-    public TransitionManager transitionManager;
-    public Mission mission;
+    // public CinemachineInputProvider cinemachineInputProvider;
+    // public Interact interact;
+    // public Examine examine;
+    // public Stamina stamina;
+    
+    // [Space(10)]
+    // public DialogueManager dialogueManager;e
+
+    // [Space(10)]
+    // public TransitionManager transitionManager;
+    // public Mission mission;
+
 
 }

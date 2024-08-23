@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -9,21 +9,45 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] GameObject mainMenu; 
     [SerializeField] GameObject titleScreen; 
     [SerializeField] GameObject settingScreen; 
+    [SerializeField] GameObject selectSceneScreen; 
     [SerializeField] GameObject[] settingContent;
 
     #region  - TITLE SCREEN -
-    public void PlayTest()
+
+    void Start()
     {
-        Debug.Log("SceneManager");
+        mainMenu.SetActive(true);
+        titleScreen.SetActive(true);
+        settingScreen.SetActive(false);
+        selectSceneScreen.SetActive(false);
 
-        // TODO - LOAD ASYNC
-        //      - LOADING SCREEN (SCENE DEDICATED ONLY FOR LOADING)
-        // SceneManager.LoadScene("Loading Scene");
+        // FADE IMAGE ALPHA
+        LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
+                                                                LoadingSceneManager.instance.fadeImage.color.g,
+                                                                LoadingSceneManager.instance.fadeImage.color.b,
+                                                                1);
 
-        LoadingSceneManager.instance.fadeImage.DOFade(1,2).SetEase(Ease.Linear).OnComplete(() =>
+        
+        // FADEOUT EFFECT
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+        });
+    }
+
+    public void PlayTest()
+    {   
+        // FADEIN EFFECT
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
         {
             mainMenu.SetActive(false);
-
+            
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
             LoadingSceneManager.instance.sceneName = "Prologue";
@@ -36,6 +60,13 @@ public class MainMenuScriptManager : MonoBehaviour
         Debug.Log("Access Play!");
     }
 
+    public void ChapterSelect()
+    {
+        Debug.Log("Access Chapter Select!");
+        
+        titleScreen.SetActive(false);
+        selectSceneScreen.SetActive(true);
+    }
     public void Settings()
     {
         Debug.Log("Access Settings!");
@@ -45,11 +76,6 @@ public class MainMenuScriptManager : MonoBehaviour
         settingScreen.SetActive(true);
     }
 
-    public void ChapterSelect()
-    {
-        Debug.Log("Access Chapter Select!");
-
-    }
 
     public void Credits()
     {
@@ -60,6 +86,17 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Access Quit!");
         Application.Quit();
+    }
+
+    #endregion
+    
+    #region - SELECT SCENE SCREEN -
+
+    public void selectSceneBack()
+    {
+        selectSceneScreen.SetActive(false);
+
+        titleScreen.SetActive(true);
     }
 
     #endregion

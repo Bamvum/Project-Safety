@@ -35,7 +35,7 @@ public class DeviceManager : MonoBehaviour
             Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed ||
             Mouse.current.middleButton.isPressed)
         {
-            Debug.Log("Using Keyboard & Mouse Device");
+            // Debug.Log("Using Keyboard & Mouse Device");
             keyboardDevice = true;
             gamepadDevice = false;
         }
@@ -53,7 +53,7 @@ public class DeviceManager : MonoBehaviour
                     Gamepad.current.leftStick.ReadValue() != Vector2.zero ||
                     Gamepad.current.rightStick.ReadValue() != Vector2.zero)
                 {
-                    Debug.Log("Using Gamepad Device");
+                    // Debug.Log("Using Gamepad Device");
                     keyboardDevice = false;
                     gamepadDevice = true;
                 }

@@ -21,24 +21,29 @@ public class LoadingSceneManager : MonoBehaviour
     public GameObject loadingScreen; 
     public Image fadeImage;
     [SerializeField] Image progressBar;
-    [SerializeField] GameObject intruction;
+    [SerializeField] GameObject prompt;
     
     [Space(10)]
     [SerializeField] TMP_Text dykText;
     [SerializeField] LoadingSO loadingSO;
+
+    [Header("Tweening")]
+    public float fadeDuration = 1;
     
     void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+        instance = this;
 
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        // if (instance == null)
+        // {
+        //     instance = this;
+        //     DontDestroyOnLoad(gameObject);
+
+        // }
+        // else
+        // {
+        //     Destroy(gameObject);
+        // }
     }
     
     void Start()
@@ -46,7 +51,7 @@ public class LoadingSceneManager : MonoBehaviour
         string RandomDYK = PickRandomDYK(loadingSO);
         dykText.text = RandomDYK;
 
-        fadeImage.DOFade(0,2).SetEase(Ease.Linear).OnComplete(() =>
+        fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
         {
             Debug.Log("Scene to be Load: " + sceneName);
             StartCoroutine(LoadSceneCoroutine(sceneName));
@@ -72,13 +77,13 @@ public class LoadingSceneManager : MonoBehaviour
             if (asyncOperation.progress >= 0.9f)
             {
                 progressBar.gameObject.SetActive(false);
-                intruction.SetActive(true);
+                prompt.SetActive(true);
                 
                 Debug.Log("PRESS SPACE TO CONTINUE!!");
 
                 if(Input.GetKeyDown(KeyCode.Space))
                 {
-                    fadeImage.DOFade(1, 2).OnComplete(() =>
+                    fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
                     {
                         asyncOperation.allowSceneActivation = true;
 

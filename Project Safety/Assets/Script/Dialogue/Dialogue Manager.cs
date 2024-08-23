@@ -15,7 +15,9 @@ public class DialogueManager : MonoBehaviour
     bool option1Input;
     bool option2Input;
     bool option3Input;
-    float typingSpeed = 0.03f;
+    
+    [Range(0.01f, 0.09f)]
+    [SerializeField] float typingSpeed = 0.03f;
     List<DialogueProperties> dialogueList;
     int currentDialogueIndex;
 
@@ -29,6 +31,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject leftOption;
     [SerializeField] GameObject upOption;
     [SerializeField] GameObject rightOption;
+
+    [SerializeField] RectTransform leftOptionRectTransform;
+    [SerializeField] RectTransform upOptionRectTransform;
+    [SerializeField] RectTransform rightOptionRectTransform;
+    //         RectTransform leftOptionRectTransform = leftOption.GetComponent<RectTransform>();
+    //     RectTransform upOptionRectTransform = upOption.GetComponent<RectTransform>();
+    //     RectTransform rightOptionRectTransform = rightOption.GetComponent<RectTransform>();
 
     [Space(10)]
     [SerializeField] Image[] choicesImage;
@@ -85,7 +94,6 @@ public class DialogueManager : MonoBehaviour
         {
             if(DeviceManager.instance.keyboardDevice)
             {
-                // ChangeImageStatus(spaceSprite, oneSprite, twoSprite, threeSprite);
                 ChangeImageStatus(keyboardSprite[0], keyboardSprite[1], keyboardSprite[2], keyboardSprite[3]);
             }
             else if (DeviceManager.instance.gamepadDevice)
@@ -100,11 +108,12 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = true;
 
         // DISABLE OTHER SCRIPTS
-        ScriptManager.instance.playerMovement.enabled = false;
+
+        PlayerScript.instance.playerMovement.enabled = false;
         // playerMovement.playerAnim.enabled = false;
-        ScriptManager.instance.interact.enabled = false;
-        ScriptManager.instance.stamina.enabled = false;
-        ScriptManager.instance.cinemachineInputProvider.enabled = false;
+        PlayerScript.instance.interact.enabled = false;
+        // ScriptManager.instance.stamina.enabled = false;
+        // ScriptManager.instance.cinemachineInputProvider.enabled = false;
 
         DialogueHUDShow();
 
@@ -258,30 +267,32 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = string.Empty;
         isInDialogue = false;
 
-        ScriptManager.instance.playerMovement.enabled = true;
+        // ScriptManager.instance.playerMovement.enabled = true;
         // playerMovement.playerAnim.enabled = true;
         // playerMovement.playerAnim.enabled = true;
-        ScriptManager.instance.interact.enabled = true;
-        ScriptManager.instance.stamina.enabled = true;
-        ScriptManager.instance.cinemachineInputProvider.enabled = true;
+        // ScriptManager.instance.interact.enabled = true;
+        // ScriptManager.instance.stamina.enabled = true;
+        // ScriptManager.instance.cinemachineInputProvider.enabled = true;
 
         // DOTWEENING
         DialogueHUDHide();
 
-        if (ScriptManager.instance.interact.dialogueTrigger != null)
-        {
-            ScriptManager.instance.interact.dialogueTrigger.isSpeaking = false;
-        }
-        else
-        {
-            Debug.Log("Interact.DialogueTrigger is Null");
-        }
+        // if (ScriptManager.instance.interact.dialogueTrigger != null)
+        // {
+        //     ScriptManager.instance.interact.dialogueTrigger.isSpeaking = false;
+        // }
+        // else
+        // {
+        //     Debug.Log("Interact.DialogueTrigger is Null");
+        // }
     }   
 
     #region - TWEENING -
 
     void DialogueHUDShow()
     {
+        
+        Debug.Log("Dialogue Show!");
         HUDManager.instance.dialogueHUD.SetActive(true);
         HUDManager.instance.playerHUD.SetActive(false);
     
@@ -309,11 +320,6 @@ public class DialogueManager : MonoBehaviour
     void ChoiceHUDStatus(bool activeStatus, bool is3Question)
     {
         // TODO - FIX CODE MAKE IT SHORTER
-
-        RectTransform leftOptionRectTransform = leftOption.GetComponent<RectTransform>();
-        RectTransform upOptionRectTransform = upOption.GetComponent<RectTransform>();
-        RectTransform rightOptionRectTransform = rightOption.GetComponent<RectTransform>();
-
         leftOptionRectTransform.localScale = Vector3.zero;
         upOptionRectTransform.localScale = Vector3.zero;
         rightOptionRectTransform.localScale = Vector3.zero;

@@ -1,4 +1,4 @@
-   using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +9,9 @@ using TMPro;
 
 public class PrologueSceneManager : MonoBehaviour
 {
+    [SerializeField] MissionSO missionSO;
+
+    [Header("Player")]
     [SerializeField] GameObject player;
     [SerializeField] GameObject playerModel;
 
@@ -17,116 +20,149 @@ public class PrologueSceneManager : MonoBehaviour
     public GameObject monitor;
     public GameObject[] monitorScreen;
 
-    [Header("Instruction HUD")]
+    [Header("Dialogue Triggers")]
+    [SerializeField] DialogueTrigger startDialogueTrigger;
+    
+    [Space(15)]
+    [SerializeField] AudioSource playerAudio;
+    [SerializeField] AudioClip alarmAndWakeSFX;
 
-    [SerializeField] GameObject instructionHUDContent;
-    CanvasGroup instructionHUDContentCG;
-    [SerializeField] Image instructionBG;
-    RectTransform instructionBGRT;
-
-    [Space(10)]
-    [SerializeField] GameObject keyboardInstruction;
-    [SerializeField] GameObject gamepadInstruction;
-    [Space(10)]
-    [SerializeField] GameObject[] instructionHUDPage;
-    [Space(10)]
-    [SerializeField] GameObject instructionButtonLeft;
-    [SerializeField] GameObject instructionButtonRight;
-    [SerializeField] GameObject instructionButtonDone;
-    [Space(10)]
-    [SerializeField] Image[] imageHUD;
-    [SerializeField] Sprite[] keyboardSprite;
-    [SerializeField] Sprite[] gamepadSprite;
-
-    [Header("Mission HUD")]
-    [SerializeField] TMP_Text missionText;
-    [SerializeField] RectTransform missionRT;
-    [SerializeField] CanvasGroup missionCG;
+    [Header("Flag")]
     int missionIndex;
-
-    [Header("SFX")]
-    [SerializeField] AudioSource missionSFX;
-    public AudioSource monitorSFX;
-
-    [Header("Flags")]
-    public bool interactedLightSwitch;
+    bool audioRepeat = false;
     bool isGamepad;
     bool isLastPageReached;
-
+    
     void Start()
     {
-        // instructionBGRT = instructionBG.GetComponent<RectTransform>();
-        // instructionHUDContentCG = instructionHUDContent.GetComponent<CanvasGroup>();
+        // TODO -   IF PAUSE UI IS ACTIVE
+        //      -   AND IF STATEMENT DEVICEMANAGER
 
-        // instructionBGRT.sizeDelta = new Vector2(0, instructionBGRT.sizeDelta.y); 
-        // instructionHUDContentCG.alpha = 0;
-        
-        // missionCG.alpha = 0f;
-        // missionRT.anchoredPosition = new Vector2(-325, missionRT.anchoredPosition.y);
-        
-        // ChangeInstructionPageButtons(false, true, false);
+        // Cursor.lockState = CursorLockMode.Locked;
 
-        LoadingSceneManager.instance.fadeImage.DOFade(0, 2).SetEase(Ease.Linear).OnComplete(() =>
+        // FADE IMAGE ALPHA SET 1
+        LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
+                                                                LoadingSceneManager.instance.fadeImage.color.g,
+                                                                LoadingSceneManager.instance.fadeImage.color.b,
+                                                                1);
+        
+        // PLAY AUDIO CLIP IN PLAYERAUDIO
+        playerAudio.clip = alarmAndWakeSFX;
+        playerAudio.Play();
+
+        ChangeInstructionPageButtons(false, true, false);        
+    }
+    
+    void Update()
+    {
+        
+        if(!audioRepeat)
         {
-            Debug.Log("Welcome to Prologue!!");
-        });
+            CheckPlayerAudioPlaying();
+        }
+
+        if (HUDManager.instance.instructionHUD.activeSelf)
+        {
+            DeviceChecker();
+        }
+        // else
+        // {
+        //     // Cursor.lockState = CursorLockMode.Locked;
+        // }
+    
+        if(!isLastPageReached)
+        {
+            LastPageChecker();
+        }
     }
 
-    // void Update()
-    // {
-    //    if(HUDManager.instance.instructionHUD.activeSelf)
-    //    {
-    //         if (DeviceManager.instance.keyboardDevice)
-    //         {
-    //             ChangeImageStatus(true, false, keyboardSprite[0], keyboardSprite[1], keyboardSprite[2]);
-    //             EventSystem.current.SetSelectedGameObject(null);
-    //             isGamepad = false;
-    //         }
-    //         else if (DeviceManager.instance.gamepadDevice)
-    //         {   
-    //             ChangeImageStatus(false, true, gamepadSprite[0], gamepadSprite[1], gamepadSprite[2]);
-                
-    //             if(!isGamepad)
-    //             {
-    //                 if (instructionButtonRight.activeSelf)
-    //                 {
-    //                     EventSystem.current.SetSelectedGameObject(instructionButtonRight);
-    //                 }
-    //                 else
-    //                 {
-    //                     EventSystem.current.SetSelectedGameObject(instructionButtonDone);
-    //                 }
+    void CheckPlayerAudioPlaying()
+    {
+        if (!playerAudio.isPlaying)
+        {
+            Debug.Log("Player Audio is Done playing");
 
-    //                 isGamepad = true;
-    //             }
-    //         }
-    //    }
-    //    else
-    //    {
-    //         Cursor.lockState = CursorLockMode.Locked;
-    //    }
+            // FADEOUT EFFECTS
+            LoadingSceneManager.instance.fadeImage
+                .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
 
-    //    if(!isLastPageReached)
-    //    {
-    //         if(instructionHUDPage[2].activeSelf)
-    //         {
-    //             isLastPageReached = true;
-    //         }
-    //    }
-    // }
-    
+                audioRepeat = true;
+                startDialogueTrigger.StartDialogue();
+            });
+        }
+    }
 
+    void DeviceChecker()
+    {
+        if (DeviceManager.instance.keyboardDevice)
+        {
+            ChangeImageStatus(true, false, HUDManager.instance.keyboardSprite[0],
+                                            HUDManager.instance.keyboardSprite[1],
+                                            HUDManager.instance.keyboardSprite[2]);
+
+            EventSystem.current.SetSelectedGameObject(null);
+
+            isGamepad = false;
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            ChangeImageStatus(false, true, HUDManager.instance.gamepadSprite[0],
+                                            HUDManager.instance.gamepadSprite[1],
+                                            HUDManager.instance.gamepadSprite[2]);
+
+            if (!isGamepad)
+            {
+                if(HUDManager.instance.instructionButton[1].activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
+                }   
+                else
+                {
+                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);
+                }
+
+                isGamepad = true;
+            }
+        }
+    }
+
+    void LastPageChecker()
+    {
+        if (HUDManager.instance.instructionPage[2].activeSelf)
+        {
+            isLastPageReached = true;
+        }
+    }
 
     public void TransitionToHomeworkQuiz()
     {
-        ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-        {
-            ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
-            {
-                // DISPLAY HOMEWORK HUD
-                HUDManager.instance.homeworkHUD.SetActive(true);
-                ScriptManager.instance.transitionManager.transitionImage.DOFade(0, 1f);
+        // ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
+        // {
+        //     ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 1f).OnComplete(() =>
+        //     {
+        //         // DISPLAY HOMEWORK HUD
+        //         HUDManager.instance.homeworkHUD.SetActive(true);
+        //         ScriptManager.instance.transitionManager.transitionImage.DOFade(0, 1f);
                 
+        //     });
+        // });
+
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        // FADEIN EFFECTS
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .OnComplete(() =>
+        {
+            HUDManager.instance.homeworkHUD.SetActive(true);
+            
+            // FADEOUT EFFECTS
+            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration).OnComplete(() =>
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             });
         });
     }
@@ -135,30 +171,50 @@ public class PrologueSceneManager : MonoBehaviour
 
     public void DisplayMission()
     {
-        missionText.text = ScriptManager.instance.mission.missionSO.missions[missionIndex];
-        missionSFX.Play();
+        HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
+        PlayerScript.instance.missionSFX.Play();
 
-        missionCG.DOFade(1, 1f); 
-        missionRT.DOAnchorPos(new Vector2(225.5f, missionRT.anchoredPosition.y), 1);
-
+        HUDManager.instance.missionCG.DOFade(1, 1);
+        HUDManager.instance.missionRectTransform
+            .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
+        
         if(missionIndex == 1)
         {
-            PC.layer = 8;
-            
+            // PC.layer = 8;
         }
         else
         {
-            PC.layer = 0;
+            // PC.layer = 0;
         }
+
+        // missionText.text = ScriptManager.instance.mission.missionSO.missions[missionIndex];
+        // missionSFX.Play();
+
+        // missionCG.DOFade(1, 1f); 
+        // missionRT.DOAnchorPos(new Vector2(225.5f, missionRT.anchoredPosition.y), 1);
+
+        // if(missionIndex == 1)
+        // {
+        //     PC.layer = 8;
+            
+        // }
+        // else
+        // {
+        //     PC.layer = 0;
+        // }
     }
 
     public void HideMission()
     {
-        missionRT.DOAnchorPos(new Vector2(-325, missionRT.anchoredPosition.y), 1f).OnComplete(() =>
+        HUDManager.instance.missionRectTransform
+            .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
+            .OnComplete(() =>
         {
-            missionRT.DOAnchorPos(new Vector2(-325, missionRT.anchoredPosition.y), .5f).OnComplete(() =>
+            HUDManager.instance.missionRectTransform
+                .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
+                .OnComplete(() =>
             {
-                if (missionIndex < ScriptManager.instance.mission.missionSO.missions.Length - 1)
+                if(missionIndex < missionSO.missions.Length - 1)
                 {
                     missionIndex++;
                 }
@@ -173,34 +229,46 @@ public class PrologueSceneManager : MonoBehaviour
 
      public void DisplayInstruction()
     {
+        Time.timeScale = 0;
         HUDManager.instance.instructionHUD.SetActive(true);
-        instructionBGRT.DOSizeDelta(new Vector2(1920, instructionBGRT.sizeDelta.y), .5f).SetEase(Ease.InQuad).OnComplete(() =>
+
+        HUDManager.instance.instructionBGRectTransform
+            .DOSizeDelta(new Vector2(1920, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
+            .SetEase(Ease.InQuad)
+            .SetUpdate(true)
+            .OnComplete(() =>
         {
-            instructionHUDContent.SetActive(true);
-            instructionHUDContentCG.DOFade(1, .75f);
-            // Change to CanvasGroup
+            HUDManager.instance.instructionContent.SetActive(true);
+            HUDManager.instance.instructionContentCG
+                .DOFade(1, .75f)
+                .SetUpdate(true);
         });
     } 
 
     public void HideInstruction()
     {
-        instructionHUDContentCG.DOFade(1, .75f).OnComplete(() =>
+        Time.timeScale = 1;
+        HUDManager.instance.instructionContentCG
+            .DOFade(1, .75f).OnComplete(() =>
         {
-            instructionHUDContent.SetActive(false);
-            instructionBGRT.DOSizeDelta(new Vector2(0, instructionBGRT.sizeDelta.y), .5f).SetEase(Ease.OutQuad).OnComplete(() =>
+            HUDManager.instance.instructionContent.SetActive(false);
+            HUDManager.instance.instructionBGRectTransform
+                .DOSizeDelta(new Vector2(0, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
             {
                 HUDManager.instance.instructionHUD.SetActive(false);
 
-                Cursor.lockState = CursorLockMode.Locked;
-                
-                ScriptManager.instance.playerMovement.enabled = true;
-                ScriptManager.instance.playerMovement.playerAnim.enabled = true;
-                ScriptManager.instance.interact.enabled = true;
-                ScriptManager.instance.cinemachineInputProvider.enabled = true;
+                //ENABLE SCRIPT
+                PlayerScript.instance.playerMovement.enabled = true;
+                // PlayerScript.instance.playerMovement.playerAnim.enabled = true;
+                PlayerScript.instance.cinemachineInputProvider.enabled = true;
+                PlayerScript.instance.interact.enabled = true;
+                // PlayerScript.instance.examine.enabled = true;
 
-                // playerMovement.playerHUD.SetActive(true);
+                // Cursor.lockState = CursorLockMode.Locked;
+
                 HUDManager.instance.playerHUD.SetActive(true);
-
                 DisplayMission();
             });
         });
@@ -208,7 +276,7 @@ public class PrologueSceneManager : MonoBehaviour
 
     public void instructionNextPage()
     {
-        if(instructionHUDPage[0].activeSelf)
+        if(HUDManager.instance.instructionPage[0].activeSelf)
         {
             if(isLastPageReached)
             {
@@ -218,33 +286,36 @@ public class PrologueSceneManager : MonoBehaviour
             {
                 ChangeInstructionPageButtons(true, true, false);
             }
-            
-            instructionHUDPage[0].SetActive(false);
-            instructionHUDPage[1].SetActive(true);
 
-            EventSystem.current.SetSelectedGameObject(instructionButtonRight);
-        }
-        else if(instructionHUDPage[1].activeSelf)
-        {
-            ChangeInstructionPageButtons(true, false, true);
+            HUDManager.instance.instructionPage[0].SetActive(false);
+            HUDManager.instance.instructionPage[1].SetActive(true);
 
-            instructionHUDPage[1].SetActive(false);
-            instructionHUDPage[2].SetActive(true);
-            EventSystem.current.SetSelectedGameObject(instructionButtonDone);
+            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
         }
-        else if(instructionHUDPage[2].activeSelf)
+        else if (HUDManager.instance.instructionPage[1].activeSelf)
         {
-           
+            // TODO -   DOUBLE CHECK. IF NEED TO DO A LASTPAGEREACHED IF STATEMENT 
+
+            ChangeInstructionPageButtons(true,  false, true);
+        
+            HUDManager.instance.instructionPage[1].SetActive(false);
+            HUDManager.instance.instructionPage[2].SetActive(true);
+
+            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);    
+        }
+        else if (HUDManager.instance.instructionPage[2].activeSelf)
+        {
+
         }
     }
 
     public void instructionPreviousPage()
     {
-        if(instructionHUDPage[0].activeSelf)
+        if (HUDManager.instance.instructionPage[0].activeSelf)
         {
             
         }
-        else if(instructionHUDPage[1].activeSelf)
+        else if (HUDManager.instance.instructionPage[1].activeSelf)
         {
             if(isLastPageReached)
             {
@@ -254,33 +325,29 @@ public class PrologueSceneManager : MonoBehaviour
             {
                 ChangeInstructionPageButtons(false, true, false);
             }
-            instructionHUDPage[0].SetActive(true);
-            instructionHUDPage[1].SetActive(false);
 
-            EventSystem.current.SetSelectedGameObject(instructionButtonRight);
+            HUDManager.instance.instructionPage[0].SetActive(true);
+            HUDManager.instance.instructionPage[1].SetActive(false);
+
+            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
         }
-        else if(instructionHUDPage[2].activeSelf)
+        else if (HUDManager.instance.instructionPage[2].activeSelf)
         {
-            if (isLastPageReached)
-            {
-                ChangeInstructionPageButtons(true, true, true);
-            }
-            else
-            {
-                ChangeInstructionPageButtons(true, true, false);
-            }
-            instructionHUDPage[1].SetActive(true);
-            instructionHUDPage[2].SetActive(false);
 
-            EventSystem.current.SetSelectedGameObject(instructionButtonLeft);
+            ChangeInstructionPageButtons(true, true, true);
+
+            HUDManager.instance.instructionPage[1].SetActive(true);
+            HUDManager.instance.instructionPage[2].SetActive(false);
+
+            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[0]);
         }
     }
 
     void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
     {
-        instructionButtonLeft.SetActive(leftButton);
-        instructionButtonRight.SetActive(rightButton);
-        instructionButtonDone.SetActive(doneButton);
+        HUDManager.instance.instructionButton[0].SetActive(leftButton);
+        HUDManager.instance.instructionButton[1].SetActive(rightButton);
+        HUDManager.instance.instructionButton[2].SetActive(doneButton);
     }
 
     #endregion
@@ -288,32 +355,24 @@ public class PrologueSceneManager : MonoBehaviour
     void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
                         Sprite interactSprite, Sprite examineSprite)
     {
-        if(DeviceManager.instance.keyboardDevice)
-        {
-            Cursor.lockState = CursorLockMode.None; 
-        }
-        else if (DeviceManager.instance.gamepadDevice)
-        {
-            Cursor.lockState = CursorLockMode.Locked; 
-        }
-        
-        keyboardInstruction.SetActive(keyboardActive);
-        gamepadInstruction.SetActive(gamepadActive);
-        imageHUD[0].sprite = crouchSprite;
-        imageHUD[1].sprite = interactSprite;
-        imageHUD[2].sprite = examineSprite;
+        HUDManager.instance.keyboardInstruction.SetActive(keyboardActive);
+        HUDManager.instance.gamepadInstruction.SetActive(gamepadActive);
+
+        HUDManager.instance.imageHUD[0].sprite = crouchSprite;
+        HUDManager.instance.imageHUD[1].sprite = interactSprite;
+        HUDManager.instance.imageHUD[2].sprite = examineSprite;
     }
     
 
     public void RotatePlayer()
     {
-        player.transform.rotation = Quaternion.Euler(0, 120,0);
+        // player.transform.rotation = Quaternion.Euler(0, 120,0);
     }
 
     public void MovePlayer()
     {
         // player.transform.position = new Vector3(-6.5f, player.transform.position.y, -11);
-        playerModel.transform.position = new Vector3(0,0,0);
+        // playerModel.transform.position = new Vector3(0,0,0);
     }
 
     public void StartSuspenceSequence()

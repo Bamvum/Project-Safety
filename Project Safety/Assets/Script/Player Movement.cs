@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     [Header("Player")]
     [SerializeField] CharacterController characterController;
     [SerializeField] Transform playerBody;
@@ -59,26 +58,27 @@ public class PlayerMovement : MonoBehaviour
 
     void OnEnable()
     {
-        ScriptManager.instance.playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+        PlayerScript.instance.playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
 
-        ScriptManager.instance.playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        PlayerScript.instance.playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
 
-        ScriptManager.instance.playerControls.Player.Sprint.performed += ctx => runInput = true;
-        ScriptManager.instance.playerControls.Player.Sprint.canceled += ctx => runInput = false;
+        PlayerScript.instance.playerControls.Player.Sprint.performed += ctx => runInput = true;
+        PlayerScript.instance.playerControls.Player.Sprint.canceled += ctx => runInput = false;
 
-        ScriptManager.instance.playerControls.Player.Jump.performed += ctx => jumpInput = true;
-        ScriptManager.instance.playerControls.Player.Jump.canceled += ctx => jumpInput = false;
+        PlayerScript.instance.playerControls.Player.Jump.performed += ctx => jumpInput = true;
+        PlayerScript.instance.playerControls.Player.Jump.canceled += ctx => jumpInput = false;
 
-        ScriptManager.instance.playerControls.Player.Crouch.performed += ctx => crouchInput = true;
-        ScriptManager.instance.playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
+        PlayerScript.instance.playerControls.Player.Crouch.performed += ctx => crouchInput = true;
+        PlayerScript.instance.playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
         
-        ScriptManager.instance.playerControls.Player.Enable();
+        PlayerScript.instance.playerControls.Player.Enable();
+    
     }
 
     void OnDisable()
     {
-        ResetInputValue();   
-        ScriptManager.instance.playerControls.Player.Disable();
+        ResetInputValue();
+        PlayerScript.instance.playerControls.Player.Disable();
     }
 
     void  ResetInputValue()
@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         fallingHash = Animator.StringToHash("Falling");
         crouchHash = Animator.StringToHash("Crouch");
 
-        Cursor.lockState = CursorLockMode.Locked;  
+        // Cursor.lockState = CursorLockMode.Locked;  
     }
 
     void FixedUpdate()
@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
 
             playerAnim.SetBool(crouchHash, true);
         }
-        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput && !ScriptManager.instance.stamina.outOfStamina)
+        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput ) // && !ScriptManager.instance.stamina.outOfStamina
         {
             movementSpeed = runSpeed;
             playerAnim.SetBool(crouchHash, false);

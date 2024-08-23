@@ -52,17 +52,17 @@ public class Examine : MonoBehaviour
 
     void OnEnable()
     {
-        ScriptManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
-        ScriptManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
+        // ScriptManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
+        // ScriptManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
 
-        ScriptManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
+        // ScriptManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
 
-        ScriptManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
+        // ScriptManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
         
-        ScriptManager.instance.playerControls.Examine.Read.performed += ToRead;
-        ScriptManager.instance.playerControls.Examine.Back.performed += ToBack;
+        // ScriptManager.instance.playerControls.Examine.Read.performed += ToRead;
+        // ScriptManager.instance.playerControls.Examine.Back.performed += ToBack;
 
-        ScriptManager.instance.playerControls.Examine.Enable();
+        // ScriptManager.instance.playerControls.Examine.Enable();
     }
 
     #region - TO READ -
@@ -94,25 +94,25 @@ public class Examine : MonoBehaviour
         {
             examineMode = false;
 
-            ScriptManager.instance.interact.interactObject.transform.position = originalPosition;
-            ScriptManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
+            // ScriptManager.instance.interact.interactObject.transform.position = originalPosition;
+            // ScriptManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
 
-            ScriptManager.instance.interact.interactObject = null;
+            // ScriptManager.instance.interact.interactObject = null;
             // examineObject = null;
             item = null;
-            ScriptManager.instance.playerMovement.playerAnim.enabled = true;
+            // ScriptManager.instance.playerMovement.playerAnim.enabled = true;
 
-            HUDManager.instance.playerHUD.SetActive(true);
-            HUDManager.instance.examineHUD.SetActive(false);
+            // HUDManager.instance.playerHUD.SetActive(true);
+            // HUDManager.instance.examineHUD.SetActive(false);
 
             // DISABLE SCRIPT
             this.enabled = false;
 
             // ENABLE SCRIPT
-            ScriptManager.instance.playerMovement.enabled = true;
-            ScriptManager.instance.interact.enabled = true;
-            ScriptManager.instance.stamina.enabled = true;
-            ScriptManager.instance.cinemachineInputProvider.enabled = true;
+            // ScriptManager.instance.playerMovement.enabled = true;
+            // ScriptManager.instance.interact.enabled = true;
+            // ScriptManager.instance.stamina.enabled = true;
+            // ScriptManager.instance.cinemachineInputProvider.enabled = true;
         }
     }
 
@@ -120,7 +120,7 @@ public class Examine : MonoBehaviour
 
     void OnDisable()
     {   
-        ScriptManager.instance.playerControls.Examine.Disable();
+        // ScriptManager.instance.playerControls.Examine.Disable();
     }
 
     void Update()
@@ -128,12 +128,12 @@ public class Examine : MonoBehaviour
         
         if (!examineMode && !isLerping)
         {
-            item = ScriptManager.instance.interact.interactObject.GetComponent<Item>();
+            // item = ScriptManager.instance.interact.interactObject.GetComponent<Item>();
 
-            itemNameText.text = item.itemSO.itemName;
+            // itemNameText.text = item.itemSO.itemName;
 
-            originalPosition = ScriptManager.instance.interact.interactObject.transform.position;
-            originalRotation = ScriptManager.instance.interact.interactObject.transform.rotation.eulerAngles;
+            // originalPosition = ScriptManager.instance.interact.interactObject.transform.position;
+            // originalRotation = ScriptManager.instance.interact.interactObject.transform.rotation.eulerAngles;
             //targetObjectPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer) - (Camera.main.transform.right * xOffset);
             targetPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer);
 
@@ -153,15 +153,15 @@ public class Examine : MonoBehaviour
             float t = Mathf.Clamp01(lerpTime / lerpDuration);
 
             // Interpolate the position
-            ScriptManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
+            // ScriptManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
 
             if (t >= 1f)
             {
                 // Ensure object reaches exactly to the target position
-                ScriptManager.instance.interact.interactObject.transform.position = targetPosition;
+                // ScriptManager.instance.interact.interactObject.transform.position = targetPosition;
                 isLerping = false;
                 examineMode = true;
-                ScriptManager.instance.playerMovement.playerAnim.enabled = false;
+                // ScriptManager.instance.playerMovement.playerAnim.enabled = false;
             }
         }
 
@@ -198,8 +198,8 @@ public class Examine : MonoBehaviour
                 yAxis = gamepadRotationInput.y * (rotationSpeed * 20f);
             }
             
-            ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
-            ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
+            // ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
+            // ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
         }
     }
 

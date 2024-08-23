@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
-    [SerializeField] Animator playerAnim;
     [SerializeField] Transform handIKTarget;
     [SerializeField] Transform handTarget;
 
@@ -15,31 +14,17 @@ public class Interact : MonoBehaviour
     [HideInInspector] public DialogueTrigger dialogueTrigger;
     Interactable interactable;
 
-    
     [Header("Interact")]     
-    [SerializeField] float interactRange = 2.5f;
+    [SerializeField] float interactRange = 1.5f;
     [HideInInspector] public GameObject interactObject;
     RaycastHit hit;
-
-    
-    [Header("Interact/Examine HUD")]     
-    [SerializeField] Image[] interactImage;
-    [SerializeField] Sprite[] sprite;
-
-
-    void Awake()
-    {
-        playerAnim = GetComponent<Animator>();
-
-        ScriptManager.instance.playerControls = new PlayerControls();
-    }
     
     void OnEnable()
     {
-        ScriptManager.instance.playerControls.Player.Interact.performed += ToInteract;
-        ScriptManager.instance.playerControls.Player.Examine.performed += ToExamine;
+        PlayerScript.instance.playerControls.Player.Interact.performed += ToInteract;
+        PlayerScript.instance.playerControls.Player.Examine.performed += ToExamine;
 
-        ScriptManager.instance.playerControls.Player.Enable();
+        PlayerScript.instance.playerControls.Player.Enable();
     }
 
     #region - TO INTERACT -
@@ -53,9 +38,9 @@ public class Interact : MonoBehaviour
                 if(item.itemSO.isTakable)
                 {
                     // ITEM INTRACTION
-
                     handIKTarget.position = hit.collider.transform.position;
-                    playerAnim.SetTrigger("Grab");
+
+                    PlayerScript.instance.playerMovement.playerAnim.SetTrigger("Grab");
                     Debug.Log("Item Interact!");
                 }
             }
@@ -68,10 +53,6 @@ public class Interact : MonoBehaviour
             }
             else if(interactable != null)
             {
-                // INTERACTABLE INTRACTION
-                // handIKTarget.position = hit.collider.transform.position;
-                // playerAnim.SetTrigger("Interact");
-
                 if (interactable.isLightSwitch)
                 {
                     interactable.LightSwitchTrigger();
@@ -102,9 +83,6 @@ public class Interact : MonoBehaviour
         {
             Debug.Log("Item Examine!!");
 
-            // handIKTarget.position = hit.collider.transform.position;
-            // playerAnim.SetTrigger("Interact");
-            
             interactObject = hit.collider.gameObject;
 
             HUDManager.instance.playerHUD.SetActive(false);
@@ -112,12 +90,12 @@ public class Interact : MonoBehaviour
 
             // TODO - DISABLE SCRIPT
             this.enabled = false;
-            ScriptManager.instance.playerMovement.enabled = false;
-            ScriptManager.instance.stamina.enabled = false;
-            ScriptManager.instance.cinemachineInputProvider.enabled = false;
+            PlayerScript.instance.playerMovement.enabled = false;
+            // ScriptManager.instance.stamina.enabled = false;
+            PlayerScript.instance.cinemachineInputProvider.enabled = false;
             
-            // TODO - ENABLE SCRIPT
-            ScriptManager.instance.examine.enabled = true;
+            // // TODO - ENABLE SCRIPT
+            // ScriptManager.instance.examine.enabled = true;
         }
     }
     
@@ -125,7 +103,7 @@ public class Interact : MonoBehaviour
 
     void OnDisable()
     {
-        ScriptManager.instance.playerControls.Player.Disable();
+        PlayerScript.instance.playerControls.Player.Disable();
     }
 
     void Update()
@@ -134,67 +112,79 @@ public class Interact : MonoBehaviour
 
         if(hit.collider != null)
         {
-            item = null;
-            dialogueTrigger = null;
-            interactable = null;
-
-            playerAnim.SetBool("Interact", false);
-
-            // REMOVE SPRITE IN IMAGE 
-            ChangeImageStatus(false, false, null);
+            ResetPorperties();
         }
 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(ray, out hit, interactRange))
         {
-            #region - ITEM RAYCAST -
 
             if(hit.collider.gameObject.layer == 6)
             {
-                item = hit.collider.GetComponent<Item>();
-
-                if(item.itemSO.isTakable)
-                {
-                    ChangeImageStatus(true, true, sprite[0]);
-                }
-                else
-                {
-                    ChangeImageStatus(true, false, null);
-                }
+                Debug.Log("Item");
+                ItemRaycast();
             }
-        
-            #endregion
-
-            #region - DIALOGUE RAYCAST -
 
             if(hit.collider.gameObject.layer == 7)
             {
-                dialogueTrigger = hit.collider.GetComponent<DialogueTrigger>();
-
-                Debug.Log("NPC Name: " + hit.collider.name);
-
-                ChangeImageStatus(false, true, sprite[1]);
+                Debug.Log("Dialogue");
+                DialogueRaycast();
             }
-        
-            #endregion
-
-            #region - INTERACTABLE ENVIRONMENT RAYCAST -
-
+    
             if(hit.collider.gameObject.layer == 8)
             {
-                interactable = hit.collider.GetComponent<Interactable>();
-
-                ChangeImageStatus(false, true, sprite[0]);
+                Debug.Log("Interactable");
+                InteractableRaycast();
             }
-
-            #endregion
         }
     }
 
+    void ResetPorperties()
+    {
+        item = null;
+        dialogueTrigger = null;
+        interactable = null;
+
+        PlayerScript.instance.playerMovement.playerAnim.SetBool("Interact", false);
+
+        // REMOVE SPRITE IN IMAGE 
+        ChangeImageStatus(false, false, null);
+    }
+
+    void ItemRaycast()
+    {
+        item = hit.collider.GetComponent<Item>();
+
+        if (item.itemSO.isTakable)
+        {
+            ChangeImageStatus(true, true, HUDManager.instance.sprite[0]);
+        }
+        else
+        {
+            ChangeImageStatus(true, false, null);
+        }
+    }
+
+    void DialogueRaycast()
+    {
+        dialogueTrigger = hit.collider.GetComponent<DialogueTrigger>();
+
+        
+
+        ChangeImageStatus(false, true, HUDManager.instance.sprite[1]);
+    }
+
+    void InteractableRaycast()
+    {
+        interactable = hit.collider.GetComponent<Interactable>();
+
+        ChangeImageStatus(false, true, HUDManager.instance.sprite[0]);
+    }
+    
     void ChangeImageStatus(bool activeLeftIMGStatus, bool activeRightIMGStatus, Sprite imgSprite)
     {
-        interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
-        interactImage[1].gameObject.SetActive(activeRightIMGStatus);
-        interactImage[1].sprite = imgSprite;
+        HUDManager.instance.interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
+        HUDManager.instance.interactImage[1].gameObject.SetActive(activeRightIMGStatus);
+        HUDManager.instance.interactImage[1].sprite = imgSprite;
     }
 }

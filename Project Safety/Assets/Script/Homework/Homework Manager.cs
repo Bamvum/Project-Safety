@@ -127,16 +127,16 @@ public class HomeworkManager : MonoBehaviour
 
     void EndOfHomework()
     {
-        ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 2).OnComplete(() =>
-        {
-            HUDManager.instance.homeworkHUD.SetActive(false);
-            ScriptManager.instance.transitionManager.transitionImage.DOFade(0,2).OnComplete(() =>
-            {
-                // Debug.Log("Display Dialogou!");
-                this.enabled = false;
-                dialogueTrigger.StartDialogue();
-            });
-        });
+        // ScriptManager.instance.transitionManager.transitionImage.DOFade(1, 2).OnComplete(() =>
+        // {
+        //     HUDManager.instance.homeworkHUD.SetActive(false);
+        //     ScriptManager.instance.transitionManager.transitionImage.DOFade(0,2).OnComplete(() =>
+        //     {
+        //         // Debug.Log("Display Dialogou!");
+        //         this.enabled = false;
+        //         dialogueTrigger.StartDialogue();
+        //     });
+        // });
 
        
     }
