@@ -10,16 +10,8 @@ public class PlayerScript : MonoBehaviour
     void Awake()
     {
         instance = this;
-        // if(instance == null)
-        // {
-            
-        //     DontDestroyOnLoad(gameObject);
-        // }
-        // // else
-        // // {
-        // //     Destroy(gameObject);
-        // // }
-
+    
+        cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
         playerControls = new PlayerControls();
     }
 
@@ -29,6 +21,7 @@ public class PlayerScript : MonoBehaviour
     public PlayerMovement playerMovement;
     [Space(10)]
     public CinemachineVirtualCamera playerVC;
+    public CinemachineBrain cinemachineBrain;
     public CinemachineInputProvider cinemachineInputProvider;
     public Interact interact;
     public Examine examine;

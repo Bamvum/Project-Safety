@@ -1,43 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
+using Cinemachine;
 
-public class TransitionManager : MonoBehaviour
+public class CinemachineBlendTest : MonoBehaviour
 {
-    [Header("Transition")]
-    public  Image transitionImage;
-
-    [Header("How to Play (Instruction)")]
-    public CanvasGroup instructionHUD;
-
+    [SerializeField] CinemachineBrain cinemachineBrain;
+    [SerializeField] CinemachineVirtualCamera virtualCamera1;
+    [SerializeField] CinemachineVirtualCamera virtualCamera2;
+    
+    
     void Start()
     {
-
+        // Get the CinemachineBrain component from the main camera
+        cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
-    public void DisplayInstruction()
+    void Update()
     {
-        instructionHUD.DOFade(1, 1);
-    }
 
-    public void TransitionFadeIn()
-    {
-        transitionImage.DOFade(1, 2);
-    }
-
-    public void TransitionFadeOut()
-    {
-        transitionImage.DOFade(0, 2);
-    }
-
-    public void TransitionFadeInAndOut()
-    {
-        transitionImage.DOFade(1, 2).OnComplete(() =>
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            transitionImage.DOFade(0, 2);
-        });
-    }
+            virtualCamera1.Priority = 0;
+            virtualCamera2.Priority = 10;
+        }
+        // else
+        // {
+        //     virtualCamera1.Priority = 10;
+        //     virtualCamera2.Priority = 0;
+        // }
 
+
+        // Check if a blend is currently happening
+        if (cinemachineBrain.IsBlending)
+        {
+            Debug.Log("Cinemachine blend is in progress.");
+        }
+        else
+        {
+            Debug.Log("Cinemachine blend is complete.");
+        }
+
+    }
 }

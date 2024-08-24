@@ -32,13 +32,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject upOption;
     [SerializeField] GameObject rightOption;
 
-    [SerializeField] RectTransform leftOptionRectTransform;
-    [SerializeField] RectTransform upOptionRectTransform;
-    [SerializeField] RectTransform rightOptionRectTransform;
-    //         RectTransform leftOptionRectTransform = leftOption.GetComponent<RectTransform>();
-    //     RectTransform upOptionRectTransform = upOption.GetComponent<RectTransform>();
-    //     RectTransform rightOptionRectTransform = rightOption.GetComponent<RectTransform>();
-
     [Space(10)]
     [SerializeField] Image[] choicesImage;
     [SerializeField] Image actionImageHUD;
@@ -197,6 +190,7 @@ public class DialogueManager : MonoBehaviour
         if(dialogueList[currentDialogueIndex].isOtherEvent)
         {
             yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+            yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
 
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
@@ -207,6 +201,7 @@ public class DialogueManager : MonoBehaviour
             // IF STATEMENT ACTION INPUT IF AUDIO IS STOP PLAYING
             // if()
             yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+            yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
             
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
@@ -318,6 +313,10 @@ public class DialogueManager : MonoBehaviour
     
     void ChoiceHUDStatus(bool activeStatus, bool is3Question)
     {
+        RectTransform leftOptionRectTransform = leftOption.GetComponent<RectTransform>();
+        RectTransform upOptionRectTransform = upOption.GetComponent<RectTransform>();
+        RectTransform rightOptionRectTransform = rightOption.GetComponent<RectTransform>();
+
         // TODO - FIX CODE MAKE IT SHORTER
         leftOptionRectTransform.localScale = Vector3.zero;
         upOptionRectTransform.localScale = Vector3.zero;
