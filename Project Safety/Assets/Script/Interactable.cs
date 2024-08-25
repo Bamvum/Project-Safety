@@ -96,14 +96,5 @@ public class Interactable : MonoBehaviour
         Debug.Log("Player Accessed the Monitor!");
         // prologueSceneManager.TransitionToHomeworkQuiz();
         dialogueTrigger.StartDialogue();
-
-        // DISABLE SCRIPTS
-
-        // PlayerScript.instance.playerMovement.enabled = false;
-        // // PlayerScript.instance.playerMovement.playerAnim.enabled = false;
-        // PlayerScript.instance.cinemachineInputProvider.enabled = false;
-        // PlayerScript.instance.interact.enabled = false;
-        // // PlayerScript.instance.examine.enabled = false;
-
     }
 }
