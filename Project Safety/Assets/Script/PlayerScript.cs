@@ -30,4 +30,13 @@ public class PlayerScript : MonoBehaviour
     [Space(10)]
     public AudioSource missionSFX;
     
+
+    public void DisablePlayerScripts()
+    {
+        playerMovement.enabled = false;
+        cinemachineInputProvider.enabled = false;
+        interact.enabled = false;
+        examine.enabled = false;
+        stamina.enabled = false;
+    }
 }

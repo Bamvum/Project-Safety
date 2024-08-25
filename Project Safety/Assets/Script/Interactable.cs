@@ -94,16 +94,16 @@ public class Interactable : MonoBehaviour
     public void AccessMonitor()
     {
         Debug.Log("Player Accessed the Monitor!");
-        prologueSceneManager.TransitionToHomeworkQuiz();
-        // dialogueTrigger.StartDialogue();
+        // prologueSceneManager.TransitionToHomeworkQuiz();
+        dialogueTrigger.StartDialogue();
 
         // DISABLE SCRIPTS
 
-        PlayerScript.instance.playerMovement.enabled = false;
-        // PlayerScript.instance.playerMovement.playerAnim.enabled = false;
-        PlayerScript.instance.cinemachineInputProvider.enabled = false;
-        PlayerScript.instance.interact.enabled = false;
-        // PlayerScript.instance.examine.enabled = false;
+        // PlayerScript.instance.playerMovement.enabled = false;
+        // // PlayerScript.instance.playerMovement.playerAnim.enabled = false;
+        // PlayerScript.instance.cinemachineInputProvider.enabled = false;
+        // PlayerScript.instance.interact.enabled = false;
+        // // PlayerScript.instance.examine.enabled = false;
 
     }
 }

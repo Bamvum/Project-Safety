@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Cinemachine;
 
 
 public class PrologueSceneManager : MonoBehaviour
@@ -24,6 +25,9 @@ public class PrologueSceneManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] GameObject player;
     [SerializeField] GameObject playerModel;
+    
+    [Space(10)]
+    [SerializeField] AudioSource suspenceSFX;
 
     [Header("Prologue Game Object")]
     public GameObject PC;
@@ -42,6 +46,7 @@ public class PrologueSceneManager : MonoBehaviour
     int missionIndex;
     bool audioRepeat = false;
     bool isGamepad;
+    bool isSuspenceSFXPlaying;
     bool isLastPageReached;
     
     void Start()
@@ -84,6 +89,30 @@ public class PrologueSceneManager : MonoBehaviour
         if(!isLastPageReached)
         {
             LastPageChecker();
+        }
+
+        // TO NEXT SCENE (ACT 1 - STUDENT)
+        if(isSuspenceSFXPlaying)
+        {
+            // ELAPSED TIME == suspenseSFX.Clip.length
+            if(suspenceSFX.time >= suspenceSFX.clip.length)
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                {
+                    PlayerScript.instance.DisablePlayerScripts();
+
+                    LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                    LoadingSceneManager.instance.enabled = true;
+                    // NEXT SCENE NAME
+                    LoadingSceneManager.instance.sceneName = "Act 1 Student";
+                });
+
+                isSuspenceSFXPlaying = false;
+            }    
         }
     }
 
@@ -353,21 +382,23 @@ public class PrologueSceneManager : MonoBehaviour
 
     public void RotatePlayer()
     {
-        // player.transform.rotation = Quaternion.Euler(0, 120,0);
+        player.transform.rotation = Quaternion.Euler(0, 120,0);
     }
 
     public void MovePlayer()
     {
-        // player.transform.position = new Vector3(-6.5f, player.transform.position.y, -11);
-        // playerModel.transform.position = new Vector3(0,0,0);
+        player.transform.position = new Vector3(-6.5f, player.transform.position.y, -11);
+        playerModel.transform.position = new Vector3(0,0,0);
     }
 
     public void StartSuspenceSequence()
     {
         //TODO  -   CHANGE ALL LAYER OF EXAMINABLE GAMEOBJECT TO DEFAULT (LAYER 0)
         //      -   START SUSPENCE SOUND
-        //      -   START SUSPENCE SOUND
+        //      -   START VIGNETTE
 
+        suspenceSFX.Play();
+        isSuspenceSFXPlaying = true; 
     }
 
     #endregion

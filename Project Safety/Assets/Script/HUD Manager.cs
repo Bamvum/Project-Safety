@@ -23,7 +23,8 @@ public class HUDManager : MonoBehaviour
 
     // TODO -   CURSOR STATE
     //      -   IF STATEMENT (DIALOGUE HUD, PLAYER HUD, HOMEWORK HUD  IS ACTIVE) 
-
+    
+    public Image fadeImageForDialogue;
 
     [Header("Player Related HUD")]
     public GameObject playerHUD;
@@ -95,4 +96,9 @@ public class HUDManager : MonoBehaviour
         missionRectTransform.anchoredPosition = new Vector2(-325, missionRectTransform.anchoredPosition.y);
         missionCG.alpha = 0;
     } 
+
+    public void FadeForDialogue()
+    {
+
+    }
 }
