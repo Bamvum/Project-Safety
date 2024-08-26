@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -97,8 +98,13 @@ public class HUDManager : MonoBehaviour
         missionCG.alpha = 0;
     } 
 
-    public void FadeForDialogue()
+    public void FadeInForDialogue()
     {
+        fadeImageForDialogue.DOFade(1, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
+    }
 
+    public void FadeOutForDialogue()
+    {
+        fadeImageForDialogue.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
     }
 }
