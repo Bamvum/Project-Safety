@@ -49,6 +49,7 @@ public class DialogueProperties
     public string npcName;
     [TextArea(3, 10)]
     public string dialogue;
+    public float delayNextDialogue;
     public bool isEnd;
 
     [Header("Choices")]

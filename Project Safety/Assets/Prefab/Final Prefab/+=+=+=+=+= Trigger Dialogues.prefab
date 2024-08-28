@@ -48,6 +48,7 @@ MonoBehaviour:
   dialogueProperties:
   - npcName: 
     dialogue: ... (Fire Sound End)
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -67,6 +68,7 @@ MonoBehaviour:
         m_Calls: []
   - npcName: 
     dialogue: What is that sound. (Fade In)(Turn Around End)
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -110,6 +112,7 @@ MonoBehaviour:
           m_CallState: 2
   - npcName: 
     dialogue: Huh? (Start suspence music)
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -198,8 +201,77 @@ Transform:
   - {fileID: 4810525616920607938}
   - {fileID: 6727602295654104626}
   - {fileID: 7538775260166665365}
+  - {fileID: 32052885714932204}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2593441565359302675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32052885714932204}
+  - component: {fileID: 5632393397104285653}
+  m_Layer: 0
+  m_Name: Act 1 Student - Start Dialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &32052885714932204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593441565359302675}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8580774251856788887}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5632393397104285653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593441565359302675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b2c7d515eddab4983de40869752575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueManager: {fileID: 0}
+  dialogueProperties:
+  - npcName: 
+    dialogue: it's just a dream.
+    delayNextDialogue: 0
+    isEnd: 0
+    isDialogueAQuestion: 0
+    isDialogueA3ChoicesQuestion: 0
+    choiceAnswer1: 
+    choice1JumpTo: 0
+    choiceAnswer2: 
+    choice2JumpTo: 0
+    choiceAnswer3: 
+    choice3JumpTo: 0
+    dialogouAudio: {fileID: 0}
+    isOtherEvent: 0
+    startDialogueEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    endDialogueEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  isSpeaking: 0
+  speechTrigger: 0
 --- !u!1 &3035606316369262757
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +320,7 @@ MonoBehaviour:
   dialogueProperties:
   - npcName: 
     dialogue: Hmm...
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -291,6 +364,7 @@ MonoBehaviour:
           m_CallState: 2
   - npcName: 
     dialogue: It's loading.
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -358,6 +432,7 @@ MonoBehaviour:
   dialogueProperties:
   - npcName: 
     dialogue: It's already dark outside.
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -378,6 +453,7 @@ MonoBehaviour:
   - npcName: 
     dialogue: I intended to take just a short nap before starting my homework, but
       I must have overslept.
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -398,6 +474,7 @@ MonoBehaviour:
   - npcName: 
     dialogue: I suppose having that random alarm set in the middle of the night might
       actually be useful.
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -417,6 +494,7 @@ MonoBehaviour:
         m_Calls: []
   - npcName: 
     dialogue: I'd better get to my homework before it's due.
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -496,6 +574,7 @@ MonoBehaviour:
   dialogueProperties:
   - npcName: 
     dialogue: ... (Insery hungry SFX)
+    delayNextDialogue: 0
     isEnd: 0
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0
@@ -539,6 +618,7 @@ MonoBehaviour:
           m_CallState: 2
   - npcName: 
     dialogue: I should head downstairs to grab some food.
+    delayNextDialogue: 0
     isEnd: 1
     isDialogueAQuestion: 0
     isDialogueA3ChoicesQuestion: 0

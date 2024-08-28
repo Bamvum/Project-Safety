@@ -26,9 +26,6 @@ public class PlayerScript : MonoBehaviour
     public Interact interact;
     public Examine examine;
     public Stamina stamina;
-
-    [Space(10)]
-    public AudioSource missionSFX;
     
 
     public void DisablePlayerScripts()

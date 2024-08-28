@@ -18,7 +18,7 @@ public class PrologueSceneManager : MonoBehaviour
     }
     
     [SerializeField] MissionSO missionSO;
-
+    
     [Header("Script")]
     [SerializeField] HomeworkManager homeworkManager;
 
@@ -185,62 +185,19 @@ public class PrologueSceneManager : MonoBehaviour
         // FADEIN EFFECTS
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .OnComplete(() =>
-        {
-            HUDManager.instance.homeworkHUD.SetActive(true);
-            homeworkManager.enabled = true;
-            
+        {       
             // FADEOUT EFFECTS
             LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration).OnComplete(() =>
             {
+                HUDManager.instance.homeworkHUD.SetActive(true);
+                homeworkManager.enabled = true;
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                 
             });
         });
     }
 
-    #region - MISSION -
-
-    public void DisplayMission()
-    {
-        HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
-        PlayerScript.instance.missionSFX.Play();
-
-        HUDManager.instance.missionCG.DOFade(1, 1);
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
-        
-        if(missionIndex == 1)
-        {
-            PC.layer = 8;
-        }
-        else
-        {
-            PC.layer = 0;
-        }
-    }
-
-    public void HideMission()
-    {
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
-            .OnComplete(() =>
-        {
-            HUDManager.instance.missionRectTransform
-                .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
-                .OnComplete(() =>
-            {
-                if(missionIndex < missionSO.missions.Length - 1)
-                {
-                    missionIndex++;
-                }
-                DisplayMission();
-            });
-        });
-    }
-
-    #endregion
-
-    #region - INSTRUCTION -
+    // #region - INSTRUCTION -
 
      public void DisplayInstruction()
     {
@@ -284,7 +241,7 @@ public class PrologueSceneManager : MonoBehaviour
                 // Cursor.lockState = CursorLockMode.Locked;
 
                 HUDManager.instance.playerHUD.SetActive(true);
-                DisplayMission();
+                MissionManager.instance.DisplayMission();
             });
         });
     }
@@ -364,8 +321,6 @@ public class PrologueSceneManager : MonoBehaviour
         HUDManager.instance.instructionButton[1].SetActive(rightButton);
         HUDManager.instance.instructionButton[2].SetActive(doneButton);
     }
-
-    #endregion
 
     void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
                         Sprite interactSprite, Sprite examineSprite)

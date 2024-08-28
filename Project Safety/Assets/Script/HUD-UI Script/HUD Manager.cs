@@ -100,11 +100,17 @@ public class HUDManager : MonoBehaviour
 
     public void FadeInForDialogue()
     {
+        fadeImageForDialogue.gameObject.SetActive(true);
         fadeImageForDialogue.DOFade(1, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
     }
 
     public void FadeOutForDialogue()
     {
-        fadeImageForDialogue.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
+        fadeImageForDialogue.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            fadeImageForDialogue.gameObject.SetActive(false);
+        });
     }
 }

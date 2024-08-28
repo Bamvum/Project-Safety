@@ -2868,7 +2868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15153,6 +15153,7 @@ GameObject:
   - component: {fileID: 1196223873480739899}
   - component: {fileID: 4308371620280455413}
   - component: {fileID: 7916829208231704321}
+  - component: {fileID: 7244771434385396699}
   m_Layer: 5
   m_Name: +=+=+=+=+= Canvas
   m_TagString: Untagged
@@ -15269,6 +15270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typingSpeed: 0.03
+  elpasedTime: 0
+  maximumElapsedTime: 0
   dialogueBackground: {fileID: 8641723366391584849}
   dialogueText: {fileID: 892284488756085259}
   dialogueChoices:
@@ -15282,9 +15285,9 @@ MonoBehaviour:
   rightOption: {fileID: 4598814879697954412}
   choicesImage:
   - {fileID: 3090601336054607621}
-  - {fileID: 3638037830948506708}
-  - {fileID: 3639456900656650217}
-  - {fileID: 801234645900364955}
+  - {fileID: 7452429726305526735}
+  - {fileID: 1966529553568898920}
+  - {fileID: 1551742005441181033}
   actionImageHUD: {fileID: 3090601336054607621}
   keyboardSprite:
   - {fileID: 21300000, guid: b919fd354c046c24b8d33f4abeb17220, type: 3}
@@ -15297,6 +15300,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6764fa131dfbb9042a827d8c5589cb83, type: 3}
   - {fileID: 21300000, guid: ec96e98b82d48a843bc529da519b94e2, type: 3}
   dialogueSFX: {fileID: 0}
+  isFloatDelay: 0
   punchDuration: 0.3
   punchScale: 0.2
 --- !u!114 &1196223873480739899
@@ -15469,6 +15473,20 @@ MonoBehaviour:
     correctAnswer: 2
   choiceSelected: {fileID: 1049349311993739129}
   currentQuestion: 0
+--- !u!114 &7244771434385396699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732743448747996528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61b7e529df0c4742a86e985666e9cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionSO: {fileID: 11400000, guid: 4f56ed8c07d3caa41a7ae6d398cdbba1, type: 2}
+  missionSFX: {fileID: 0}
 --- !u!1 &6754267944268585666
 GameObject:
   m_ObjectHideFlags: 0
@@ -22859,7 +22877,7 @@ PrefabInstance:
     - target: {fileID: 1738960591140042455, guid: e6e9a095a7919834bb208659ce4a0ca3,
         type: 3}
       propertyPath: m_text
-      value: 'PROJECT: SAFETY BUILD 0.1.6
+      value: 'PROJECT: SAFETY BUILD 0.2.0
 
         WORK IN PROGRESS'
       objectReference: {fileID: 0}

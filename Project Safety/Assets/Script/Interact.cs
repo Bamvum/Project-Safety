@@ -17,7 +17,7 @@ public class Interact : MonoBehaviour
     [Header("Interact")]     
     [SerializeField] float interactRange = 1.5f;
     [HideInInspector] public GameObject interactObject;
-    RaycastHit hit;
+    public RaycastHit hit;
     
     void OnEnable()
     {

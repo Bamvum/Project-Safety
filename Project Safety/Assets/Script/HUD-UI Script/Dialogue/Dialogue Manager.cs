@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float typingSpeed = 0.03f;
     List<DialogueProperties> dialogueList;
     int currentDialogueIndex;
+    [SerializeField] float elpasedTime;
+    [SerializeField] float maximumElapsedTime;
 
     [Header("Dialogue HUD")]
     [SerializeField] RectTransform dialogueBackground;
@@ -47,6 +50,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] AudioSource dialogueSFX;
     bool isInDialogue;
     bool isSpecialEvent;
+    [SerializeField] bool isFloatDelay;
 
     [Header("DoTween")]
     [SerializeField] float punchDuration = 0.3f;
@@ -93,7 +97,19 @@ public class DialogueManager : MonoBehaviour
             {
                 ChangeImageStatus(gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3]);
             }
-        }
+
+            if(isFloatDelay)
+            {
+                if (elpasedTime != maximumElapsedTime)
+                {
+                    elpasedTime += Time.deltaTime;
+                }
+                else
+                {
+                    isFloatDelay = false;
+                }
+            }
+        }        
     }
 
     public void DialogueStart(List<DialogueProperties> textToPrint)
@@ -124,8 +140,11 @@ public class DialogueManager : MonoBehaviour
         {
             DialogueProperties line = dialogueList[currentDialogueIndex];
             isSpecialEvent =  dialogueList[currentDialogueIndex].isOtherEvent;
+            maximumElapsedTime = dialogueList[currentDialogueIndex].delayNextDialogue;
             dialogueSFX.clip = dialogueList[currentDialogueIndex].dialogouAudio;
             dialogueSFX.Play();
+            elpasedTime = 0;
+            // RESET ELAPSED TIME
 
             // npcName.text = line.npcName
 
@@ -177,9 +196,17 @@ public class DialogueManager : MonoBehaviour
     IEnumerator TypeText(string text)
     {
         dialogueText.text = string.Empty;
-        // isTyping = true;
         actionOption.SetActive(false);
         dialogueBackground.gameObject.SetActive(true);
+
+        if(dialogueList[currentDialogueIndex].delayNextDialogue != 0)
+        {
+            isFloatDelay = true;
+        }
+        else
+        {
+            isFloatDelay = false;
+        }
 
         foreach(char letter in text.ToCharArray())
         {
@@ -191,18 +218,18 @@ public class DialogueManager : MonoBehaviour
         {
             yield return new WaitUntil(() => !dialogueSFX.isPlaying);
             yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
-
+            yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+        
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
             dialogueBackground.gameObject.SetActive(false);
         }
         else
         {
-            // IF STATEMENT ACTION INPUT IF AUDIO IS STOP PLAYING
-            // if()
             yield return new WaitUntil(() => !dialogueSFX.isPlaying);
             yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
-            
+            yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+
             actionOption.SetActive(true);
             yield return new WaitUntil(() => actionInput == true);
             dialogueBackground.gameObject.SetActive(false);

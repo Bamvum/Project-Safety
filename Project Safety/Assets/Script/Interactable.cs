@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +10,10 @@ public class Interactable : MonoBehaviour
     [Header("Script")]
     [SerializeField] PrologueSceneManager prologueSceneManager;
     [SerializeField] DialogueTrigger dialogueTrigger;
-
+    
     [Header("Flags")]
     public bool isLightSwitch;
-     public bool isDoor;
+    public bool isDoor;
     public bool isPC;
     public bool isMonitor;
 
@@ -23,6 +24,11 @@ public class Interactable : MonoBehaviour
     [Space(10)]
     bool isInteracted;
     
+    [Header("Door")]
+    [SerializeField] GameObject doorParent;
+    
+    [SerializeField] Animator doorAnimator;
+
     void Update()
     {
 
@@ -46,7 +52,7 @@ public class Interactable : MonoBehaviour
             
             if(!isInteracted)
             {
-                prologueSceneManager.HideMission();
+                MissionManager.instance.HideMission();
                 isInteracted = true;
 
                 if(SceneManager.GetActiveScene().name == "Prologue")
@@ -60,10 +66,6 @@ public class Interactable : MonoBehaviour
 
     public void DoorTrigger()
     {
-        // TODO ANIMATION OF OPENING THE DOORS
-
-        
-
         // TODO FLAG TO NOT TRIGGER DIALOGUE AGAIN (ELSE PLAY SFX - LOCKED DOOR)
         if(SceneManager.GetActiveScene().name == "Prologue")
         {
@@ -73,8 +75,38 @@ public class Interactable : MonoBehaviour
                 isInteracted = true;
             }
         }
+        
+        if(isInteracted)
+        {
+            DoorClose();
+            isInteracted = false;
+        }
+        else
+        {
+            DoorOpen();
+            isInteracted = true;
+        }
     }
 
+    void DoorOpen()
+    {
+        Debug.Log("Door Open");
+        doorAnimator.SetBool("Door Open", true);
+        doorAnimator.SetBool("Door Close", false);
+
+        // PLAY DOOR SFX
+    }
+
+    void DoorClose()
+    {
+        Debug.Log("Door Close");
+        doorAnimator.SetBool("Door Close", true);
+        doorAnimator.SetBool("Door Open", false);
+
+        // PLAY DOOR SFX
+    }
+
+    
 
     public void PC()
     {
