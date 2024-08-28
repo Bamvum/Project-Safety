@@ -36,4 +36,25 @@ public class PlayerScript : MonoBehaviour
         examine.enabled = false;
         stamina.enabled = false;
     }
+
+    public void RotatePlayerTowards(Transform LookAtObject)
+    {
+        StartCoroutine(StartRotatePlayer(LookAtObject));
+    }
+
+    IEnumerator StartRotatePlayer(Transform LookAtObject)
+    {
+        Vector3 direction = LookAtObject.position - LookAtObject.position;
+        direction.y = 0; // Optional: Keep rotation in the horizontal plane only
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        while (playerMovement.transform.rotation != targetRotation)
+        {                                                                                                                   // rotationSpeed
+            playerMovement.transform.rotation = Quaternion.RotateTowards(playerMovement.transform.rotation, targetRotation, 1 * Time.deltaTime);
+            yield return null; // Wait for the next frame
+        }
+    }
+    
+
 }

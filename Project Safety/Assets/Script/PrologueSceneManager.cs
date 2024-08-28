@@ -186,10 +186,11 @@ public class PrologueSceneManager : MonoBehaviour
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .OnComplete(() =>
         {       
+            HUDManager.instance.homeworkHUD.SetActive(true);
             // FADEOUT EFFECTS
-            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration).OnComplete(() =>
+            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                .OnComplete(() =>
             {
-                HUDManager.instance.homeworkHUD.SetActive(true);
                 homeworkManager.enabled = true;
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                 
