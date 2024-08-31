@@ -69,6 +69,19 @@ public class Interact : MonoBehaviour
                 {
                     interactable.AccessMonitor();
                 }
+                else if(interactable.isSocketPlug)
+                {
+                    interactable.Unplug();
+                }
+                else if(interactable.isWardrobe)
+                {
+                    interactable.ChangeClothes();
+                }
+                else if(interactable.isOutsideDoor)
+                {
+                    interactable.GoOutside();
+
+                }
             }
         }
     }

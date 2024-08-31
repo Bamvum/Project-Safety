@@ -26,6 +26,8 @@ public class PlayerScript : MonoBehaviour
     public Interact interact;
     public Examine examine;
     public Stamina stamina;
+
+    [SerializeField] float playerRotationSpeed;
     
 
     public void DisablePlayerScripts()
@@ -44,14 +46,14 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator StartRotatePlayer(Transform LookAtObject)
     {
-        Vector3 direction = LookAtObject.position - LookAtObject.position;
+        Vector3 direction = LookAtObject.position - playerMovement.transform.position;
         direction.y = 0; // Optional: Keep rotation in the horizontal plane only
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         while (playerMovement.transform.rotation != targetRotation)
         {                                                                                                                   // rotationSpeed
-            playerMovement.transform.rotation = Quaternion.RotateTowards(playerMovement.transform.rotation, targetRotation, 1 * Time.deltaTime);
+            playerMovement.transform.rotation = Quaternion.RotateTowards(playerMovement.transform.rotation, targetRotation, playerRotationSpeed * Time.deltaTime);
             yield return null; // Wait for the next frame
         }
     }

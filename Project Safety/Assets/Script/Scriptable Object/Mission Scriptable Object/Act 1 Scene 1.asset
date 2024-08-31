@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missions:
   - Explore the house
+  - Unplug the Plug in your room
+  - Go to your room to change
+  - Head outside
   missionCompleted: {fileID: 0}

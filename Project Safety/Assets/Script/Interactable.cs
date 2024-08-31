@@ -16,6 +16,9 @@ public class Interactable : MonoBehaviour
     public bool isDoor;
     public bool isPC;
     public bool isMonitor;
+    public bool isSocketPlug;
+    public bool isWardrobe;
+    public bool isOutsideDoor;
 
     [Header("Light Switch")]
     [SerializeField] GameObject lightSource;
@@ -28,6 +31,10 @@ public class Interactable : MonoBehaviour
     [SerializeField] GameObject doorParent;
     
     [SerializeField] Animator doorAnimator;
+
+    [Header("Plug")]
+    [SerializeField] GameObject plug;
+    [SerializeField] GameObject unplug;
 
     void Update()
     {
@@ -49,18 +56,19 @@ public class Interactable : MonoBehaviour
             switchOn.SetActive(true);
             switchOff.SetActive(false);
 
-            
-            if(!isInteracted)
+            if(SceneManager.GetActiveScene().name == "Prologue")
             {
-                MissionManager.instance.HideMission();
-                isInteracted = true;
-
-                if(SceneManager.GetActiveScene().name == "Prologue")
+                if (!isInteracted)
                 {
+                    MissionManager.instance.HideMission();
+                    isInteracted = true;
+
+
                     this.enabled = false;
                     this.gameObject.layer = 0;
                 }
             }
+
         }
     }
 
@@ -75,16 +83,18 @@ public class Interactable : MonoBehaviour
                 isInteracted = true;
             }
         }
-        
-        if(isInteracted)
-        {
-            DoorClose();
-            isInteracted = false;
-        }
         else
         {
-            DoorOpen();
-            isInteracted = true;
+            if (isInteracted)
+            {
+                DoorClose();
+                isInteracted = false;
+            }
+            else
+            {
+                DoorOpen();
+                isInteracted = true;
+            }
         }
     }
 
@@ -128,5 +138,87 @@ public class Interactable : MonoBehaviour
         Debug.Log("Player Accessed the Monitor!");
         // prologueSceneManager.TransitionToHomeworkQuiz();
         dialogueTrigger.StartDialogue();
+    }
+
+    public void Unplug()
+    {
+        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        {
+            gameObject.layer = 0;
+
+            PlayerScript.instance.playerMovement.enabled = false;
+            PlayerScript.instance.interact.enabled = false;
+            PlayerScript.instance.cinemachineInputProvider.enabled = false;
+            // PlayerScript.instance.examine.enabled = false;
+
+            StartCoroutine(UnplugPlug());
+        }
+
+    }
+
+    IEnumerator UnplugPlug()
+    {
+        HUDManager.instance.FadeInForDialogue();
+
+        yield return new WaitForSeconds(1);
+        
+        plug.SetActive(false);
+        unplug.SetActive(true);
+        
+        Act1StudentSceneManager.instance.plugInteracted++;
+        HUDManager.instance.FadeOutForDialogue();
+
+        yield return new WaitForSeconds(1);
+        
+        if(Act1StudentSceneManager.instance.plugInteracted <= 5)
+        {
+            PlayerScript.instance.playerMovement.enabled = true;
+            PlayerScript.instance.interact.enabled = true;
+            PlayerScript.instance.cinemachineInputProvider.enabled = true;
+        }
+        // PlayerScript.instance.examine.enabled = true;
+    }
+
+
+    public void ChangeClothes()
+    {
+        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        {
+            gameObject.layer = 0;
+
+            PlayerScript.instance.playerMovement.enabled = false;
+            PlayerScript.instance.interact.enabled = false;
+            PlayerScript.instance.cinemachineInputProvider.enabled = false;
+            
+            StartCoroutine(ChangingCloth());
+        }
+    }
+
+    IEnumerator ChangingCloth()
+    {
+        HUDManager.instance.FadeInForDialogue();
+
+        yield return new WaitForSeconds(1);
+
+        HUDManager.instance.FadeOutForDialogue();
+
+        yield return new WaitForSeconds(1);
+
+        PlayerScript.instance.playerMovement.enabled = true;
+        PlayerScript.instance.interact.enabled = true;
+        PlayerScript.instance.cinemachineInputProvider.enabled = true;
+
+        Act1StudentSceneManager.instance.DoorEndingScene.layer = 8;
+        MissionManager.instance.HideMission();
+    }
+
+    public void GoOutside()
+    {
+        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        {
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 1 Scene 2";
+        }
     }
 }

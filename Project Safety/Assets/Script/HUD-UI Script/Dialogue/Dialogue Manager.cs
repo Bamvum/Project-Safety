@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue HUD")]
     [SerializeField] RectTransform dialogueBackground;
     [SerializeField] TMP_Text dialogueText;
+    [SerializeField] TMP_Text dialogueName;
 
     [Space(10)]
     [SerializeField] GameObject[] dialogueChoices;
@@ -139,14 +140,14 @@ public class DialogueManager : MonoBehaviour
         while (currentDialogueIndex < dialogueList.Count)
         {
             DialogueProperties line = dialogueList[currentDialogueIndex];
-            isSpecialEvent =  dialogueList[currentDialogueIndex].isOtherEvent;
-            maximumElapsedTime = dialogueList[currentDialogueIndex].delayNextDialogue;
-            dialogueSFX.clip = dialogueList[currentDialogueIndex].dialogouAudio;
+            isSpecialEvent =  line.isOtherEvent;
+            maximumElapsedTime = line.delayNextDialogue;
+            dialogueSFX.clip = line.dialogouAudio;
             dialogueSFX.Play();
             elpasedTime = 0;
             // RESET ELAPSED TIME
 
-            // npcName.text = line.npcName
+            dialogueName.text = line.npcName;
 
             line.startDialogueEvent?.Invoke();
             

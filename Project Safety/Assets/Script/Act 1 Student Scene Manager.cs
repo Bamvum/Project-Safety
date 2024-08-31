@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class Act1StudentSceneManager : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class Act1StudentSceneManager : MonoBehaviour
 
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
+    [SerializeField] DialogueTrigger momDialogueTrigger;
+
+    [Space(15)]
+    public GameObject DoorEndingScene;
 
     [Space(15)]
     [SerializeField] AudioSource bedPlayerAudio;
@@ -24,6 +29,7 @@ public class Act1StudentSceneManager : MonoBehaviour
     [Header("Flag")]
     bool audioRepeat;
     int missionIndex;
+    public int plugInteracted;
 
     void Start()
     {
@@ -40,15 +46,19 @@ public class Act1StudentSceneManager : MonoBehaviour
 
     void Update()
     {
-        // SCENE FLOW   -   PLAYER WAKES UP
-        //              -   HEAVY BREATHING 
-        //              -   
-        //              -   
-
         if(!audioRepeat)
         {
             CheckPlayerAudioPlaying();
         }
+
+        if(plugInteracted == 4)
+        {
+            momDialogueTrigger.StartDialogue();
+            PlayerScript.instance.DisablePlayerScripts();
+            plugInteracted++;
+        }
+
+
     }
 
     void CheckPlayerAudioPlaying()
@@ -69,36 +79,46 @@ public class Act1StudentSceneManager : MonoBehaviour
         }
     }
 
-    #region - MISSION -
-
-    public void DisplayMission()
+    public void PlayerToDiningArea(Transform locationPosition)
     {
-        HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
-        MissionManager.instance.missionSFX.Play();
-
-        HUDManager.instance.missionCG.DOFade(1, 1);
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
+        PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
     }
 
-    public void HideMission()
+    public void MethodTesting()
     {
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
-            .OnComplete(() =>
-        {
-            HUDManager.instance.missionRectTransform
-                .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
-                .OnComplete(() =>
-            {
-                if(missionIndex < missionSO.missions.Length - 1)
-                {
-                    missionIndex++;
-                }
-                DisplayMission();
-            });
-        });
+        
     }
+    
+    // #region - MISSION -
 
-    #endregion
+    // public void DisplayMission()
+    // {
+    //     HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
+    //     MissionManager.instance.missionSFX.Play();
+
+    //     HUDManager.instance.missionCG.DOFade(1, 1);
+    //     HUDManager.instance.missionRectTransform
+    //         .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
+    // }
+
+    // public void HideMission()
+    // {
+    //     HUDManager.instance.missionRectTransform
+    //         .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
+    //         .OnComplete(() =>
+    //     {
+    //         HUDManager.instance.missionRectTransform
+    //             .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
+    //             .OnComplete(() =>
+    //         {
+    //             if(missionIndex < missionSO.missions.Length - 1)
+    //             {
+    //                 missionIndex++;
+    //             }
+    //             DisplayMission();
+    //         });
+    //     });
+    // }
+
+    // #endregion
 }
