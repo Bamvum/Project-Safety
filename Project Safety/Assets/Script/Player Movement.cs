@@ -183,8 +183,9 @@ public class PlayerMovement : MonoBehaviour
 
             playerAnim.SetBool(crouchHash, true);
         }
-        else if (SceneManager.GetActiveScene().name != "Prologue" && runInput ) // && !ScriptManager.instance.stamina.outOfStamina
+        else if (PlayerScript.instance.canRunInThisScene && runInput && !PlayerScript.instance.stamina.outOfStamina ) // 
         {
+            Debug.Log("Player is Running!");
             movementSpeed = runSpeed;
             playerAnim.SetBool(crouchHash, false);
 
@@ -194,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            Debug.Log("Player is not Running!");
             movementSpeed = walkSpeed;
             playerAnim.SetBool(crouchHash, false);
             

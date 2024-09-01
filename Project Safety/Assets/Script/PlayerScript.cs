@@ -27,7 +27,10 @@ public class PlayerScript : MonoBehaviour
     public Examine examine;
     public Stamina stamina;
 
+    [Header("Flag")]
+    public bool canRunInThisScene;
     [SerializeField] float playerRotationSpeed;
+
     
 
     public void DisablePlayerScripts()
@@ -58,5 +61,9 @@ public class PlayerScript : MonoBehaviour
         }
     }
     
+    public void CanSprintInThisScene(bool enable)
+    {
+        canRunInThisScene = enable;
+    }
 
 }

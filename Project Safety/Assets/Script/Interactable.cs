@@ -4,6 +4,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class Interactable : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class Interactable : MonoBehaviour
     public bool isSocketPlug;
     public bool isWardrobe;
     public bool isOutsideDoor;
+    public bool isBus;
 
     [Header("Light Switch")]
     [SerializeField] GameObject lightSource;
@@ -170,7 +172,7 @@ public class Interactable : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         
-        if(Act1StudentSceneManager.instance.plugInteracted <= 5)
+        if(Act1StudentSceneManager.instance.plugInteracted <= 4)
         {
             PlayerScript.instance.playerMovement.enabled = true;
             PlayerScript.instance.interact.enabled = true;
@@ -182,7 +184,7 @@ public class Interactable : MonoBehaviour
 
     public void ChangeClothes()
     {
-        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        if(SceneManager.GetActiveScene().name == "Act 1 Scene 1")
         {
             gameObject.layer = 0;
 
@@ -214,11 +216,38 @@ public class Interactable : MonoBehaviour
 
     public void GoOutside()
     {
-        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        if(SceneManager.GetActiveScene().name == "Act 1 Scene 1")
         {
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Act 1 Scene 2";
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => 
+            {
+                PlayerScript.instance.DisablePlayerScripts();
+
+                LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                LoadingSceneManager.instance.enabled = true;
+                LoadingSceneManager.instance.sceneName = "Act 1 Scene 2";
+            });
+        }
+    }
+    public void BussEnter()
+    {
+        if(SceneManager.GetActiveScene().name == "Act 1 SCene 2")
+        {
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => 
+            {
+                PlayerScript.instance.DisablePlayerScripts();
+
+                LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                LoadingSceneManager.instance.enabled = true;
+                LoadingSceneManager.instance.sceneName = "Act 1 Scene 3";
+            });
         }
     }
 }

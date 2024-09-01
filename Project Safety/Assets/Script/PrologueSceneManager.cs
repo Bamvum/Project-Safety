@@ -81,10 +81,7 @@ public class PrologueSceneManager : MonoBehaviour
         {
             DeviceChecker();
         }
-        // else
-        // {
-        //     // Cursor.lockState = CursorLockMode.Locked;
-        // }
+
     
         if(!isLastPageReached)
         {
@@ -108,7 +105,7 @@ public class PrologueSceneManager : MonoBehaviour
                     LoadingSceneManager.instance.loadingScreen.SetActive(true);
                     LoadingSceneManager.instance.enabled = true;
                     // NEXT SCENE NAME
-                    LoadingSceneManager.instance.sceneName = "Act 1 Student";
+                    LoadingSceneManager.instance.sceneName = "Act 1 SCene 1";
                 });
 
                 isSuspenceSFXPlaying = false;

@@ -41,7 +41,6 @@ public class Act1StudentSceneManager : MonoBehaviour
 
         bedPlayerAudio.clip = heavyBreathingSFX;
         bedPlayerAudio.Play();
-    
     }
 
     void Update()
@@ -57,8 +56,6 @@ public class Act1StudentSceneManager : MonoBehaviour
             PlayerScript.instance.DisablePlayerScripts();
             plugInteracted++;
         }
-
-
     }
 
     void CheckPlayerAudioPlaying()
@@ -83,42 +80,4 @@ public class Act1StudentSceneManager : MonoBehaviour
     {
         PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
     }
-
-    public void MethodTesting()
-    {
-        
-    }
-    
-    // #region - MISSION -
-
-    // public void DisplayMission()
-    // {
-    //     HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
-    //     MissionManager.instance.missionSFX.Play();
-
-    //     HUDManager.instance.missionCG.DOFade(1, 1);
-    //     HUDManager.instance.missionRectTransform
-    //         .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
-    // }
-
-    // public void HideMission()
-    // {
-    //     HUDManager.instance.missionRectTransform
-    //         .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
-    //         .OnComplete(() =>
-    //     {
-    //         HUDManager.instance.missionRectTransform
-    //             .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
-    //             .OnComplete(() =>
-    //         {
-    //             if(missionIndex < missionSO.missions.Length - 1)
-    //             {
-    //                 missionIndex++;
-    //             }
-    //             DisplayMission();
-    //         });
-    //     });
-    // }
-
-    // #endregion
 }

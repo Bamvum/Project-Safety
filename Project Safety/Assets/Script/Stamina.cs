@@ -22,24 +22,24 @@ public class Stamina : MonoBehaviour
 
     void Update()
     {
-        // if(ScriptManager.instance.playerMovement.runInput && !ScriptManager.instance.playerMovement.crouchInput && !outOfStamina)
-        // {
-        //     stamina -= staminaCost * Time.deltaTime;
-        //     staminaBar.fillAmount = stamina/maxStamina;
+        if(PlayerScript.instance.playerMovement.runInput && !PlayerScript.instance.playerMovement.crouchInput && !outOfStamina)
+        {
+            stamina -= staminaCost * Time.deltaTime;
+            staminaBar.fillAmount = stamina/maxStamina;
 
-        //     if(stamina <= 0)
-        //     {
-        //         stamina = 0;
-        //         outOfStamina = true;
-        //     }
+            if(stamina <= 0)
+            {
+                stamina = 0;
+                outOfStamina = true;
+            }
             
-        //     if (staminaRecharge != null) 
-        //     {
-        //         StopCoroutine(staminaRecharge);
-        //     }
+            if (staminaRecharge != null) 
+            {
+                StopCoroutine(staminaRecharge);
+            }
             
-        //     staminaRecharge = StartCoroutine(RechargeStamina());
-        // }           
+            staminaRecharge = StartCoroutine(RechargeStamina());
+        }           
     } 
 
     IEnumerator RechargeStamina()

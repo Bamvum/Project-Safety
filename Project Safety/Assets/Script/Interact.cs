@@ -82,6 +82,10 @@ public class Interact : MonoBehaviour
                     interactable.GoOutside();
 
                 }
+                else if (interactable.isBus)
+                {
+                    interactable.BussEnter();
+                }
             }
         }
     }
