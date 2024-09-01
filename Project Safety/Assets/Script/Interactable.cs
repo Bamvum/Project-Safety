@@ -144,7 +144,7 @@ public class Interactable : MonoBehaviour
 
     public void Unplug()
     {
-        if(SceneManager.GetActiveScene().name == "Act 1 Student")
+        if(SceneManager.GetActiveScene().name == "Act 1 Scene 1")
         {
             gameObject.layer = 0;
 
