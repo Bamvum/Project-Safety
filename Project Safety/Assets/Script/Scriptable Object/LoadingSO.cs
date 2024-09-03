@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class LoadingSO : ScriptableObject
 {
     [Header("Did you know/Trivia/Facts")]
+    [TextArea(3, 10)]
     public string[] loadingText;
-    public Image[] previewScene;
+    public Sprite[] previewScene;
     
 }

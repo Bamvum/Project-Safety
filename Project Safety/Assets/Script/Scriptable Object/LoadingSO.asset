@@ -13,7 +13,16 @@ MonoBehaviour:
   m_Name: LoadingSO
   m_EditorClassIdentifier: 
   loadingText:
-  - Did You know?
-  - Trivia
-  - Fun Facts!!
-  previewScene: []
+  - "Many people think that the flames are what cause damage, injuries, and deaths
+    during a fire. However, smoke inhalation is a common concern with fires. You
+    don\u2019t even have to come in contact with the flames for fire to cause harm.
+    Smoke inhalation and smoke damage are serious dangers that are often overlooked."
+  - Plugging several high-energy devices into a socket is asking for trouble and
+    has been the source of a fire countless times. Share your devices as much as
+    you can between different sockets in order to minimise the risk of overheating.
+  - Arson can sound like the type of thing that only happens on television, but it
+    is not uncommon within both domestic and non domestic premises. Disgruntled employees,
+    employees who have been arsonists in the past and unwittingly employed are both
+    reasons to stay extremely vigilant as a business.
+  previewScene:
+  - {fileID: 21300000, guid: d473895e61586fa409f6f1b84112a6bf, type: 3}
