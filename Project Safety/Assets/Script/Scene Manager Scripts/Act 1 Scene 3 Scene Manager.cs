@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -11,7 +12,20 @@ public class Act1Scene3SceneManager : MonoBehaviour
     {
         instance = this;
     }
+
+    [Header("Dialogue Trigger")]
+    [SerializeField] DialogueTrigger startDialogue;
+
+    [Header("Player")]
+    [SerializeField] GameObject player;
+
+    [Space(10)]
+    [SerializeField] GameObject fireFighter;
+    [SerializeField] GameObject fireTruckPeople;
     [SerializeField] GameObject fireTruck;
+
+    [Space(10)]
+    [SerializeField] AudioSource streetAmbiance;
 
     [Header("Flags")] 
     [SerializeField] float fireTruckSpeed;
@@ -25,19 +39,39 @@ public class Act1Scene3SceneManager : MonoBehaviour
         //                                                         LoadingSceneManager.instance.fadeImage.color.b,
         //                                                         1);
 
+        // TODO -   MONOLOGUE BY PLAYER
+        //      -   
+
     }
 
     void Update()
     {
         if(!moveTowardFireTruck)
         {
-            fireTruck.transform.position = Vector3.Lerp(fireTruck.transform.position, new Vector3 (fireTruck.transform.position.x, fireTruck.transform.position.y, -21), Time.deltaTime * fireTruckSpeed);
+            fireTruck.transform.position = Vector3.MoveTowards(fireTruck.transform.position, new Vector3 (fireTruck.transform.position.x, fireTruck.transform.position.y, -21), Time.deltaTime * fireTruckSpeed);
 
             if(fireTruck.transform.position == new Vector3(fireTruck.transform.position.x, fireTruck.transform.position.y, -21))
             {
-                moveTowardFireTruck = true;
+                // FADE IN 
+                HUDManager.instance.fadeImageForDialogue.gameObject.SetActive(true);
+                HUDManager.instance.fadeImageForDialogue.DOFade(1, 2).OnComplete(() =>
+                {
+                    player.SetActive(true);
+                    fireFighter.SetActive(true);
+                    fireTruckPeople.SetActive(false);
+                    HUDManager.instance.fadeImageForDialogue.DOFade(0, 2).OnComplete(() =>
+                    {
+                        HUDManager.instance.fadeImageForDialogue.gameObject.SetActive(true);
+                        startDialogue.StartDialogue();
 
-                Debug.Log("Start Dialogue Trigger!");
+                        streetAmbiance.Play();
+                    });
+                });
+
+                moveTowardFireTruck = true;
+                
+
+                
             }
         }
     }

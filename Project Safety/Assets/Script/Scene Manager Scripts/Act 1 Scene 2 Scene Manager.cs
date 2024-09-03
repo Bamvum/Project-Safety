@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class Act1Scene2SceneManager : MonoBehaviour
 {
     public static Act1Scene2SceneManager instance {get; private set;}
-
-    [SerializeField] MissionSO missionSO;
     
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;

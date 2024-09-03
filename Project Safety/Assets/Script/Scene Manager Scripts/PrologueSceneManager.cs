@@ -17,8 +17,6 @@ public class PrologueSceneManager : MonoBehaviour
         instance = this;
     }
     
-    [SerializeField] MissionSO missionSO;
-    
     [Header("Script")]
     [SerializeField] HomeworkManager homeworkManager;
 
