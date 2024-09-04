@@ -363,6 +363,76 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""PlayerLayingDown"",
+            ""id"": ""2c545e5a-8a2a-4985-af5e-aff57401b011"",
+            ""actions"": [
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""78b5b408-d749-4183-9793-f42510d7e21b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f313553-77d3-4a05-bccb-a01d6f185900"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d8ee114f-db31-4fdb-91cb-4000542df260"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a261a6d-62f3-4198-b799-f9871193764e"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f47eb971-2df5-491c-839c-6abe0d5e9ff0"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6603f9c-adf0-42d4-ba85-b879eb517419"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Examine"",
             ""id"": ""b56fbaaf-9e4b-4acc-9e7e-225d2b9f7b69"",
             ""actions"": [
@@ -1106,6 +1176,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Examine = m_Player.FindAction("Examine", throwIfNotFound: true);
+        // PlayerLayingDown
+        m_PlayerLayingDown = asset.FindActionMap("PlayerLayingDown", throwIfNotFound: true);
+        m_PlayerLayingDown_Look = m_PlayerLayingDown.FindAction("Look", throwIfNotFound: true);
+        m_PlayerLayingDown_Action = m_PlayerLayingDown.FindAction("Action", throwIfNotFound: true);
         // Examine
         m_Examine = asset.FindActionMap("Examine", throwIfNotFound: true);
         m_Examine_Lock = m_Examine.FindAction("Lock", throwIfNotFound: true);
@@ -1346,6 +1420,60 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // PlayerLayingDown
+    private readonly InputActionMap m_PlayerLayingDown;
+    private List<IPlayerLayingDownActions> m_PlayerLayingDownActionsCallbackInterfaces = new List<IPlayerLayingDownActions>();
+    private readonly InputAction m_PlayerLayingDown_Look;
+    private readonly InputAction m_PlayerLayingDown_Action;
+    public struct PlayerLayingDownActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlayerLayingDownActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Look => m_Wrapper.m_PlayerLayingDown_Look;
+        public InputAction @Action => m_Wrapper.m_PlayerLayingDown_Action;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerLayingDown; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerLayingDownActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerLayingDownActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerLayingDownActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerLayingDownActionsCallbackInterfaces.Add(instance);
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(IPlayerLayingDownActions instance)
+        {
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(IPlayerLayingDownActions instance)
+        {
+            if (m_Wrapper.m_PlayerLayingDownActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerLayingDownActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerLayingDownActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerLayingDownActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerLayingDownActions @PlayerLayingDown => new PlayerLayingDownActions(this);
 
     // Examine
     private readonly InputActionMap m_Examine;
@@ -1772,6 +1900,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnExamine(InputAction.CallbackContext context);
+    }
+    public interface IPlayerLayingDownActions
+    {
+        void OnLook(InputAction.CallbackContext context);
+        void OnAction(InputAction.CallbackContext context);
     }
     public interface IExamineActions
     {

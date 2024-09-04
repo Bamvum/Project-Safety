@@ -40,9 +40,9 @@ public class HUDManager : MonoBehaviour
     [Space(5)]
     public GameObject instructionHUD;
     public Image instructionBG;
-    public RectTransform instructionBGRectTransform;
+    [HideInInspector] public RectTransform instructionBGRectTransform;
     public GameObject instructionContent;
-    public CanvasGroup instructionContentCG;
+    [HideInInspector] public CanvasGroup instructionContentCG;
 
     [Space(10)]
     public GameObject keyboardInstruction;

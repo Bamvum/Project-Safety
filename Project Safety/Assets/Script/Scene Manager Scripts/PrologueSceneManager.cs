@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using DG.Tweening;
 
 
+
 public class PrologueSceneManager : MonoBehaviour
 {
     public static PrologueSceneManager instance {get; private set;}
@@ -34,8 +35,7 @@ public class PrologueSceneManager : MonoBehaviour
     
     [Space(15)]
     public AudioSource monitorSFX;
-    [SerializeField] AudioSource playerAudio;
-    [SerializeField] AudioClip alarmAndWakeSFX;
+    [SerializeField] AudioSource alarmAndWakeSFX;
 
     [Header("Flag")]
     int missionIndex;
@@ -44,6 +44,7 @@ public class PrologueSceneManager : MonoBehaviour
     bool isSuspenceSFXPlaying;
     bool isLastPageReached;
     
+
     void Start()
     {
         // TODO -   IF PAUSE UI IS ACTIVE
@@ -58,8 +59,7 @@ public class PrologueSceneManager : MonoBehaviour
                                                                 1);
         
         // PLAY AUDIO CLIP IN PLAYERAUDIO
-        playerAudio.clip = alarmAndWakeSFX;
-        playerAudio.Play();
+        // alarmAndWakeSFX.Play();
 
         ChangeInstructionPageButtons(false, true, false);        
     }
@@ -67,50 +67,70 @@ public class PrologueSceneManager : MonoBehaviour
     void Update()
     {
         
-        if(!audioRepeat)
-        {
-            CheckPlayerAudioPlaying();
-        }
+        // TODO - ALARM SOUND
+        //      - DISPLAY TUTORIAL
+        //      - 
 
-        if (HUDManager.instance.instructionHUD.activeSelf)
-        {
-            DeviceChecker();
-        }
+        StartCoroutine(FadeOutFadeImage());
+
+        // if(!audioRepeat)
+        // {
+        //     CheckPlayerAudioPlaying();
+        // }
+
+        // if (HUDManager.instance.instructionHUD.activeSelf)
+        // {
+        //     DeviceChecker();
+        // }
 
     
-        if(!isLastPageReached)
+        // if(!isLastPageReached)
+        // {
+        //     LastPageChecker();
+        // }
+
+        // // TO NEXT SCENE (ACT 1 - STUDENT)
+        // if(isSuspenceSFXPlaying)
+        // {
+        //     // ELAPSED TIME == suspenseSFX.Clip.length
+        //     if(suspenceSFX.time >= suspenceSFX.clip.length)
+        //     {
+        //         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        //         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+        //             .SetEase(Ease.Linear)
+        //             .OnComplete(() =>
+        //         {
+        //             PlayerScript.instance.DisablePlayerScripts();
+
+        //             LoadingSceneManager.instance.loadingScreen.SetActive(true);
+        //             LoadingSceneManager.instance.enabled = true;
+        //             // NEXT SCENE NAME
+        //             LoadingSceneManager.instance.sceneName = "Act 1 SCene 1";
+        //         });
+
+        //         isSuspenceSFXPlaying = false;
+        //     }    
+        // }
+    }
+
+    IEnumerator FadeOutFadeImage()
+    {
+        yield return new WaitForSeconds(5);
+
+        Debug.Log("Wait for 5 Seconds");
+        LoadingSceneManager.instance.fadeImage
+                .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() =>
         {
-            LastPageChecker();
-        }
-
-        // TO NEXT SCENE (ACT 1 - STUDENT)
-        if(isSuspenceSFXPlaying)
-        {
-            // ELAPSED TIME == suspenseSFX.Clip.length
-            if(suspenceSFX.time >= suspenceSFX.clip.length)
-            {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-                    .SetEase(Ease.Linear)
-                    .OnComplete(() =>
-                {
-                    PlayerScript.instance.DisablePlayerScripts();
-
-                    LoadingSceneManager.instance.loadingScreen.SetActive(true);
-                    LoadingSceneManager.instance.enabled = true;
-                    // NEXT SCENE NAME
-                    LoadingSceneManager.instance.sceneName = "Act 1 SCene 1";
-                });
-
-                isSuspenceSFXPlaying = false;
-            }    
-        }
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+        });
     }
 
     void CheckPlayerAudioPlaying()
     {
-        if (!playerAudio.isPlaying)
+        if (!alarmAndWakeSFX.isPlaying)
         {
             Debug.Log("Player Audio is Done playing");
 
@@ -196,7 +216,8 @@ public class PrologueSceneManager : MonoBehaviour
     {
         Time.timeScale = 0;
         HUDManager.instance.instructionHUD.SetActive(true);
-
+            
+        Debug.Log("Display Instruction");
         HUDManager.instance.instructionBGRectTransform
             .DOSizeDelta(new Vector2(1920, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
             .SetEase(Ease.InQuad)

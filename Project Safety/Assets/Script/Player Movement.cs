@@ -225,8 +225,6 @@ public class PlayerMovement : MonoBehaviour
 
     void CamMovement()
     {
-        // TODO - FINALIK HEAD MOVEMENT
-
         if(DeviceManager.instance.keyboardDevice)
         {
             mouseSensitivity = 21.9f;
