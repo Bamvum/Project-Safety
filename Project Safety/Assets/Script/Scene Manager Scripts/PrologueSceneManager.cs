@@ -38,6 +38,7 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] AudioSource alarmAndWakeSFX;
 
     [Header("Flag")]
+    public bool toGetUp;
     int missionIndex;
     bool audioRepeat = false;
     bool isGamepad;
@@ -61,7 +62,9 @@ public class PrologueSceneManager : MonoBehaviour
         // PLAY AUDIO CLIP IN PLAYERAUDIO
         // alarmAndWakeSFX.Play();
 
-        ChangeInstructionPageButtons(false, true, false);        
+        ChangeInstructionPageButtons(false, true, false);
+
+        StartCoroutine(FadeOutFadeImage());
     }
     
     void Update()
@@ -71,7 +74,7 @@ public class PrologueSceneManager : MonoBehaviour
         //      - DISPLAY TUTORIAL
         //      - 
 
-        StartCoroutine(FadeOutFadeImage());
+       
 
         // if(!audioRepeat)
         // {
@@ -116,14 +119,15 @@ public class PrologueSceneManager : MonoBehaviour
 
     IEnumerator FadeOutFadeImage()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
 
-        Debug.Log("Wait for 5 Seconds");
+        Debug.Log("Wait for 10 Seconds");
         LoadingSceneManager.instance.fadeImage
                 .DOFade(0, LoadingSceneManager.instance.fadeDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
         {
+            toGetUp = true;
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
         });
     }
