@@ -11,6 +11,8 @@ public class TwistFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
     [Header("Scripts")]
+    [SerializeField] PlayerMovement playerMovement;
+
     [SerializeField] TPASS tpass;
 
     [Header("HUD")]
@@ -196,7 +198,7 @@ public class TwistFireExtinguisher : MonoBehaviour
             inputsPerformed = inputNeedToFinish;
 
             objectiveComplete = true;
-            PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
+            playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
 
             // blackImage.DOFade(1, tpass.inspectExtinguisherAnimLength).OnComplete(() =>
             // {

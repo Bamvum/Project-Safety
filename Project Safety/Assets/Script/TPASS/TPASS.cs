@@ -9,10 +9,12 @@ using DG.Tweening;
 
 public class TPASS : MonoBehaviour
 {
-    [ContextMenuItem("Trigger TPASS", "ExtinguisherTrigger")]
-
     PlayerControls playerControls;
-
+    [Header("Scripts")]
+    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] Interact interact;
+    [SerializeField] Stamina stamina;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
     [Space(10)]
     [SerializeField] TwistFireExtinguisher twistFE;
     [SerializeField] PullFireExtinguisher pullFE;
@@ -28,7 +30,10 @@ public class TPASS : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera pullExtinguisherVC;
 
     [Header("HUD")]
-    [SerializeField] GameObject extinguisherHUD;    
+    [SerializeField] GameObject playerHUD;
+    [SerializeField] GameObject extinguisherHUD;
+    [SerializeField] Image blackImage;
+    
     [Space(10)]
     [SerializeField] Image[] TPASSHUD;
 
@@ -67,23 +72,23 @@ public class TPASS : MonoBehaviour
                 Debug.Log("To Twist Method!");
                 extinguisherHUD.SetActive(false);
 
-                LoadingSceneManager.instance.fadeImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
                 {
                     // CINEMACHINE 
                     inspectExtinguisherVC.Priority = 0;
                     twistExtinguisherVC.Priority = 10;
 
                     // ANIMATION
-                    PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
+                    playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
                     
                     // EXTINGUISHER GAME OBJECT
                     fireExitinguisher[0].SetActive(false);
                     fireExitinguisher[1].SetActive(true);
 
-                    LoadingSceneManager.instance.fadeImage.DOFade(1,inspectExtinguisherAnimLength).OnComplete(() =>
+                    blackImage.DOFade(1,inspectExtinguisherAnimLength).OnComplete(() =>
                     {
                         // FADE
-                        LoadingSceneManager.instance.fadeImage.DOFade(0, inspectExtinguisherAnimLength);
+                        blackImage.DOFade(0, inspectExtinguisherAnimLength);
                         twistFE.enabled = true;
                         this.enabled = false;
                     });
@@ -104,7 +109,7 @@ public class TPASS : MonoBehaviour
                 Debug.Log("To Pull Method!");
                 extinguisherHUD.SetActive(false);
 
-                LoadingSceneManager.instance.fadeImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
                 {
                     // CINEMACHINE 
                     inspectExtinguisherVC.Priority = 0;
@@ -112,16 +117,16 @@ public class TPASS : MonoBehaviour
 
                     // ANIMATION
                     // playerMovement.playerAnim.SetBool("PullExtinguisher", true);
-                    PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
+                    playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
 
                     // EXTINGUISHER GAME OBJECT
                     fireExitinguisher[0].SetActive(false);
                     fireExitinguisher[1].SetActive(true);
 
-                    LoadingSceneManager.instance.fadeImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                    blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
                     {
                         // FADE
-                        LoadingSceneManager.instance.fadeImage.DOFade(0, inspectExtinguisherAnimLength);
+                        blackImage.DOFade(0, inspectExtinguisherAnimLength);
                         pullFE.enabled = true;
                         this.enabled = false;
                     });
@@ -163,7 +168,6 @@ public class TPASS : MonoBehaviour
         playerControls.Extinguisher.Disable();
     }
 
-    [ContextMenu("Trigger TPASS")]
     public void ExtinguisherTrigger()
     {
         // GAME OBJECT
@@ -171,11 +175,12 @@ public class TPASS : MonoBehaviour
         fireExitinguisher[1].SetActive(false);
 
         // ANIMATION
-        PlayerScript.instance.playerMovement.playerAnim.SetBool("Idle", true);
-        PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher", true);
+        playerMovement.playerAnim.SetBool("Idle", true);
+        playerMovement.playerAnim.SetBool("Extinguisher", true);
 
         // HUD
-        HUDManager.instance.playerHUD.SetActive(false);
+        playerHUD.SetActive(false);
+
 
         // CINEMACHINE
         playerVC.Priority = 0;
@@ -184,10 +189,10 @@ public class TPASS : MonoBehaviour
         pullExtinguisherVC.Priority = 0;        
 
         // DISABLE SCRIPT
-        PlayerScript.instance.playerMovement.enabled = false;
-        PlayerScript.instance.interact.enabled = false;
-        PlayerScript.instance.stamina.enabled = false;
-        PlayerScript.instance.cinemachineInputProvider.enabled = false;
+        playerMovement.enabled = false;
+        interact.enabled = false;
+        stamina.enabled = false;
+        cinemachineInputProvider.enabled = false;
 
         // ENABLE SCRIPT
         this.enabled = true;
@@ -232,4 +237,6 @@ public class TPASS : MonoBehaviour
         TPASSHUD[3].sprite = squeezeSprite;
         TPASSHUD[4].sprite = sweepSprite;
     }
+
+    
 }
