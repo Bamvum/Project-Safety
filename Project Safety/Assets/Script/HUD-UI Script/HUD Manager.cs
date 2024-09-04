@@ -12,14 +12,6 @@ public class HUDManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        // if (instance == null)
-        // {
-        //     DontDestroyOnLoad(triggerDialogues);
-        // }
-        // else
-        // {
-        //     Destroy(gameObject);
-        // }
     }
 
     // TODO -   CURSOR STATE

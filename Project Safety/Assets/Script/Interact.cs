@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
+    PlayerControls playerControls;
+
     [SerializeField] Transform handIKTarget;
     [SerializeField] Transform handTarget;
 
@@ -19,12 +19,21 @@ public class Interact : MonoBehaviour
     [HideInInspector] public GameObject interactObject;
     public RaycastHit hit;
     
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
     void OnEnable()
     {
-        PlayerScript.instance.playerControls.Player.Interact.performed += ToInteract;
-        PlayerScript.instance.playerControls.Player.Examine.performed += ToExamine;
+        playerControls.Player.Interact.performed += ToInteract;
+        playerControls.Player.Examine.performed += ToExamine;
 
-        PlayerScript.instance.playerControls.Player.Enable();
+        playerControls.Player.Enable();
+    }
+    
+    void OnDisable()
+    {
+        playerControls.Player.Disable();
     }
 
     #region - TO INTERACT -
@@ -118,11 +127,6 @@ public class Interact : MonoBehaviour
     
     #endregion
 
-    void OnDisable()
-    {
-        PlayerScript.instance.playerControls.Player.Disable();
-    }
-
     void Update()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactRange, Color.green);
@@ -156,6 +160,8 @@ public class Interact : MonoBehaviour
         }
     }
 
+    #region  - INTERACT RESET PROPERTIES (NULL) -
+
     void ResetPorperties()
     {
         item = null;
@@ -167,6 +173,10 @@ public class Interact : MonoBehaviour
         // REMOVE SPRITE IN IMAGE 
         ChangeImageStatus(false, false, null);
     }
+
+    #endregion
+
+    #region  - ITEM RAYCAST -
 
     void ItemRaycast()
     {
@@ -182,14 +192,20 @@ public class Interact : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region  - DIALOGUE RAYCAST -
+
     void DialogueRaycast()
     {
         dialogueTrigger = hit.collider.GetComponent<DialogueTrigger>();
 
-        
-
         ChangeImageStatus(false, true, HUDManager.instance.sprite[1]);
     }
+
+    #endregion
+
+    #region  - INTERACTABLE RAYCAST -
 
     void InteractableRaycast()
     {
@@ -197,6 +213,8 @@ public class Interact : MonoBehaviour
 
         ChangeImageStatus(false, true, HUDManager.instance.sprite[0]);
     }
+
+    #endregion
     
     void ChangeImageStatus(bool activeLeftIMGStatus, bool activeRightIMGStatus, Sprite imgSprite)
     {

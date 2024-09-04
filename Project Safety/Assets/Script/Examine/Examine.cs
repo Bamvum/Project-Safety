@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class Examine : MonoBehaviour
 {
+    PlayerControls playerControls;
+
     [Header("Script")]
     Item item;
     
@@ -50,19 +52,29 @@ public class Examine : MonoBehaviour
     float yAxis;
     bool isLock;
 
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+
+    }
     void OnEnable()
     {
-        // ScriptManager.instance.playerControls.Examine.Lock.performed += ctx => isLock = true;
-        // ScriptManager.instance.playerControls.Examine.Lock.canceled += ctx => isLock = false;
+        playerControls.Examine.Lock.performed += ctx => isLock = true;
+        playerControls.Examine.Lock.canceled += ctx => isLock = false;
 
-        // ScriptManager.instance.playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
+        playerControls.Examine.Rotation.performed += ctx => rotationInput = ctx.ReadValue<Vector2>();
 
-        // ScriptManager.instance.playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
+        playerControls.Examine.GamepadRotation.performed += ctx => gamepadRotationInput = ctx.ReadValue<Vector2>();
         
-        // ScriptManager.instance.playerControls.Examine.Read.performed += ToRead;
-        // ScriptManager.instance.playerControls.Examine.Back.performed += ToBack;
+        playerControls.Examine.Read.performed += ToRead;
+        playerControls.Examine.Back.performed += ToBack;
 
-        // ScriptManager.instance.playerControls.Examine.Enable();
+        playerControls.Examine.Enable();
+    }
+
+    void OnDisable()
+    {   
+        playerControls.Examine.Disable();
     }
 
     #region - TO READ -
@@ -117,11 +129,6 @@ public class Examine : MonoBehaviour
     }
 
     #endregion
-
-    void OnDisable()
-    {   
-        // ScriptManager.instance.playerControls.Examine.Disable();
-    }
 
     void Update()
     {

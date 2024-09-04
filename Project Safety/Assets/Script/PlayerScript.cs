@@ -12,10 +12,7 @@ public class PlayerScript : MonoBehaviour
         instance = this;
     
         cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
-        playerControls = new PlayerControls();
     }
-
-    public PlayerControls playerControls;
 
     [Header("Player")]
     public PlayerMovement playerMovement;

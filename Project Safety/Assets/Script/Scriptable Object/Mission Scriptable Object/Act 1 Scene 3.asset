@@ -15,6 +15,6 @@ MonoBehaviour:
   missions:
   - Head to the Fire station
   - Talk to the Fire Figthers
-  - Learn Fire Extinguisher
+  - Go to the Parking Lot
   - Talk to the Fire Fighter
   missionCompleted: {fileID: 0}

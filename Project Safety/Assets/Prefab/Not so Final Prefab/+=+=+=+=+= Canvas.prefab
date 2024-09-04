@@ -15455,7 +15455,9 @@ MonoBehaviour:
   loadingScreen: {fileID: 3215195006879863889}
   fadeImage: {fileID: 1564469050306476394}
   progressBar: {fileID: 8497959937638268727}
-  prompt: {fileID: 5839916824654224819}
+  previewImg: {fileID: 0}
+  prompt: {fileID: 457433346135170395}
+  sprite: []
   dykText: {fileID: 224950723817988875}
   loadingSO: {fileID: 11400000, guid: 73ae89138fa29f44bb91f8b31fcdb530, type: 2}
   fadeDuration: 1
