@@ -43,8 +43,7 @@ public class PlayerMovementLayingDown : MonoBehaviour
 
     void Start()
     {
-                
-        
+
     }
 
     void Update()
