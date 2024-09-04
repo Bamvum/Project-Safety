@@ -2,6 +2,45 @@
     "name": "Player Controls",
     "maps": [
         {
+            "name": "Loading UI",
+            "id": "5593f047-3883-44fc-a57f-1b305e4e4c9e",
+            "actions": [
+                {
+                    "name": "Action",
+                    "type": "Button",
+                    "id": "e802b13c-6ba3-4eb1-aa4e-0f964953108d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b75126c2-acc7-49f3-a5a9-da25e6329052",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4b6a37e-5e19-4be1-9b56-dbb1e28d417f",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Player",
             "id": "51c15480-5370-447b-adb0-c9ad5ac3cb07",
             "actions": [

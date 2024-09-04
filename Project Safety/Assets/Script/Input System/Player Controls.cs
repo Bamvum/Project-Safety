@@ -24,6 +24,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ""name"": ""Player Controls"",
     ""maps"": [
         {
+            ""name"": ""Loading UI"",
+            ""id"": ""5593f047-3883-44fc-a57f-1b305e4e4c9e"",
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""e802b13c-6ba3-4eb1-aa4e-0f964953108d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b75126c2-acc7-49f3-a5a9-da25e6329052"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4b6a37e-5e19-4be1-9b56-dbb1e28d417f"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Player"",
             ""id"": ""51c15480-5370-447b-adb0-c9ad5ac3cb07"",
             ""actions"": [
@@ -1054,6 +1093,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
+        // Loading UI
+        m_LoadingUI = asset.FindActionMap("Loading UI", throwIfNotFound: true);
+        m_LoadingUI_Action = m_LoadingUI.FindAction("Action", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
@@ -1156,6 +1198,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
+
+    // Loading UI
+    private readonly InputActionMap m_LoadingUI;
+    private List<ILoadingUIActions> m_LoadingUIActionsCallbackInterfaces = new List<ILoadingUIActions>();
+    private readonly InputAction m_LoadingUI_Action;
+    public struct LoadingUIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public LoadingUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_LoadingUI_Action;
+        public InputActionMap Get() { return m_Wrapper.m_LoadingUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(LoadingUIActions set) { return set.Get(); }
+        public void AddCallbacks(ILoadingUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_LoadingUIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_LoadingUIActionsCallbackInterfaces.Add(instance);
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(ILoadingUIActions instance)
+        {
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(ILoadingUIActions instance)
+        {
+            if (m_Wrapper.m_LoadingUIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ILoadingUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_LoadingUIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_LoadingUIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public LoadingUIActions @LoadingUI => new LoadingUIActions(this);
 
     // Player
     private readonly InputActionMap m_Player;
@@ -1670,6 +1758,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PullFEActions @PullFE => new PullFEActions(this);
+    public interface ILoadingUIActions
+    {
+        void OnAction(InputAction.CallbackContext context);
+    }
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);

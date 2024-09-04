@@ -9,8 +9,7 @@ using DG.Tweening;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-    // TODO - SCRIPTABLE OBJECT FOR DID YOU KNOW/TRIVIA
-    //      - RANDOMIZE DYK/TRIVIA 
+    // ATTACHED TO CANVAS GAME OBJECT
 
     public static LoadingSceneManager instance {get; private set;}
 
@@ -21,12 +20,15 @@ public class LoadingSceneManager : MonoBehaviour
 
     [Header("Loading Screen")]
     public GameObject loadingScreen; 
+    
+    [Space(10)]
     public Image fadeImage;
     [SerializeField] Image progressBar;
     [SerializeField] Image previewImg;
     [SerializeField] Image prompt;
     [SerializeField] Sprite[] sprite;
-    
+    bool actionPressed;
+
     [Space(10)]
     [SerializeField] TMP_Text dykText;
     [SerializeField] LoadingSO loadingSO;
@@ -39,6 +41,25 @@ public class LoadingSceneManager : MonoBehaviour
         instance = this;
 
         playerControls = new PlayerControls();
+    }
+    
+    void OnEnable()
+    {
+        //
+        ActivatePlayerControls();
+
+        playerControls.LoadingUI.Enable();
+    }
+
+    void ActivatePlayerControls()
+    {
+        playerControls.LoadingUI.Action.performed += ctx => actionPressed = true;
+        playerControls.LoadingUI.Action.canceled += ctx => actionPressed = false;
+    }
+
+    void OnDisable()
+    {
+        playerControls.LoadingUI.Disable();
     }
     
     void Start()
@@ -93,7 +114,8 @@ public class LoadingSceneManager : MonoBehaviour
                 progressBar.gameObject.SetActive(false);
                 prompt.gameObject.SetActive(true);
 
-                if(Input.GetKeyDown(KeyCode.Space))
+                // NEW INPUT SYSTEM
+                if(actionPressed)
                 {
                     fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
                     {
