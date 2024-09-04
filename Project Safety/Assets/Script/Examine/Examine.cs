@@ -9,6 +9,7 @@ public class Examine : MonoBehaviour
 {
     PlayerControls playerControls;
 
+
     [Header("Script")]
     Item item;
     
@@ -33,6 +34,7 @@ public class Examine : MonoBehaviour
 
     // EXAMINE OBJECT POSITION AND ROTATION
     [Space(10)]
+    GameObject examineObject;
     Vector3 originalPosition;
     Vector3 originalRotation;
     Vector3 targetPosition;
@@ -106,25 +108,25 @@ public class Examine : MonoBehaviour
         {
             examineMode = false;
 
-            // ScriptManager.instance.interact.interactObject.transform.position = originalPosition;
-            // ScriptManager.instance.interact.interactObject.transform.eulerAngles = originalRotation;
+            PlayerScript.instance.interact.interactObject.transform.position = originalPosition;
+            PlayerScript.instance.interact.interactObject.transform.eulerAngles = originalRotation;
 
-            // ScriptManager.instance.interact.interactObject = null;
-            // examineObject = null;
+            PlayerScript.instance.interact.interactObject = null;
+            examineObject = null;
             item = null;
-            // ScriptManager.instance.playerMovement.playerAnim.enabled = true;
+            PlayerScript.instance.playerMovement.playerAnim.enabled = true;
 
-            // HUDManager.instance.playerHUD.SetActive(true);
-            // HUDManager.instance.examineHUD.SetActive(false);
+            HUDManager.instance.playerHUD.SetActive(true);
+            HUDManager.instance.examineHUD.SetActive(false);
 
             // DISABLE SCRIPT
             this.enabled = false;
 
             // ENABLE SCRIPT
-            // ScriptManager.instance.playerMovement.enabled = true;
-            // ScriptManager.instance.interact.enabled = true;
-            // ScriptManager.instance.stamina.enabled = true;
-            // ScriptManager.instance.cinemachineInputProvider.enabled = true;
+            PlayerScript.instance.playerMovement.enabled = true;
+            PlayerScript.instance.interact.enabled = true;
+            PlayerScript.instance.stamina.enabled = true;
+            PlayerScript.instance.cinemachineInputProvider.enabled = true;
         }
     }
 
@@ -135,13 +137,13 @@ public class Examine : MonoBehaviour
         
         if (!examineMode && !isLerping)
         {
-            // item = ScriptManager.instance.interact.interactObject.GetComponent<Item>();
+            item = PlayerScript.instance.interact.interactObject.GetComponent<Item>();
 
-            // itemNameText.text = item.itemSO.itemName;
+            itemNameText.text = item.itemSO.itemName;
 
-            // originalPosition = ScriptManager.instance.interact.interactObject.transform.position;
-            // originalRotation = ScriptManager.instance.interact.interactObject.transform.rotation.eulerAngles;
-            //targetObjectPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer) - (Camera.main.transform.right * xOffset);
+            originalPosition = PlayerScript.instance.interact.interactObject.transform.position;
+            originalRotation = PlayerScript.instance.interact.interactObject.transform.rotation.eulerAngles;
+            // targetObjectPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer) - (Camera.main.transform.right * xOffset);
             targetPosition = Camera.main.transform.position + (Camera.main.transform.forward * item.itemSO.itemDistanceToPlayer);
 
             // Vector3 lookAtDirection = (Camera.main.transform.position - target.transform.position).normalized;
@@ -160,15 +162,15 @@ public class Examine : MonoBehaviour
             float t = Mathf.Clamp01(lerpTime / lerpDuration);
 
             // Interpolate the position
-            // ScriptManager.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
+            PlayerScript.instance.interact.interactObject.transform.position = Vector3.Lerp(originalPosition, targetPosition, t);
 
             if (t >= 1f)
             {
                 // Ensure object reaches exactly to the target position
-                // ScriptManager.instance.interact.interactObject.transform.position = targetPosition;
+                PlayerScript.instance.interact.interactObject.transform.position = targetPosition;
                 isLerping = false;
                 examineMode = true;
-                // ScriptManager.instance.playerMovement.playerAnim.enabled = false;
+                PlayerScript.instance.playerMovement.playerAnim.enabled = false;
             }
         }
 
@@ -205,8 +207,8 @@ public class Examine : MonoBehaviour
                 yAxis = gamepadRotationInput.y * (rotationSpeed * 20f);
             }
             
-            // ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
-            // ScriptManager.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
+            PlayerScript.instance.interact.interactObject.transform.Rotate(Vector3.up, -xAxis, Space.World);
+            PlayerScript.instance.interact.interactObject.transform.Rotate(Vector3.right, -yAxis, Space.World);
         }
     }
 

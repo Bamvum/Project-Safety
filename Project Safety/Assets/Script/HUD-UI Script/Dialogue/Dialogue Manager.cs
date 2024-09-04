@@ -120,10 +120,9 @@ public class DialogueManager : MonoBehaviour
         // DISABLE OTHER SCRIPTS
 
         PlayerScript.instance.playerMovement.enabled = false;
-        // playerMovement.playerAnim.enabled = false;
         PlayerScript.instance.interact.enabled = false;
-        // ScriptManager.instance.stamina.enabled = false;
         PlayerScript.instance.cinemachineInputProvider.enabled = false;
+        PlayerScript.instance.stamina.enabled = false;
 
         DialogueHUDShow();
 
@@ -293,8 +292,11 @@ public class DialogueManager : MonoBehaviour
         PlayerScript.instance.playerMovement.enabled = true;
         PlayerScript.instance.interact.enabled = true;
         PlayerScript.instance.cinemachineInputProvider.enabled = true;
-        // playerMovement.playerAnim.enabled = true;
-        // ScriptManager.instance.stamina.enabled = true;
+        
+        if(PlayerScript.instance.canRunInThisScene)
+        {
+            PlayerScript.instance.stamina.enabled = false;
+        }
 
         // DOTWEENING
         DialogueHUDHide();

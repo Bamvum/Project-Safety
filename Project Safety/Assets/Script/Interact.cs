@@ -117,11 +117,11 @@ public class Interact : MonoBehaviour
             // TODO - DISABLE SCRIPT
             this.enabled = false;
             PlayerScript.instance.playerMovement.enabled = false;
-            // ScriptManager.instance.stamina.enabled = false;
+            PlayerScript.instance.stamina.enabled = false;
             PlayerScript.instance.cinemachineInputProvider.enabled = false;
             
-            // // TODO - ENABLE SCRIPT
-            // ScriptManager.instance.examine.enabled = true;
+            // TODO - ENABLE SCRIPT
+            PlayerScript.instance.examine.enabled = true;
         }
     }
     
