@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class MissionManager : MonoBehaviour
 {
@@ -15,18 +16,33 @@ public class MissionManager : MonoBehaviour
 
     [SerializeField] MissionSO missionSO;
     
+    [Space(5)]
+    public TMP_Text missionText;
+    public RectTransform missionRectTransform;
+    public CanvasGroup missionCG;
+    
     [Space(10)]
     public AudioSource missionSFX;
     int missionIndex;
 
+    void Start()
+    {
+        MissionPropertiesReset();
+    }
+
+    void MissionPropertiesReset()
+    {
+        // ASSIGN
+        missionRectTransform.anchoredPosition = new Vector2(-325, missionRectTransform.anchoredPosition.y);
+        missionCG.alpha = 0;
+    }
     public void DisplayMission()
     {
-        HUDManager.instance.missionText.text = missionSO.missions[missionIndex];
+        missionText.text = missionSO.missions[missionIndex];
         missionSFX.Play();
 
-        HUDManager.instance.missionCG.DOFade(1, 1);
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(225.5f, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1);
+        missionCG.DOFade(1, 1);
+        missionRectTransform.DOAnchorPos(new Vector2(225.5f, missionRectTransform.anchoredPosition.y), 1);
     
         if(SceneManager.GetActiveScene().name == "Prologue")
         {
@@ -43,12 +59,11 @@ public class MissionManager : MonoBehaviour
 
     public void HideMission()
     {
-        HUDManager.instance.missionRectTransform
-            .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), 1)
+        missionRectTransform
+            .DOAnchorPos(new Vector2(-325, missionRectTransform.anchoredPosition.y), 1)
             .OnComplete(() =>
         {
-            HUDManager.instance.missionRectTransform
-                .DOAnchorPos(new Vector2(-325, HUDManager.instance.missionRectTransform.anchoredPosition.y), .5f)
+            missionRectTransform.DOAnchorPos(new Vector2(-325, missionRectTransform.anchoredPosition.y), .5f)
                 .OnComplete(() =>
             {
                 if (missionIndex < missionSO.missions.Length - 1)

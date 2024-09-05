@@ -24,6 +24,7 @@ public class PrologueSceneManager : MonoBehaviour
     
     [Space(10)]
     [SerializeField] AudioSource suspenceSFX;
+    [SerializeField] AudioSource alarmSFX;
 
     [Header("Prologue Game Object")]
     public GameObject PC;
@@ -35,7 +36,6 @@ public class PrologueSceneManager : MonoBehaviour
     
     [Space(15)]
     public AudioSource monitorSFX;
-    [SerializeField] AudioSource alarmAndWakeSFX;
 
     [Header("Flag")]
     public bool toGetUp;
@@ -62,29 +62,13 @@ public class PrologueSceneManager : MonoBehaviour
         // PLAY AUDIO CLIP IN PLAYERAUDIO
         // alarmAndWakeSFX.Play();
 
-        ChangeInstructionPageButtons(false, true, false); 
+        // ChangeInstructionPageButtons(false, true, false); 
         
         StartCoroutine(FadeOutFadeImage());     
     }
     
     void Update()
     {
-        
-        // TODO - ALARM SOUND
-        //      - DISPLAY TUTORIAL
-        //      - 
-
-        // if (HUDManager.instance.instructionHUD.activeSelf)
-        // {
-        //     DeviceChecker();
-        // }
-
-    
-        // if(!isLastPageReached)
-        // {
-        //     LastPageChecker();
-        // }
-
         // // TO NEXT SCENE (ACT 1 - STUDENT)
         // if(isSuspenceSFXPlaying)
         // {
@@ -112,61 +96,22 @@ public class PrologueSceneManager : MonoBehaviour
 
     IEnumerator FadeOutFadeImage()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
+        alarmSFX.Play();
 
+        yield return new WaitForSeconds(5);
         Debug.Log("Wait for 5 Seconds");
         LoadingSceneManager.instance.fadeImage
                 .DOFade(0, LoadingSceneManager.instance.fadeDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
         {
+           
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
         });
-        
-        yield return new WaitForSeconds(5);
+
+        yield return new WaitForSeconds(3);
         toGetUp = true;
-    }
-
-    void DeviceChecker()
-    {
-        if (DeviceManager.instance.keyboardDevice)
-        {
-            ChangeImageStatus(true, false, HUDManager.instance.keyboardSprite[0],
-                                            HUDManager.instance.keyboardSprite[1],
-                                            HUDManager.instance.keyboardSprite[2]);
-
-            EventSystem.current.SetSelectedGameObject(null);
-
-            isGamepad = false;
-        }
-        else if (DeviceManager.instance.gamepadDevice)
-        {
-            ChangeImageStatus(false, true, HUDManager.instance.gamepadSprite[0],
-                                            HUDManager.instance.gamepadSprite[1],
-                                            HUDManager.instance.gamepadSprite[2]);
-
-            if (!isGamepad)
-            {
-                if(HUDManager.instance.instructionButton[1].activeSelf)
-                {
-                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-                }   
-                else
-                {
-                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);
-                }
-
-                isGamepad = true;
-            }
-        }
-    }
-
-    void LastPageChecker()
-    {
-        if (HUDManager.instance.instructionPage[2].activeSelf)
-        {
-            isLastPageReached = true;
-        }
     }
 
     public void TransitionToHomeworkQuiz()
@@ -189,144 +134,6 @@ public class PrologueSceneManager : MonoBehaviour
         });
     }
 
-    // #region - INSTRUCTION -
-
-    [ContextMenu("Display")]
-    public void DisplayInstruction()
-    {
-        Time.timeScale = 0;
-        HUDManager.instance.instructionHUD.SetActive(true);
-            
-        Debug.Log("Display Instruction");
-        HUDManager.instance.instructionBGRectTransform
-            .DOSizeDelta(new Vector2(1920, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
-            .SetEase(Ease.InQuad)
-            .SetUpdate(true)
-            .OnComplete(() =>
-        {
-            HUDManager.instance.instructionContent.SetActive(true);
-            HUDManager.instance.instructionContentCG
-                .DOFade(1, .75f)
-                .SetUpdate(true);
-        });
-    }
-    [ContextMenu("Display1")]
-    public void HideInstruction()
-    {
-        Time.timeScale = 1;
-        HUDManager.instance.instructionContentCG
-            .DOFade(1, .75f).OnComplete(() =>
-        {
-            HUDManager.instance.instructionContent.SetActive(false);
-            HUDManager.instance.instructionBGRectTransform
-                .DOSizeDelta(new Vector2(0, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
-                .SetEase(Ease.OutQuad)
-                .OnComplete(() =>
-            {
-                HUDManager.instance.instructionHUD.SetActive(false);
-
-                //ENABLE SCRIPT
-                PlayerScript.instance.playerMovement.enabled = true;
-                // PlayerScript.instance.playerMovement.playerAnim.enabled = true;
-                PlayerScript.instance.cinemachineInputProvider.enabled = true;
-                PlayerScript.instance.interact.enabled = true;
-                // PlayerScript.instance.examine.enabled = true;
-
-                // Cursor.lockState = CursorLockMode.Locked;
-
-                HUDManager.instance.playerHUD.SetActive(true);
-                MissionManager.instance.DisplayMission();
-            });
-        });
-    }
-
-    public void instructionNextPage()
-    {
-        if(HUDManager.instance.instructionPage[0].activeSelf)
-        {
-            if(isLastPageReached)
-            {
-                ChangeInstructionPageButtons(true, true, true);
-            }
-            else
-            {
-                ChangeInstructionPageButtons(true, true, false);
-            }
-
-            HUDManager.instance.instructionPage[0].SetActive(false);
-            HUDManager.instance.instructionPage[1].SetActive(true);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-        }
-        else if (HUDManager.instance.instructionPage[1].activeSelf)
-        {
-            // TODO -   DOUBLE CHECK. IF NEED TO DO A LASTPAGEREACHED IF STATEMENT 
-
-            ChangeInstructionPageButtons(true,  false, true);
-        
-            HUDManager.instance.instructionPage[1].SetActive(false);
-            HUDManager.instance.instructionPage[2].SetActive(true);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);    
-        }
-        else if (HUDManager.instance.instructionPage[2].activeSelf)
-        {
-
-        }
-    }
-
-    public void instructionPreviousPage()
-    {
-        if (HUDManager.instance.instructionPage[0].activeSelf)
-        {
-            
-        }
-        else if (HUDManager.instance.instructionPage[1].activeSelf)
-        {
-            if(isLastPageReached)
-            {
-                ChangeInstructionPageButtons(false, true, true);
-            }
-            else
-            {
-                ChangeInstructionPageButtons(false, true, false);
-            }
-
-            HUDManager.instance.instructionPage[0].SetActive(true);
-            HUDManager.instance.instructionPage[1].SetActive(false);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-        }
-        else if (HUDManager.instance.instructionPage[3].activeSelf)
-        {
-
-            ChangeInstructionPageButtons(true, true, true);
-
-            HUDManager.instance.instructionPage[1].SetActive(true);
-            HUDManager.instance.instructionPage[2].SetActive(false);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[0]);
-        }
-    }
-
-    void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
-    {
-        HUDManager.instance.instructionButton[0].SetActive(leftButton);
-        HUDManager.instance.instructionButton[1].SetActive(rightButton);
-        HUDManager.instance.instructionButton[2].SetActive(doneButton);
-    }
-
-    void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
-                        Sprite interactSprite, Sprite examineSprite)
-    {
-        HUDManager.instance.keyboardInstruction.SetActive(keyboardActive);
-        HUDManager.instance.gamepadInstruction.SetActive(gamepadActive);
-
-        HUDManager.instance.imageHUD[0].sprite = crouchSprite;
-        HUDManager.instance.imageHUD[1].sprite = interactSprite;
-        HUDManager.instance.imageHUD[2].sprite = examineSprite;
-    }
-    
     #region - SCENE MANAGEMENT -
 
     public void RotatePlayer()

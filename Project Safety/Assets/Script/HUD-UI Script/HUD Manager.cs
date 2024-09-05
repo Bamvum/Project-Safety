@@ -27,36 +27,6 @@ public class HUDManager : MonoBehaviour
     [Header("Interact HUD")]
     public Image[] interactImage;
     public Sprite[] sprite;
-
-    
-
-    [Header("Instruction HUD")]
-    public GameObject[] instructionPage;
-    // 0 - Left
-    // 1 - Right
-    // 2 - Done
-    public GameObject[] instructionButton;
-    
-    [Space(5)]
-    public GameObject instructionHUD;
-    public Image instructionBG;
-    [HideInInspector] public RectTransform instructionBGRectTransform;
-    public GameObject instructionContent;
-    [HideInInspector] public CanvasGroup instructionContentCG;
-
-    [Space(10)]
-    public GameObject keyboardInstruction;
-    public GameObject gamepadInstruction;
-
-    [Space(10)]
-    public Image[] imageHUD;
-    public Sprite[] keyboardSprite;
-    public Sprite[] gamepadSprite;
-
-    [Header("Mission HUD")]
-    public TMP_Text missionText;
-    public RectTransform missionRectTransform;
-    public CanvasGroup missionCG;
     
     [Header("Homework HUD")]
     public GameObject homeworkHUD;
@@ -65,30 +35,6 @@ public class HUDManager : MonoBehaviour
     public TMP_Text homeworkScoreText;
     public TMP_Text questionText;
     public GameObject[] homeworkChoices;
-
-
-    void Start()
-    {
-        instructionBGRectTransform = instructionBG.GetComponent<RectTransform>();
-        instructionContentCG = instructionContent.GetComponent<CanvasGroup>();
-        
-        InstructionPropertiesReset();
-        MissionPropertiesReset();
-    }
-
-    void InstructionPropertiesReset()
-    {
-        // ASSIGN
-        instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
-        instructionContentCG.alpha = 0;
-    }
-
-    void MissionPropertiesReset()
-    {
-        // ASSIGN
-        missionRectTransform.anchoredPosition = new Vector2(-325, missionRectTransform.anchoredPosition.y);
-        missionCG.alpha = 0;
-    } 
 
     public void FadeInForDialogue()
     {

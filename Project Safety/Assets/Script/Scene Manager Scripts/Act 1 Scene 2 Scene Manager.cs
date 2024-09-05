@@ -66,10 +66,10 @@ public class Act1Scene2SceneManager : MonoBehaviour
 
        VehicleLerp();
 
-        if (HUDManager.instance.instructionHUD.activeSelf)
-        {
-            DeviceChecker();
-        }
+        // if (HUDManager.instance.instructionHUD.activeSelf)
+        // {
+        //     DeviceChecker();
+        // }
     }
 
     void CheckPlayerAudioPlaying()

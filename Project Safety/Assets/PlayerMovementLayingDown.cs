@@ -67,27 +67,26 @@ public class PlayerMovementLayingDown : MonoBehaviour
             {
                 if (toRepeatInstruction)
                 {
-                    PrologueSceneManager.instance.DisplayInstruction();
+                    // PrologueSceneManager.instance.DisplayInstruction();
+                    Debug.Log("Display Instruction");
+                    InstructionManager.instance.ShowInstruction();
+                    
                     toRepeatInstruction = false;
                 }
 
                 if(canMove)
                 {
+                    prompt.SetActive(true);
 
+                    if(actionPressed)
+                    {
+                        prompt.SetActive(false);
+                        sleepingAnimation.SetBool("To stand up", true);
+
+                        StartCoroutine(DisableScript());
+                        toRepeat = false;
+                    }
                 }
-                // else
-                // {
-                //     prompt.SetActive(true);
-
-                //     if (actionPressed)
-                //     {
-                //         prompt.SetActive(false);
-                //         sleepingAnimation.SetBool("To stand up", true);
-
-                //         StartCoroutine(DisableScript());
-                //         toRepeat = false;
-                //     }
-                // }
             }
         }
 
@@ -96,8 +95,6 @@ public class PlayerMovementLayingDown : MonoBehaviour
         {
             sleepingCharacter.transform.position = Vector3.MoveTowards(sleepingCharacter.transform.position, new Vector3(sleepingCharacter.transform.position.x, 3.15f, -13.2f), Time.deltaTime * sleepingCharacterSpeed);
         }
-
-
     }
 
     IEnumerator DisableScript()
