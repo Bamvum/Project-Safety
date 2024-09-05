@@ -14,7 +14,7 @@ public class PrologueSceneManager : MonoBehaviour
     {
         instance = this;
     }
-    
+ 
     [Header("Script")]
     [SerializeField] HomeworkManager homeworkManager;
 
@@ -38,6 +38,7 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] AudioSource alarmAndWakeSFX;
 
     [Header("Flag")]
+    public bool toGetUp;
     int missionIndex;
     bool audioRepeat = false;
     bool isGamepad;
@@ -61,7 +62,9 @@ public class PrologueSceneManager : MonoBehaviour
         // PLAY AUDIO CLIP IN PLAYERAUDIO
         // alarmAndWakeSFX.Play();
 
-        ChangeInstructionPageButtons(false, true, false);        
+        ChangeInstructionPageButtons(false, true, false); 
+        
+        StartCoroutine(FadeOutFadeImage());     
     }
     
     void Update()
@@ -70,13 +73,6 @@ public class PrologueSceneManager : MonoBehaviour
         // TODO - ALARM SOUND
         //      - DISPLAY TUTORIAL
         //      - 
-
-        StartCoroutine(FadeOutFadeImage());
-
-        // if(!audioRepeat)
-        // {
-        //     CheckPlayerAudioPlaying();
-        // }
 
         // if (HUDManager.instance.instructionHUD.activeSelf)
         // {
@@ -126,26 +122,9 @@ public class PrologueSceneManager : MonoBehaviour
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
         });
-    }
-
-    void CheckPlayerAudioPlaying()
-    {
-        if (!alarmAndWakeSFX.isPlaying)
-        {
-            Debug.Log("Player Audio is Done playing");
-
-            // FADEOUT EFFECTS
-            LoadingSceneManager.instance.fadeImage
-                .DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() =>
-            {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-
-                audioRepeat = true;
-                startDialogueTrigger.StartDialogue();
-            });
-        }
+        
+        yield return new WaitForSeconds(5);
+        toGetUp = true;
     }
 
     void DeviceChecker()
@@ -212,7 +191,8 @@ public class PrologueSceneManager : MonoBehaviour
 
     // #region - INSTRUCTION -
 
-     public void DisplayInstruction()
+    [ContextMenu("Display")]
+    public void DisplayInstruction()
     {
         Time.timeScale = 0;
         HUDManager.instance.instructionHUD.SetActive(true);
@@ -229,8 +209,8 @@ public class PrologueSceneManager : MonoBehaviour
                 .DOFade(1, .75f)
                 .SetUpdate(true);
         });
-    } 
-
+    }
+    [ContextMenu("Display1")]
     public void HideInstruction()
     {
         Time.timeScale = 1;
@@ -317,7 +297,7 @@ public class PrologueSceneManager : MonoBehaviour
 
             EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
         }
-        else if (HUDManager.instance.instructionPage[2].activeSelf)
+        else if (HUDManager.instance.instructionPage[3].activeSelf)
         {
 
             ChangeInstructionPageButtons(true, true, true);
