@@ -120,9 +120,8 @@ public class DialogueManager : MonoBehaviour
         // DISABLE OTHER SCRIPTS
 
         PlayerScript.instance.playerMovement.enabled = false;
-        // playerMovement.playerAnim.enabled = false;
         PlayerScript.instance.interact.enabled = false;
-        // ScriptManager.instance.stamina.enabled = false;
+        PlayerScript.instance.stamina.enabled = false;
         PlayerScript.instance.cinemachineInputProvider.enabled = false;
 
         DialogueHUDShow();

@@ -10,10 +10,6 @@ using DG.Tweening;
 public class TwistFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
-    [Header("Scripts")]
-    [SerializeField] PlayerMovement playerMovement;
-
-    [SerializeField] TPASS tpass;
 
     [Header("HUD")]
     [SerializeField] GameObject twistFEHUD;
@@ -143,7 +139,7 @@ public class TwistFireExtinguisher : MonoBehaviour
 
         twistFEHUD.SetActive(false);
 
-        tpass.ExtinguisherTrigger();
+        // TPASS.instance.ExtinguisherTrigger();
     }
 
     void Update()
@@ -198,7 +194,7 @@ public class TwistFireExtinguisher : MonoBehaviour
             inputsPerformed = inputNeedToFinish;
 
             objectiveComplete = true;
-            playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
+            PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
 
             // blackImage.DOFade(1, tpass.inspectExtinguisherAnimLength).OnComplete(() =>
             // {

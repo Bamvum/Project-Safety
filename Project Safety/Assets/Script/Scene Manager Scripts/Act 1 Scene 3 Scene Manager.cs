@@ -53,25 +53,22 @@ public class Act1Scene3SceneManager : MonoBehaviour
             if(fireTruck.transform.position == new Vector3(fireTruck.transform.position.x, fireTruck.transform.position.y, -21))
             {
                 // FADE IN 
-                HUDManager.instance.fadeImageForDialogue.gameObject.SetActive(true);
-                HUDManager.instance.fadeImageForDialogue.DOFade(1, 2).OnComplete(() =>
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                LoadingSceneManager.instance.fadeImage.DOFade(1, 2).OnComplete(() =>
                 {
                     player.SetActive(true);
                     fireFighter.SetActive(true);
                     fireTruckPeople.SetActive(false);
-                    HUDManager.instance.fadeImageForDialogue.DOFade(0, 2).OnComplete(() =>
+                    LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
                     {
-                        HUDManager.instance.fadeImageForDialogue.gameObject.SetActive(true);
+                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
                         startDialogue.StartDialogue();
 
                         streetAmbiance.Play();
                     });
                 });
 
-                moveTowardFireTruck = true;
-                
-
-                
+                moveTowardFireTruck = true;                
             }
         }
     }

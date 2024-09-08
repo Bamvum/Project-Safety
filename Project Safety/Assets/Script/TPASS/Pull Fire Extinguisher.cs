@@ -114,7 +114,7 @@ public class PullFireExtinguisher : MonoBehaviour
 
         pullFEHUD.SetActive(false);
 
-        tpass.ExtinguisherTrigger();
+        // tpass.ExtinguisherTrigger();
     }
 
     public void PullFireExtinguisherTrigger()
