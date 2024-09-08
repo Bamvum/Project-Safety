@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using TMPro;
 
 
 
@@ -16,6 +17,7 @@ public class PrologueSceneManager : MonoBehaviour
     }
  
     [Header("Script")]
+    public OnAndOffGameObject onAndOffGameObject;
     [SerializeField] HomeworkManager homeworkManager;
 
     [Header("Player")]
@@ -24,12 +26,13 @@ public class PrologueSceneManager : MonoBehaviour
     
     [Space(10)]
     [SerializeField] AudioSource suspenceSFX;
-    [SerializeField] AudioSource alarmSFX;
+    public AudioSource alarmSFX;
 
     [Header("Prologue Game Object")]
     public GameObject PC;
     public GameObject monitor;
     public GameObject[] monitorScreen;
+    public GameObject lightSwitch;
 
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
@@ -39,12 +42,7 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("Flag")]
     public bool toGetUp;
-    int missionIndex;
-    bool audioRepeat = false;
-    bool isGamepad;
     bool isSuspenceSFXPlaying;
-    bool isLastPageReached;
-    
 
     void Start()
     {
@@ -69,29 +67,29 @@ public class PrologueSceneManager : MonoBehaviour
     
     void Update()
     {
-        // // TO NEXT SCENE (ACT 1 - STUDENT)
-        // if(isSuspenceSFXPlaying)
-        // {
-        //     // ELAPSED TIME == suspenseSFX.Clip.length
-        //     if(suspenceSFX.time >= suspenceSFX.clip.length)
-        //     {
-        //         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        // TO NEXT SCENE (ACT 1 - STUDENT)
+        if(isSuspenceSFXPlaying)
+        {
+            // ELAPSED TIME == suspenseSFX.Clip.length
+            if(suspenceSFX.time >= suspenceSFX.clip.length)
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
-        //         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-        //             .SetEase(Ease.Linear)
-        //             .OnComplete(() =>
-        //         {
-        //             PlayerScript.instance.DisablePlayerScripts();
+                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                {
+                    PlayerScript.instance.DisablePlayerScripts();
 
-        //             LoadingSceneManager.instance.loadingScreen.SetActive(true);
-        //             LoadingSceneManager.instance.enabled = true;
-        //             // NEXT SCENE NAME
-        //             LoadingSceneManager.instance.sceneName = "Act 1 SCene 1";
-        //         });
+                    LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                    LoadingSceneManager.instance.enabled = true;
+                    // NEXT SCENE NAME
+                    LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
+                });
 
-        //         isSuspenceSFXPlaying = false;
-        //     }    
-        // }
+                isSuspenceSFXPlaying = false;
+            }    
+        }
     }
 
     IEnumerator FadeOutFadeImage()
@@ -114,22 +112,25 @@ public class PrologueSceneManager : MonoBehaviour
         toGetUp = true;
     }
 
+
     public void TransitionToHomeworkQuiz()
     {
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        // FADEIN EFFECTS
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
             .OnComplete(() =>
-        {       
-            HUDManager.instance.homeworkHUD.SetActive(true);
-            // FADEOUT EFFECTS
+        {
+            HomeworkManager.instance.enabled = true;
+            HomeworkManager.instance.homeworkHUD.SetActive(true);
             LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                .OnComplete(() =>
+                .SetEase(Ease.Linear)
+                .OnComplete(() => 
             {
-                homeworkManager.enabled = true;
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                
+                HomeworkManager.instance.homeworkHUD.SetActive(true);
+                PlayerScript.instance.playerMovement.enabled = false;
+                PlayerScript.instance.cinemachineInputProvider.enabled = false;
+                PlayerScript.instance.stamina.enabled = false;
             });
         });
     }

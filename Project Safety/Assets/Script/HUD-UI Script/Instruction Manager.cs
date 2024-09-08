@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using System;
 using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class InstructionManager : MonoBehaviour
 {
@@ -30,14 +32,17 @@ public class InstructionManager : MonoBehaviour
     [SerializeField] Image instructionImage;
     [SerializeField] TMP_Text instructionText;
 
+    [Header("Flag")]
+    bool isGamepad = false;
     int counter;
+
+
+    // TESTING DELETE WHEN AUDIO MANAGER IS MADE
+    [SerializeField] AudioSource alarmSFX;
 
     void Start()
     {
         Debug.Log(instructionsSO.instructions.Count);
-
-        // Display the first instruction at the start
-        DisplayInstruction();
 
         // Ensure buttons are set correctly
         UpdateButtonStates();
@@ -55,11 +60,26 @@ public class InstructionManager : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            
+            Debug.Log("Keyboard");
+            DisplayInstruction("keyboard");
+
+            // Cursor.lockState = CursorLockMode.None;
+            EventSystem.current.SetSelectedGameObject(null);
+            isGamepad = false;
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
+            Debug.Log("Gamepad");
+            DisplayInstruction("gamepad");
             
+            // Cursor.lockState = CursorLockMode.Locked;
+            
+            if(!isGamepad)
+            {
+                EventSystem.current.SetSelectedGameObject(instructionButton[1]);
+                Debug.Log("Selected Instruction Button - Right");
+                isGamepad = true;
+            }
         }
     }
 
@@ -68,7 +88,7 @@ public class InstructionManager : MonoBehaviour
         if (counter < instructionsSO.instructions.Count - 1)
         {
             counter++;
-            DisplayInstruction();
+            DeviceChecker();
             UpdateButtonStates();
         }
     }
@@ -78,18 +98,28 @@ public class InstructionManager : MonoBehaviour
         if (counter > 0)
         {
             counter--;
-            DisplayInstruction();
+            DeviceChecker();
             UpdateButtonStates();
         }
     }
 
-    private void DisplayInstruction()
+    // Modified DisplayInstruction method to accept device type
+    private void DisplayInstruction(string deviceType)
     {
         // Check if counter is within bounds
         if (counter >= 0 && counter < instructionsSO.instructions.Count)
         {
             instructionImage.sprite = instructionsSO.instructions[counter].instructionSprite;
-            instructionText.text = instructionsSO.instructions[counter].instructionString;
+
+            // Display the correct instruction text based on the device type
+            if (deviceType == "keyboard")
+            {
+                instructionText.text = instructionsSO.instructions[counter].instructionKeyboard;
+            }
+            else if (deviceType == "gamepad")
+            {
+                instructionText.text = instructionsSO.instructions[counter].instructionGampad;
+            }
         }
     }
 
@@ -103,11 +133,11 @@ public class InstructionManager : MonoBehaviour
     public void ShowInstruction()
     {
         Time.timeScale = 0;
+        alarmSFX.Pause();
         // Bool instructionHUDActive = true (FOR PAUSE FUNCTION)
 
         Debug.Log("Display Instruction!");
         instructionHUD.SetActive(true);
-
         instructionBGRectTransform.DOSizeDelta(new Vector2(1920, instructionBGRectTransform.sizeDelta.y), .5f)
             .SetEase(Ease.InQuad)
             .SetUpdate(true)
@@ -140,9 +170,11 @@ public class InstructionManager : MonoBehaviour
                     PlayerScript.instance.stamina.enabled = true;
                 }
 
-                //Cursor.lockState = CursorLockMode.Locked;
+                // Cursor.lockState = CursorLockMode.Locked;
                 
                 Time.timeScale = 1;
+                alarmSFX.UnPause();
+                this.enabled = false;
                 // Bool instructionHUDActive = false (FOR PAUSE FUNCTION)
             });
         });

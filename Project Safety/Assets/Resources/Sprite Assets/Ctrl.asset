@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
-  m_Name: W
+  m_Name: Ctrl
   m_EditorClassIdentifier: 
-  hashCode: -532830697
-  material: {fileID: 6447615217748131026}
+  hashCode: -1347324247
+  material: {fileID: 8409717402786739144}
   materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
@@ -38,34 +38,34 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  spriteSheet: {fileID: 2800000, guid: ec24b84edfd35104c80ba83a0dd6feae, type: 3}
+  spriteSheet: {fileID: 2800000, guid: 37469355967d8204db7ca2bb001aabb7, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: T_W_Key_Dark
-    m_HashCode: -532830697
+    m_Name: Ctrl
+    m_HashCode: 2464777
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
       m_Width: 128
       m_Height: 128
       m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 100
+      m_HorizontalBearingY: 85
       m_HorizontalAdvance: 128
     m_GlyphRect:
       m_X: 0
       m_Y: 0
       m_Width: 128
       m_Height: 128
-    m_Scale: 1.5
+    m_Scale: 2.5
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: ec24b84edfd35104c80ba83a0dd6feae, type: 3}
+    sprite: {fileID: 21300000, guid: 37469355967d8204db7ca2bb001aabb7, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
---- !u!21 &6447615217748131026
+--- !u!21 &8409717402786739144
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 1
@@ -89,7 +89,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ec24b84edfd35104c80ba83a0dd6feae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 37469355967d8204db7ca2bb001aabb7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

@@ -15,5 +15,7 @@ public class InstructionProperties
     [SerializeField] string title;
     public Sprite instructionSprite;
     [TextArea(3, 10)]
-    public string instructionString;
+    public string instructionKeyboard;
+    [TextArea(3, 10)]
+    public string instructionGampad;
 }

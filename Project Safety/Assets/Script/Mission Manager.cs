@@ -46,7 +46,7 @@ public class MissionManager : MonoBehaviour
     
         if(SceneManager.GetActiveScene().name == "Prologue")
         {
-            if (missionIndex == 1)
+            if (missionIndex == 2)
             {
                 PrologueSceneManager.instance.PC.layer = 8;
             }

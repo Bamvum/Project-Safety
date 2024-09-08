@@ -27,6 +27,7 @@ public class PlayerMovementLayingDown : MonoBehaviour
     [Space(10)]
     [SerializeField] GameObject sleepingCharacter;
     [SerializeField] AudioSource bedSheetSFX;
+
     [SerializeField] Animator sleepingAnimation;
     [SerializeField] float sleepingCharacterSpeed;
 
@@ -67,8 +68,8 @@ public class PlayerMovementLayingDown : MonoBehaviour
             {
                 if (toRepeatInstruction)
                 {
-                    // PrologueSceneManager.instance.DisplayInstruction();
                     Debug.Log("Display Instruction");
+                    InstructionManager.instance.enabled = true;
                     InstructionManager.instance.ShowInstruction();
                     
                     toRepeatInstruction = false;
@@ -89,7 +90,6 @@ public class PlayerMovementLayingDown : MonoBehaviour
                 }
             }
         }
-
         
         if (sleepingAnimation.GetBool("To stand up"))
         {
@@ -114,6 +114,10 @@ public class PlayerMovementLayingDown : MonoBehaviour
         {
             this.gameObject.SetActive(false);
             PlayerScript.instance.playerMovement.gameObject.SetActive(true);
+            PlayerScript.instance.playerMovement.enabled = false;
+            PlayerScript.instance.cinemachineInputProvider.enabled = false;
+            PlayerScript.instance.interact.enabled = false;
+            PlayerScript.instance.stamina.enabled = false;
             HUDManager.instance.playerHUD.SetActive(true);
             
             // FADE OUT
@@ -136,10 +140,12 @@ public class PlayerMovementLayingDown : MonoBehaviour
         {
             promptImg.sprite = promptSprite[0]; 
             pov.m_HorizontalAxis.m_MaxSpeed = .1f;
+            pov.m_VerticalAxis.m_MaxSpeed = .1f;
         }
         else if (DeviceManager.instance.gamepadDevice)
         {
             promptImg.sprite = promptSprite[1]; 
+            pov.m_VerticalAxis.m_MaxSpeed = 1f;
             pov.m_HorizontalAxis.m_MaxSpeed = 1f;
         }
     }

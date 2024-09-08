@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using DG.Tweening.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,19 +23,8 @@ public class HUDManager : MonoBehaviour
     [Header("Player Related HUD")]
     public GameObject playerHUD;
     public GameObject examineHUD;
-    public GameObject dialogueHUD;
-    
-    [Header("Interact HUD")]
-    public Image[] interactImage;
-    public Sprite[] sprite;
-    
-    [Header("Homework HUD")]
-    public GameObject homeworkHUD;
-    public GameObject homeworkQnA;
-    public GameObject homeworkScore;
-    public TMP_Text homeworkScoreText;
-    public TMP_Text questionText;
-    public GameObject[] homeworkChoices;
+    public GameObject dialogueHUD;    
+
 
     public void FadeInForDialogue()
     {
@@ -51,4 +41,5 @@ public class HUDManager : MonoBehaviour
             fadeImageForDialogue.gameObject.SetActive(false);
         });
     }
+
 }

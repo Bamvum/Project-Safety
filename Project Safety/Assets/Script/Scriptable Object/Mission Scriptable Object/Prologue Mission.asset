@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Prologue Mission
   m_EditorClassIdentifier: 
   missions:
+  - Turn off the Alarm
   - Turn on the lights
   - Access the PC
   - Go downstair to get a food

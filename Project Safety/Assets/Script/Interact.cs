@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
@@ -18,7 +19,11 @@ public class Interact : MonoBehaviour
     [SerializeField] float interactRange = 1.5f;
     [HideInInspector] public GameObject interactObject;
     public RaycastHit hit;
-    
+
+    [Header("Interact HUD")]
+    public Image[] interactImage;
+    public Sprite[] sprite;
+
     void Awake()
     {
         playerControls = new PlayerControls();
@@ -62,7 +67,11 @@ public class Interact : MonoBehaviour
             }
             else if(interactable != null)
             {
-                if (interactable.isLightSwitch)
+                if(interactable.isAlarm)
+                {
+                    interactable.Alarm();
+                }
+                else if (interactable.isLightSwitch)
                 {
                     interactable.LightSwitchTrigger();
                 }
@@ -184,7 +193,7 @@ public class Interact : MonoBehaviour
 
         if (item.itemSO.isTakable)
         {
-            ChangeImageStatus(true, true, HUDManager.instance.sprite[0]);
+            ChangeImageStatus(true, true, sprite[0]);
         }
         else
         {
@@ -200,7 +209,7 @@ public class Interact : MonoBehaviour
     {
         dialogueTrigger = hit.collider.GetComponent<DialogueTrigger>();
 
-        ChangeImageStatus(false, true, HUDManager.instance.sprite[1]);
+        ChangeImageStatus(false, true, sprite[1]);
     }
 
     #endregion
@@ -211,15 +220,15 @@ public class Interact : MonoBehaviour
     {
         interactable = hit.collider.GetComponent<Interactable>();
 
-        ChangeImageStatus(false, true, HUDManager.instance.sprite[0]);
+        ChangeImageStatus(false, true, sprite[0]);
     }
 
     #endregion
     
     void ChangeImageStatus(bool activeLeftIMGStatus, bool activeRightIMGStatus, Sprite imgSprite)
     {
-        HUDManager.instance.interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
-        HUDManager.instance.interactImage[1].gameObject.SetActive(activeRightIMGStatus);
-        HUDManager.instance.interactImage[1].sprite = imgSprite;
+        interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
+        interactImage[1].gameObject.SetActive(activeRightIMGStatus);
+        interactImage[1].sprite = imgSprite;
     }
 }

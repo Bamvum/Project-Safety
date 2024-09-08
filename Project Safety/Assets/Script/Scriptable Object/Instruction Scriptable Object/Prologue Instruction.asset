@@ -14,15 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructions:
   - title: Movement
-    instructionImage: {fileID: 0}
-    instructionString: USE [SPRITE] TO WALK
+    instructionSprite: {fileID: 0}
+    instructionKeyboard: USE <sprite name="T_W_Key_Dark">, <sprite name="T_A_Key_Dark">,
+      <sprite name="T_S_Key_Dark">, AND <sprite name="T_D_Key_Dark"> TO WALK
+    instructionGampad: USE <sprite name="Left Stick"> TO WALK
   - title: Look
-    instructionImage: {fileID: 0}
-    instructionString: '[SPRITE] TO LOOK AROUND'
+    instructionSprite: {fileID: 0}
+    instructionKeyboard: TO LOOK AROUND USE <sprite name="Mouse">
+    instructionGampad: TO LOOK AROUND USE <sprite name="Right Stick">
   - title: Crouch
-    instructionImage: {fileID: 0}
-    instructionString: '[SPRITE] TO CROUCH'
+    instructionSprite: {fileID: 0}
+    instructionKeyboard: <sprite name="Ctrl"> TO CROUCH
+    instructionGampad: <sprite name="L2"> TO CROUCH
   - title: Interact & Examine
-    instructionImage: {fileID: 0}
-    instructionString: USE [SPRITE] TO INTERACT (TALK, TAKE, AND INTERACT) AND [SPRITE]
-      TO EXAMINE.
+    instructionSprite: {fileID: 0}
+    instructionKeyboard: <sprite name="E"> TO INTERACT (TALK AND TAKE) AND <sprite
+      name="Q"> TO EXAMINE.
+    instructionGampad: <sprite name="Square"> TO INTERACT (TALK AND TAKE) AND <sprite
+      name="Triangle"> TO EXAMINE.
+  - title: 'Examine Mode '
+    instructionSprite: {fileID: 0}
+    instructionKeyboard: WHEN EXAMINING AN OBJECT. USE <sprite name="Mouse">  and
+      <sprite name="Left Mouse"> TO ROTATE THE OBJECT AND <sprite name="E"> TO READ
+      THE ITEM DESCRIPTION
+    instructionGampad: WHEN EXAMINING AN OBJECT. USE <sprite name="Right Stick">
+      TO ROTATE THE OBJECT AND <sprite name="Triangle"> TO READ THE ITEM DESCRIPTION
