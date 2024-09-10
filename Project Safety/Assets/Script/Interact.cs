@@ -8,7 +8,7 @@ public class Interact : MonoBehaviour
     PlayerControls playerControls;
 
     [SerializeField] Transform handIKTarget;
-    [SerializeField] Transform handTarget;
+    [SerializeField] Transform handBone;
 
     [Header("Scripts")]     
     Item item;
@@ -17,17 +17,24 @@ public class Interact : MonoBehaviour
 
     [Header("Interact")]     
     [SerializeField] float interactRange = 1.5f;
-    [HideInInspector] public GameObject interactObject;
+    public GameObject interactObject;
     public RaycastHit hit;
 
     [Header("Interact HUD")]
     public Image[] interactImage;
     public Sprite[] sprite;
 
+    [Header("Animation")]
+    public AnimationClip grab;
+    public float grabLength;
+
     void Awake()
     {
+        grabLength = grab.length;
+
         playerControls = new PlayerControls();
     }
+
     void OnEnable()
     {
         playerControls.Player.Interact.performed += ToInteract;
@@ -43,6 +50,19 @@ public class Interact : MonoBehaviour
 
     #region - TO INTERACT -
 
+    
+    IEnumerator WaitForAnimationEnd(float duration)
+    {
+        Debug.Log("Wait for Animation End!");
+        yield return new WaitForSeconds(duration - 0.7f);
+        interactObject.transform.SetParent(handBone, true);
+        interactObject.transform.position = Vector3.zero;
+        GameObject tookObject = interactObject;
+        yield return new WaitForSeconds(duration - 0.7f);
+        tookObject.SetActive(false);
+    }
+
+
     private void ToInteract(InputAction.CallbackContext context)
     {   
         if(hit.collider != null)
@@ -55,6 +75,14 @@ public class Interact : MonoBehaviour
                     handIKTarget.position = hit.collider.transform.position;
 
                     PlayerScript.instance.playerMovement.playerAnim.SetTrigger("Grab");
+                    
+                    float clipDuration = grab.length;
+
+                    StartCoroutine(WaitForAnimationEnd(clipDuration));
+
+                    // IF STATEMENT - AT THE END OF THE LENGTH OF THE ANIMATION CLIP
+                    // interactObject.transform.SetParent(handBone, true);
+
                     Debug.Log("Item Interact!");
                 }
             }
@@ -98,7 +126,6 @@ public class Interact : MonoBehaviour
                 else if(interactable.isOutsideDoor)
                 {
                     interactable.GoOutside();
-
                 }
                 else if (interactable.isBus)
                 {
@@ -126,11 +153,11 @@ public class Interact : MonoBehaviour
             // TODO - DISABLE SCRIPT
             this.enabled = false;
             PlayerScript.instance.playerMovement.enabled = false;
-            // ScriptManager.instance.stamina.enabled = false;
+            PlayerScript.instance.stamina.enabled = false;
             PlayerScript.instance.cinemachineInputProvider.enabled = false;
             
             // // TODO - ENABLE SCRIPT
-            // ScriptManager.instance.examine.enabled = true;
+            PlayerScript.instance.examine.enabled = true;
         }
     }
     
@@ -190,6 +217,7 @@ public class Interact : MonoBehaviour
     void ItemRaycast()
     {
         item = hit.collider.GetComponent<Item>();
+        interactObject = hit.collider.gameObject;
 
         if (item.itemSO.isTakable)
         {

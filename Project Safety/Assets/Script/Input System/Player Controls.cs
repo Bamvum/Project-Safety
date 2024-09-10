@@ -811,45 +811,54 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""2230b633-33ef-4baa-81b5-4419c0e4e34a"",
             ""actions"": [
                 {
-                    ""name"": ""Twist"",
+                    ""name"": ""Equip Extinguisher"",
                     ""type"": ""Button"",
-                    ""id"": ""9f32ba36-86e0-464b-815e-aa4671696ca9"",
+                    ""id"": ""4a36f629-0e7c-4a44-b6fd-2fbb53c20ad3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pull"",
+                    ""name"": ""PerformTPASS"",
                     ""type"": ""Button"",
-                    ""id"": ""a629a1c5-509a-402c-a8fa-10d1039a55b6"",
+                    ""id"": ""115ac63e-a526-4c63-b562-e6760c948343"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Aim"",
+                    ""name"": ""Twist-Button1"",
                     ""type"": ""Button"",
-                    ""id"": ""b083d617-37ad-46fb-9a72-94d57e2a214b"",
+                    ""id"": ""2b9f99f4-03f1-4291-a03c-5e97b30c1a6d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Squeeze"",
+                    ""name"": ""Twist-Button2"",
                     ""type"": ""Button"",
-                    ""id"": ""6f17fd27-678f-4f00-9d11-5ddcba76d63d"",
+                    ""id"": ""3dd532d6-9710-4f19-889a-5cc72a030810"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Sweep"",
+                    ""name"": ""Twist-Button3"",
                     ""type"": ""Button"",
-                    ""id"": ""9f7c8143-55ad-43e1-ae11-857495cc6b42"",
+                    ""id"": ""f6bde12b-e957-4d7e-acae-8b9667f72e12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Twist-Button4"",
+                    ""type"": ""Button"",
+                    ""id"": ""65b1f552-eccd-44d8-9456-a989682fc1c2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -859,100 +868,89 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""94cb8fae-fa96-4d28-93bc-283a51486743"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""id"": ""93f2a04e-a5e6-403e-8b22-de6527aedb4f"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Twist"",
+                    ""action"": ""Equip Extinguisher"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ce6ccbde-e941-4d37-b05a-205aefdd416d"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""id"": ""7bc271fe-129d-415a-bf89-abc8ceb49b19"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Twist"",
+                    ""action"": ""Equip Extinguisher"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""dd0dfd2c-301a-4d7e-aa8e-411b823b377c"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pull"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4406bd70-3065-4556-9eae-b4f193cd1d9b"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pull"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d4060e14-d9db-443f-b98d-b18dc1906140"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bf8e6d48-c421-4db2-91cb-5670ecd36bb8"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f50fd96a-5d57-4db5-a567-597d66ecf351"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Squeeze"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e65cc18b-b2e8-445f-b2c9-ef3a787b70b6"",
+                    ""id"": ""cc8dc53f-62d2-4a21-994a-c3ed9df517b1"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Sweep"",
+                    ""action"": ""PerformTPASS"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a693136d-2196-4a93-a262-91d056290dae"",
+                    ""id"": ""52b8df00-be9a-4b1d-a726-20f75711fc3d"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Sweep"",
+                    ""action"": ""PerformTPASS"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fcb38a90-0476-4778-bc33-80dbb2e0b58b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Twist-Button1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c69232fc-5f4e-4499-b907-6e60db91c40d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Twist-Button2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f28c2475-3d27-40b0-8092-9191c623e6c0"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Twist-Button3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84aa89b0-60b7-4411-bbbc-ab4280b08b31"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Twist-Button4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1200,11 +1198,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Contact_Contact3 = m_Contact.FindAction("Contact3", throwIfNotFound: true);
         // Extinguisher
         m_Extinguisher = asset.FindActionMap("Extinguisher", throwIfNotFound: true);
-        m_Extinguisher_Twist = m_Extinguisher.FindAction("Twist", throwIfNotFound: true);
-        m_Extinguisher_Pull = m_Extinguisher.FindAction("Pull", throwIfNotFound: true);
-        m_Extinguisher_Aim = m_Extinguisher.FindAction("Aim", throwIfNotFound: true);
-        m_Extinguisher_Squeeze = m_Extinguisher.FindAction("Squeeze", throwIfNotFound: true);
-        m_Extinguisher_Sweep = m_Extinguisher.FindAction("Sweep", throwIfNotFound: true);
+        m_Extinguisher_EquipExtinguisher = m_Extinguisher.FindAction("Equip Extinguisher", throwIfNotFound: true);
+        m_Extinguisher_PerformTPASS = m_Extinguisher.FindAction("PerformTPASS", throwIfNotFound: true);
+        m_Extinguisher_TwistButton1 = m_Extinguisher.FindAction("Twist-Button1", throwIfNotFound: true);
+        m_Extinguisher_TwistButton2 = m_Extinguisher.FindAction("Twist-Button2", throwIfNotFound: true);
+        m_Extinguisher_TwistButton3 = m_Extinguisher.FindAction("Twist-Button3", throwIfNotFound: true);
+        m_Extinguisher_TwistButton4 = m_Extinguisher.FindAction("Twist-Button4", throwIfNotFound: true);
         // TwistFE
         m_TwistFE = asset.FindActionMap("TwistFE", throwIfNotFound: true);
         m_TwistFE_Button1 = m_TwistFE.FindAction("Button 1", throwIfNotFound: true);
@@ -1688,20 +1687,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // Extinguisher
     private readonly InputActionMap m_Extinguisher;
     private List<IExtinguisherActions> m_ExtinguisherActionsCallbackInterfaces = new List<IExtinguisherActions>();
-    private readonly InputAction m_Extinguisher_Twist;
-    private readonly InputAction m_Extinguisher_Pull;
-    private readonly InputAction m_Extinguisher_Aim;
-    private readonly InputAction m_Extinguisher_Squeeze;
-    private readonly InputAction m_Extinguisher_Sweep;
+    private readonly InputAction m_Extinguisher_EquipExtinguisher;
+    private readonly InputAction m_Extinguisher_PerformTPASS;
+    private readonly InputAction m_Extinguisher_TwistButton1;
+    private readonly InputAction m_Extinguisher_TwistButton2;
+    private readonly InputAction m_Extinguisher_TwistButton3;
+    private readonly InputAction m_Extinguisher_TwistButton4;
     public struct ExtinguisherActions
     {
         private @PlayerControls m_Wrapper;
         public ExtinguisherActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Twist => m_Wrapper.m_Extinguisher_Twist;
-        public InputAction @Pull => m_Wrapper.m_Extinguisher_Pull;
-        public InputAction @Aim => m_Wrapper.m_Extinguisher_Aim;
-        public InputAction @Squeeze => m_Wrapper.m_Extinguisher_Squeeze;
-        public InputAction @Sweep => m_Wrapper.m_Extinguisher_Sweep;
+        public InputAction @EquipExtinguisher => m_Wrapper.m_Extinguisher_EquipExtinguisher;
+        public InputAction @PerformTPASS => m_Wrapper.m_Extinguisher_PerformTPASS;
+        public InputAction @TwistButton1 => m_Wrapper.m_Extinguisher_TwistButton1;
+        public InputAction @TwistButton2 => m_Wrapper.m_Extinguisher_TwistButton2;
+        public InputAction @TwistButton3 => m_Wrapper.m_Extinguisher_TwistButton3;
+        public InputAction @TwistButton4 => m_Wrapper.m_Extinguisher_TwistButton4;
         public InputActionMap Get() { return m_Wrapper.m_Extinguisher; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1711,40 +1712,46 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Add(instance);
-            @Twist.started += instance.OnTwist;
-            @Twist.performed += instance.OnTwist;
-            @Twist.canceled += instance.OnTwist;
-            @Pull.started += instance.OnPull;
-            @Pull.performed += instance.OnPull;
-            @Pull.canceled += instance.OnPull;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
-            @Squeeze.started += instance.OnSqueeze;
-            @Squeeze.performed += instance.OnSqueeze;
-            @Squeeze.canceled += instance.OnSqueeze;
-            @Sweep.started += instance.OnSweep;
-            @Sweep.performed += instance.OnSweep;
-            @Sweep.canceled += instance.OnSweep;
+            @EquipExtinguisher.started += instance.OnEquipExtinguisher;
+            @EquipExtinguisher.performed += instance.OnEquipExtinguisher;
+            @EquipExtinguisher.canceled += instance.OnEquipExtinguisher;
+            @PerformTPASS.started += instance.OnPerformTPASS;
+            @PerformTPASS.performed += instance.OnPerformTPASS;
+            @PerformTPASS.canceled += instance.OnPerformTPASS;
+            @TwistButton1.started += instance.OnTwistButton1;
+            @TwistButton1.performed += instance.OnTwistButton1;
+            @TwistButton1.canceled += instance.OnTwistButton1;
+            @TwistButton2.started += instance.OnTwistButton2;
+            @TwistButton2.performed += instance.OnTwistButton2;
+            @TwistButton2.canceled += instance.OnTwistButton2;
+            @TwistButton3.started += instance.OnTwistButton3;
+            @TwistButton3.performed += instance.OnTwistButton3;
+            @TwistButton3.canceled += instance.OnTwistButton3;
+            @TwistButton4.started += instance.OnTwistButton4;
+            @TwistButton4.performed += instance.OnTwistButton4;
+            @TwistButton4.canceled += instance.OnTwistButton4;
         }
 
         private void UnregisterCallbacks(IExtinguisherActions instance)
         {
-            @Twist.started -= instance.OnTwist;
-            @Twist.performed -= instance.OnTwist;
-            @Twist.canceled -= instance.OnTwist;
-            @Pull.started -= instance.OnPull;
-            @Pull.performed -= instance.OnPull;
-            @Pull.canceled -= instance.OnPull;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
-            @Squeeze.started -= instance.OnSqueeze;
-            @Squeeze.performed -= instance.OnSqueeze;
-            @Squeeze.canceled -= instance.OnSqueeze;
-            @Sweep.started -= instance.OnSweep;
-            @Sweep.performed -= instance.OnSweep;
-            @Sweep.canceled -= instance.OnSweep;
+            @EquipExtinguisher.started -= instance.OnEquipExtinguisher;
+            @EquipExtinguisher.performed -= instance.OnEquipExtinguisher;
+            @EquipExtinguisher.canceled -= instance.OnEquipExtinguisher;
+            @PerformTPASS.started -= instance.OnPerformTPASS;
+            @PerformTPASS.performed -= instance.OnPerformTPASS;
+            @PerformTPASS.canceled -= instance.OnPerformTPASS;
+            @TwistButton1.started -= instance.OnTwistButton1;
+            @TwistButton1.performed -= instance.OnTwistButton1;
+            @TwistButton1.canceled -= instance.OnTwistButton1;
+            @TwistButton2.started -= instance.OnTwistButton2;
+            @TwistButton2.performed -= instance.OnTwistButton2;
+            @TwistButton2.canceled -= instance.OnTwistButton2;
+            @TwistButton3.started -= instance.OnTwistButton3;
+            @TwistButton3.performed -= instance.OnTwistButton3;
+            @TwistButton3.canceled -= instance.OnTwistButton3;
+            @TwistButton4.started -= instance.OnTwistButton4;
+            @TwistButton4.performed -= instance.OnTwistButton4;
+            @TwistButton4.canceled -= instance.OnTwistButton4;
         }
 
         public void RemoveCallbacks(IExtinguisherActions instance)
@@ -1929,11 +1936,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IExtinguisherActions
     {
-        void OnTwist(InputAction.CallbackContext context);
-        void OnPull(InputAction.CallbackContext context);
-        void OnAim(InputAction.CallbackContext context);
-        void OnSqueeze(InputAction.CallbackContext context);
-        void OnSweep(InputAction.CallbackContext context);
+        void OnEquipExtinguisher(InputAction.CallbackContext context);
+        void OnPerformTPASS(InputAction.CallbackContext context);
+        void OnTwistButton1(InputAction.CallbackContext context);
+        void OnTwistButton2(InputAction.CallbackContext context);
+        void OnTwistButton3(InputAction.CallbackContext context);
+        void OnTwistButton4(InputAction.CallbackContext context);
     }
     public interface ITwistFEActions
     {

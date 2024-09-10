@@ -195,7 +195,8 @@ public class TwistFireExtinguisher : MonoBehaviour
 
             objectiveComplete = true;
             PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
-
+            // TPASS.instance.twist = true;
+            
             // blackImage.DOFade(1, tpass.inspectExtinguisherAnimLength).OnComplete(() =>
             // {
 
