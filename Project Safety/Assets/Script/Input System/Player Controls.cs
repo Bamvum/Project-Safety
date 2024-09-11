@@ -863,6 +863,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""a8c72e37-7262-4ff2-978d-7ffc25f31551"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action Lock"",
+                    ""type"": ""Button"",
+                    ""id"": ""35dbcc4e-2e41-4135-8449-f69066c4f6fd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -951,6 +969,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Twist-Button4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58a3b6ea-af8b-4316-926d-f57465b787d5"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0c23d76-2cce-47ed-b135-47db5aa596dc"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5eedd6b5-5a4a-48e4-b817-a4b8241f65e1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Lock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""babe93fd-fef4-41ea-b0f2-9146f822574c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Lock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1204,6 +1266,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Extinguisher_TwistButton2 = m_Extinguisher.FindAction("Twist-Button2", throwIfNotFound: true);
         m_Extinguisher_TwistButton3 = m_Extinguisher.FindAction("Twist-Button3", throwIfNotFound: true);
         m_Extinguisher_TwistButton4 = m_Extinguisher.FindAction("Twist-Button4", throwIfNotFound: true);
+        m_Extinguisher_Action = m_Extinguisher.FindAction("Action", throwIfNotFound: true);
+        m_Extinguisher_ActionLock = m_Extinguisher.FindAction("Action Lock", throwIfNotFound: true);
         // TwistFE
         m_TwistFE = asset.FindActionMap("TwistFE", throwIfNotFound: true);
         m_TwistFE_Button1 = m_TwistFE.FindAction("Button 1", throwIfNotFound: true);
@@ -1693,6 +1757,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Extinguisher_TwistButton2;
     private readonly InputAction m_Extinguisher_TwistButton3;
     private readonly InputAction m_Extinguisher_TwistButton4;
+    private readonly InputAction m_Extinguisher_Action;
+    private readonly InputAction m_Extinguisher_ActionLock;
     public struct ExtinguisherActions
     {
         private @PlayerControls m_Wrapper;
@@ -1703,6 +1769,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @TwistButton2 => m_Wrapper.m_Extinguisher_TwistButton2;
         public InputAction @TwistButton3 => m_Wrapper.m_Extinguisher_TwistButton3;
         public InputAction @TwistButton4 => m_Wrapper.m_Extinguisher_TwistButton4;
+        public InputAction @Action => m_Wrapper.m_Extinguisher_Action;
+        public InputAction @ActionLock => m_Wrapper.m_Extinguisher_ActionLock;
         public InputActionMap Get() { return m_Wrapper.m_Extinguisher; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1730,6 +1798,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TwistButton4.started += instance.OnTwistButton4;
             @TwistButton4.performed += instance.OnTwistButton4;
             @TwistButton4.canceled += instance.OnTwistButton4;
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+            @ActionLock.started += instance.OnActionLock;
+            @ActionLock.performed += instance.OnActionLock;
+            @ActionLock.canceled += instance.OnActionLock;
         }
 
         private void UnregisterCallbacks(IExtinguisherActions instance)
@@ -1752,6 +1826,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TwistButton4.started -= instance.OnTwistButton4;
             @TwistButton4.performed -= instance.OnTwistButton4;
             @TwistButton4.canceled -= instance.OnTwistButton4;
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+            @ActionLock.started -= instance.OnActionLock;
+            @ActionLock.performed -= instance.OnActionLock;
+            @ActionLock.canceled -= instance.OnActionLock;
         }
 
         public void RemoveCallbacks(IExtinguisherActions instance)
@@ -1942,6 +2022,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnTwistButton2(InputAction.CallbackContext context);
         void OnTwistButton3(InputAction.CallbackContext context);
         void OnTwistButton4(InputAction.CallbackContext context);
+        void OnAction(InputAction.CallbackContext context);
+        void OnActionLock(InputAction.CallbackContext context);
     }
     public interface ITwistFEActions
     {
