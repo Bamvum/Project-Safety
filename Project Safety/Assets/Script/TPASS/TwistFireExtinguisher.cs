@@ -10,15 +10,10 @@ using DG.Tweening;
 
 public class TwistFireExtinguisher : MonoBehaviour
 {
-    public static TwistFireExtinguisher instance {get; private set;}
-    
-    void Awake()
-    {
-        instance = this;
-        playerControls = new PlayerControls();
-    }
-
     PlayerControls playerControls;
+
+    [Header("Script")]
+    [SerializeField] TPASS tpass;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera twistAndPullVC;
@@ -32,17 +27,30 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] Image[] twistControlImage;
     [SerializeField] Sprite[] twistKeyboardSprite;
     [SerializeField] Sprite[] twistGamepadSprite;
-
-    [Header("Timer")]
-    [SerializeField] Image timer;
-    [SerializeField] float twistTime = 100f;
-    [SerializeField] float maxTwistTime = 100f;
+    
     [Space(10)]
-    [SerializeField] int inputNeedToFinish;
     [SerializeField] int inputsPerformed;
+    [SerializeField] int inputNeedToFinish;
     [SerializeField] bool[] buttonPressed;
+
+    [Header("Flag")]
     bool canInput;
-    public bool objectiveComplete;
+
+    // [Header("Timer")]
+    // [SerializeField] Image timer;
+    // [SerializeField] float twistTime = 100f;
+    // [SerializeField] float maxTwistTime = 100f;
+    // [Space(10)]
+    // [SerializeField] int inputNeedToFinish;
+    // [SerializeField] int inputsPerformed;
+    // [SerializeField] bool[] buttonPressed;
+    // bool canInput;
+    // public bool objectiveComplete;
+
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
 
     void OnEnable()
     {
@@ -209,30 +217,11 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
 
-            objectiveComplete = true;
+            // objectiveComplete = true;
             // PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
             this.enabled = false;
         }
-
-
-        // if (canInput)
-        // {
-        //     twistTime -= 5 * Time.deltaTime;
-        //     timer.fillAmount = twistTime / maxTwistTime;
-        // }
-
-        // if (twistTime == 0)
-        // {
-        //     twistTime = 0;
-        //     Debug.LogError("Time Ended");
-        // }
     }
-
-
-    // TODO - GAME OVER (TIMER ENDED)
-    //      - DOTWEEN WHEN FINISH
-    //      - FADE IN AND OUT WHEN FINISH
-
 }
 
 
