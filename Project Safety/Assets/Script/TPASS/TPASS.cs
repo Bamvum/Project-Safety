@@ -27,47 +27,34 @@ public class TPASS : MonoBehaviour
     [Space(10)]
     [SerializeField] GameObject fireExtinguisherToPickUp; // IF ACTIVE FALSE IT CAN BE USE
 
-    [Header("Cinemachine")]
-    [SerializeField] CinemachineVirtualCamera twistAndPullVC;
-
-    [Header("Twist (TPASS)")]
-    [SerializeField] CanvasGroup twistHUD;
-    [SerializeField] RectTransform twistRectTransform;
-    [SerializeField] CanvasGroup twistCG;
-    
-    [Space(10)]
-    [SerializeField] Image[] twistControlImage;
-    [SerializeField] Sprite[] twistKeyboardSprite;
-    [SerializeField] Sprite[] twistGamepadSprite;
-
     [Space(10)]
     [SerializeField] int inputsPerformed;
     [SerializeField] int inputNeedToFinish;
     [SerializeField] bool[] buttonPressed;
     bool inTwistQTE;
     
-    [Header("Pull (TPASS)")]
-    [SerializeField] CanvasGroup pullHUD;
-    [SerializeField] RectTransform pullRectTransform;
-    [SerializeField] CanvasGroup pullCG;
+    // [Header("Pull (TPASS)")]
+    // [SerializeField] CanvasGroup pullHUD;
+    // [SerializeField] RectTransform pullRectTransform;
+    // [SerializeField] CanvasGroup pullCG;
 
-    [Space(10)]
-    [SerializeField] float pressedValue;
-    [SerializeField] float decreaseValue;
+    // [Space(10)]
+    // [SerializeField] float pressedValue;
+    // [SerializeField] float decreaseValue;
 
-    [Space(10)]
-    [SerializeField] Image pullControlImage;
-    [SerializeField] Sprite[] pullKeyboardSprite;
-    [SerializeField] Sprite[] pullGamepadSprite;
-    [SerializeField] Slider pullSlider;
-    [SerializeField] int roundNum;
-    bool inPullQTE;
+    // [Space(10)]
+    // [SerializeField] Image pullControlImage;
+    // [SerializeField] Sprite[] pullKeyboardSprite;
+    // [SerializeField] Sprite[] pullGamepadSprite;
+    // [SerializeField] Slider pullSlider;
+    // [SerializeField] int roundNum;
+    // bool inPullQTE;
 
-    [Header("Aim (TPASS)")]
-    [SerializeField] CanvasGroup aimHUD;
-    [SerializeField] RectTransform aimRectTransform;
-    [SerializeField] CanvasGroup aimCG;
-    bool inAimMode;
+    // [Header("Aim (TPASS)")]
+    // [SerializeField] CanvasGroup aimHUD;
+    // [SerializeField] RectTransform aimRectTransform;
+    // [SerializeField] CanvasGroup aimCG;
+    // bool inAimMode;
 
     [Header("TPASS status")]
     public bool twistAndPull;
@@ -152,7 +139,11 @@ public class TPASS : MonoBehaviour
             if (!twistAndPull)
             {
                 Debug.Log("Perform Twist and Pull QTE!");
+
+                twistFE.enabled = true;
                 twistFE.TwistFireExtinguisherTrigger();
+                
+                this.enabled = false;
             }
             else 
             {

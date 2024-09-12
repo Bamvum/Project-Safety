@@ -163,15 +163,15 @@ public class Interactable : MonoBehaviour
 
     IEnumerator UnplugPlug()
     {
-        HUDManager.instance.FadeInForDialogue();
-
+        HUDManager.instance.FadeIn();
+        
         yield return new WaitForSeconds(1);
         
         plug.SetActive(false);
         unplug.SetActive(true);
         
         Act1StudentSceneManager.instance.plugInteracted++;
-        HUDManager.instance.FadeOutForDialogue();
+        HUDManager.instance.FadeOut();
 
         yield return new WaitForSeconds(1);
         

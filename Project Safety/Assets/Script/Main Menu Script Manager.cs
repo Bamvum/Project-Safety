@@ -110,8 +110,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void selectSceneBack()
     {
+        Debug.Log("Go back to Main Menu");
         selectSceneScreen.SetActive(false);
-
         titleScreen.SetActive(true);
     }
 

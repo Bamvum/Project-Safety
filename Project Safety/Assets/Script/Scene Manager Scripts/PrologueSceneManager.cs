@@ -18,10 +18,8 @@ public class PrologueSceneManager : MonoBehaviour
  
     [Header("Script")]
     public OnAndOffGameObject onAndOffGameObject;
-    [SerializeField] HomeworkManager homeworkManager;
 
     [Header("Player")]
-    [SerializeField] GameObject player;
     [SerializeField] GameObject playerModel;
     
     [Space(10)]
@@ -70,6 +68,8 @@ public class PrologueSceneManager : MonoBehaviour
         // TO NEXT SCENE (ACT 1 - STUDENT)
         if(isSuspenceSFXPlaying)
         {
+            Debug.Log("Suspence SFX is Playing!");
+
             // ELAPSED TIME == suspenseSFX.Clip.length
             if(suspenceSFX.time >= suspenceSFX.clip.length)
             {
@@ -137,15 +137,18 @@ public class PrologueSceneManager : MonoBehaviour
 
     #region - SCENE MANAGEMENT -
 
+    [ContextMenu("Rotate")]
     public void RotatePlayer()
     {
-        player.transform.rotation = Quaternion.Euler(0, 120,0);
+        // CAMAERA FIX (MAKE IT FACE A CERTAIN AXIS)
+        playerModel.transform.rotation = Quaternion.Euler(0, 120,0);
     }
 
+    [ContextMenu("Move")]
     public void MovePlayer()
     {
-        player.transform.position = new Vector3(-6.5f, player.transform.position.y, -11);
-        playerModel.transform.position = new Vector3(0,0,0);
+        playerModel.transform.position = new Vector3(-6.5f, playerModel.transform.position.y, -11);
+        // playerModel.transform.position = new Vector3(0,0,0);
     }
 
     public void StartSuspenceSequence()

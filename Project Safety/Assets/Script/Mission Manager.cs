@@ -57,6 +57,7 @@ public class MissionManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Hide")]
     public void HideMission()
     {
         missionRectTransform

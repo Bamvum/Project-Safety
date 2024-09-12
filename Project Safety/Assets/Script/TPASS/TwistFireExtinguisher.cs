@@ -14,6 +14,7 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     [Header("Script")]
     [SerializeField] TPASS tpass;
+    [SerializeField] PullFireExtinguisher pullFE;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera twistAndPullVC;
@@ -45,7 +46,6 @@ public class TwistFireExtinguisher : MonoBehaviour
     // [SerializeField] int inputsPerformed;
     // [SerializeField] bool[] buttonPressed;
     // bool canInput;
-    // public bool objectiveComplete;
 
     void Awake()
     {
@@ -217,7 +217,7 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
 
-            // objectiveComplete = true;
+            // pullFE.
             // PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
             this.enabled = false;
         }

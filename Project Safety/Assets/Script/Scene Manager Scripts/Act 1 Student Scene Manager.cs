@@ -13,8 +13,6 @@ public class Act1StudentSceneManager : MonoBehaviour
         instance = this;
     }
 
-    [SerializeField] MissionSO missionSO;
-
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
     [SerializeField] DialogueTrigger momDialogueTrigger;
@@ -28,7 +26,6 @@ public class Act1StudentSceneManager : MonoBehaviour
 
     [Header("Flag")]
     bool audioRepeat;
-    int missionIndex;
     public int plugInteracted;
 
     void Start()
@@ -38,19 +35,34 @@ public class Act1StudentSceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
+        StartCoroutine(HeavyBreathingSFX());
+    }
 
+    IEnumerator HeavyBreathingSFX()
+    {
+        yield return new WaitForSeconds(2);
+            
         bedPlayerAudio.clip = heavyBreathingSFX;
         bedPlayerAudio.Play();
+
+        yield return new WaitForSeconds(10);
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+            startDialogueTrigger.StartDialogue();
+        });
     }
 
     void Update()
     {
-        if(!audioRepeat)
-        {
-            CheckPlayerAudioPlaying();
-        }
+        // if (!audioRepeat)
+        // {
+        //     CheckPlayerAudioPlaying();
+        // }
 
-        if(plugInteracted == 4)
+        if (plugInteracted == 4)
         {
             momDialogueTrigger.StartDialogue();
             PlayerScript.instance.DisablePlayerScripts();
