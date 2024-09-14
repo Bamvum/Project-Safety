@@ -156,5 +156,9 @@ public class LoadingSceneManager : MonoBehaviour
         {
             previewImg.sprite = loadingSO.previewScene[3];
         }
+        else if(sceneToBeLoad == "Act 1 Scene 4")
+        {
+            previewImg.sprite = loadingSO.previewScene[4];
+        }
     }
 }
