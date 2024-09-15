@@ -133,7 +133,12 @@ public class InstructionManager : MonoBehaviour
     public void ShowInstruction()
     {
         Time.timeScale = 0;
-        alarmSFX.Pause();
+        
+        if(alarmSFX != null)
+        {
+            alarmSFX.Pause();
+        }
+
         // Bool instructionHUDActive = true (FOR PAUSE FUNCTION)
 
         Debug.Log("Display Instruction!");
@@ -163,7 +168,7 @@ public class InstructionManager : MonoBehaviour
                 // ENABLE PLAYER SCRIPTS
                 PlayerScript.instance.playerMovement.enabled = true;
                 PlayerScript.instance.cinemachineInputProvider.enabled = true;
-                //PlayerScript.instance.interact.enabled = true;
+                PlayerScript.instance.interact.enabled = true;
 
                 if (PlayerScript.instance.canRunInThisScene)
                 {
@@ -173,7 +178,12 @@ public class InstructionManager : MonoBehaviour
                 // Cursor.lockState = CursorLockMode.Locked;
                 
                 Time.timeScale = 1;
-                alarmSFX.UnPause();
+
+                if(alarmSFX != null)
+                {
+                    alarmSFX.UnPause();
+                }
+
                 this.enabled = false;
                 // Bool instructionHUDActive = false (FOR PAUSE FUNCTION)
             });

@@ -237,7 +237,7 @@ public class Interactable : MonoBehaviour
     }
     public void BussEnter()
     {
-        if(SceneManager.GetActiveScene().name == "Act 1 SCene 2")
+        if(SceneManager.GetActiveScene().name == "Act 1 Scene 2")
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 

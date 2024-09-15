@@ -47,8 +47,8 @@ public class MissionManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(missionCG.DOFade(1,1));
-        sequence.AppendInterval(3);
-        sequence.Append(missionTextRectTransform.DOAnchorPos(new Vector3(0, -50, 0), 1));
+        sequence.AppendInterval(2);
+        sequence.Append(missionTextRectTransform.DOAnchorPos(new Vector3(0, -25, 0), 1));
         sequence.Join(missionTextRectTransform.DOScale(Vector3.one, 1));
 
     
@@ -68,19 +68,18 @@ public class MissionManager : MonoBehaviour
     [ContextMenu("Hide")]
     public void HideMission()
     {
-        missionTextRectTransform
-            .DOAnchorPos(new Vector2(-325, missionTextRectTransform.anchoredPosition.y), 1)
-            .OnComplete(() =>
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(missionCG.DOFade(0, 1));
+        sequence.Append(missionTextRectTransform.DOScale(new Vector3(2, 2, 2), 1));
+        sequence.Join(missionTextRectTransform.DOAnchorPos(new Vector3(0, -540, 0), 1)).OnComplete(() =>
         {
-            missionTextRectTransform.DOAnchorPos(new Vector2(-325, missionTextRectTransform.anchoredPosition.y), .5f)
-                .OnComplete(() =>
+            if (missionIndex < missionSO.missions.Length - 1)
             {
-                if (missionIndex < missionSO.missions.Length - 1)
-                {
-                    missionIndex++;
-                }
-                DisplayMission();
-            });
+                missionIndex++;
+            }
+
+            DisplayMission();
         });
     }
 }
