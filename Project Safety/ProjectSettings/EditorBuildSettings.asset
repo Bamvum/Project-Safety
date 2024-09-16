@@ -18,6 +18,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Scenes/Act 1 Scene 2.unity
     guid: 298b243501ac5f24f927072727e470a4
   - enabled: 1
+    path: Assets/Scenes/Game Scenes/Act 1 Scene 3.unity
+    guid: 8969194dec8993f458c76677c82be3fb
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Act 1 Scene 4.unity
+    guid: c805b3317307446488cdf209a953abfc
+  - enabled: 1
     path: Assets/Scenes/Act 1 Household.unity
     guid: d5082f92df233ea44bb75bc6ca872587
   - enabled: 0

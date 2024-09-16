@@ -54,7 +54,7 @@ public class TPASS : MonoBehaviour
     // [SerializeField] CanvasGroup aimHUD;
     // [SerializeField] RectTransform aimRectTransform;
     // [SerializeField] CanvasGroup aimCG;
-    // bool inAimMode;
+    public bool aimMode;
 
     [Header("TPASS status")]
     public bool twistAndPull;
@@ -63,7 +63,7 @@ public class TPASS : MonoBehaviour
 
     [Header("Inputs")]
     bool equipFireExtinguisher;
-    bool firstHalfDone;
+    public bool firstHalfDone;
 
     [Header("Flag")]
     bool canInput;

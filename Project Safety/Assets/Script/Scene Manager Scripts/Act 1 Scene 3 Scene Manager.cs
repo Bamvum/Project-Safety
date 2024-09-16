@@ -72,4 +72,20 @@ public class Act1Scene3SceneManager : MonoBehaviour
             }
         }
     }
+
+    public void EndOfScene()
+    {
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                PlayerScript.instance.DisablePlayerScripts();
+
+                LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                LoadingSceneManager.instance.enabled = true;
+                LoadingSceneManager.instance.sceneName = "Act 1 Scene 4";
+            });
+    }
 }

@@ -190,7 +190,7 @@ public class TwistFireExtinguisher : MonoBehaviour
     void DisplayInstruction()
     {
         Sequence sequence = DOTween.Sequence();
-
+        
         sequence.Append(twistRectTransform.DOAnchorPos(new Vector2(0f, 425f), .75f));
         sequence.Join(twistRectTransform.DOScale(new Vector3(1f, 1f, 1f), 1f));
 
@@ -217,8 +217,9 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
 
-            // pullFE.
             // PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
+            pullFE.enabled = true;
+            pullFE.PullFireExtinguisherTrigger();
             this.enabled = false;
         }
     }
