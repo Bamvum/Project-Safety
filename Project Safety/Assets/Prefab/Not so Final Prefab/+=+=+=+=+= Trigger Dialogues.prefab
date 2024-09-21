@@ -525,7 +525,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   isSpeaking: 0
-  speechTrigger: 0
+  speechTrigger: 1
 --- !u!1 &5215548866314593501
 GameObject:
   m_ObjectHideFlags: 0
