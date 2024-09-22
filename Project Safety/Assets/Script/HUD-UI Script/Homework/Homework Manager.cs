@@ -9,12 +9,27 @@ using Unity.VisualScripting;
 
 public class HomeworkManager : MonoBehaviour
 {
+    public static HomeworkManager instance {get; private set;}
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     [SerializeField] DialogueTrigger dialogueTrigger;
 
     [SerializeField] List<QuestionandAnswer> QnA;
 
     [SerializeField] GameObject choiceSelected;
     [SerializeField] int currentQuestion;
+
+    [Header("Homework HUD")]
+    public GameObject homeworkHUD;
+    [SerializeField] GameObject homeworkQnA;
+    [SerializeField] GameObject homeworkScore;
+    [SerializeField] TMP_Text homeworkScoreText;
+    [SerializeField] TMP_Text questionText;
+    [SerializeField] GameObject[] homeworkChoices;
 
     [Header("Flag")]
     int score = 0;
@@ -58,14 +73,14 @@ public class HomeworkManager : MonoBehaviour
     
     void SetAnswer()
     {
-        for(int i = 0; i < HUDManager.instance.homeworkChoices.Length; i++)
+        for(int i = 0; i < homeworkChoices.Length; i++)
         {
-            HUDManager.instance.homeworkChoices[i].GetComponent<AnswerKey>().isCorrect = false;
-            HUDManager.instance.homeworkChoices[i].transform.GetChild(0).GetComponent<TMP_Text>().text = QnA[currentQuestion].answer[i];
+            homeworkChoices[i].GetComponent<AnswerKey>().isCorrect = false;
+            homeworkChoices[i].transform.GetChild(0).GetComponent<TMP_Text>().text = QnA[currentQuestion].answer[i];
 
             if(QnA[currentQuestion].correctAnswer == i+1)
             {
-                HUDManager.instance.homeworkChoices[i].GetComponent<AnswerKey>().isCorrect = true;
+                homeworkChoices[i].GetComponent<AnswerKey>().isCorrect = true;
             }
         }
     }
@@ -75,7 +90,7 @@ public class HomeworkManager : MonoBehaviour
         if(QnA.Count > 0)
         {
             currentQuestion = Random.Range(0, QnA.Count);
-            HUDManager.instance.questionText.text = QnA[currentQuestion].question;
+            questionText.text = QnA[currentQuestion].question;
             
             SetAnswer();
         }
@@ -105,9 +120,9 @@ public class HomeworkManager : MonoBehaviour
 
     void PreEndOfHomework()
     {
-        HUDManager.instance.homeworkScore.SetActive(true);
-        HUDManager.instance.homeworkQnA.SetActive(false);
-        HUDManager.instance.homeworkScoreText.text = score + " / "  + totalOfQuestions;
+        homeworkScore.SetActive(true);
+        homeworkQnA.SetActive(false);
+        homeworkScoreText.text = score + " / "  + totalOfQuestions;
         
 
         Invoke("EndOfHomework", 3);
@@ -120,7 +135,7 @@ public class HomeworkManager : MonoBehaviour
        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .OnComplete(() =>
        {
-           HUDManager.instance.homeworkHUD.SetActive(false);
+           homeworkHUD.SetActive(false);
 
            PrologueSceneManager.instance.monitor.layer = 0;
            

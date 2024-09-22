@@ -7,23 +7,9 @@ using UnityEngine.UI;
 public class Act1Scene2SceneManager : MonoBehaviour
 {
     public static Act1Scene2SceneManager instance {get; private set;}
-
-    [SerializeField] MissionSO missionSO;
     
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
-
-    [Header("Dialogue Triggers")]
-    [SerializeField] GameObject instructionHUD;
-    [SerializeField] RectTransform instructionBGRectTransform;
-    [SerializeField] GameObject instructionContent;
-    [SerializeField] CanvasGroup instructionContentCG;
-    
-
-    [Space(10)]
-    [SerializeField] Image  instructionImg;
-    [Space(10)]
-    [SerializeField] Sprite[] instructionSprite;
 
     [Space(10)]
     [SerializeField] AudioSource fireTruckSirenSFX;
@@ -52,12 +38,7 @@ public class Act1Scene2SceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
-
-        instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
-        instructionContentCG.alpha = 0;
-        // TODO - SFX OF DOOR
-
-    } 
+    }
 
     void Update()
     {
@@ -68,10 +49,10 @@ public class Act1Scene2SceneManager : MonoBehaviour
 
        VehicleLerp();
 
-        if (HUDManager.instance.instructionHUD.activeSelf)
-        {
-            DeviceChecker();
-        }
+        // if (HUDManager.instance.instructionHUD.activeSelf)
+        // {
+        //     DeviceChecker();
+        // }
     }
 
     void CheckPlayerAudioPlaying()
@@ -90,60 +71,6 @@ public class Act1Scene2SceneManager : MonoBehaviour
                 startDialogueTrigger.StartDialogue();
             });
         }
-    }
-
-    void DeviceChecker()
-    {
-        if(DeviceManager.instance.keyboardDevice)
-        {
-            instructionImg.sprite = instructionSprite[0];
-        }
-        else if(DeviceManager.instance.gamepadDevice)
-        {
-            instructionImg.sprite = instructionSprite[1];
-        }
-    }
-
-    public void DisplayInstruction()
-    {
-        // Time. timeScale = 0;
-        instructionHUD.SetActive(true);
-
-        instructionBGRectTransform.DOSizeDelta(new Vector2(1920, instructionBGRectTransform.sizeDelta.y), .5f)
-            .SetEase(Ease.InQuad)
-            .SetUpdate(true)
-            .OnComplete(() =>
-        {
-            instructionContent.SetActive(true);
-            instructionContentCG.DOFade(1, .75f).SetUpdate(true);
-        });
-    }
-
-    public void HideInstruction()
-    {
-        Time.timeScale = 1;
-        instructionContentCG.DOFade(1, .75f).OnComplete(() =>
-        {
-            instructionContent.SetActive(false);
-            instructionBGRectTransform.DOSizeDelta(new Vector2(0, instructionBGRectTransform.sizeDelta.y), .5f)
-                .SetEase(Ease.OutQuad)
-                .OnComplete(() =>
-            {
-                instructionHUD.SetActive(false);
-
-                //ENABLE SCRIPT
-                PlayerScript.instance.playerMovement.enabled = true;
-                // PlayerScript.instance.playerMovement.playerAnim.enabled = true;
-                PlayerScript.instance.cinemachineInputProvider.enabled = true;
-                PlayerScript.instance.interact.enabled = true;
-                // PlayerScript.instance.examine.enabled = true;
-
-                // Cursor.lockState = CursorLockMode.Locked;
-
-                HUDManager.instance.playerHUD.SetActive(true);
-                MissionManager.instance.DisplayMission();
-            });
-        });
     }
 
     void VehicleLerp()

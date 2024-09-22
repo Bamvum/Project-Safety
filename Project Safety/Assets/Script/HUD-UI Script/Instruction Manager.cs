@@ -1,7 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class InstructionManager : MonoBehaviour
 {
@@ -12,51 +17,175 @@ public class InstructionManager : MonoBehaviour
         instance = this;
     }
 
-    [SerializeField] InstructionSO instructionSO;
+    [SerializeField] GameObject instructionHUD;
+    [SerializeField] Image instructionBG;
+    [SerializeField] RectTransform instructionBGRectTransform;
+    [SerializeField] GameObject instructionContent;
+    [SerializeField] CanvasGroup instructionContentCG;
+    [SerializeField] InstructionSO instructionsSO;
+    [SerializeField] GameObject[] instructionButton;
+    // 0 - Left
+    // 1 - Right
+    // 2 - Done
+    
+    [Space(10)]
+    [SerializeField] Image instructionImage;
+    [SerializeField] TMP_Text instructionText;
 
-    public void DisplayInstruction()
+    [Header("Flag")]
+    bool isGamepad = false;
+    int counter;
+
+
+    // TESTING DELETE WHEN AUDIO MANAGER IS MADE
+    [SerializeField] AudioSource alarmSFX;
+
+    void Start()
+    {
+        Debug.Log(instructionsSO.instructions.Count);
+
+        // Ensure buttons are set correctly
+        UpdateButtonStates();
+
+        instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
+        instructionContentCG.alpha = 0;
+    }
+    
+    void Update()
+    {
+        DeviceChecker();
+    }
+    
+    void DeviceChecker()
+    {
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            Debug.Log("Keyboard");
+            DisplayInstruction("keyboard");
+
+            // Cursor.lockState = CursorLockMode.None;
+            EventSystem.current.SetSelectedGameObject(null);
+            isGamepad = false;
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            Debug.Log("Gamepad");
+            DisplayInstruction("gamepad");
+            
+            // Cursor.lockState = CursorLockMode.Locked;
+            
+            if(!isGamepad)
+            {
+                EventSystem.current.SetSelectedGameObject(instructionButton[1]);
+                Debug.Log("Selected Instruction Button - Right");
+                isGamepad = true;
+            }
+        }
+    }
+
+    public void NextInstruction()
+    {
+        if (counter < instructionsSO.instructions.Count - 1)
+        {
+            counter++;
+            DeviceChecker();
+            UpdateButtonStates();
+        }
+    }
+
+    public void PreviousInstruction()
+    {
+        if (counter > 0)
+        {
+            counter--;
+            DeviceChecker();
+            UpdateButtonStates();
+        }
+    }
+
+    // Modified DisplayInstruction method to accept device type
+    private void DisplayInstruction(string deviceType)
+    {
+        // Check if counter is within bounds
+        if (counter >= 0 && counter < instructionsSO.instructions.Count)
+        {
+            instructionImage.sprite = instructionsSO.instructions[counter].instructionSprite;
+
+            // Display the correct instruction text based on the device type
+            if (deviceType == "keyboard")
+            {
+                instructionText.text = instructionsSO.instructions[counter].instructionKeyboard;
+            }
+            else if (deviceType == "gamepad")
+            {
+                instructionText.text = instructionsSO.instructions[counter].instructionGampad;
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Update button visibility based on current index
+        instructionButton[0].SetActive(counter > 0); // Show "Previous" button if not at the start
+        instructionButton[1].SetActive(counter < instructionsSO.instructions.Count - 1); // Show "Next" button if not at the end
+        instructionButton[2].SetActive(counter == instructionsSO.instructions.Count - 1); // Show "Finish" button if at the end
+    }
+    public void ShowInstruction()
     {
         Time.timeScale = 0;
-        HUDManager.instance.instructionHUD.SetActive(true);
+        
+        if(alarmSFX != null)
+        {
+            alarmSFX.Pause();
+        }
 
-        HUDManager.instance.instructionBGRectTransform
-            .DOSizeDelta(new Vector2(1920, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
+        // Bool instructionHUDActive = true (FOR PAUSE FUNCTION)
+
+        Debug.Log("Display Instruction!");
+        instructionHUD.SetActive(true);
+        instructionBGRectTransform.DOSizeDelta(new Vector2(1920, instructionBGRectTransform.sizeDelta.y), .5f)
             .SetEase(Ease.InQuad)
             .SetUpdate(true)
             .OnComplete(() =>
         {
-            HUDManager.instance.instructionContent.SetActive(true);
-            HUDManager.instance.instructionContentCG
-                .DOFade(1, .75f)
-                .SetUpdate(true);
+            instructionContent.SetActive(true);
+            instructionContentCG.DOFade(1, .75f).SetUpdate(true);
         });
     }
 
     public void HideInstruction()
     {
-        Time.timeScale = 1;
-        HUDManager.instance.instructionContentCG
-            .DOFade(1, .75f).OnComplete(() =>
+        instructionContentCG.DOFade(1, .75f).SetUpdate(true).OnComplete(() =>
         {
-            HUDManager.instance.instructionContent.SetActive(false);
-            HUDManager.instance.instructionBGRectTransform
-                .DOSizeDelta(new Vector2(0, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
+            instructionContent.SetActive(false);
+            instructionBGRectTransform.DOSizeDelta(new Vector2(0, instructionBGRectTransform.sizeDelta.y), .5f)
                 .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
                 .OnComplete(() =>
             {
-                HUDManager.instance.instructionHUD.SetActive(false);
+                instructionHUD.SetActive(false);
 
-                //ENABLE SCRIPT
+                // ENABLE PLAYER SCRIPTS
                 PlayerScript.instance.playerMovement.enabled = true;
-                // PlayerScript.instance.playerMovement.playerAnim.enabled = true;
                 PlayerScript.instance.cinemachineInputProvider.enabled = true;
                 PlayerScript.instance.interact.enabled = true;
-                // PlayerScript.instance.examine.enabled = true;
+
+                if (PlayerScript.instance.canRunInThisScene)
+                {
+                    PlayerScript.instance.stamina.enabled = true;
+                }
 
                 // Cursor.lockState = CursorLockMode.Locked;
+                
+                Time.timeScale = 1;
 
-                HUDManager.instance.playerHUD.SetActive(true);
-                // DisplayMission();
+                if(alarmSFX != null)
+                {
+                    alarmSFX.UnPause();
+                }
+
+                this.enabled = false;
+                // Bool instructionHUDActive = false (FOR PAUSE FUNCTION)
             });
         });
     }

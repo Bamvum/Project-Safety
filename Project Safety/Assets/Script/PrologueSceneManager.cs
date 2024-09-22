@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
-using Cinemachine;
+
 
 
 public class PrologueSceneManager : MonoBehaviour
@@ -16,39 +15,33 @@ public class PrologueSceneManager : MonoBehaviour
     {
         instance = this;
     }
-    
-    [SerializeField] MissionSO missionSO;
-    
+ 
     [Header("Script")]
-    [SerializeField] HomeworkManager homeworkManager;
+    public OnAndOffGameObject onAndOffGameObject;
 
     [Header("Player")]
-    [SerializeField] GameObject player;
     [SerializeField] GameObject playerModel;
     
     [Space(10)]
     [SerializeField] AudioSource suspenceSFX;
+    public AudioSource alarmSFX;
 
     [Header("Prologue Game Object")]
     public GameObject PC;
     public GameObject monitor;
     public GameObject[] monitorScreen;
+    public GameObject lightSwitch;
 
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
     
     [Space(15)]
     public AudioSource monitorSFX;
-    [SerializeField] AudioSource playerAudio;
-    [SerializeField] AudioClip alarmAndWakeSFX;
 
     [Header("Flag")]
-    int missionIndex;
-    bool audioRepeat = false;
-    bool isGamepad;
+    public bool toGetUp;
     bool isSuspenceSFXPlaying;
-    bool isLastPageReached;
-    
+
     void Start()
     {
         // TODO -   IF PAUSE UI IS ACTIVE
@@ -63,34 +56,20 @@ public class PrologueSceneManager : MonoBehaviour
                                                                 1);
         
         // PLAY AUDIO CLIP IN PLAYERAUDIO
-        playerAudio.clip = alarmAndWakeSFX;
-        playerAudio.Play();
+        // alarmAndWakeSFX.Play();
 
-        ChangeInstructionPageButtons(false, true, false);        
+        // ChangeInstructionPageButtons(false, true, false); 
+        
+        StartCoroutine(FadeOutFadeImage());     
     }
     
     void Update()
     {
-        
-        if(!audioRepeat)
-        {
-            CheckPlayerAudioPlaying();
-        }
-
-        if (HUDManager.instance.instructionHUD.activeSelf)
-        {
-            DeviceChecker();
-        }
-
-    
-        if(!isLastPageReached)
-        {
-            LastPageChecker();
-        }
-
         // TO NEXT SCENE (ACT 1 - STUDENT)
         if(isSuspenceSFXPlaying)
         {
+            Debug.Log("Suspence SFX is Playing!");
+
             // ELAPSED TIME == suspenseSFX.Clip.length
             if(suspenceSFX.time >= suspenceSFX.clip.length)
             {
@@ -105,7 +84,7 @@ public class PrologueSceneManager : MonoBehaviour
                     LoadingSceneManager.instance.loadingScreen.SetActive(true);
                     LoadingSceneManager.instance.enabled = true;
                     // NEXT SCENE NAME
-                    LoadingSceneManager.instance.sceneName = "Act 1 SCene 1";
+                    LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
                 });
 
                 isSuspenceSFXPlaying = false;
@@ -113,235 +92,63 @@ public class PrologueSceneManager : MonoBehaviour
         }
     }
 
-    void CheckPlayerAudioPlaying()
+    IEnumerator FadeOutFadeImage()
     {
-        if (!playerAudio.isPlaying)
-        {
-            Debug.Log("Player Audio is Done playing");
+        yield return new WaitForSeconds(2);
+        alarmSFX.Play();
 
-            // FADEOUT EFFECTS
-            LoadingSceneManager.instance.fadeImage
+        yield return new WaitForSeconds(5);
+        Debug.Log("Wait for 5 Seconds");
+        LoadingSceneManager.instance.fadeImage
                 .DOFade(0, LoadingSceneManager.instance.fadeDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
-            {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+        {
+           
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+        });
 
-                audioRepeat = true;
-                startDialogueTrigger.StartDialogue();
-            });
-        }
+        yield return new WaitForSeconds(3);
+        toGetUp = true;
     }
 
-    void DeviceChecker()
-    {
-        if (DeviceManager.instance.keyboardDevice)
-        {
-            ChangeImageStatus(true, false, HUDManager.instance.keyboardSprite[0],
-                                            HUDManager.instance.keyboardSprite[1],
-                                            HUDManager.instance.keyboardSprite[2]);
-
-            EventSystem.current.SetSelectedGameObject(null);
-
-            isGamepad = false;
-        }
-        else if (DeviceManager.instance.gamepadDevice)
-        {
-            ChangeImageStatus(false, true, HUDManager.instance.gamepadSprite[0],
-                                            HUDManager.instance.gamepadSprite[1],
-                                            HUDManager.instance.gamepadSprite[2]);
-
-            if (!isGamepad)
-            {
-                if(HUDManager.instance.instructionButton[1].activeSelf)
-                {
-                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-                }   
-                else
-                {
-                    EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);
-                }
-
-                isGamepad = true;
-            }
-        }
-    }
-
-    void LastPageChecker()
-    {
-        if (HUDManager.instance.instructionPage[2].activeSelf)
-        {
-            isLastPageReached = true;
-        }
-    }
 
     public void TransitionToHomeworkQuiz()
     {
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        // FADEIN EFFECTS
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
             .OnComplete(() =>
-        {       
-            HUDManager.instance.homeworkHUD.SetActive(true);
-            // FADEOUT EFFECTS
+        {
+            HomeworkManager.instance.enabled = true;
+            HomeworkManager.instance.homeworkHUD.SetActive(true);
             LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                .OnComplete(() =>
+                .SetEase(Ease.Linear)
+                .OnComplete(() => 
             {
-                homeworkManager.enabled = true;
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                
+                HomeworkManager.instance.homeworkHUD.SetActive(true);
+                PlayerScript.instance.playerMovement.enabled = false;
+                PlayerScript.instance.cinemachineInputProvider.enabled = false;
+                PlayerScript.instance.stamina.enabled = false;
             });
         });
     }
 
-    // #region - INSTRUCTION -
-
-     public void DisplayInstruction()
-    {
-        Time.timeScale = 0;
-        HUDManager.instance.instructionHUD.SetActive(true);
-
-        HUDManager.instance.instructionBGRectTransform
-            .DOSizeDelta(new Vector2(1920, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
-            .SetEase(Ease.InQuad)
-            .SetUpdate(true)
-            .OnComplete(() =>
-        {
-            HUDManager.instance.instructionContent.SetActive(true);
-            HUDManager.instance.instructionContentCG
-                .DOFade(1, .75f)
-                .SetUpdate(true);
-        });
-    } 
-
-    public void HideInstruction()
-    {
-        Time.timeScale = 1;
-        HUDManager.instance.instructionContentCG
-            .DOFade(1, .75f).OnComplete(() =>
-        {
-            HUDManager.instance.instructionContent.SetActive(false);
-            HUDManager.instance.instructionBGRectTransform
-                .DOSizeDelta(new Vector2(0, HUDManager.instance.instructionBGRectTransform.sizeDelta.y), .5f)
-                .SetEase(Ease.OutQuad)
-                .OnComplete(() =>
-            {
-                HUDManager.instance.instructionHUD.SetActive(false);
-
-                //ENABLE SCRIPT
-                PlayerScript.instance.playerMovement.enabled = true;
-                // PlayerScript.instance.playerMovement.playerAnim.enabled = true;
-                PlayerScript.instance.cinemachineInputProvider.enabled = true;
-                PlayerScript.instance.interact.enabled = true;
-                // PlayerScript.instance.examine.enabled = true;
-
-                // Cursor.lockState = CursorLockMode.Locked;
-
-                HUDManager.instance.playerHUD.SetActive(true);
-                MissionManager.instance.DisplayMission();
-            });
-        });
-    }
-
-    public void instructionNextPage()
-    {
-        if(HUDManager.instance.instructionPage[0].activeSelf)
-        {
-            if(isLastPageReached)
-            {
-                ChangeInstructionPageButtons(true, true, true);
-            }
-            else
-            {
-                ChangeInstructionPageButtons(true, true, false);
-            }
-
-            HUDManager.instance.instructionPage[0].SetActive(false);
-            HUDManager.instance.instructionPage[1].SetActive(true);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-        }
-        else if (HUDManager.instance.instructionPage[1].activeSelf)
-        {
-            // TODO -   DOUBLE CHECK. IF NEED TO DO A LASTPAGEREACHED IF STATEMENT 
-
-            ChangeInstructionPageButtons(true,  false, true);
-        
-            HUDManager.instance.instructionPage[1].SetActive(false);
-            HUDManager.instance.instructionPage[2].SetActive(true);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[2]);    
-        }
-        else if (HUDManager.instance.instructionPage[2].activeSelf)
-        {
-
-        }
-    }
-
-    public void instructionPreviousPage()
-    {
-        if (HUDManager.instance.instructionPage[0].activeSelf)
-        {
-            
-        }
-        else if (HUDManager.instance.instructionPage[1].activeSelf)
-        {
-            if(isLastPageReached)
-            {
-                ChangeInstructionPageButtons(false, true, true);
-            }
-            else
-            {
-                ChangeInstructionPageButtons(false, true, false);
-            }
-
-            HUDManager.instance.instructionPage[0].SetActive(true);
-            HUDManager.instance.instructionPage[1].SetActive(false);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[1]);
-        }
-        else if (HUDManager.instance.instructionPage[2].activeSelf)
-        {
-
-            ChangeInstructionPageButtons(true, true, true);
-
-            HUDManager.instance.instructionPage[1].SetActive(true);
-            HUDManager.instance.instructionPage[2].SetActive(false);
-
-            EventSystem.current.SetSelectedGameObject(HUDManager.instance.instructionButton[0]);
-        }
-    }
-
-    void ChangeInstructionPageButtons(bool leftButton, bool rightButton, bool doneButton)
-    {
-        HUDManager.instance.instructionButton[0].SetActive(leftButton);
-        HUDManager.instance.instructionButton[1].SetActive(rightButton);
-        HUDManager.instance.instructionButton[2].SetActive(doneButton);
-    }
-
-    void ChangeImageStatus(bool keyboardActive, bool gamepadActive, Sprite crouchSprite,
-                        Sprite interactSprite, Sprite examineSprite)
-    {
-        HUDManager.instance.keyboardInstruction.SetActive(keyboardActive);
-        HUDManager.instance.gamepadInstruction.SetActive(gamepadActive);
-
-        HUDManager.instance.imageHUD[0].sprite = crouchSprite;
-        HUDManager.instance.imageHUD[1].sprite = interactSprite;
-        HUDManager.instance.imageHUD[2].sprite = examineSprite;
-    }
-    
     #region - SCENE MANAGEMENT -
 
+    [ContextMenu("Rotate")]
     public void RotatePlayer()
     {
-        player.transform.rotation = Quaternion.Euler(0, 120,0);
+        // CAMAERA FIX (MAKE IT FACE A CERTAIN AXIS)
+        playerModel.transform.rotation = Quaternion.Euler(0, 120,0);
     }
 
+    [ContextMenu("Move")]
     public void MovePlayer()
     {
-        player.transform.position = new Vector3(-6.5f, player.transform.position.y, -11);
-        playerModel.transform.position = new Vector3(0,0,0);
+        playerModel.transform.position = new Vector3(-6.5f, playerModel.transform.position.y, -11);
+        // playerModel.transform.position = new Vector3(0,0,0);
     }
 
     public void StartSuspenceSequence()

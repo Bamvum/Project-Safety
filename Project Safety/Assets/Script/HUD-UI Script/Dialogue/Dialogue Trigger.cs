@@ -39,6 +39,10 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
+    public void CanTalkAgain()
+    {
+        isSpeaking = false;
+    }
     #endregion
 
 }

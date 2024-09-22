@@ -12,7 +12,6 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] GameObject selectSceneScreen; 
     [SerializeField] GameObject[] settingContent;
 
-    #region  - TITLE SCREEN -
 
     void Start()
     {
@@ -36,6 +35,23 @@ public class MainMenuScriptManager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
         });
     }
+
+    void Update()
+    {
+        // TODO - DEVICE CHECKER
+
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            // TODO - CURSOR ON
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            // TODO - CURSOR OFF
+            //      - EVENT SYSTEM SELECTED OBJECT PER GAMEOBJECT ACTIVE
+        }
+    }
+    
+    #region  - TITLE SCREEN -
 
     public void PlayTest()
     {   
@@ -94,8 +110,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void selectSceneBack()
     {
+        Debug.Log("Go back to Main Menu");
         selectSceneScreen.SetActive(false);
-
         titleScreen.SetActive(true);
     }
 

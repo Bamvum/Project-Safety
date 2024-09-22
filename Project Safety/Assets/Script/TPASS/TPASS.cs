@@ -7,236 +7,149 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
+
 public class TPASS : MonoBehaviour
-{
+{    
     PlayerControls playerControls;
-    [Header("Scripts")]
-    [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] Interact interact;
-    [SerializeField] Stamina stamina;
-    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
-    [Space(10)]
+    
+    [Header("Script")]
     [SerializeField] TwistFireExtinguisher twistFE;
     [SerializeField] PullFireExtinguisher pullFE;
+    // [SerializeField] TwistFireExtinguisher twistFE;
 
-    [Header("Animation")]
-    [SerializeField] AnimationClip inspectExtinguisherAnim;
-    public float inspectExtinguisherAnimLength;
-
-    [Header("Cinemachine")]
-    [SerializeField] CinemachineVirtualCamera playerVC;
-    [SerializeField] CinemachineVirtualCamera inspectExtinguisherVC;
-    [SerializeField] CinemachineVirtualCamera twistExtinguisherVC;
-    [SerializeField] CinemachineVirtualCamera pullExtinguisherVC;
-
-    [Header("HUD")]
-    [SerializeField] GameObject playerHUD;
-    [SerializeField] GameObject extinguisherHUD;
-    [SerializeField] Image blackImage;
+    [Header("Fire Extinguisher")]
+    [SerializeField] GameObject fireExtinguisher;
     
     [Space(10)]
-    [SerializeField] Image[] TPASSHUD;
+    [SerializeField] GameObject fireExtinguisherBody;
+    [SerializeField] GameObject fireExtinguisherHose;
+ 
+    [Space(10)]
+    [SerializeField] GameObject fireExtinguisherToPickUp; // IF ACTIVE FALSE IT CAN BE USE
 
     [Space(10)]
-    [SerializeField] Sprite[] keyboardSprite;
-    [SerializeField] Sprite[] gamepadSprite;
+    [SerializeField] int inputsPerformed;
+    [SerializeField] int inputNeedToFinish;
+    [SerializeField] bool[] buttonPressed;
+    bool inTwistQTE;
+    
+    // [Header("Pull (TPASS)")]
+    // [SerializeField] CanvasGroup pullHUD;
+    // [SerializeField] RectTransform pullRectTransform;
+    // [SerializeField] CanvasGroup pullCG;
+
+    // [Space(10)]
+    // [SerializeField] float pressedValue;
+    // [SerializeField] float decreaseValue;
+
+    // [Space(10)]
+    // [SerializeField] Image pullControlImage;
+    // [SerializeField] Sprite[] pullKeyboardSprite;
+    // [SerializeField] Sprite[] pullGamepadSprite;
+    // [SerializeField] Slider pullSlider;
+    // [SerializeField] int roundNum;
+    // bool inPullQTE;
+
+    // [Header("Aim (TPASS)")]
+    // [SerializeField] CanvasGroup aimHUD;
+    // [SerializeField] RectTransform aimRectTransform;
+    // [SerializeField] CanvasGroup aimCG;
+    public bool aimMode;
+
+    [Header("TPASS status")]
+    public bool twistAndPull;
+    public bool aim;
+    public bool squeezeAndSweep;
+
+    [Header("Inputs")]
+    bool equipFireExtinguisher;
+    public bool firstHalfDone;
+
+    [Header("Flag")]
+    bool canInput;
+
     [Space(10)]
-    [SerializeField] GameObject[] fireExitinguisher;
-    bool inspectExtinguisherMode;
-
-
+    bool canUseFireExtinguisherInv;
+    bool inGamePlay;
 
     void Awake()
     {
-        inspectExtinguisherAnimLength = inspectExtinguisherAnim.length;
         playerControls = new PlayerControls();
+    
+        // twistRectTransform = twistHUD.GetComponent<RectTransform>();
     }
 
     void OnEnable()
     {
-        playerControls.Extinguisher.Twist.performed += ToTwist;
-        playerControls.Extinguisher.Pull.performed += ToPull;
-        playerControls.Extinguisher.Aim.performed += ToAim;
-        playerControls.Extinguisher.Squeeze.performed += ToSqueeze;
-        playerControls.Extinguisher.Sweep.performed += ToSweep;
+        playerControls.Extinguisher.EquipExtinguisher.performed += ToEquip;
+        playerControls.Extinguisher.PerformTPASS.performed += ToPerformTPASS;
 
         playerControls.Extinguisher.Enable();
     }
 
-    private void ToTwist(InputAction.CallbackContext context)
+    private void ToEquip(InputAction.CallbackContext context)
     {
-        if(!twistFE.objectiveComplete)
+        if(!fireExtinguisherToPickUp.activeInHierarchy)
         {
-            if(inspectExtinguisherMode)
+            Debug.Log("To Equip");
+            
+            if (!equipFireExtinguisher)
             {
-                Debug.Log("To Twist Method!");
-                extinguisherHUD.SetActive(false);
-
-                blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                if (firstHalfDone)
                 {
-                    // CINEMACHINE 
-                    inspectExtinguisherVC.Priority = 0;
-                    twistExtinguisherVC.Priority = 10;
+                    Debug.Log("First Half Done");
+                    // ANIMATION FIRE EXTINGUISHER IDLE WALK 
+                    fireExtinguisherBody.SetActive(true);
+                    fireExtinguisherHose.SetActive(true);
+                }
+                else
+                {
+                    PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", true);
+                    fireExtinguisher.SetActive(true);
+                }
 
-                    // ANIMATION
-                    playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
-                    
-                    // EXTINGUISHER GAME OBJECT
-                    fireExitinguisher[0].SetActive(false);
-                    fireExitinguisher[1].SetActive(true);
-
-                    blackImage.DOFade(1,inspectExtinguisherAnimLength).OnComplete(() =>
-                    {
-                        // FADE
-                        blackImage.DOFade(0, inspectExtinguisherAnimLength);
-                        twistFE.enabled = true;
-                        this.enabled = false;
-                    });
-                });
+                equipFireExtinguisher = true;
+                canUseFireExtinguisherInv = true;
             }
-
-
-            // TODO - PROMPT THAT TWIST IS ALREADY DONE OR 
-            inspectExtinguisherMode = false;
-        }
-    }
-    private void ToPull(InputAction.CallbackContext context)
-    {
-        if(!pullFE.objectiveComplete)
-        {
-            if (inspectExtinguisherMode)
+            else
             {
-                Debug.Log("To Pull Method!");
-                extinguisherHUD.SetActive(false);
-
-                blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
+                if (firstHalfDone)
                 {
-                    // CINEMACHINE 
-                    inspectExtinguisherVC.Priority = 0;
-                    pullExtinguisherVC.Priority = 10;
+                    Debug.Log("First Half Done");
+                    // ANIMATION FIRE EXTINGUISHER IDLE WALK 
+                    fireExtinguisherBody.SetActive(false);
+                    fireExtinguisherHose.SetActive(false);
+                }
+                else
+                {
+                    PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", false);
+                    fireExtinguisher.SetActive(false);
+                }
 
-                    // ANIMATION
-                    // playerMovement.playerAnim.SetBool("PullExtinguisher", true);
-                    playerMovement.playerAnim.SetBool("TwistExtinguisher", true);
-
-                    // EXTINGUISHER GAME OBJECT
-                    fireExitinguisher[0].SetActive(false);
-                    fireExitinguisher[1].SetActive(true);
-
-                    blackImage.DOFade(1, inspectExtinguisherAnimLength).OnComplete(() =>
-                    {
-                        // FADE
-                        blackImage.DOFade(0, inspectExtinguisherAnimLength);
-                        pullFE.enabled = true;
-                        this.enabled = false;
-                    });
-                });
-
-                inspectExtinguisherMode = false;
+                equipFireExtinguisher = false;
+                canUseFireExtinguisherInv = false;
             }
         }
     }
-
-    private void ToAim(InputAction.CallbackContext context)
-    {
-        if(inspectExtinguisherMode)
-        {
-            Debug.Log("To Aim Method!");
-            inspectExtinguisherMode = false;
-        }
-    }
-
-    private void ToSqueeze(InputAction.CallbackContext context)
-    {
-        if(inspectExtinguisherMode)
-        {
-            Debug.Log("To Squeeze Method!");
-            inspectExtinguisherMode = false;
-        }
-    }
-
-    private void ToSweep(InputAction.CallbackContext context)
-    {
-        if(inspectExtinguisherMode)
-        {
-            Debug.Log("To Sweep Method!");
-            inspectExtinguisherMode = false;
-        }
-    }
-    void OnDisable()
-    {
-        playerControls.Extinguisher.Disable();
-    }
-
-    public void ExtinguisherTrigger()
-    {
-        // GAME OBJECT
-        fireExitinguisher[0].SetActive(true);
-        fireExitinguisher[1].SetActive(false);
-
-        // ANIMATION
-        playerMovement.playerAnim.SetBool("Idle", true);
-        playerMovement.playerAnim.SetBool("Extinguisher", true);
-
-        // HUD
-        playerHUD.SetActive(false);
-
-
-        // CINEMACHINE
-        playerVC.Priority = 0;
-        inspectExtinguisherVC.Priority = 10;
-        twistExtinguisherVC.Priority = 0;
-        pullExtinguisherVC.Priority = 0;        
-
-        // DISABLE SCRIPT
-        playerMovement.enabled = false;
-        interact.enabled = false;
-        stamina.enabled = false;
-        cinemachineInputProvider.enabled = false;
-
-        // ENABLE SCRIPT
-        this.enabled = true;
-
-        Invoke("StartExtinguisher", inspectExtinguisherAnimLength);
-    }
-
-    void Update()
-    {
-        if(DeviceManager.instance.keyboardDevice)
-        {
-            ChangeImageStatus(keyboardSprite[0], keyboardSprite[1], keyboardSprite[2], keyboardSprite[3],keyboardSprite[4]);
-        }
-        else if(DeviceManager.instance.gamepadDevice)
-        {
-            ChangeImageStatus(gamepadSprite[0], gamepadSprite[1], gamepadSprite[2], gamepadSprite[3],gamepadSprite[4]);
-        }
-
-        if(twistFE.objectiveComplete)
-        {
-            TPASSHUD[0].gameObject.SetActive(false);
-        }
-
-        if(pullFE.objectiveComplete)
-        {
-            TPASSHUD[1].gameObject.SetActive(false);
-        }
-    }
-
-    void StartExtinguisher()
-    {
-        extinguisherHUD.SetActive(true);
-        inspectExtinguisherMode = true;
-    }
-
-    void ChangeImageStatus(Sprite twistSprite, Sprite pullSprite, Sprite aimSprite,
-    Sprite squeezeSprite, Sprite sweepSprite)
-    {
-        TPASSHUD[0].sprite = twistSprite;
-        TPASSHUD[1].sprite = pullSprite;
-        TPASSHUD[2].sprite = aimSprite;
-        TPASSHUD[3].sprite = squeezeSprite;
-        TPASSHUD[4].sprite = sweepSprite;
-    }
-
     
+    private void ToPerformTPASS(InputAction.CallbackContext context)
+    {
+        if (equipFireExtinguisher)
+        {
+            if (!twistAndPull)
+            {
+                Debug.Log("Perform Twist and Pull QTE!");
+
+                twistFE.enabled = true;
+                twistFE.TwistFireExtinguisherTrigger();
+                
+                this.enabled = false;
+            }
+            else 
+            {
+                // PERFORM SQUEEZE AND SWEEP
+            }
+        }
+    }
 }
+

@@ -9,10 +9,10 @@ using DG.Tweening;
 public class Interactable : MonoBehaviour
 {
     [Header("Script")]
-    [SerializeField] PrologueSceneManager prologueSceneManager;
     [SerializeField] DialogueTrigger dialogueTrigger;
     
     [Header("Flags")]
+    public bool isAlarm;
     public bool isLightSwitch;
     public bool isDoor;
     public bool isPC;
@@ -21,6 +21,9 @@ public class Interactable : MonoBehaviour
     public bool isWardrobe;
     public bool isOutsideDoor;
     public bool isBus;
+
+    [Header("Alarm")]
+    [SerializeField] GameObject phoneLight;
 
     [Header("Light Switch")]
     [SerializeField] GameObject lightSource;
@@ -68,6 +71,8 @@ public class Interactable : MonoBehaviour
 
                     this.enabled = false;
                     this.gameObject.layer = 0;
+                    PrologueSceneManager.instance.PC.layer = 8;
+                    Debug.Log(PrologueSceneManager.instance.PC.layer);
                 }
             }
 
@@ -116,23 +121,21 @@ public class Interactable : MonoBehaviour
         doorAnimator.SetBool("Door Open", false);
 
         // PLAY DOOR SFX
-    }
-
-    
+    }    
 
     public void PC()
     {
-        prologueSceneManager.PC.layer = 0;
-        prologueSceneManager.monitorScreen[0].SetActive(true);
+        PrologueSceneManager.instance.PC.layer = 0;
+        PrologueSceneManager.instance.monitorScreen[0].SetActive(true);
         Invoke("DelayStartPC", 20);
     }
 
     void DelayStartPC()
     {
-        prologueSceneManager.monitor.layer = 8;
-        prologueSceneManager.monitorScreen[0].SetActive(false);
-        prologueSceneManager.monitorScreen[1].SetActive(true);
-        prologueSceneManager.monitorSFX.Play();
+        PrologueSceneManager.instance.monitor.layer = 8;
+        PrologueSceneManager.instance.monitorScreen[0].SetActive(false);
+        PrologueSceneManager.instance.monitorScreen[1].SetActive(true);
+        PrologueSceneManager.instance.monitorSFX.Play();
     }
 
     public void AccessMonitor()
@@ -160,15 +163,15 @@ public class Interactable : MonoBehaviour
 
     IEnumerator UnplugPlug()
     {
-        HUDManager.instance.FadeInForDialogue();
-
+        HUDManager.instance.FadeIn();
+        
         yield return new WaitForSeconds(1);
         
         plug.SetActive(false);
         unplug.SetActive(true);
         
         Act1StudentSceneManager.instance.plugInteracted++;
-        HUDManager.instance.FadeOutForDialogue();
+        HUDManager.instance.FadeOut();
 
         yield return new WaitForSeconds(1);
         
@@ -234,7 +237,7 @@ public class Interactable : MonoBehaviour
     }
     public void BussEnter()
     {
-        if(SceneManager.GetActiveScene().name == "Act 1 SCene 2")
+        if(SceneManager.GetActiveScene().name == "Act 1 Scene 2")
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
@@ -249,5 +252,30 @@ public class Interactable : MonoBehaviour
                 LoadingSceneManager.instance.sceneName = "Act 1 Scene 3";
             });
         }
+    }
+
+    public void Alarm()
+    {
+        StartCoroutine(DecreaseVolume());
+
+        PrologueSceneManager.instance.lightSwitch.layer = 8;
+        this.gameObject.layer = 0;
+        MissionManager.instance.HideMission();
+    }
+
+    IEnumerator DecreaseVolume()
+    {
+        float startVolume = PrologueSceneManager.instance.alarmSFX.volume;
+
+        PrologueSceneManager.instance.onAndOffGameObject.isToggling = false;
+        phoneLight.SetActive(false);
+
+        for (float t = 0; t < .5f; t += Time.deltaTime)
+        {
+            PrologueSceneManager.instance.alarmSFX.volume = Mathf.Lerp(startVolume, 0, t / LoadingSceneManager.instance.fadeDuration);
+            yield return null;
+        }
+        
+        PrologueSceneManager.instance.alarmSFX.volume = 0;
     }
 }

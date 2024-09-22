@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
+
 
 
 public class PlayerMovement : MonoBehaviour
 {
+    PlayerControls playerControls;
+
     [Header("Player")]
     [SerializeField] CharacterController characterController;
     [SerializeField] Transform playerBody;
@@ -56,29 +57,33 @@ public class PlayerMovement : MonoBehaviour
     Vector2 currentVelocity;
     Vector3 velocity;
 
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
+    
     void OnEnable()
     {
-        PlayerScript.instance.playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+        playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
 
-        PlayerScript.instance.playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
+        playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
 
-        PlayerScript.instance.playerControls.Player.Sprint.performed += ctx => runInput = true;
-        PlayerScript.instance.playerControls.Player.Sprint.canceled += ctx => runInput = false;
+        playerControls.Player.Sprint.performed += ctx => runInput = true;
+        playerControls.Player.Sprint.canceled += ctx => runInput = false;
 
-        PlayerScript.instance.playerControls.Player.Jump.performed += ctx => jumpInput = true;
-        PlayerScript.instance.playerControls.Player.Jump.canceled += ctx => jumpInput = false;
+        playerControls.Player.Jump.performed += ctx => jumpInput = true;
+        playerControls.Player.Jump.canceled += ctx => jumpInput = false;
 
-        PlayerScript.instance.playerControls.Player.Crouch.performed += ctx => crouchInput = true;
-        PlayerScript.instance.playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
+        playerControls.Player.Crouch.performed += ctx => crouchInput = true;
+        playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
         
-        PlayerScript.instance.playerControls.Player.Enable();
-    
+        playerControls.Player.Enable();
     }
 
     void OnDisable()
     {
         ResetInputValue();
-        PlayerScript.instance.playerControls.Player.Disable();
+        playerControls.Player.Disable();
     }
 
     void  ResetInputValue()
@@ -185,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (PlayerScript.instance.canRunInThisScene && runInput && !PlayerScript.instance.stamina.outOfStamina ) // 
         {
-            Debug.Log("Player is Running!");
             movementSpeed = runSpeed;
             playerAnim.SetBool(crouchHash, false);
 
@@ -195,7 +199,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player is not Running!");
             movementSpeed = walkSpeed;
             playerAnim.SetBool(crouchHash, false);
             
@@ -219,8 +222,6 @@ public class PlayerMovement : MonoBehaviour
 
     void CamMovement()
     {
-        // TODO - FINALIK HEAD MOVEMENT
-
         if(DeviceManager.instance.keyboardDevice)
         {
             mouseSensitivity = 21.9f;

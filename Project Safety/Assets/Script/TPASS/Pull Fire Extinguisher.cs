@@ -11,7 +11,6 @@ public class PullFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
     [Header("Scripts")]
-    [SerializeField] PlayerMovement playerMovement;
     [SerializeField] TPASS tpass;
 
     [Header("Value")]
@@ -114,7 +113,7 @@ public class PullFireExtinguisher : MonoBehaviour
 
         pullFEHUD.SetActive(false);
 
-        tpass.ExtinguisherTrigger();
+        // tpass.ExtinguisherTrigger();
     }
 
     public void PullFireExtinguisherTrigger()
@@ -150,8 +149,10 @@ public class PullFireExtinguisher : MonoBehaviour
         if(roundNum >= 3)
         {
             objectiveComplete = true;
-            playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
-
+            PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
+            
+            tpass.firstHalfDone = true;
+            tpass.aimMode = true;
             this.enabled = false;
         }
     }

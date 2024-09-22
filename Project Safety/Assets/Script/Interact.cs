@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class Interact : MonoBehaviour
 {
+    PlayerControls playerControls;
+
     [SerializeField] Transform handIKTarget;
-    [SerializeField] Transform handTarget;
+    [SerializeField] Transform handBone;
 
     [Header("Scripts")]     
     Item item;
@@ -16,18 +17,51 @@ public class Interact : MonoBehaviour
 
     [Header("Interact")]     
     [SerializeField] float interactRange = 1.5f;
-    [HideInInspector] public GameObject interactObject;
+    public GameObject interactObject;
     public RaycastHit hit;
-    
+
+    [Header("Interact HUD")]
+    public Image[] interactImage;
+    public Sprite[] sprite;
+
+    [Header("Animation")]
+    public AnimationClip grab;
+    public float grabLength;
+
+    void Awake()
+    {
+        grabLength = grab.length;
+
+        playerControls = new PlayerControls();
+    }
+
     void OnEnable()
     {
-        PlayerScript.instance.playerControls.Player.Interact.performed += ToInteract;
-        PlayerScript.instance.playerControls.Player.Examine.performed += ToExamine;
+        playerControls.Player.Interact.performed += ToInteract;
+        playerControls.Player.Examine.performed += ToExamine;
 
-        PlayerScript.instance.playerControls.Player.Enable();
+        playerControls.Player.Enable();
+    }
+    
+    void OnDisable()
+    {
+        playerControls.Player.Disable();
     }
 
     #region - TO INTERACT -
+
+    
+    IEnumerator WaitForAnimationEnd(float duration)
+    {
+        Debug.Log("Wait for Animation End!");
+        yield return new WaitForSeconds(duration - 0.7f);
+        interactObject.transform.SetParent(handBone, true);
+        interactObject.transform.position = Vector3.zero;
+        GameObject tookObject = interactObject;
+        yield return new WaitForSeconds(duration - 0.7f);
+        tookObject.SetActive(false);
+    }
+
 
     private void ToInteract(InputAction.CallbackContext context)
     {   
@@ -41,6 +75,14 @@ public class Interact : MonoBehaviour
                     handIKTarget.position = hit.collider.transform.position;
 
                     PlayerScript.instance.playerMovement.playerAnim.SetTrigger("Grab");
+                    
+                    float clipDuration = grab.length;
+
+                    StartCoroutine(WaitForAnimationEnd(clipDuration));
+
+                    // IF STATEMENT - AT THE END OF THE LENGTH OF THE ANIMATION CLIP
+                    // interactObject.transform.SetParent(handBone, true);
+
                     Debug.Log("Item Interact!");
                 }
             }
@@ -53,7 +95,11 @@ public class Interact : MonoBehaviour
             }
             else if(interactable != null)
             {
-                if (interactable.isLightSwitch)
+                if(interactable.isAlarm)
+                {
+                    interactable.Alarm();
+                }
+                else if (interactable.isLightSwitch)
                 {
                     interactable.LightSwitchTrigger();
                 }
@@ -80,7 +126,6 @@ public class Interact : MonoBehaviour
                 else if(interactable.isOutsideDoor)
                 {
                     interactable.GoOutside();
-
                 }
                 else if (interactable.isBus)
                 {
@@ -108,20 +153,15 @@ public class Interact : MonoBehaviour
             // TODO - DISABLE SCRIPT
             this.enabled = false;
             PlayerScript.instance.playerMovement.enabled = false;
-            // ScriptManager.instance.stamina.enabled = false;
+            PlayerScript.instance.stamina.enabled = false;
             PlayerScript.instance.cinemachineInputProvider.enabled = false;
             
             // // TODO - ENABLE SCRIPT
-            // ScriptManager.instance.examine.enabled = true;
+            PlayerScript.instance.examine.enabled = true;
         }
     }
     
     #endregion
-
-    void OnDisable()
-    {
-        PlayerScript.instance.playerControls.Player.Disable();
-    }
 
     void Update()
     {
@@ -156,6 +196,8 @@ public class Interact : MonoBehaviour
         }
     }
 
+    #region  - INTERACT RESET PROPERTIES (NULL) -
+
     void ResetPorperties()
     {
         item = null;
@@ -168,13 +210,18 @@ public class Interact : MonoBehaviour
         ChangeImageStatus(false, false, null);
     }
 
+    #endregion
+
+    #region  - ITEM RAYCAST -
+
     void ItemRaycast()
     {
         item = hit.collider.GetComponent<Item>();
+        interactObject = hit.collider.gameObject;
 
         if (item.itemSO.isTakable)
         {
-            ChangeImageStatus(true, true, HUDManager.instance.sprite[0]);
+            ChangeImageStatus(true, true, sprite[0]);
         }
         else
         {
@@ -182,26 +229,34 @@ public class Interact : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region  - DIALOGUE RAYCAST -
+
     void DialogueRaycast()
     {
         dialogueTrigger = hit.collider.GetComponent<DialogueTrigger>();
 
-        
-
-        ChangeImageStatus(false, true, HUDManager.instance.sprite[1]);
+        ChangeImageStatus(false, true, sprite[1]);
     }
+
+    #endregion
+
+    #region  - INTERACTABLE RAYCAST -
 
     void InteractableRaycast()
     {
         interactable = hit.collider.GetComponent<Interactable>();
 
-        ChangeImageStatus(false, true, HUDManager.instance.sprite[0]);
+        ChangeImageStatus(false, true, sprite[0]);
     }
+
+    #endregion
     
     void ChangeImageStatus(bool activeLeftIMGStatus, bool activeRightIMGStatus, Sprite imgSprite)
     {
-        HUDManager.instance.interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
-        HUDManager.instance.interactImage[1].gameObject.SetActive(activeRightIMGStatus);
-        HUDManager.instance.interactImage[1].sprite = imgSprite;
+        interactImage[0].gameObject.SetActive(activeLeftIMGStatus);
+        interactImage[1].gameObject.SetActive(activeRightIMGStatus);
+        interactImage[1].sprite = imgSprite;
     }
 }
