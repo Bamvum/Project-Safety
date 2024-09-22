@@ -1,55 +1,202 @@
     using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.iOS;
 using UnityEngine.SceneManagement;
+using UnityEngine.Windows.Speech;
 
 public class MainMenuScriptManager : MonoBehaviour
 {   
+    PlayerControls playerControls;
+
+    [Header("Landing Screen")]
+    [SerializeField] TMP_Text pingPongText;
+    [SerializeField] float pingPongSpeed;
+
+    [Header("Screens")]
+    [SerializeField] GameObject landingScreen; 
     [SerializeField] GameObject mainMenu; 
     [SerializeField] GameObject titleScreen; 
     [SerializeField] GameObject settingScreen; 
     [SerializeField] GameObject selectSceneScreen; 
     [SerializeField] GameObject[] settingContent;
 
+    
+    [Header("Event Select")]
+    [SerializeField] GameObject titleSelectObject;
+    [SerializeField] GameObject sceneSelectObject;
+    [SerializeField] GameObject settingSelectObject;
+    
+    bool isGamepad;
+
+    bool actionInput;
+    bool isFading;
+
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
+
+    void OnEnable()
+    {
+        playerControls.MainMenu.Action.performed += ctx => actionInput = true; 
+        playerControls.MainMenu.Action.canceled += ctx => actionInput = false; 
+
+        playerControls.MainMenu.Enable();
+    }
+
+    
+    void OnDisable()
+    {
+        playerControls.MainMenu.Disable();
+    }
+
 
     void Start()
     {
-        mainMenu.SetActive(true);
-        titleScreen.SetActive(true);
-        settingScreen.SetActive(false);
-        selectSceneScreen.SetActive(false);
-
         // FADE IMAGE ALPHA
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
-        
         // FADEOUT EFFECT
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+            LoadingSceneManager.instance.fadeImage.DOFade(0,2).OnComplete(() =>
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                pingPongText.gameObject.SetActive(true);
+            });
         });
+
+
+
+        // mainMenu.SetActive(true);
+        // titleScreen.SetActive(true);
+        // settingScreen.SetActive(false);
+        // selectSceneScreen.SetActive(false);
     }
 
     void Update()
     {
-        // TODO - DEVICE CHECKER
+        if(pingPongText.gameObject.activeSelf)
+        {
+            float alpha = Mathf.PingPong(Time.time * pingPongSpeed, 1f);
 
+            Color currentTextColor = pingPongText.color;
+            currentTextColor.a = alpha;
+            pingPongText.color = currentTextColor;
+        }
+
+        DeviceInputChecker();
+    }
+
+    void DeviceInputChecker()
+    {
         if(DeviceManager.instance.keyboardDevice)
         {
-            // TODO - CURSOR ON
+            if(pingPongText.gameObject.activeSelf)
+            {
+                pingPongText.text = "PRESS <sprite name=\"Space\"> TO CONTINUE"; 
+            }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            // TODO - CURSOR OFF
-            //      - EVENT SYSTEM SELECTED OBJECT PER GAMEOBJECT ACTIVE
+            if(pingPongText.gameObject.activeSelf)
+            {
+                pingPongText.text = "PRESS <sprite name=\"Cross\"> TO CONTINUE";
+            }
         }
     }
+    
+    IEnumerator FadeText()
+    {
+        isFading = true;
+        while (true)
+        {
+            // PingPong the alpha value between 0 and 1
+            float alpha = Mathf.PingPong(Time.time * 1, 1f);
+            Color currentColor = pingPongText.color;
+            currentColor.a = alpha;
+            pingPongText.color = currentColor;
+
+            // Yield to wait for the next frame
+            yield return null;
+        }
+    }
+
+    // void Update()
+    // {
+    //     // TODO - DEVICE CHECKER
+
+    //     if(DeviceManager.instance.keyboardDevice)
+    //     {
+    //         if(mainMenu.activeSelf)
+    //         {
+    //             Cursor.lockState = CursorLockMode.None;
+    //             isGamepad = false;
+    //         }
+    //     }
+    //     else if(DeviceManager.instance.gamepadDevice)
+    //     {
+    //         if(!isGamepad)
+    //         {
+    //             Cursor.lockState = CursorLockMode.Locked;
+
+    //             // if (titleScreen.activeSelf && !selectSceneScreen.activeSelf && !settingScreen.activeSelf)
+    //             // {  
+    //             //     Debug.Log("Title Scelect Object");
+    //             //     EventSystem.current.SetSelectedGameObject(titleSelectObject);
+    //             // }
+    //             // else if (!titleScreen.activeSelf && selectSceneScreen.activeSelf && !settingScreen.activeSelf)
+    //             // {
+    //             //     Debug.Log(" Scelect Object");
+    //             //     EventSystem.current.SetSelectedGameObject(sceneSelectObject);
+    //             // }
+    //             // else
+    //             // {
+    //             //     isGamepad = false;
+    //             // }
+
+    //             if(titleScreen.activeInHierarchy)
+    //             {
+    //                 Debug.Log("Title Scelect Object");
+    //                 EventSystem.current.SetSelectedGameObject(titleSelectObject);
+    //             }
+
+    //             // if()
+    //             // {
+
+    //             // }
+
+    //             // if (selectSceneScreen.activeSelf)
+    //             // {
+    //             //     EventSystem.current.SetSelectedGameObject(sceneSelectObject);
+    //             // }
+    //             // else
+    //             // {
+    //             //     isGamepad = false;
+    //             // }
+                
+    //             // if (settingScreen.activeSelf)
+    //             // {
+    //             //     EventSystem.current.SetSelectedGameObject(settingSelectObject);
+    //             // }
+    //             // else
+    //             // {
+    //             //     isGamepad = false;
+    //             // }
+
+    //             isGamepad = true;
+    //         }
+    //     }
+    // }
     
     #region  - TITLE SCREEN -
 
@@ -58,17 +205,22 @@ public class MainMenuScriptManager : MonoBehaviour
         // FADEIN EFFECT
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
-        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-        {
-            mainMenu.SetActive(false);
-            
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Prologue";
-        });
-        
+        mainMenu.SetActive(false);
+
+        LoadingSceneManager.instance.loadingScreen.SetActive(true);
+        LoadingSceneManager.instance.enabled = true;
+        LoadingSceneManager.instance.sceneName = "Prologue";
+
+        // LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+        //     .SetEase(Ease.Linear)
+        //     .OnComplete(() =>
+        // {
+        //     mainMenu.SetActive(false);
+
+        //     LoadingSceneManager.instance.loadingScreen.SetActive(true);
+        //     LoadingSceneManager.instance.enabled = true;
+        //     LoadingSceneManager.instance.sceneName = "Prologue";
+        // });
     }
 
     public void Play()
@@ -114,6 +266,99 @@ public class MainMenuScriptManager : MonoBehaviour
         selectSceneScreen.SetActive(false);
         titleScreen.SetActive(true);
     }
+
+    public void PrologueSceneSelect()
+    {
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenu.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Prologue";
+        });
+    }
+
+    public void Act1Scene1SceneSelect()
+    {
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenu.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
+        });        
+    }
+
+    public void Act1Scene2SceneSelect()
+    {
+        // FADEIN EFFECT
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenu.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 1 Scene 2";
+        });
+    }
+
+    public void Act1Scene3SceneSelect()
+    {
+        // FADEIN EFFECT
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenu.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 1 Scene 3";
+        });
+    }
+
+    public void Act1Scene4SceneSelect()
+    {
+        // FADEIN EFFECT
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenu.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 1 Scene 4";
+        });        
+    }
+
+    public void Act2SceneSelect()
+    {
+        
+    }
+
+    public void Act3SceneSelect()
+    {
+       
+    }    
 
     #endregion
 

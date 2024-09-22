@@ -81,10 +81,10 @@ public class TPASS : MonoBehaviour
 
     void OnEnable()
     {
-        playerControls.Extinguisher.EquipExtinguisher.performed += ToEquip;
-        playerControls.Extinguisher.PerformTPASS.performed += ToPerformTPASS;
+        playerControls.TPASS.EquipExtinguisher.performed += ToEquip;
+        playerControls.TPASS.PerformTPASS.performed += ToPerformTPASS;
 
-        playerControls.Extinguisher.Enable();
+        playerControls.TPASS.Enable();
     }
 
     private void ToEquip(InputAction.CallbackContext context)
@@ -151,5 +151,11 @@ public class TPASS : MonoBehaviour
             }
         }
     }
+
+    void OnDisable()
+    {
+        playerControls.TPASS.Disable();
+    }
+
 }
 
