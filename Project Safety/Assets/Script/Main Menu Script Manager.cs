@@ -1,20 +1,24 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.iOS;
-using UnityEngine.SceneManagement;
-using UnityEngine.Windows.Speech;
+
 
 public class MainMenuScriptManager : MonoBehaviour
 {   
     PlayerControls playerControls;
 
-    [Header("Landing Screen")]
+    [Header("Title Screen")]
     [SerializeField] TMP_Text pingPongText;
     [SerializeField] float pingPongSpeed;
+
+    [Header("Cinemachine")]
+    [SerializeField] CinemachineBrain cinemachineBrain;
+    [SerializeField] CinemachineVirtualCamera titleVC;
+    [SerializeField] CinemachineVirtualCamera mainMenuVC;
 
     [Header("Screens")]
     [SerializeField] GameObject landingScreen; 
@@ -76,27 +80,44 @@ public class MainMenuScriptManager : MonoBehaviour
         });
 
 
-
-        // mainMenu.SetActive(true);
-        // titleScreen.SetActive(true);
-        // settingScreen.SetActive(false);
-        // selectSceneScreen.SetActive(false);
     }
 
     void Update()
     {
-        if(pingPongText.gameObject.activeSelf)
+        PingPongProperties();
+
+        DeviceInputChecker();
+    }
+
+    void PingPongProperties()
+    {
+        if (pingPongText.gameObject.activeSelf)
         {
             float alpha = Mathf.PingPong(Time.time * pingPongSpeed, 1f);
 
             Color currentTextColor = pingPongText.color;
             currentTextColor.a = alpha;
             pingPongText.color = currentTextColor;
-        }
 
-        DeviceInputChecker();
+            if (actionInput)
+            {
+                pingPongText.gameObject.SetActive(false);
+
+                titleVC.Priority = 0;
+                mainMenuVC.Priority = 10;
+
+                StartCoroutine(DelayDisplayMainMenu());
+            }
+        }
     }
 
+    IEnumerator DelayDisplayMainMenu()
+    {
+        yield return new WaitUntil(() => cinemachineBrain.IsBlending);
+
+        Debug.Log("DoTween main menu from out of screen to left");
+    }
+    
     void DeviceInputChecker()
     {
         if(DeviceManager.instance.keyboardDevice)
