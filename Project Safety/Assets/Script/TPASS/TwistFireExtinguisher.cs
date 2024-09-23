@@ -140,8 +140,6 @@ public class TwistFireExtinguisher : MonoBehaviour
         playerControls.TwistFE.Disable();
 
         twistHUD.gameObject.SetActive(false);
-
-        // TPASS.instance.ExtinguisherTrigger();
     }
 
     void Update()
@@ -207,10 +205,26 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
 
+            tpass.twistDone = true;
             // PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
-            pullFE.enabled = true;
-            pullFE.PullFireExtinguisherTrigger();
-            this.enabled = false;
+
+            tpass.checkMarkDone.gameObject.SetActive(true);
+            tpass.correctSFX.Play();
+            tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    tpass.checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                    {
+                        tpass.checkMarkDone.gameObject.SetActive(false);
+                        pullFE.enabled = true;
+                        pullFE.PullFireExtinguisherTrigger();
+
+                        this.enabled = false;
+                    }); 
+                });
+            });
+            
         }
     }
 }

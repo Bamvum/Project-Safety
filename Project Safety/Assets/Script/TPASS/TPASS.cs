@@ -36,14 +36,16 @@ public class TPASS : MonoBehaviour
 
     [Header("Inputs")]
     bool equipFireExtinguisher;
-    public bool firstHalfDone;
 
     [Header("Flag")]
+    public GameObject tpassHUD;
+    public Image checkMarkDone;
+    public AudioSource correctSFX;
+
     bool canInput;
 
     [Space(10)]
     bool canUseFireExtinguisherInv;
-    bool inGamePlay;
 
     void Awake()
     {
@@ -86,7 +88,7 @@ public class TPASS : MonoBehaviour
             }
             else
             {
-                if (firstHalfDone)
+                if (twistDone && pullDone)
                 {
                     Debug.Log("First Half Done");
                     // ANIMATION FIRE EXTINGUISHER IDLE WALK 
@@ -112,7 +114,8 @@ public class TPASS : MonoBehaviour
             if (!twistDone && !pullDone)
             {
                 Debug.Log("Perform Twist and Pull QTE!");
-
+                tpassHUD.SetActive(true);
+                
                 twistFE.enabled = true;
                 twistFE.TwistFireExtinguisherTrigger();
                 

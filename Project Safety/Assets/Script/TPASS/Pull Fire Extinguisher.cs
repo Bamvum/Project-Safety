@@ -151,9 +151,27 @@ public class PullFireExtinguisher : MonoBehaviour
             objectiveComplete = true;
             PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
             
-            tpass.firstHalfDone = true;
-            tpass.aimMode = true;
-            this.enabled = false;
+            tpass.pullDone = true;
+            // tpass.tpassHUD.SetActive(false);
+            // tpass.aimMode = true;
+            tpass.checkMarkDone.gameObject.SetActive(true);
+            tpass.correctSFX.Play();
+
+            tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    tpass.checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                    {
+                        tpass.checkMarkDone.gameObject.SetActive(false);
+                        tpass.enabled = true;
+
+                        this.enabled = false;
+                    }); 
+                });
+            });
+            
+            
         }
     }
 
