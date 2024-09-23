@@ -15,7 +15,6 @@ public class TPASS : MonoBehaviour
     [Header("Script")]
     [SerializeField] TwistFireExtinguisher twistFE;
     [SerializeField] PullFireExtinguisher pullFE;
-    // [SerializeField] TwistFireExtinguisher twistFE;
 
     [Header("Fire Extinguisher")]
     [SerializeField] GameObject fireExtinguisher;
@@ -27,39 +26,13 @@ public class TPASS : MonoBehaviour
     [Space(10)]
     [SerializeField] GameObject fireExtinguisherToPickUp; // IF ACTIVE FALSE IT CAN BE USE
 
-    [Space(10)]
-    [SerializeField] int inputsPerformed;
-    [SerializeField] int inputNeedToFinish;
-    [SerializeField] bool[] buttonPressed;
-    bool inTwistQTE;
-    
-    // [Header("Pull (TPASS)")]
-    // [SerializeField] CanvasGroup pullHUD;
-    // [SerializeField] RectTransform pullRectTransform;
-    // [SerializeField] CanvasGroup pullCG;
-
-    // [Space(10)]
-    // [SerializeField] float pressedValue;
-    // [SerializeField] float decreaseValue;
-
-    // [Space(10)]
-    // [SerializeField] Image pullControlImage;
-    // [SerializeField] Sprite[] pullKeyboardSprite;
-    // [SerializeField] Sprite[] pullGamepadSprite;
-    // [SerializeField] Slider pullSlider;
-    // [SerializeField] int roundNum;
-    // bool inPullQTE;
-
-    // [Header("Aim (TPASS)")]
-    // [SerializeField] CanvasGroup aimHUD;
-    // [SerializeField] RectTransform aimRectTransform;
-    // [SerializeField] CanvasGroup aimCG;
     public bool aimMode;
 
     [Header("TPASS status")]
-    public bool twistAndPull;
-    public bool aim;
-    public bool squeezeAndSweep;
+    public bool twistDone;
+    public bool pullDone;
+    // public bool aim;
+    // public bool squeezeAndSweep;
 
     [Header("Inputs")]
     bool equipFireExtinguisher;
@@ -95,7 +68,7 @@ public class TPASS : MonoBehaviour
             
             if (!equipFireExtinguisher)
             {
-                if (firstHalfDone)
+                if (twistDone && pullDone)
                 {
                     Debug.Log("First Half Done");
                     // ANIMATION FIRE EXTINGUISHER IDLE WALK 
@@ -136,7 +109,7 @@ public class TPASS : MonoBehaviour
     {
         if (equipFireExtinguisher)
         {
-            if (!twistAndPull)
+            if (!twistDone && !pullDone)
             {
                 Debug.Log("Perform Twist and Pull QTE!");
 

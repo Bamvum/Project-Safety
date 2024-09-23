@@ -37,16 +37,6 @@ public class TwistFireExtinguisher : MonoBehaviour
     [Header("Flag")]
     bool canInput;
 
-    // [Header("Timer")]
-    // [SerializeField] Image timer;
-    // [SerializeField] float twistTime = 100f;
-    // [SerializeField] float maxTwistTime = 100f;
-    // [Space(10)]
-    // [SerializeField] int inputNeedToFinish;
-    // [SerializeField] int inputsPerformed;
-    // [SerializeField] bool[] buttonPressed;
-    // bool canInput;
-
     void Awake()
     {
         playerControls = new PlayerControls();

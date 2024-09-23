@@ -82,7 +82,7 @@ public class PullFireExtinguisher : MonoBehaviour
                 if (pullSlider.value >= 0.985f && pullSlider.value <= pullSlider.maxValue)
                 {
                     Debug.Log("Action Lock Pressed!");
-                    roundText.text = roundNum + 1  + " / 3"; 
+                    // roundText.text = roundNum + 1  + " / 3"; 
 
                     canInput = false;
                     roundNum++;

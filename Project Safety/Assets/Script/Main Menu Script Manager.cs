@@ -21,8 +21,13 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera mainMenuVC;
 
     [Header("Screens")]
-    [SerializeField] GameObject landingScreen; 
     [SerializeField] GameObject mainMenu; 
+    [SerializeField] RectTransform mainMenuRectTransform; 
+    
+
+    [Header("Screens")]
+    [SerializeField] GameObject landingScreen; 
+    // [SerializeField] GameObject mainMenu; 
     [SerializeField] GameObject titleScreen; 
     [SerializeField] GameObject settingScreen; 
     [SerializeField] GameObject selectSceneScreen; 
@@ -101,11 +106,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if (actionInput)
             {
-                pingPongText.gameObject.SetActive(false);
-
-                titleVC.Priority = 0;
-                mainMenuVC.Priority = 10;
-
                 StartCoroutine(DelayDisplayMainMenu());
             }
         }
@@ -113,9 +113,14 @@ public class MainMenuScriptManager : MonoBehaviour
 
     IEnumerator DelayDisplayMainMenu()
     {
-        yield return new WaitUntil(() => cinemachineBrain.IsBlending);
-
-        Debug.Log("DoTween main menu from out of screen to left");
+        titleVC.Priority = 0;
+        mainMenuVC.Priority = 10;
+        
+        yield return new WaitUntil(() => !cinemachineBrain.IsBlending);
+        
+        pingPongText.gameObject.SetActive(false);
+        mainMenu.SetActive(true);
+        mainMenuRectTransform.DOAnchorPos(new Vector2(mainMenuRectTransform.anchoredPosition.x, 312.5f), 5).SetEase(Ease.OutCubic);
     }
     
     void DeviceInputChecker()
