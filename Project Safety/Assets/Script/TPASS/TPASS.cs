@@ -15,19 +15,21 @@ public class TPASS : MonoBehaviour
     [Header("Script")]
     [SerializeField] TwistFireExtinguisher twistFE;
     [SerializeField] PullFireExtinguisher pullFE;
+    [SerializeField] AimFireExtinguisher aimFE;
 
     [Header("Fire Extinguisher")]
-    [SerializeField] GameObject fireExtinguisher;
+    public GameObject fireExtinguisher;
     
     [Space(10)]
-    [SerializeField] GameObject fireExtinguisherBody;
-    [SerializeField] GameObject fireExtinguisherHose;
+    public GameObject fireExtinguisherBody;
+    public GameObject fireExtinguisherHose;
  
     [Space(10)]
-    [SerializeField] GameObject fireExtinguisherToPickUp; // IF ACTIVE FALSE IT CAN BE USE
+    [SerializeField] GameObject fireExtinguisherToPickUp;
 
-    public bool aimMode;
-
+    [Header("Cinemachine")]
+    public CinemachineVirtualCamera twistAndPullVC;
+    
     [Header("TPASS status")]
     public bool twistDone;
     public bool pullDone;
@@ -35,14 +37,14 @@ public class TPASS : MonoBehaviour
     // public bool squeezeAndSweep;
 
     [Header("Inputs")]
-    bool equipFireExtinguisher;
+    public bool equipFireExtinguisher;
 
     [Header("Flag")]
     public GameObject tpassHUD;
     public Image checkMarkDone;
     public AudioSource correctSFX;
+    
 
-    bool canInput;
 
     [Space(10)]
     bool canUseFireExtinguisherInv;
@@ -74,6 +76,7 @@ public class TPASS : MonoBehaviour
                 {
                     Debug.Log("First Half Done");
                     // ANIMATION FIRE EXTINGUISHER IDLE WALK 
+                    PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", true);
                     fireExtinguisherBody.SetActive(true);
                     fireExtinguisherHose.SetActive(true);
                 }
@@ -92,6 +95,7 @@ public class TPASS : MonoBehaviour
                 {
                     Debug.Log("First Half Done");
                     // ANIMATION FIRE EXTINGUISHER IDLE WALK 
+                    PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", false);
                     fireExtinguisherBody.SetActive(false);
                     fireExtinguisherHose.SetActive(false);
                 }
@@ -101,7 +105,7 @@ public class TPASS : MonoBehaviour
                     fireExtinguisher.SetActive(false);
                 }
 
-                equipFireExtinguisher = false;
+                equipFireExtinguisher = false;  
                 canUseFireExtinguisherInv = false;
             }
         }
@@ -114,6 +118,16 @@ public class TPASS : MonoBehaviour
             if (!twistDone && !pullDone)
             {
                 Debug.Log("Perform Twist and Pull QTE!");
+
+
+                PlayerScript.instance.playerMovement.enabled = false;
+                PlayerScript.instance.cinemachineInputProvider.enabled = false;
+                PlayerScript.instance.interact.enabled = false;
+                PlayerScript.instance.stamina.enabled = false;
+
+                PlayerScript.instance.playerVC.Priority = 0;
+                twistAndPullVC.Priority = 10;
+
                 tpassHUD.SetActive(true);
                 
                 twistFE.enabled = true;
@@ -131,6 +145,11 @@ public class TPASS : MonoBehaviour
     void OnDisable()
     {
         playerControls.TPASS.Disable();
+    }
+
+    void Update()
+    {
+
     }
 
 }

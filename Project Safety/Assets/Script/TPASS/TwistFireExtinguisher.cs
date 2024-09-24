@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using Cinemachine;
 using DG.Tweening;
 
-
 public class TwistFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
@@ -16,8 +15,7 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] TPASS tpass;
     [SerializeField] PullFireExtinguisher pullFE;
 
-    [Header("Cinemachine")]
-    [SerializeField] CinemachineVirtualCamera twistAndPullVC;
+
 
     [Header("HUD")]
     [SerializeField] CanvasGroup twistHUD;
@@ -138,8 +136,6 @@ public class TwistFireExtinguisher : MonoBehaviour
     void OnDisable()
     {
         playerControls.TwistFE.Disable();
-
-        twistHUD.gameObject.SetActive(false);
     }
 
     void Update()
@@ -153,7 +149,11 @@ public class TwistFireExtinguisher : MonoBehaviour
             ChangeImageStatus(twistGamepadSprite[0], twistGamepadSprite[1], twistGamepadSprite[2], twistGamepadSprite[3]);
         }
 
-        TimerFunction();
+        if(canInput)
+        {
+            TimerFunction();
+        }
+
 
     }
 
@@ -161,13 +161,6 @@ public class TwistFireExtinguisher : MonoBehaviour
     {
         HUDManager.instance.playerHUD.SetActive(false);
 
-        PlayerScript.instance.playerMovement.enabled = false;
-        PlayerScript.instance.cinemachineInputProvider.enabled = false;
-        PlayerScript.instance.interact.enabled = false;
-        PlayerScript.instance.stamina.enabled = false;
-
-        PlayerScript.instance.playerVC.Priority = 0;
-        twistAndPullVC.Priority = 10;
 
         twistHUD.gameObject.SetActive(true);
         twistHUD.DOFade(1, 1);
@@ -201,30 +194,32 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     void TimerFunction()
     {
-        if (inputsPerformed > inputNeedToFinish)
+        if (inputsPerformed == inputNeedToFinish)
         {
             inputsPerformed = inputNeedToFinish;
+            canInput = false;
 
             tpass.twistDone = true;
-            // PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
 
-            tpass.checkMarkDone.gameObject.SetActive(true);
-            tpass.correctSFX.Play();
-            tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+            twistCG.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
             {
+                tpass.checkMarkDone.gameObject.SetActive(true);
+                tpass.correctSFX.Play();
                 tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
                 {
                     tpass.checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                     {
+                        twistHUD.gameObject.SetActive(false);
+                        
                         tpass.checkMarkDone.gameObject.SetActive(false);
+
                         pullFE.enabled = true;
                         pullFE.PullFireExtinguisherTrigger();
 
-                        this.enabled = false;
-                    }); 
+                        this.enabled =false;
+                    });
                 });
             });
-            
         }
     }
 }
