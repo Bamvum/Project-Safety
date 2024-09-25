@@ -21,8 +21,11 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera mainMenuVC;
 
     [Header("Screens")]
-    [SerializeField] GameObject mainMenu; 
+    [SerializeField] GameObject mainMenuScreen; 
     [SerializeField] RectTransform mainMenuRectTransform; 
+    [SerializeField] GameObject mainMenuScreenSelectedButton; 
+    [SerializeField] GameObject selectSceneScreen; 
+    [SerializeField] GameObject selectSceneScreenSelectedButton; 
     
 
     [Header("Screens")]
@@ -30,7 +33,6 @@ public class MainMenuScriptManager : MonoBehaviour
     // [SerializeField] GameObject mainMenu; 
     [SerializeField] GameObject titleScreen; 
     [SerializeField] GameObject settingScreen; 
-    [SerializeField] GameObject selectSceneScreen; 
     [SerializeField] GameObject[] settingContent;
 
     
@@ -119,7 +121,7 @@ public class MainMenuScriptManager : MonoBehaviour
         yield return new WaitUntil(() => !cinemachineBrain.IsBlending);
         
         pingPongText.gameObject.SetActive(false);
-        mainMenu.SetActive(true);
+        mainMenuScreen.SetActive(true);
         mainMenuRectTransform.DOAnchorPos(new Vector2(mainMenuRectTransform.anchoredPosition.x, 312.5f), 5).SetEase(Ease.OutCubic);
     }
     
@@ -127,33 +129,49 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            if(pingPongText.gameObject.activeSelf)
+            if (pingPongText.gameObject.activeSelf)
             {
+                Cursor.lockState = CursorLockMode.Locked;
                 pingPongText.text = "PRESS <sprite name=\"Space\"> TO CONTINUE"; 
+            }
+            
+            if (mainMenuScreen.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
+            }
+
+            if (selectSceneScreen.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
             }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
+            Cursor.lockState = CursorLockMode.Locked;
+
             if(pingPongText.gameObject.activeSelf)
             {
                 pingPongText.text = "PRESS <sprite name=\"Cross\"> TO CONTINUE";
             }
-        }
-    }
-    
-    IEnumerator FadeText()
-    {
-        isFading = true;
-        while (true)
-        {
-            // PingPong the alpha value between 0 and 1
-            float alpha = Mathf.PingPong(Time.time * 1, 1f);
-            Color currentColor = pingPongText.color;
-            currentColor.a = alpha;
-            pingPongText.color = currentColor;
 
-            // Yield to wait for the next frame
-            yield return null;
+            if(!isGamepad)
+            {
+                if (mainMenuScreen.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(mainMenuScreenSelectedButton);
+                    isGamepad = true;
+                }
+
+                if(selectSceneScreen.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(selectSceneScreenSelectedButton);
+                    isGamepad = true;
+                }
+            }
         }
     }
 
@@ -231,7 +249,7 @@ public class MainMenuScriptManager : MonoBehaviour
         // FADEIN EFFECT
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
-        mainMenu.SetActive(false);
+        mainMenuScreen.SetActive(false);
 
         LoadingSceneManager.instance.loadingScreen.SetActive(true);
         LoadingSceneManager.instance.enabled = true;
@@ -260,6 +278,8 @@ public class MainMenuScriptManager : MonoBehaviour
         
         titleScreen.SetActive(false);
         selectSceneScreen.SetActive(true);
+
+        isGamepad = false;
     }
     public void Settings()
     {
@@ -301,7 +321,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenu.SetActive(false);
+            mainMenuScreen.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -317,7 +337,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenu.SetActive(false);
+            mainMenuScreen.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -334,7 +354,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenu.SetActive(false);
+            mainMenuScreen.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -351,7 +371,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenu.SetActive(false);
+            mainMenuScreen.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -368,7 +388,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenu.SetActive(false);
+            mainMenuScreen.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
