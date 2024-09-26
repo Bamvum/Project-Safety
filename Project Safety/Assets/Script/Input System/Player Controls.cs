@@ -24,6 +24,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     ""name"": ""Player Controls"",
     ""maps"": [
         {
+            ""name"": ""Main Menu"",
+            ""id"": ""5c4a70db-c588-473b-8c2c-9d1030154fff"",
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""90a42c12-c737-4ee4-8bee-caeda480e965"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ede3738d-956f-4ae6-af5d-b239749bd775"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c87e51ac-0d39-4ea0-9d33-eb180850f79d"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Loading UI"",
             ""id"": ""5593f047-3883-44fc-a57f-1b305e4e4c9e"",
             ""actions"": [
@@ -807,13 +846,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Extinguisher"",
-            ""id"": ""2230b633-33ef-4baa-81b5-4419c0e4e34a"",
+            ""name"": ""TPASS"",
+            ""id"": ""e5265785-d10d-4be7-a3e5-26a0831c059f"",
             ""actions"": [
                 {
                     ""name"": ""Equip Extinguisher"",
                     ""type"": ""Button"",
-                    ""id"": ""4a36f629-0e7c-4a44-b6fd-2fbb53c20ad3"",
+                    ""id"": ""29078d43-08e3-4918-93ec-0aa3972bbe08"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -822,61 +861,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""PerformTPASS"",
                     ""type"": ""Button"",
-                    ""id"": ""115ac63e-a526-4c63-b562-e6760c948343"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Twist-Button1"",
-                    ""type"": ""Button"",
-                    ""id"": ""2b9f99f4-03f1-4291-a03c-5e97b30c1a6d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Twist-Button2"",
-                    ""type"": ""Button"",
-                    ""id"": ""3dd532d6-9710-4f19-889a-5cc72a030810"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Twist-Button3"",
-                    ""type"": ""Button"",
-                    ""id"": ""f6bde12b-e957-4d7e-acae-8b9667f72e12"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Twist-Button4"",
-                    ""type"": ""Button"",
-                    ""id"": ""65b1f552-eccd-44d8-9456-a989682fc1c2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Action"",
-                    ""type"": ""Button"",
-                    ""id"": ""a8c72e37-7262-4ff2-978d-7ffc25f31551"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Action Lock"",
-                    ""type"": ""Button"",
-                    ""id"": ""35dbcc4e-2e41-4135-8449-f69066c4f6fd"",
+                    ""id"": ""a64a59f3-d08a-45c9-92a1-5b679f2bb783"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -886,7 +871,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""93f2a04e-a5e6-403e-8b22-de6527aedb4f"",
+                    ""id"": ""2707f742-4e84-49a2-bbdf-a3f5696f6633"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -897,7 +882,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7bc271fe-129d-415a-bf89-abc8ceb49b19"",
+                    ""id"": ""ef2c525b-eed6-43b2-b098-4f1cec8e1508"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -908,7 +893,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cc8dc53f-62d2-4a21-994a-c3ed9df517b1"",
+                    ""id"": ""95bd24ab-2e07-4489-a892-9a83625b6934"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -919,100 +904,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""52b8df00-be9a-4b1d-a726-20f75711fc3d"",
+                    ""id"": ""17642dce-d51b-4478-b543-a3ba88fce28e"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PerformTPASS"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fcb38a90-0476-4778-bc33-80dbb2e0b58b"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Twist-Button1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c69232fc-5f4e-4499-b907-6e60db91c40d"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Twist-Button2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f28c2475-3d27-40b0-8092-9191c623e6c0"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Twist-Button3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""84aa89b0-60b7-4411-bbbc-ab4280b08b31"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Twist-Button4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""58a3b6ea-af8b-4316-926d-f57465b787d5"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f0c23d76-2cce-47ed-b135-47db5aa596dc"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5eedd6b5-5a4a-48e4-b817-a4b8241f65e1"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action Lock"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""babe93fd-fef4-41ea-b0f2-9146f822574c"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action Lock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1258,10 +1155,72 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""NavigateUI"",
+            ""id"": ""f2ce3524-5751-4072-8c7e-fc05d86c2c2c"",
+            ""actions"": [
+                {
+                    ""name"": ""Navigate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ce23f380-1726-412a-972e-9d59b5a10787"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""57fe3356-a003-4078-bb6c-b2ae32d800a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8434fc4d-1db8-43b7-898e-be2232129d7b"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e0d4fce-159d-4b93-a1ca-13608280bc16"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc0cef84-0c05-4a2a-8494-fbab5ba0b3fa"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
+        // Main Menu
+        m_MainMenu = asset.FindActionMap("Main Menu", throwIfNotFound: true);
+        m_MainMenu_Action = m_MainMenu.FindAction("Action", throwIfNotFound: true);
         // Loading UI
         m_LoadingUI = asset.FindActionMap("Loading UI", throwIfNotFound: true);
         m_LoadingUI_Action = m_LoadingUI.FindAction("Action", throwIfNotFound: true);
@@ -1297,16 +1256,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Contact_Contact1 = m_Contact.FindAction("Contact1", throwIfNotFound: true);
         m_Contact_Contact2 = m_Contact.FindAction("Contact2", throwIfNotFound: true);
         m_Contact_Contact3 = m_Contact.FindAction("Contact3", throwIfNotFound: true);
-        // Extinguisher
-        m_Extinguisher = asset.FindActionMap("Extinguisher", throwIfNotFound: true);
-        m_Extinguisher_EquipExtinguisher = m_Extinguisher.FindAction("Equip Extinguisher", throwIfNotFound: true);
-        m_Extinguisher_PerformTPASS = m_Extinguisher.FindAction("PerformTPASS", throwIfNotFound: true);
-        m_Extinguisher_TwistButton1 = m_Extinguisher.FindAction("Twist-Button1", throwIfNotFound: true);
-        m_Extinguisher_TwistButton2 = m_Extinguisher.FindAction("Twist-Button2", throwIfNotFound: true);
-        m_Extinguisher_TwistButton3 = m_Extinguisher.FindAction("Twist-Button3", throwIfNotFound: true);
-        m_Extinguisher_TwistButton4 = m_Extinguisher.FindAction("Twist-Button4", throwIfNotFound: true);
-        m_Extinguisher_Action = m_Extinguisher.FindAction("Action", throwIfNotFound: true);
-        m_Extinguisher_ActionLock = m_Extinguisher.FindAction("Action Lock", throwIfNotFound: true);
+        // TPASS
+        m_TPASS = asset.FindActionMap("TPASS", throwIfNotFound: true);
+        m_TPASS_EquipExtinguisher = m_TPASS.FindAction("Equip Extinguisher", throwIfNotFound: true);
+        m_TPASS_PerformTPASS = m_TPASS.FindAction("PerformTPASS", throwIfNotFound: true);
         // TwistFE
         m_TwistFE = asset.FindActionMap("TwistFE", throwIfNotFound: true);
         m_TwistFE_Button1 = m_TwistFE.FindAction("Button 1", throwIfNotFound: true);
@@ -1320,6 +1273,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Action = m_Pause.FindAction("Action", throwIfNotFound: true);
+        // NavigateUI
+        m_NavigateUI = asset.FindActionMap("NavigateUI", throwIfNotFound: true);
+        m_NavigateUI_Navigate = m_NavigateUI.FindAction("Navigate", throwIfNotFound: true);
+        m_NavigateUI_Action = m_NavigateUI.FindAction("Action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1377,6 +1334,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
+
+    // Main Menu
+    private readonly InputActionMap m_MainMenu;
+    private List<IMainMenuActions> m_MainMenuActionsCallbackInterfaces = new List<IMainMenuActions>();
+    private readonly InputAction m_MainMenu_Action;
+    public struct MainMenuActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MainMenuActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_MainMenu_Action;
+        public InputActionMap Get() { return m_Wrapper.m_MainMenu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MainMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IMainMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MainMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainMenuActionsCallbackInterfaces.Add(instance);
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(IMainMenuActions instance)
+        {
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(IMainMenuActions instance)
+        {
+            if (m_Wrapper.m_MainMenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMainMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MainMenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MainMenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MainMenuActions @MainMenu => new MainMenuActions(this);
 
     // Loading UI
     private readonly InputActionMap m_LoadingUI;
@@ -1790,65 +1793,35 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public ContactActions @Contact => new ContactActions(this);
 
-    // Extinguisher
-    private readonly InputActionMap m_Extinguisher;
-    private List<IExtinguisherActions> m_ExtinguisherActionsCallbackInterfaces = new List<IExtinguisherActions>();
-    private readonly InputAction m_Extinguisher_EquipExtinguisher;
-    private readonly InputAction m_Extinguisher_PerformTPASS;
-    private readonly InputAction m_Extinguisher_TwistButton1;
-    private readonly InputAction m_Extinguisher_TwistButton2;
-    private readonly InputAction m_Extinguisher_TwistButton3;
-    private readonly InputAction m_Extinguisher_TwistButton4;
-    private readonly InputAction m_Extinguisher_Action;
-    private readonly InputAction m_Extinguisher_ActionLock;
-    public struct ExtinguisherActions
+    // TPASS
+    private readonly InputActionMap m_TPASS;
+    private List<ITPASSActions> m_TPASSActionsCallbackInterfaces = new List<ITPASSActions>();
+    private readonly InputAction m_TPASS_EquipExtinguisher;
+    private readonly InputAction m_TPASS_PerformTPASS;
+    public struct TPASSActions
     {
         private @PlayerControls m_Wrapper;
-        public ExtinguisherActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @EquipExtinguisher => m_Wrapper.m_Extinguisher_EquipExtinguisher;
-        public InputAction @PerformTPASS => m_Wrapper.m_Extinguisher_PerformTPASS;
-        public InputAction @TwistButton1 => m_Wrapper.m_Extinguisher_TwistButton1;
-        public InputAction @TwistButton2 => m_Wrapper.m_Extinguisher_TwistButton2;
-        public InputAction @TwistButton3 => m_Wrapper.m_Extinguisher_TwistButton3;
-        public InputAction @TwistButton4 => m_Wrapper.m_Extinguisher_TwistButton4;
-        public InputAction @Action => m_Wrapper.m_Extinguisher_Action;
-        public InputAction @ActionLock => m_Wrapper.m_Extinguisher_ActionLock;
-        public InputActionMap Get() { return m_Wrapper.m_Extinguisher; }
+        public TPASSActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @EquipExtinguisher => m_Wrapper.m_TPASS_EquipExtinguisher;
+        public InputAction @PerformTPASS => m_Wrapper.m_TPASS_PerformTPASS;
+        public InputActionMap Get() { return m_Wrapper.m_TPASS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ExtinguisherActions set) { return set.Get(); }
-        public void AddCallbacks(IExtinguisherActions instance)
+        public static implicit operator InputActionMap(TPASSActions set) { return set.Get(); }
+        public void AddCallbacks(ITPASSActions instance)
         {
-            if (instance == null || m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_TPASSActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TPASSActionsCallbackInterfaces.Add(instance);
             @EquipExtinguisher.started += instance.OnEquipExtinguisher;
             @EquipExtinguisher.performed += instance.OnEquipExtinguisher;
             @EquipExtinguisher.canceled += instance.OnEquipExtinguisher;
             @PerformTPASS.started += instance.OnPerformTPASS;
             @PerformTPASS.performed += instance.OnPerformTPASS;
             @PerformTPASS.canceled += instance.OnPerformTPASS;
-            @TwistButton1.started += instance.OnTwistButton1;
-            @TwistButton1.performed += instance.OnTwistButton1;
-            @TwistButton1.canceled += instance.OnTwistButton1;
-            @TwistButton2.started += instance.OnTwistButton2;
-            @TwistButton2.performed += instance.OnTwistButton2;
-            @TwistButton2.canceled += instance.OnTwistButton2;
-            @TwistButton3.started += instance.OnTwistButton3;
-            @TwistButton3.performed += instance.OnTwistButton3;
-            @TwistButton3.canceled += instance.OnTwistButton3;
-            @TwistButton4.started += instance.OnTwistButton4;
-            @TwistButton4.performed += instance.OnTwistButton4;
-            @TwistButton4.canceled += instance.OnTwistButton4;
-            @Action.started += instance.OnAction;
-            @Action.performed += instance.OnAction;
-            @Action.canceled += instance.OnAction;
-            @ActionLock.started += instance.OnActionLock;
-            @ActionLock.performed += instance.OnActionLock;
-            @ActionLock.canceled += instance.OnActionLock;
         }
 
-        private void UnregisterCallbacks(IExtinguisherActions instance)
+        private void UnregisterCallbacks(ITPASSActions instance)
         {
             @EquipExtinguisher.started -= instance.OnEquipExtinguisher;
             @EquipExtinguisher.performed -= instance.OnEquipExtinguisher;
@@ -1856,41 +1829,23 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @PerformTPASS.started -= instance.OnPerformTPASS;
             @PerformTPASS.performed -= instance.OnPerformTPASS;
             @PerformTPASS.canceled -= instance.OnPerformTPASS;
-            @TwistButton1.started -= instance.OnTwistButton1;
-            @TwistButton1.performed -= instance.OnTwistButton1;
-            @TwistButton1.canceled -= instance.OnTwistButton1;
-            @TwistButton2.started -= instance.OnTwistButton2;
-            @TwistButton2.performed -= instance.OnTwistButton2;
-            @TwistButton2.canceled -= instance.OnTwistButton2;
-            @TwistButton3.started -= instance.OnTwistButton3;
-            @TwistButton3.performed -= instance.OnTwistButton3;
-            @TwistButton3.canceled -= instance.OnTwistButton3;
-            @TwistButton4.started -= instance.OnTwistButton4;
-            @TwistButton4.performed -= instance.OnTwistButton4;
-            @TwistButton4.canceled -= instance.OnTwistButton4;
-            @Action.started -= instance.OnAction;
-            @Action.performed -= instance.OnAction;
-            @Action.canceled -= instance.OnAction;
-            @ActionLock.started -= instance.OnActionLock;
-            @ActionLock.performed -= instance.OnActionLock;
-            @ActionLock.canceled -= instance.OnActionLock;
         }
 
-        public void RemoveCallbacks(IExtinguisherActions instance)
+        public void RemoveCallbacks(ITPASSActions instance)
         {
-            if (m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_TPASSActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IExtinguisherActions instance)
+        public void SetCallbacks(ITPASSActions instance)
         {
-            foreach (var item in m_Wrapper.m_ExtinguisherActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_TPASSActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ExtinguisherActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_TPASSActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ExtinguisherActions @Extinguisher => new ExtinguisherActions(this);
+    public TPASSActions @TPASS => new TPASSActions(this);
 
     // TwistFE
     private readonly InputActionMap m_TwistFE;
@@ -2061,6 +2016,64 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PauseActions @Pause => new PauseActions(this);
+
+    // NavigateUI
+    private readonly InputActionMap m_NavigateUI;
+    private List<INavigateUIActions> m_NavigateUIActionsCallbackInterfaces = new List<INavigateUIActions>();
+    private readonly InputAction m_NavigateUI_Navigate;
+    private readonly InputAction m_NavigateUI_Action;
+    public struct NavigateUIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public NavigateUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Navigate => m_Wrapper.m_NavigateUI_Navigate;
+        public InputAction @Action => m_Wrapper.m_NavigateUI_Action;
+        public InputActionMap Get() { return m_Wrapper.m_NavigateUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(NavigateUIActions set) { return set.Get(); }
+        public void AddCallbacks(INavigateUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_NavigateUIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_NavigateUIActionsCallbackInterfaces.Add(instance);
+            @Navigate.started += instance.OnNavigate;
+            @Navigate.performed += instance.OnNavigate;
+            @Navigate.canceled += instance.OnNavigate;
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(INavigateUIActions instance)
+        {
+            @Navigate.started -= instance.OnNavigate;
+            @Navigate.performed -= instance.OnNavigate;
+            @Navigate.canceled -= instance.OnNavigate;
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(INavigateUIActions instance)
+        {
+            if (m_Wrapper.m_NavigateUIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(INavigateUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_NavigateUIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_NavigateUIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public NavigateUIActions @NavigateUI => new NavigateUIActions(this);
+    public interface IMainMenuActions
+    {
+        void OnAction(InputAction.CallbackContext context);
+    }
     public interface ILoadingUIActions
     {
         void OnAction(InputAction.CallbackContext context);
@@ -2102,16 +2115,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnContact2(InputAction.CallbackContext context);
         void OnContact3(InputAction.CallbackContext context);
     }
-    public interface IExtinguisherActions
+    public interface ITPASSActions
     {
         void OnEquipExtinguisher(InputAction.CallbackContext context);
         void OnPerformTPASS(InputAction.CallbackContext context);
-        void OnTwistButton1(InputAction.CallbackContext context);
-        void OnTwistButton2(InputAction.CallbackContext context);
-        void OnTwistButton3(InputAction.CallbackContext context);
-        void OnTwistButton4(InputAction.CallbackContext context);
-        void OnAction(InputAction.CallbackContext context);
-        void OnActionLock(InputAction.CallbackContext context);
     }
     public interface ITwistFEActions
     {
@@ -2127,6 +2134,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IPauseActions
     {
+        void OnAction(InputAction.CallbackContext context);
+    }
+    public interface INavigateUIActions
+    {
+        void OnNavigate(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
     }
 }

@@ -70,11 +70,13 @@ public class LoadingSceneManager : MonoBehaviour
         
         PreviewChecer(sceneName);
         
-        fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            Debug.Log("Scene to be Load: " + sceneName);
-            StartCoroutine(LoadSceneCoroutine(sceneName));
-        });
+        Debug.Log("Scene to be Load: " + sceneName);
+        StartCoroutine(LoadSceneCoroutine(sceneName));
+
+        // fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+        // {
+
+        // });
     }
 
     void Update()
@@ -117,14 +119,14 @@ public class LoadingSceneManager : MonoBehaviour
                 // NEW INPUT SYSTEM
                 if(actionPressed)
                 {
-                    fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
-                    {
-                        asyncOperation.allowSceneActivation = true;
+                    asyncOperation.allowSceneActivation = true;
 
-                        sceneName = string.Empty;
-                        loadingScreen.SetActive(false);
-                        this.enabled = false;
-                    });
+                    sceneName = string.Empty;
+                    loadingScreen.SetActive(false);
+                    this.enabled = false;
+                    // fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
+                    // {
+                    // });
                 }
             }
             yield return null;

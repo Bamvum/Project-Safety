@@ -12,15 +12,16 @@ public class PullFireExtinguisher : MonoBehaviour
     PlayerControls playerControls;
     [Header("Scripts")]
     [SerializeField] TPASS tpass;
+    [SerializeField] AimFireExtinguisher aimFE;
 
     [Header("Value")]
     [SerializeField] float pressedValue = 0.99f;
     [SerializeField] float decreaseValue = 0.01f;
 
     [Header("HUD")]
-    [SerializeField] GameObject pullFEHUD;
-    [SerializeField] RectTransform instructionHUD;
-    [SerializeField] CanvasGroup pullFEGameplay;
+    [SerializeField] GameObject pullHUD;
+    [SerializeField] RectTransform pullRectTransform;
+    [SerializeField] CanvasGroup pullCG;
 
     [Space(10)]
     [SerializeField] Slider pullSlider;
@@ -34,7 +35,6 @@ public class PullFireExtinguisher : MonoBehaviour
     bool canInput;
     bool actionLock;
     int roundNum;
-    public bool objectiveComplete;
 
 
     void Awake()
@@ -82,18 +82,18 @@ public class PullFireExtinguisher : MonoBehaviour
                 if (pullSlider.value >= 0.985f && pullSlider.value <= pullSlider.maxValue)
                 {
                     Debug.Log("Action Lock Pressed!");
-                    roundText.text = roundNum + 1  + " / 3"; 
+                    // roundText.text = roundNum + 1  + " / 3"; 
 
                     canInput = false;
                     roundNum++;
 
-                    pullFEGameplay.DOFade(0, 1).OnComplete(() =>
+                    pullCG.DOFade(0, 1).OnComplete(() =>
                     {
-                        pullFEGameplay.DOFade(0, 1).OnComplete(() =>
+                        pullCG.DOFade(0, 1).OnComplete(() =>
                         {
                             pullSlider.value = 0;
 
-                            pullFEGameplay.DOFade(1, 1).OnComplete(() =>
+                            pullCG.DOFade(1, 1).OnComplete(() =>
                             {
                                 CanInputDelay();
                             });
@@ -111,14 +111,14 @@ public class PullFireExtinguisher : MonoBehaviour
     {
         playerControls.PullFE.Disable();
 
-        pullFEHUD.SetActive(false);
+        pullHUD.SetActive(false);
 
         // tpass.ExtinguisherTrigger();
     }
 
     public void PullFireExtinguisherTrigger()
     {
-        pullFEHUD.SetActive(true);
+        pullHUD.SetActive(true);
         pullSlider.value = 0;
 
         Invoke("DisplayInstruction", 5);
@@ -135,8 +135,10 @@ public class PullFireExtinguisher : MonoBehaviour
             ChangeImageStatus(gamepadSprite[0], gamepadSprite[1]);
         }
 
-        SliderFunction();
-
+        if(canInput)
+        {
+            SliderFunction();
+        }
     }
 
     void SliderFunction()
@@ -148,12 +150,53 @@ public class PullFireExtinguisher : MonoBehaviour
 
         if(roundNum >= 3)
         {
-            objectiveComplete = true;
             PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
             
-            tpass.firstHalfDone = true;
-            tpass.aimMode = true;
-            this.enabled = false;
+            tpass.pullDone = true;
+            canInput = false;
+            
+            // tpass.tpassHUD.SetActive(false);
+            // tpass.aimMode = true;
+
+            pullCG.DOFade(0, 1).OnComplete(() =>
+            {
+                tpass.checkMarkDone.gameObject.SetActive(true);
+                tpass.correctSFX.Play();
+
+                tpass.checkMarkDone.DOFade(1, 1).OnComplete(() =>
+                {
+                    tpass.checkMarkDone.DOFade(0, 1).OnComplete(() =>
+                    {
+                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+                        LoadingSceneManager.instance.fadeImage.DOFade(1, 1).OnComplete(() =>
+                        {
+                            PlayerScript.instance.playerVC.Priority = 10;
+                            tpass.twistAndPullVC.Priority = 0;
+
+                            PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", false);
+                            PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", true);
+                            
+                            tpass.tpassHUD.SetActive(false);
+                            pullHUD.gameObject.SetActive(false);
+                            tpass.fireExtinguisher.SetActive(false);
+                            tpass.fireExtinguisherBody.SetActive(true);
+                            tpass.fireExtinguisherHose.SetActive(true);
+                            tpass.equipFireExtinguisher = false;
+
+                            tpass.checkMarkDone.gameObject.SetActive(false);
+
+                            this.enabled = false;
+                            tpass.enabled = true;
+
+                            LoadingSceneManager.instance.fadeImage.DOFade(0, 1).OnComplete(() =>
+                            {
+                                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                            });
+                        });
+                    });
+                });
+            });
         }
     }
 
@@ -167,12 +210,12 @@ public class PullFireExtinguisher : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(instructionHUD.DOAnchorPos(new Vector2(0f, 425f), .75f));
-        sequence.Join(instructionHUD.DOScale(new Vector3(1f, 1f, 1f), 1f));
+        sequence.Append(pullRectTransform.DOAnchorPos(new Vector2(0f, 425f), .75f));
+        sequence.Join(pullRectTransform.DOScale(new Vector3(1f, 1f, 1f), 1f));
 
         sequence.SetEase(Ease.InOutQuad).OnComplete(() =>
         {
-            sequence.Join(pullFEGameplay.DOFade(1f, 1f));
+            sequence.Join(pullCG.DOFade(1f, 1f));
             Debug.Log("Sequence Completed!");
 
             canInput = true;

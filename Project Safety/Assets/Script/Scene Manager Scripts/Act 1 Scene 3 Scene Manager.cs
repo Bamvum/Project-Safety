@@ -33,15 +33,31 @@ public class Act1Scene3SceneManager : MonoBehaviour
     
     void Start()
     {
-        // // FADE IMAGE ALPHA SET 1
-        // LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
-        //                                                         LoadingSceneManager.instance.fadeImage.color.g,
-        //                                                         LoadingSceneManager.instance.fadeImage.color.b,
-        //                                                         1);
+        // FADE IMAGE ALPHA SET 1
+        LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
+                                                                LoadingSceneManager.instance.fadeImage.color.g,
+                                                                LoadingSceneManager.instance.fadeImage.color.b,
+                                                                1);
 
         // TODO -   MONOLOGUE BY PLAYER
         //      -   
+        StartCoroutine(FadeOutEffect());
 
+    }
+
+    IEnumerator FadeOutEffect()
+    {
+        yield return new WaitForSeconds(5);
+
+        LoadingSceneManager.instance.fadeImage
+            .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+            // TRIGGER DIALOGUE
+            moveTowardFireTruck = false;   
+        });
     }
 
     void Update()
@@ -61,7 +77,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
                     fireTruckPeople.SetActive(false);
                     LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
                     {
-                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                         startDialogue.StartDialogue();
 
                         streetAmbiance.Play();
