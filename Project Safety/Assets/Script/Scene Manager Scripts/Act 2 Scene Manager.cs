@@ -15,6 +15,7 @@ public class Act2SceneManager : MonoBehaviour
 
     [Header("Trigger Dialogue")]
     [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger PlaceHolderCalmAndCall;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineInputProvider chairInputProvider;
@@ -45,7 +46,20 @@ public class Act2SceneManager : MonoBehaviour
         });
     }
 
-    
+    // FOR TESTING
+    public void PlaceHolderForCall()
+    {
+        StartCoroutine(DelayFunction());
+    }
+
+    IEnumerator DelayFunction()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("PlaceHolderForCall");
+        PlaceHolderCalmAndCall.StartDialogue();
+    }
+
+
     // public void EndOfScene()
     // {
     //     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);

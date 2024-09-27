@@ -152,6 +152,15 @@ public class PlayerMovementLayingDown : MonoBehaviour
 
     public void PlayerMove(bool active)
     {
+        StartCoroutine(DelayCanMove(active));
+    }
+
+    IEnumerator DelayCanMove(bool active)
+    {
+        yield return new WaitForSeconds(2.5f);
         canMove = active;
     }
+
+
+
 }

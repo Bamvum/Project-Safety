@@ -201,11 +201,11 @@ public class Interactable : MonoBehaviour
 
     IEnumerator ChangingCloth()
     {
-        HUDManager.instance.FadeInForDialogue();
+        HUDManager.instance.FadeIn();
 
         yield return new WaitForSeconds(1);
 
-        HUDManager.instance.FadeOutForDialogue();
+        HUDManager.instance.FadeOut();
 
         yield return new WaitForSeconds(1);
 

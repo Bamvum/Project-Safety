@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using DG.Tweening;
-using TMPro;
 
 
 
@@ -42,6 +42,9 @@ public class PrologueSceneManager : MonoBehaviour
     public bool toGetUp;
     bool isSuspenceSFXPlaying;
 
+    [SerializeField] Volume globalVolume; 
+    Vignette vignette;
+
     void Start()
     {
         // TODO -   IF PAUSE UI IS ACTIVE
@@ -49,18 +52,17 @@ public class PrologueSceneManager : MonoBehaviour
 
         // Cursor.lockState = CursorLockMode.Locked;
 
+        Cursor.lockState = CursorLockMode.None;  // Example: Unlock the cursor
+
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
-        
-        // PLAY AUDIO CLIP IN PLAYERAUDIO
-        // alarmAndWakeSFX.Play();
 
-        // ChangeInstructionPageButtons(false, true, false); 
-        
-        StartCoroutine(FadeOutFadeImage());     
+        globalVolume.profile.TryGet(out vignette);
+
+        StartCoroutine(FadeOutFadeImage());
     }
     
     void Update()
@@ -159,6 +161,8 @@ public class PrologueSceneManager : MonoBehaviour
 
         suspenceSFX.Play();
         isSuspenceSFXPlaying = true; 
+
+        // vignette.intensity.
     }
 
     #endregion

@@ -310,7 +310,6 @@ public class DialogueManager : MonoBehaviour
 
     void DialogueHUDShow()
     {
-        
         Debug.Log("Dialogue Show!");
         HUDManager.instance.dialogueHUD.SetActive(true);
         HUDManager.instance.playerHUD.SetActive(false);

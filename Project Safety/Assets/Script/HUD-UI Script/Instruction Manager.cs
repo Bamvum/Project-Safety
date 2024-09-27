@@ -76,8 +76,17 @@ public class InstructionManager : MonoBehaviour
             
             if(!isGamepad)
             {
-                EventSystem.current.SetSelectedGameObject(instructionButton[1]);
-                Debug.Log("Selected Instruction Button - Right");
+                if(counter == instructionsSO.instructions.Count - 1)
+                {
+                    EventSystem.current.SetSelectedGameObject(instructionButton[2]);
+                    Debug.Log("Selected Instruction Button - Done");
+                }
+                else
+                {
+                    EventSystem.current.SetSelectedGameObject(instructionButton[1]);
+                    Debug.Log("Selected Instruction Button - Right");
+                }
+
                 isGamepad = true;
             }
         }
@@ -90,6 +99,7 @@ public class InstructionManager : MonoBehaviour
             counter++;
             DeviceChecker();
             UpdateButtonStates();
+            isGamepad = false;
         }
     }
 
@@ -130,6 +140,7 @@ public class InstructionManager : MonoBehaviour
         instructionButton[1].SetActive(counter < instructionsSO.instructions.Count - 1); // Show "Next" button if not at the end
         instructionButton[2].SetActive(counter == instructionsSO.instructions.Count - 1); // Show "Finish" button if at the end
     }
+
     public void ShowInstruction()
     {
         Time.timeScale = 0;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class OnAndOffGameObject : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class OnAndOffGameObject : MonoBehaviour
     public bool isToggling = true;   // To start or stop toggling     
     private float timer = 0f;
 
+    // Gamepad vibration variables
+    [SerializeField] float vibrationDuration = 0.1f;  // Duration of vibration in seconds
+    [SerializeField] float lowFrequency = 0.5f;       // Low-frequency motor intensity
+    [SerializeField] float highFrequency = 0.5f;      // High-frequency motor intensity
+    
     private void Update()
     {
         if (isToggling)
@@ -20,6 +26,7 @@ public class OnAndOffGameObject : MonoBehaviour
             if (timer >= toggleSpeed)
             {
                 lightObject.SetActive(!lightObject.activeSelf);  // Toggle the active state
+                VibrateGamepad();  // Trigger vibration
                 timer = 0f;  // Reset the timer
             }
         }
@@ -38,4 +45,22 @@ public class OnAndOffGameObject : MonoBehaviour
         timer = 0f;  // Reset the timer to avoid immediate toggling
     }
 
+    // Function to trigger gamepad vibration
+    private void VibrateGamepad()
+    {
+        if (Gamepad.current != null)  // Ensure a gamepad is connected
+        {
+            Gamepad.current.SetMotorSpeeds(lowFrequency, highFrequency);  // Set vibration intensity
+            Invoke("StopVibration", vibrationDuration);  // Stop vibration after the specified duration
+        }
+    }
+
+    // Function to stop gamepad vibration
+    private void StopVibration()
+    {
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f);  // Stop vibration
+        }
+    }
 }

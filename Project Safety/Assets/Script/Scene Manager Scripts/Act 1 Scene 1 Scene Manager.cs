@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
+using Cinemachine;
 
 public class Act1StudentSceneManager : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class Act1StudentSceneManager : MonoBehaviour
 
     [Space(15)]
     public GameObject DoorEndingScene;
+    
+    [Space(15)]
+    [SerializeField] CinemachineVirtualCamera televisionVC;
 
     [Space(15)]
     [SerializeField] AudioSource bedPlayerAudio;
@@ -92,4 +96,5 @@ public class Act1StudentSceneManager : MonoBehaviour
     {
         PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
     }
+    
 }

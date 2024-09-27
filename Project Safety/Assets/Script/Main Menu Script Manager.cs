@@ -75,7 +75,7 @@ public class MainMenuScriptManager : MonoBehaviour
                                                                 1);
 
         // FADEOUT EFFECT
-        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+        LoadingSceneManager.instance.fadeImage.DOFade(0,.5f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
@@ -122,7 +122,7 @@ public class MainMenuScriptManager : MonoBehaviour
         
         pingPongText.gameObject.SetActive(false);
         mainMenuScreen.SetActive(true);
-        mainMenuRectTransform.DOAnchorPos(new Vector2(mainMenuRectTransform.anchoredPosition.x, 312.5f), 5).SetEase(Ease.OutCubic);
+        mainMenuRectTransform.DOAnchorPos(new Vector2(mainMenuRectTransform.anchoredPosition.x, 312.5f), 1).SetEase(Ease.OutCubic);
     }
     
     void DeviceInputChecker()
@@ -270,6 +270,21 @@ public class MainMenuScriptManager : MonoBehaviour
     public void Play()
     {
         Debug.Log("Access Play!");
+
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            mainMenuScreen.SetActive(false);
+
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Prologue";
+        });
+
+        isGamepad = false;       
     }
 
     public void ChapterSelect()
@@ -281,6 +296,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
         isGamepad = false;
     }
+
     public void Settings()
     {
         Debug.Log("Access Settings!");

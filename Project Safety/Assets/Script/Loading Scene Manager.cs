@@ -45,7 +45,6 @@ public class LoadingSceneManager : MonoBehaviour
     
     void OnEnable()
     {
-        //
         ActivatePlayerControls();
 
         playerControls.LoadingUI.Enable();
@@ -70,13 +69,11 @@ public class LoadingSceneManager : MonoBehaviour
         
         PreviewChecer(sceneName);
         
-        Debug.Log("Scene to be Load: " + sceneName);
-        StartCoroutine(LoadSceneCoroutine(sceneName));
-
-        // fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
-        // {
-
-        // });
+        fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            Debug.Log("Scene to be Load: " + sceneName);
+            StartCoroutine(LoadSceneCoroutine(sceneName));
+        });
     }
 
     void Update()
@@ -119,16 +116,17 @@ public class LoadingSceneManager : MonoBehaviour
                 // NEW INPUT SYSTEM
                 if(actionPressed)
                 {
-                    asyncOperation.allowSceneActivation = true;
-
-                    sceneName = string.Empty;
-                    loadingScreen.SetActive(false);
-                    this.enabled = false;
-                    // fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
-                    // {
-                    // });
+                    // Fade Image Problem!!
+                    fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
+                    {
+                        asyncOperation.allowSceneActivation = true;
+                        sceneName = string.Empty;
+                        loadingScreen.SetActive(false);
+                        this.enabled = false;
+                    });
                 }
             }
+            
             yield return null;
         }
     }

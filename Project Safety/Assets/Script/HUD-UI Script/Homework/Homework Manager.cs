@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
-using Unity.VisualScripting;
+
 
 
 public class HomeworkManager : MonoBehaviour
@@ -27,6 +27,7 @@ public class HomeworkManager : MonoBehaviour
     public GameObject homeworkHUD;
     [SerializeField] GameObject homeworkQnA;
     [SerializeField] GameObject homeworkScore;
+    [SerializeField] RectTransform homeworkScoreRectTransform;
     [SerializeField] TMP_Text homeworkScoreText;
     [SerializeField] TMP_Text questionText;
     [SerializeField] GameObject[] homeworkChoices;
@@ -121,6 +122,10 @@ public class HomeworkManager : MonoBehaviour
     void PreEndOfHomework()
     {
         homeworkScore.SetActive(true);
+        homeworkScoreRectTransform.DOScale(Vector3.one, .1f).OnComplete(() =>
+        {
+            homeworkScoreRectTransform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetEase(Ease.InFlash);
+        });
         homeworkQnA.SetActive(false);
         homeworkScoreText.text = score + " / "  + totalOfQuestions;
         

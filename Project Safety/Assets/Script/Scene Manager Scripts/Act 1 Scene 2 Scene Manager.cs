@@ -82,7 +82,7 @@ public class Act1Scene2SceneManager : MonoBehaviour
                 fireTruckSirenSFX.Play();
             }
 
-            firetruck.transform.position = Vector3.MoveTowards(firetruck.transform.position, new Vector3(107, firetruck.transform.position.y, 100), Time.deltaTime * 25f);
+            firetruck.transform.position = Vector3.MoveTowards(firetruck.transform.position, new Vector3(107, firetruck.transform.position.y, 34), Time.deltaTime * 25f);
 
             if (firetruck.transform.position == new Vector3(107, firetruck.transform.position.y, 100))
             {
@@ -93,7 +93,7 @@ public class Act1Scene2SceneManager : MonoBehaviour
 
         if (lerpBus)
         {
-            bus.transform.position = Vector3.MoveTowards(bus.transform.position, new Vector3(107, bus.transform.position.y, 100), Time.deltaTime * 25f);
+            bus.transform.position = Vector3.MoveTowards(bus.transform.position, new Vector3(107, bus.transform.position.y, 34), Time.deltaTime * 25f);
             if (bus.transform.position == new Vector3(107, bus.transform.position.y, 100))
             {
                 lerpBus = false;
