@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class Act1Scene4SceneManager : MonoBehaviour
@@ -26,6 +27,7 @@ public class Act1Scene4SceneManager : MonoBehaviour
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogue;
 
+    [SerializeField] TMP_Text tmpText;
 
 
     void Start()
@@ -121,4 +123,16 @@ public class Act1Scene4SceneManager : MonoBehaviour
                 LoadingSceneManager.instance.sceneName = "Act 2";
             });
     }
+
+    public void Test()
+    {
+        // PlayerPrefs
+        // 0 = null
+        // 1 = True
+        // 2 = false
+
+        Debug.Log("Kunwari PlayerPrefs");
+
+    }
+
 }

@@ -102,7 +102,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
+                    "name": "Use",
                     "type": "Button",
                     "id": "1454e48b-ff70-4afb-8e1f-450107e355cc",
                     "expectedControlType": "Button",
@@ -138,6 +138,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Examine",
+                    "type": "Button",
+                    "id": "1c17f783-06a1-4f5f-a14f-c427c30fcb0c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "f83ab4bf-236a-4982-b3cf-964c124ad68e",
@@ -147,9 +156,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Examine",
+                    "name": "Drop",
                     "type": "Button",
-                    "id": "1c17f783-06a1-4f5f-a14f-c427c30fcb0c",
+                    "id": "8d2e56b1-9f63-43e3-b82b-5c65341cfce9",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -296,7 +305,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -307,7 +316,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -335,28 +344,6 @@
                 },
                 {
                     "name": "",
-                    "id": "f4e184b3-3e4d-4da4-8d66-fca7e99b22c3",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5008bb9d-d55d-4422-86e8-cf8f945014d1",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0231d4a9-6008-4127-88c1-c7eaf0b98ad9",
                     "path": "<Keyboard>/q",
                     "interactions": "",
@@ -374,6 +361,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Examine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d50b73a-598c-473e-8fe2-d127e4d26d0a",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9de13126-ec23-4033-b30a-2bc913555d97",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f4e184b3-3e4d-4da4-8d66-fca7e99b22c3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5008bb9d-d55d-4422-86e8-cf8f945014d1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

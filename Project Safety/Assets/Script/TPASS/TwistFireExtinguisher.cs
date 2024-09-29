@@ -15,13 +15,13 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] TPASS tpass;
     [SerializeField] PullFireExtinguisher pullFE;
 
-
-
     [Header("HUD")]
     [SerializeField] CanvasGroup twistHUD;
     [SerializeField] RectTransform twistRectTransform;
     [SerializeField] CanvasGroup twistCG;
 
+    [Space(10)]
+    
     [Space(10)]
     [SerializeField] Image[] twistControlImage;
     [SerializeField] Sprite[] twistKeyboardSprite;
@@ -71,7 +71,6 @@ public class TwistFireExtinguisher : MonoBehaviour
             inputsPerformed++;
 
         }
-
     }
 
     private void Button2Pressed(InputAction.CallbackContext context)
@@ -159,8 +158,21 @@ public class TwistFireExtinguisher : MonoBehaviour
 
     public void TwistFireExtinguisherTrigger()
     {
+        // HUDS
         HUDManager.instance.playerHUD.SetActive(false);
+        HUDManager.instance.missionHUD.SetActive(false);
+        tpass.tpassHUD.SetActive(true);
 
+        // PLAYER SCRIPTS
+        PlayerScript.instance.playerMovement.enabled = false;
+        PlayerScript.instance.cinemachineInputProvider.enabled = false;
+        PlayerScript.instance.interact.enabled = false;
+        PlayerScript.instance.examine.enabled = false;
+        PlayerScript.instance.stamina.enabled = false;
+
+        // CINEMACHINE PRIORITY
+        PlayerScript.instance.playerVC.Priority = 0;
+        tpass.twistAndPullVC.Priority = 10;
 
         twistHUD.gameObject.SetActive(true);
         twistHUD.DOFade(1, 1);
@@ -198,8 +210,6 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
             canInput = false;
-
-            tpass.twistDone = true;
 
             twistCG.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
             {

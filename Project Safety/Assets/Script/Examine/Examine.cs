@@ -59,6 +59,8 @@ public class Examine : MonoBehaviour
     }
     void OnEnable()
     {
+        HUDManager.instance.missionHUD.SetActive(false);
+
         playerControls.Examine.Lock.performed += ctx => isLock = true;
         playerControls.Examine.Lock.canceled += ctx => isLock = false;
 
@@ -74,6 +76,8 @@ public class Examine : MonoBehaviour
 
     void OnDisable()
     {   
+        HUDManager.instance.missionHUD.SetActive(true);
+
         playerControls.Examine.Disable();
     }
 
@@ -108,6 +112,11 @@ public class Examine : MonoBehaviour
 
             PlayerScript.instance.interact.interactObject.transform.position = originalPosition;
             PlayerScript.instance.interact.interactObject.transform.eulerAngles = originalRotation;
+            
+            if(PlayerScript.instance.interact.rb != null)
+            {
+                PlayerScript.instance.interact.rb.isKinematic = false;
+            }
 
             PlayerScript.instance.interact.interactObject = null;
             // examineObject = null;
@@ -119,7 +128,7 @@ public class Examine : MonoBehaviour
 
             // DISABLE SCRIPT
             this.enabled = false;
-
+           
             // ENABLE SCRIPT
             PlayerScript.instance.playerMovement.enabled = true;
             PlayerScript.instance.interact.enabled = true;

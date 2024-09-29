@@ -71,9 +71,6 @@ public class PlayerMovement : MonoBehaviour
         playerControls.Player.Sprint.performed += ctx => runInput = true;
         playerControls.Player.Sprint.canceled += ctx => runInput = false;
 
-        playerControls.Player.Jump.performed += ctx => jumpInput = true;
-        playerControls.Player.Jump.canceled += ctx => jumpInput = false;
-
         playerControls.Player.Crouch.performed += ctx => crouchInput = true;
         playerControls.Player.Crouch.canceled += ctx => crouchInput = false;
         

@@ -12,7 +12,7 @@ public class PullFireExtinguisher : MonoBehaviour
     PlayerControls playerControls;
     [Header("Scripts")]
     [SerializeField] TPASS tpass;
-    [SerializeField] AimFireExtinguisher aimFE;
+    // [SerializeField] AimFireExtinguisher aimFE;
 
     [Header("Value")]
     [SerializeField] float pressedValue = 0.99f;
@@ -152,11 +152,8 @@ public class PullFireExtinguisher : MonoBehaviour
         {
             PlayerScript.instance.playerMovement.playerAnim.SetBool("TwistExtinguisher", false);
             
-            tpass.pullDone = true;
+            tpass.twistAndPull = true;
             canInput = false;
-            
-            // tpass.tpassHUD.SetActive(false);
-            // tpass.aimMode = true;
 
             pullCG.DOFade(0, 1).OnComplete(() =>
             {
@@ -174,15 +171,15 @@ public class PullFireExtinguisher : MonoBehaviour
                             PlayerScript.instance.playerVC.Priority = 10;
                             tpass.twistAndPullVC.Priority = 0;
 
-                            PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", false);
-                            PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", true);
+                            // PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", false);
+                            // PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", true);
                             
                             tpass.tpassHUD.SetActive(false);
                             pullHUD.gameObject.SetActive(false);
-                            tpass.fireExtinguisher.SetActive(false);
-                            tpass.fireExtinguisherBody.SetActive(true);
-                            tpass.fireExtinguisherHose.SetActive(true);
-                            tpass.equipFireExtinguisher = false;
+                            // tpass.fireExtinguisher.SetActive(false);
+                            // tpass.fireExtinguisherBody.SetActive(true);
+                            // tpass.fireExtinguisherHose.SetActive(true);
+                            // tpass.equipFireExtinguisher = false;
 
                             tpass.checkMarkDone.gameObject.SetActive(false);
 
