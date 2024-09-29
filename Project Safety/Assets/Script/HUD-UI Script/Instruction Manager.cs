@@ -110,6 +110,13 @@ public class InstructionManager : MonoBehaviour
             counter--;
             DeviceChecker();
             UpdateButtonStates();
+
+            if(counter == 0)
+            {
+                EventSystem.current.SetSelectedGameObject(instructionButton[0]);
+            }
+
+            isGamepad = false;
         }
     }
 

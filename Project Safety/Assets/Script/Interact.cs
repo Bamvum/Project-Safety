@@ -55,6 +55,7 @@ public class Interact : MonoBehaviour
     {
         Debug.Log("Wait for Animation End!");
         yield return new WaitForSeconds(duration - 0.7f);
+        // PARENT ITEM IN HANDBONE
         interactObject.transform.SetParent(handBone, true);
         interactObject.transform.position = Vector3.zero;
         GameObject tookObject = interactObject;

@@ -16,7 +16,7 @@ MonoBehaviour:
   itemDescription: Effective for Class A, B, and C fires, this extinguisher quickly
     suppresses flames using a non-toxic powder. Ideal for home, office, or industrial
     use
-  itemDistanceToPlayer: 0.5
+  itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1
   isReadble: 1

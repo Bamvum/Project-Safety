@@ -84,7 +84,7 @@ public class Act1Scene2SceneManager : MonoBehaviour
 
             firetruck.transform.position = Vector3.MoveTowards(firetruck.transform.position, new Vector3(107, firetruck.transform.position.y, 34), Time.deltaTime * 25f);
 
-            if (firetruck.transform.position == new Vector3(107, firetruck.transform.position.y, 100))
+            if (firetruck.transform.position == new Vector3(107, firetruck.transform.position.y, 34))
             {
                 lerpFireTruck = false;
                 Destroy(firetruck);
@@ -94,7 +94,7 @@ public class Act1Scene2SceneManager : MonoBehaviour
         if (lerpBus)
         {
             bus.transform.position = Vector3.MoveTowards(bus.transform.position, new Vector3(107, bus.transform.position.y, 34), Time.deltaTime * 25f);
-            if (bus.transform.position == new Vector3(107, bus.transform.position.y, 100))
+            if (bus.transform.position == new Vector3(107, bus.transform.position.y, 34))
             {
                 lerpBus = false;
             }
