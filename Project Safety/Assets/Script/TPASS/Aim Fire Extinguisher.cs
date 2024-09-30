@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
-using Microsoft.Unity.VisualStudio.Editor;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class AimFireExtinguisher : MonoBehaviour
 {
@@ -34,8 +32,8 @@ public class AimFireExtinguisher : MonoBehaviour
     public bool wetChemical; // CLASS K FIRE ONLY
 
     [Header("HUD")]
-    [SerializeField] CanvasGroup aimHUD;
-    [SerializeField] RectTransform aimRectTransform;
+    public CanvasGroup aimHUD;
+    public RectTransform aimRectTransform;
 
     [Space(10)]
     [SerializeField] GameObject extinguishImage;
@@ -105,7 +103,8 @@ public class AimFireExtinguisher : MonoBehaviour
 
     void OnDisable()
     {
-        tpass.tpassHUD.SetActive(false);
+        // tpass.tpassHUD.SetActive(false);
+        aimHUD.gameObject.SetActive(false);
 
         playerControls.AimFE.Disable();
     }
@@ -133,7 +132,7 @@ public class AimFireExtinguisher : MonoBehaviour
         aimHUD.gameObject.SetActive(true);
         aimHUD.DOFade(1, 1).SetEase(Ease.Linear);
 
-        Invoke("DisplayInstruction", 5);
+        Invoke("DisplayInstruction", 1.5f);
     }
 
     void DisplayInstruction()
