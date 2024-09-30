@@ -13,8 +13,8 @@ public class Interact : MonoBehaviour
 
     [SerializeField] Transform handIKTarget;
     [SerializeField] Transform handParent;
-    [SerializeField] TwoBoneIKConstraint leftHandExtinguisher;
-    [SerializeField] TwoBoneIKConstraint rightHandExtinguisher;
+    public TwoBoneIKConstraint leftHandExtinguisher;
+    public TwoBoneIKConstraint rightHandExtinguisher;
 
     [Header("Scripts")]     
     Item item;

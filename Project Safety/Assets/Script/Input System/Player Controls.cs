@@ -1160,6 +1160,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf64b167-6616-4e10-9aca-cfbcdd2c7002"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1182,6 +1191,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07478af7-2503-431d-9438-28b6a85bd413"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ee84a77-9bcc-4dd3-9c20-01138b474d2d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1284,6 +1315,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SqueezeSweepFE"",
+            ""id"": ""64430c91-1ec8-4863-84f3-2a767ee5b624"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ed9a44e-2720-4f27-bb8c-f5b76a255948"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""739a6670-99bb-472b-9006-41fd49b15ea3"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1344,6 +1403,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // AimFE
         m_AimFE = asset.FindActionMap("AimFE", throwIfNotFound: true);
         m_AimFE_Action = m_AimFE.FindAction("Action", throwIfNotFound: true);
+        m_AimFE_Drop = m_AimFE.FindAction("Drop", throwIfNotFound: true);
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Action = m_Pause.FindAction("Action", throwIfNotFound: true);
@@ -1351,6 +1411,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_NavigateUI = asset.FindActionMap("NavigateUI", throwIfNotFound: true);
         m_NavigateUI_Navigate = m_NavigateUI.FindAction("Navigate", throwIfNotFound: true);
         m_NavigateUI_Action = m_NavigateUI.FindAction("Action", throwIfNotFound: true);
+        // SqueezeSweepFE
+        m_SqueezeSweepFE = asset.FindActionMap("SqueezeSweepFE", throwIfNotFound: true);
+        m_SqueezeSweepFE_Newaction = m_SqueezeSweepFE.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2057,11 +2120,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_AimFE;
     private List<IAimFEActions> m_AimFEActionsCallbackInterfaces = new List<IAimFEActions>();
     private readonly InputAction m_AimFE_Action;
+    private readonly InputAction m_AimFE_Drop;
     public struct AimFEActions
     {
         private @PlayerControls m_Wrapper;
         public AimFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Action => m_Wrapper.m_AimFE_Action;
+        public InputAction @Drop => m_Wrapper.m_AimFE_Drop;
         public InputActionMap Get() { return m_Wrapper.m_AimFE; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2074,6 +2139,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Action.started += instance.OnAction;
             @Action.performed += instance.OnAction;
             @Action.canceled += instance.OnAction;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
         }
 
         private void UnregisterCallbacks(IAimFEActions instance)
@@ -2081,6 +2149,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Action.started -= instance.OnAction;
             @Action.performed -= instance.OnAction;
             @Action.canceled -= instance.OnAction;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
         }
 
         public void RemoveCallbacks(IAimFEActions instance)
@@ -2198,6 +2269,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public NavigateUIActions @NavigateUI => new NavigateUIActions(this);
+
+    // SqueezeSweepFE
+    private readonly InputActionMap m_SqueezeSweepFE;
+    private List<ISqueezeSweepFEActions> m_SqueezeSweepFEActionsCallbackInterfaces = new List<ISqueezeSweepFEActions>();
+    private readonly InputAction m_SqueezeSweepFE_Newaction;
+    public struct SqueezeSweepFEActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SqueezeSweepFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_SqueezeSweepFE_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_SqueezeSweepFE; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SqueezeSweepFEActions set) { return set.Get(); }
+        public void AddCallbacks(ISqueezeSweepFEActions instance)
+        {
+            if (instance == null || m_Wrapper.m_SqueezeSweepFEActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SqueezeSweepFEActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        private void UnregisterCallbacks(ISqueezeSweepFEActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        public void RemoveCallbacks(ISqueezeSweepFEActions instance)
+        {
+            if (m_Wrapper.m_SqueezeSweepFEActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ISqueezeSweepFEActions instance)
+        {
+            foreach (var item in m_Wrapper.m_SqueezeSweepFEActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_SqueezeSweepFEActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public SqueezeSweepFEActions @SqueezeSweepFE => new SqueezeSweepFEActions(this);
     public interface IMainMenuActions
     {
         void OnAction(InputAction.CallbackContext context);
@@ -2264,6 +2381,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IAimFEActions
     {
         void OnAction(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
     public interface IPauseActions
     {
@@ -2273,5 +2391,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnNavigate(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
+    }
+    public interface ISqueezeSweepFEActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

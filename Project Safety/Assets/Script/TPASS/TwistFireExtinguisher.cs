@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Cinemachine;
 using DG.Tweening;
 
 public class TwistFireExtinguisher : MonoBehaviour
@@ -160,6 +159,7 @@ public class TwistFireExtinguisher : MonoBehaviour
     }
     public void TwistFireExtinguisherInstance()
     {
+        tpass.tpassBackgroundCG.alpha = 1;
         twistRectTransform.anchoredPosition = Vector3.zero;
         twistRectTransform.localScale = new Vector3(2, 2, 2);
         twistCG.alpha = 0;

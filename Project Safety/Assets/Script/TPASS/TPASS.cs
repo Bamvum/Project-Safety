@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class TPASS : MonoBehaviour
 {
+    [Header("TPASS HUD")]
+    public CanvasGroup tpassBackgroundCG;
+    
     [Header("TPASS Scripts")]
     [SerializeField] TwistFireExtinguisher twistFE;
     [SerializeField] AimFireExtinguisher aimFE;

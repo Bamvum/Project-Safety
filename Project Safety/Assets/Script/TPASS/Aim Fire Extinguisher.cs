@@ -11,10 +11,12 @@ public class AimFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
 
+    [SerializeField] GameObject fireExtinguisherInHand;
+    [SerializeField] Rigidbody fireExtinguisherInHandRb;
+
     [Header("Script")]
     [SerializeField] TPASS tpass;
-    // [SerializeField] SqueezeAndSweep squeezeAndSweep;
-
+    [SerializeField] SqueezeandSweepFireExtinguisher squeezeAndSweepFE;
 
     [Header("Fire Extinguisher Type")]
 
@@ -34,7 +36,6 @@ public class AimFireExtinguisher : MonoBehaviour
     [Header("HUD")]
     [SerializeField] CanvasGroup aimHUD;
     [SerializeField] RectTransform aimRectTransform;
-    [SerializeField] CanvasGroup tpassBackgroundCG;
 
     [Space(10)]
     [SerializeField] GameObject extinguishImage;
@@ -42,14 +43,20 @@ public class AimFireExtinguisher : MonoBehaviour
     [Header("Raycast")]
     [SerializeField] float interactRange = 1.5f;
     [SerializeField] RaycastHit hit;
+    
+    [Space(10)]
+    [SerializeField] bool canInput;
 
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
 
     void OnEnable()
     {
-        // playerControls.AimFE.Action.performed += ctx => actionPressed = true;
-        // playerControls.AimFE.Action.canceled += ctx => actionPressed = false;
-
         playerControls.AimFE.Action.performed += ToAction;
+        playerControls.AimFE.Drop.performed += ToDrop;
+
         playerControls.AimFE.Enable();
 
         // INSTANCE
@@ -60,26 +67,65 @@ public class AimFireExtinguisher : MonoBehaviour
 
     private void ToAction(InputAction.CallbackContext context)
     {
-        
+        if(PlayerScript.instance.interact.inHandItem != null)
+        {
+            // SQUEEZE AND SWEEP FUNCTION
+            if(canInput)
+            {
+                squeezeAndSweepFE.enabled = true;
+                this.enabled = false;
+            }
+        }
+    }
+
+    private void ToDrop(InputAction.CallbackContext context)
+    {
+        Debug.Log("Drop!~");
+
+        if(PlayerScript.instance.interact.inHandItem != null)
+        {
+            PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
+            PlayerScript.instance.interact.inHandItem.layer = 6;
+
+            if(PlayerScript.instance.interact.inHandItemRB != null)
+            {
+                PlayerScript.instance.interact.inHandItemRB.isKinematic = false;
+            }
+
+            PlayerScript.instance.interact.inHandItem = null;
+            PlayerScript.instance.interact.inHandItemRB = null;
+
+            PlayerScript.instance.interact.leftHandExtinguisher.weight = 0;
+            PlayerScript.instance.interact.rightHandExtinguisher.weight = 0;
+
+            PlayerScript.instance.interact.enabled = true;
+            this.enabled = false;
+        }
     }
 
     void OnDisable()
     {
+        tpass.tpassHUD.SetActive(false);
 
         playerControls.AimFE.Disable();
     }
 
     public void AimFireExtinguisherInstance()
     {
+        aimHUD.alpha = 1;
         aimRectTransform.anchoredPosition = Vector3.zero;
         aimRectTransform.localScale = new Vector3(2, 2, 2);
+        tpass.tpassBackgroundCG.alpha = 1;
 
+        fireExtinguisherInHand = PlayerScript.instance.interact.inHandItem;
+        fireExtinguisherInHandRb = PlayerScript.instance.interact.inHandItemRB;
     }
 
     public void AimFireExtinguisherTrigger()
     {
         // HUDManager.instance.playerHUD
         HUDManager.instance.missionHUD.SetActive(false);
+        tpass.tpassHUD.SetActive(true);
 
         // PLAYER SCRIPTS
         PlayerScript.instance.interact.enabled = false;
@@ -99,7 +145,7 @@ public class AimFireExtinguisher : MonoBehaviour
 
         sequence.SetEase(Ease.InOutQuad).OnComplete(() =>
         {
-            // sequence.Join(twistCG.DOFade(1f, 1f));
+            sequence.Join(tpass.tpassBackgroundCG.DOFade(0f, 1f));
             Debug.Log("Sequence Completed!");
 
             // canInput = true;
@@ -116,15 +162,13 @@ public class AimFireExtinguisher : MonoBehaviour
         if (hit.collider != null)
         {
             extinguishImage.SetActive(false);
+            
         }
 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
         if (Physics.Raycast(ray, out hit, interactRange))
         {
-            // 
-            PowderFEType();
-
             if(powder)
             {
                 Debug.Log("Powder Fire Extinguisher");
@@ -169,8 +213,9 @@ public class AimFireExtinguisher : MonoBehaviour
         if (hit.collider.gameObject.layer == 9 || hit.collider.gameObject.layer == 10 ||
             hit.collider.gameObject.layer == 11 || hit.collider.gameObject.layer == 12)
         {
-            // SQUEEZE AND SWEEP FUNCTION
+            // DISPLAY VISUAL
             extinguishImage.SetActive(true);
+            canInput = true;
         }
 
         /* 
@@ -180,6 +225,7 @@ public class AimFireExtinguisher : MonoBehaviour
 
         else if (hit.collider.gameObject.layer == 13)
         {
+            canInput = false;
             // DISPLAY WRONG
         }
     }
@@ -195,8 +241,9 @@ public class AimFireExtinguisher : MonoBehaviour
 
         if (hit.collider.gameObject.layer == 9 || hit.collider.gameObject.layer == 10)
         {
-            // SQUEEZE AND SWEEP FUNCTION
+            // DISPLAY VISUAL
             extinguishImage.SetActive(true);
+            canInput = true;
         }
 
         /* 
@@ -210,6 +257,7 @@ public class AimFireExtinguisher : MonoBehaviour
                 hit.collider.gameObject.layer == 13)
         {
             // DISPLAY WRONG
+            canInput = false;
         }
     }
 
@@ -224,8 +272,9 @@ public class AimFireExtinguisher : MonoBehaviour
 
         if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 )
         {
-            // SQUEEZE AND SWEEP FUNCTION
+            // DISPLAY VISUAL
             extinguishImage.SetActive(true);
+            canInput = true;
         }
 
         /* 
@@ -239,7 +288,7 @@ public class AimFireExtinguisher : MonoBehaviour
                 hit.collider.gameObject.layer == 13)
         {
             // DISPLAY WRONG
-            extinguishImage.SetActive(true);
+            canInput = false;
         }
     }
 
@@ -253,8 +302,9 @@ public class AimFireExtinguisher : MonoBehaviour
 
         if (hit.collider.gameObject.layer == 9)
         {
-            // SQUEEZE AND SWEEP FUNCTION
+            // DISPLAY VISUAL
             extinguishImage.SetActive(true);
+            canInput = true;
         }
 
         /* 
@@ -269,6 +319,7 @@ public class AimFireExtinguisher : MonoBehaviour
                 hit.collider.gameObject.layer == 12 || hit.collider.gameObject.layer == 13)
         {
             // DISPLAY WRONG
+            canInput = false;
         }
     }
 
@@ -282,8 +333,9 @@ public class AimFireExtinguisher : MonoBehaviour
 
         if (hit.collider.gameObject.layer == 9 || hit.collider.gameObject.layer == 13)
         {
-            // SQUEEZE AND SWEEP FUNCTION
+            // DISPLAY VISUAL
             extinguishImage.SetActive(true);
+            canInput = true;
         }
 
         /* 
@@ -296,8 +348,8 @@ public class AimFireExtinguisher : MonoBehaviour
         else if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 || 
                 hit.collider.gameObject.layer == 12)
         {
-            // DISPLAY WRONG
-            extinguishImage.SetActive(false);
+            // DISPLAY VISUAL
+            canInput = false;
         }
     }
 }
