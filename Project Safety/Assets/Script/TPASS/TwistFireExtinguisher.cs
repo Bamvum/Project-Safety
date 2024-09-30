@@ -49,6 +49,9 @@ public class TwistFireExtinguisher : MonoBehaviour
 
         playerControls.TwistFE.Enable();
 
+        // INSTANTIATE 
+        TwistFireExtinguisherInstance();
+
         TwistFireExtinguisherTrigger();
     }
 
@@ -155,6 +158,22 @@ public class TwistFireExtinguisher : MonoBehaviour
 
 
     }
+    public void TwistFireExtinguisherInstance()
+    {
+        twistRectTransform.anchoredPosition = Vector3.zero;
+        twistRectTransform.localScale = new Vector3(2, 2, 2);
+        twistCG.alpha = 0;
+
+        twistControlImage[0].color = new Color(twistControlImage[0].color.r, twistControlImage[0].color.g, twistControlImage[0].color.b, 1);
+        twistControlImage[1].color = new Color(twistControlImage[1].color.r, twistControlImage[1].color.g, twistControlImage[1].color.b, 1);
+        twistControlImage[2].color = new Color(twistControlImage[2].color.r, twistControlImage[2].color.g, twistControlImage[2].color.b, 1);
+        twistControlImage[3].color = new Color(twistControlImage[3].color.r, twistControlImage[3].color.g, twistControlImage[3].color.b, 1);
+
+        buttonPressed[0] = false;
+        buttonPressed[1] = false;
+        buttonPressed[2] = false;
+        buttonPressed[3] = false;
+    }
 
     public void TwistFireExtinguisherTrigger()
     {
@@ -167,7 +186,6 @@ public class TwistFireExtinguisher : MonoBehaviour
         PlayerScript.instance.playerMovement.enabled = false;
         PlayerScript.instance.cinemachineInputProvider.enabled = false;
         PlayerScript.instance.interact.enabled = false;
-        PlayerScript.instance.examine.enabled = false;
         PlayerScript.instance.stamina.enabled = false;
 
         // CINEMACHINE PRIORITY
@@ -175,7 +193,7 @@ public class TwistFireExtinguisher : MonoBehaviour
         tpass.twistAndPullVC.Priority = 10;
 
         twistHUD.gameObject.SetActive(true);
-        twistHUD.DOFade(1, 1);
+        twistHUD.DOFade(1, 1).SetEase(Ease.Linear);
 
         Invoke("DisplayInstruction", 5);
     }
@@ -210,23 +228,32 @@ public class TwistFireExtinguisher : MonoBehaviour
         {
             inputsPerformed = inputNeedToFinish;
             canInput = false;
-
+            
+            // END ANIMATION 
             twistCG.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
             {
                 tpass.checkMarkDone.gameObject.SetActive(true);
                 tpass.correctSFX.Play();
+
                 tpass.checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
                 {
                     tpass.checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        twistHUD.gameObject.SetActive(false);
-                        
+
                         tpass.checkMarkDone.gameObject.SetActive(false);
 
-                        pullFE.enabled = true;
-                        pullFE.PullFireExtinguisherTrigger();
+                        twistHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                        {
+                            twistHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                            {
+                                twistHUD.gameObject.SetActive(false);
 
-                        this.enabled =false;
+                                pullFE.enabled = true;
+                                pullFE.PullFireExtinguisherTrigger();
+
+                                this.enabled = false;
+                            });
+                        });
                     });
                 });
             });

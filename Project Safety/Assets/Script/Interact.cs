@@ -233,6 +233,7 @@ public class Interact : MonoBehaviour
     }
 
     #endregion
+    
     void Update()
     {
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * interactRange, Color.green);

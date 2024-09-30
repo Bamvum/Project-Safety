@@ -141,7 +141,6 @@ public class Examine : MonoBehaviour
 
     void Update()
     {
-        
         if (!examineMode && !isLerping)
         {
             item = PlayerScript.instance.interact.interactObject.GetComponent<Item>();

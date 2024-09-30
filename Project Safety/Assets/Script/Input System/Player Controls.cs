@@ -1149,6 +1149,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""AimFE"",
+            ""id"": ""9d1d243a-5745-4694-bade-a9c01a129eab"",
+            ""actions"": [
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""62f2bb17-e3b3-42aa-9a43-4b468dde0cac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ee74f617-d980-4dab-a498-27adda115460"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75959208-9809-4a59-8cd5-c379605f1eca"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Pause"",
             ""id"": ""484a4e61-0311-4856-97e2-36fbcac5fb0b"",
             ""actions"": [
@@ -1302,6 +1341,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PullFE = asset.FindActionMap("PullFE", throwIfNotFound: true);
         m_PullFE_Action = m_PullFE.FindAction("Action", throwIfNotFound: true);
         m_PullFE_ActionLock = m_PullFE.FindAction("Action Lock", throwIfNotFound: true);
+        // AimFE
+        m_AimFE = asset.FindActionMap("AimFE", throwIfNotFound: true);
+        m_AimFE_Action = m_AimFE.FindAction("Action", throwIfNotFound: true);
         // Pause
         m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
         m_Pause_Action = m_Pause.FindAction("Action", throwIfNotFound: true);
@@ -2011,6 +2053,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public PullFEActions @PullFE => new PullFEActions(this);
 
+    // AimFE
+    private readonly InputActionMap m_AimFE;
+    private List<IAimFEActions> m_AimFEActionsCallbackInterfaces = new List<IAimFEActions>();
+    private readonly InputAction m_AimFE_Action;
+    public struct AimFEActions
+    {
+        private @PlayerControls m_Wrapper;
+        public AimFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Action => m_Wrapper.m_AimFE_Action;
+        public InputActionMap Get() { return m_Wrapper.m_AimFE; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AimFEActions set) { return set.Get(); }
+        public void AddCallbacks(IAimFEActions instance)
+        {
+            if (instance == null || m_Wrapper.m_AimFEActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AimFEActionsCallbackInterfaces.Add(instance);
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(IAimFEActions instance)
+        {
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(IAimFEActions instance)
+        {
+            if (m_Wrapper.m_AimFEActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IAimFEActions instance)
+        {
+            foreach (var item in m_Wrapper.m_AimFEActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_AimFEActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public AimFEActions @AimFE => new AimFEActions(this);
+
     // Pause
     private readonly InputActionMap m_Pause;
     private List<IPauseActions> m_PauseActionsCallbackInterfaces = new List<IPauseActions>();
@@ -2172,6 +2260,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnAction(InputAction.CallbackContext context);
         void OnActionLock(InputAction.CallbackContext context);
+    }
+    public interface IAimFEActions
+    {
+        void OnAction(InputAction.CallbackContext context);
     }
     public interface IPauseActions
     {

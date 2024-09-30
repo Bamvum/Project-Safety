@@ -19,7 +19,7 @@ public class PullFireExtinguisher : MonoBehaviour
     [SerializeField] float decreaseValue = 0.01f;
 
     [Header("HUD")]
-    [SerializeField] GameObject pullHUD;
+    [SerializeField] CanvasGroup pullHUD;
     [SerializeField] RectTransform pullRectTransform;
     [SerializeField] CanvasGroup pullCG;
 
@@ -48,6 +48,9 @@ public class PullFireExtinguisher : MonoBehaviour
         playerControls.PullFE.ActionLock.performed += ToActionLock;
 
         playerControls.PullFE.Enable();
+
+        // INSTANTIATE
+        PullFireExtinguisherInstance();
 
         PullFireExtinguisherTrigger();
     }
@@ -111,16 +114,26 @@ public class PullFireExtinguisher : MonoBehaviour
     {
         playerControls.PullFE.Disable();
 
-        pullHUD.SetActive(false);
+        // PLAYER SCRIPTS
+        PlayerScript.instance.playerMovement.enabled = true;
+        PlayerScript.instance.cinemachineInputProvider.enabled = true;
+        PlayerScript.instance.interact.enabled = true;
+        PlayerScript.instance.stamina.enabled = true;
+    }
 
-        // tpass.ExtinguisherTrigger();
+    public void PullFireExtinguisherInstance()
+    {
+        pullRectTransform.anchoredPosition = Vector3.zero;
+        pullRectTransform.localScale = new Vector3(2, 2, 2);
+        pullCG.alpha = 0;
     }
 
     public void PullFireExtinguisherTrigger()
     {
-        pullHUD.SetActive(true);
+        pullHUD.gameObject.SetActive(true);
         pullSlider.value = 0;
-
+        pullHUD.DOFade(1, 1).SetEase(Ease.Linear);
+        
         Invoke("DisplayInstruction", 5);
     }
 
@@ -164,32 +177,21 @@ public class PullFireExtinguisher : MonoBehaviour
                 {
                     tpass.checkMarkDone.DOFade(0, 1).OnComplete(() =>
                     {
-                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                        PlayerScript.instance.playerVC.Priority = 10;
+                        tpass.twistAndPullVC.Priority = 0;
 
-                        LoadingSceneManager.instance.fadeImage.DOFade(1, 1).OnComplete(() =>
+                        tpass.checkMarkDone.gameObject.SetActive(false);
+
+                        pullHUD.DOFade(0 , 1).SetEase(Ease.Linear).OnComplete(() =>
                         {
-                            PlayerScript.instance.playerVC.Priority = 10;
-                            tpass.twistAndPullVC.Priority = 0;
-
-                            // PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Walk", false);
-                            // PlayerScript.instance.playerMovement.playerAnim.SetBool("Extinguisher Aim Walk", true);
-                            
                             tpass.tpassHUD.SetActive(false);
                             pullHUD.gameObject.SetActive(false);
-                            // tpass.fireExtinguisher.SetActive(false);
-                            // tpass.fireExtinguisherBody.SetActive(true);
-                            // tpass.fireExtinguisherHose.SetActive(true);
-                            // tpass.equipFireExtinguisher = false;
 
-                            tpass.checkMarkDone.gameObject.SetActive(false);
+                            HUDManager.instance.playerHUD.SetActive(true);
+                            HUDManager.instance.missionHUD.SetActive(true);
 
                             this.enabled = false;
                             tpass.enabled = true;
-
-                            LoadingSceneManager.instance.fadeImage.DOFade(0, 1).OnComplete(() =>
-                            {
-                                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                            });
                         });
                     });
                 });
@@ -233,3 +235,31 @@ public class PullFireExtinguisher : MonoBehaviour
         }
     }
 }
+
+
+                    //     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+                    //     LoadingSceneManager.instance.fadeImage.DOFade(1, 1).OnComplete(() =>
+                    //     {
+                    //         PlayerScript.instance.playerVC.Priority = 10;
+                    //         tpass.twistAndPullVC.Priority = 0;
+
+                    //         tpass.tpassHUD.SetActive(false);
+                    //         pullHUD.gameObject.SetActive(false);
+
+                    //         tpass.checkMarkDone.gameObject.SetActive(false);
+
+                    //         this.enabled = false;
+                    //         tpass.enabled = true;
+                    //         pullHUD.DOFade(0 , 1).SetEase(Ease.Linear).OnComplete(() =>
+                    //         {
+
+
+                    //             // LoadingSceneManager.instance.fadeImage.DOFade(0, 1).OnComplete(() =>
+                    //             // {
+                    //             //     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                    //             // });
+                    //         });
+
+                    //     });
+                    // });

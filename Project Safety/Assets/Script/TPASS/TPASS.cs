@@ -8,11 +8,7 @@ public class TPASS : MonoBehaviour
 {
     [Header("TPASS Scripts")]
     [SerializeField] TwistFireExtinguisher twistFE;
-
-    [Header("Fire Extinguisher Type")]
-    public bool waterBase; // CLASS A FIRE ONLY
-    public bool AFFF; // CLASS A & B FIRE ONLY
-    public bool DryChemical; // CLASS A & B FIRE ONLY
+    [SerializeField] AimFireExtinguisher aimFE;
 
     [Header("Fire Extinguisher VC")]
     public CinemachineVirtualCamera twistAndPullVC;
@@ -37,7 +33,8 @@ public class TPASS : MonoBehaviour
         }
         else
         {
-            // GO TO AIM AND SQUEEZE AND SWEEP
+            aimFE.enabled = true;
+            this.enabled = false;
         }
     }
     
