@@ -11,14 +11,22 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     [SerializeField] TPASS tpass;
     [SerializeField] AimFireExtinguisher aimFE;
 
+    
     [Header("HUD")]
     [SerializeField] CanvasGroup squeezeAndSweepHUD;
     [SerializeField] RectTransform squeezeAndSweepRectTransform;
     [SerializeField] CanvasGroup squeezeAndSweepCG;
 
+    [Header("Fire Extinguisher")]
+    [SerializeField] GameObject particleParent;
+    
     [Header("Flag")]
     [SerializeField] bool canInput;
 
+
+    [Space(10)]
+    public float rotationSpeed = 2.0f; // Speed of rotation
+    public float rotationRange = 15.0f; // Range of rotation (-15 to 15)
 
     void Awake()
     {
@@ -62,8 +70,8 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         PlayerScript.instance.stamina.enabled = false;
 
         // CINEMACHINE PRIORITY
-        // PlayerScript.instance.playerVC.Priority = 0;
-        // tpass.SqueezeAndSweepVC.Priority = 10;
+        PlayerScript.instance.playerVC.Priority = 0;
+        tpass.SqueezeAndSweepVC.Priority = 10;
 
         squeezeAndSweepHUD.gameObject.SetActive(true);
         squeezeAndSweepHUD.DOFade(1, 1).SetEase(Ease.Linear);
@@ -82,6 +90,8 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         sequence.SetEase(Ease.InOutQuad).OnComplete(() =>
         {
             sequence.Join(squeezeAndSweepCG.DOFade(1f, 1f));
+            particleParent.SetActive(true);
+
             Debug.Log("Sequence Completed!");
 
             canInput = true;
@@ -91,6 +101,7 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float rotationX = Mathf.PingPong(Time.time * rotationSpeed, rotationRange * 2) - rotationRange;
+        particleParent.transform.localRotation = Quaternion.Euler(rotationX, particleParent.transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z);
     }
 }

@@ -32,6 +32,10 @@ public class PullFireExtinguisher : MonoBehaviour
     [SerializeField] Sprite[] keyboardSprite;
     [SerializeField] Sprite[] gamepadSprite;
 
+    [Header("Fire Extinguisher")]
+    [SerializeField] GameObject pullPin;
+
+
     bool canInput;
     bool actionLock;
     int roundNum;

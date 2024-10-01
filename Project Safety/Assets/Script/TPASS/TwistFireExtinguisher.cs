@@ -18,18 +18,20 @@ public class TwistFireExtinguisher : MonoBehaviour
     [SerializeField] CanvasGroup twistHUD;
     [SerializeField] RectTransform twistRectTransform;
     [SerializeField] CanvasGroup twistCG;
-
-    [Space(10)]
     
     [Space(10)]
     [SerializeField] Image[] twistControlImage;
     [SerializeField] Sprite[] twistKeyboardSprite;
     [SerializeField] Sprite[] twistGamepadSprite;
     
+    
     [Space(10)]
     [SerializeField] int inputsPerformed;
     [SerializeField] int inputNeedToFinish;
     [SerializeField] bool[] buttonPressed;
+
+    [Header("Fire Extinguisher")]
+    [SerializeField] GameObject twistPin;
 
     [Header("Flag")]
     bool canInput;
