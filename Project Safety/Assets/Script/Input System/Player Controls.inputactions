@@ -1299,7 +1299,7 @@
             "id": "64430c91-1ec8-4863-84f3-2a767ee5b624",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Action",
                     "type": "Button",
                     "id": "6ed9a44e-2720-4f27-bb8c-f5b76a255948",
                     "expectedControlType": "Button",
@@ -1312,11 +1312,22 @@
                 {
                     "name": "",
                     "id": "739a6670-99bb-472b-9006-41fd49b15ea3",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "748f5a6c-7267-48fb-98d5-37084ac0019b",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

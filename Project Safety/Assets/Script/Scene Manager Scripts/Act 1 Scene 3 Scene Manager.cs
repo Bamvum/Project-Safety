@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Threading;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
 
     [Header("Dialogue Trigger")]
     [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger endDialogue;
 
     [Header("Player")]
     [SerializeField] GameObject player;
@@ -27,7 +29,16 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [Space(10)]
     [SerializeField] AudioSource streetAmbiance;
 
-    [Header("Flags")] 
+    [Header("Flags")]
+    [SerializeField] GameObject fireToBeExtinguish1;
+    [SerializeField] GameObject fireToBeExtinguish2;
+    [SerializeField] GameObject fireToBeExtinguish3;
+
+
+    [Space(10)]
+    [SerializeField] bool stopLoop;
+
+    [Space(10)]
     [SerializeField] float fireTruckSpeed;
     [SerializeField] bool moveTowardFireTruck;
     
@@ -85,6 +96,15 @@ public class Act1Scene3SceneManager : MonoBehaviour
                 });
 
                 moveTowardFireTruck = true;                
+            }
+        }
+
+        if(!stopLoop)
+        {
+            if(!fireToBeExtinguish1.activeSelf && !fireToBeExtinguish2.activeSelf && !fireToBeExtinguish3.activeSelf)
+            {
+                endDialogue.StartDialogue();
+                stopLoop = false;
             }
         }
     }

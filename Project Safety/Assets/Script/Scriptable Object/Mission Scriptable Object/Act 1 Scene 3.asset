@@ -16,5 +16,5 @@ MonoBehaviour:
   - Head to the Fire station
   - Talk to the Fire Figthers
   - Go to the Parking Lot
-  - Talk to the Fire Fighter
+  - Extinguished the Fire
   missionCompleted: {fileID: 0}
