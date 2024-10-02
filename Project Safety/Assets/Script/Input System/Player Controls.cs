@@ -1354,6 +1354,138 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Stay Calm"",
+            ""id"": ""86713255-5319-4620-a2b5-d128c658c5f1"",
+            ""actions"": [
+                {
+                    ""name"": ""Button 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa65b01b-9643-4212-95ba-cde10fe0903c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""b783a952-1355-47b3-a17d-f9d889a12efd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f576e6a-562b-4b49-bc5f-8ad34c327dee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Button 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9526c5f-9c3b-40e3-816a-6a52bfb5e168"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3e1baa93-aecd-491f-947b-08049ec5c32c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c56d737d-6037-4dd1-87d6-4b6be3d85cab"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0112ca46-0e43-4998-b161-61af93a3c787"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33cafd82-3b91-491e-9092-5c6a0e66efac"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50ee5f48-5fa7-463f-b191-8ab52a1117f2"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bee8a043-cba7-4956-bb94-212730acaf6a"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3d5f58f-84e9-4500-b385-040f6f416a82"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9899a034-53eb-42ed-af54-597a4af67485"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Button 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1425,6 +1557,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // SqueezeSweepFE
         m_SqueezeSweepFE = asset.FindActionMap("SqueezeSweepFE", throwIfNotFound: true);
         m_SqueezeSweepFE_Action = m_SqueezeSweepFE.FindAction("Action", throwIfNotFound: true);
+        // Stay Calm
+        m_StayCalm = asset.FindActionMap("Stay Calm", throwIfNotFound: true);
+        m_StayCalm_Button1 = m_StayCalm.FindAction("Button 1", throwIfNotFound: true);
+        m_StayCalm_Button2 = m_StayCalm.FindAction("Button 2", throwIfNotFound: true);
+        m_StayCalm_Button3 = m_StayCalm.FindAction("Button 3", throwIfNotFound: true);
+        m_StayCalm_Button4 = m_StayCalm.FindAction("Button 4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2326,6 +2464,76 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public SqueezeSweepFEActions @SqueezeSweepFE => new SqueezeSweepFEActions(this);
+
+    // Stay Calm
+    private readonly InputActionMap m_StayCalm;
+    private List<IStayCalmActions> m_StayCalmActionsCallbackInterfaces = new List<IStayCalmActions>();
+    private readonly InputAction m_StayCalm_Button1;
+    private readonly InputAction m_StayCalm_Button2;
+    private readonly InputAction m_StayCalm_Button3;
+    private readonly InputAction m_StayCalm_Button4;
+    public struct StayCalmActions
+    {
+        private @PlayerControls m_Wrapper;
+        public StayCalmActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Button1 => m_Wrapper.m_StayCalm_Button1;
+        public InputAction @Button2 => m_Wrapper.m_StayCalm_Button2;
+        public InputAction @Button3 => m_Wrapper.m_StayCalm_Button3;
+        public InputAction @Button4 => m_Wrapper.m_StayCalm_Button4;
+        public InputActionMap Get() { return m_Wrapper.m_StayCalm; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StayCalmActions set) { return set.Get(); }
+        public void AddCallbacks(IStayCalmActions instance)
+        {
+            if (instance == null || m_Wrapper.m_StayCalmActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_StayCalmActionsCallbackInterfaces.Add(instance);
+            @Button1.started += instance.OnButton1;
+            @Button1.performed += instance.OnButton1;
+            @Button1.canceled += instance.OnButton1;
+            @Button2.started += instance.OnButton2;
+            @Button2.performed += instance.OnButton2;
+            @Button2.canceled += instance.OnButton2;
+            @Button3.started += instance.OnButton3;
+            @Button3.performed += instance.OnButton3;
+            @Button3.canceled += instance.OnButton3;
+            @Button4.started += instance.OnButton4;
+            @Button4.performed += instance.OnButton4;
+            @Button4.canceled += instance.OnButton4;
+        }
+
+        private void UnregisterCallbacks(IStayCalmActions instance)
+        {
+            @Button1.started -= instance.OnButton1;
+            @Button1.performed -= instance.OnButton1;
+            @Button1.canceled -= instance.OnButton1;
+            @Button2.started -= instance.OnButton2;
+            @Button2.performed -= instance.OnButton2;
+            @Button2.canceled -= instance.OnButton2;
+            @Button3.started -= instance.OnButton3;
+            @Button3.performed -= instance.OnButton3;
+            @Button3.canceled -= instance.OnButton3;
+            @Button4.started -= instance.OnButton4;
+            @Button4.performed -= instance.OnButton4;
+            @Button4.canceled -= instance.OnButton4;
+        }
+
+        public void RemoveCallbacks(IStayCalmActions instance)
+        {
+            if (m_Wrapper.m_StayCalmActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IStayCalmActions instance)
+        {
+            foreach (var item in m_Wrapper.m_StayCalmActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_StayCalmActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public StayCalmActions @StayCalm => new StayCalmActions(this);
     public interface IMainMenuActions
     {
         void OnAction(InputAction.CallbackContext context);
@@ -2406,5 +2614,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface ISqueezeSweepFEActions
     {
         void OnAction(InputAction.CallbackContext context);
+    }
+    public interface IStayCalmActions
+    {
+        void OnButton1(InputAction.CallbackContext context);
+        void OnButton2(InputAction.CallbackContext context);
+        void OnButton3(InputAction.CallbackContext context);
+        void OnButton4(InputAction.CallbackContext context);
     }
 }

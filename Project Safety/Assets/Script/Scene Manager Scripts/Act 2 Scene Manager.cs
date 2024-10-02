@@ -4,9 +4,9 @@ using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
 
-public class Act2SceneManager : MonoBehaviour
+public class Act2Scene1Manager : MonoBehaviour
 {
-    public static Act2SceneManager instance {get; private set;}
+    public static Act2Scene1Manager instance {get; private set;}
 
     void Awake()
     {
@@ -19,6 +19,13 @@ public class Act2SceneManager : MonoBehaviour
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineInputProvider chairInputProvider;
+
+    [Header("Flag")]
+    [SerializeField] GameObject personRunningGO;
+    [SerializeField] float personRunningSpeed = 5;
+
+    [Space(10)]
+    [SerializeField] bool personRunning;
 
     void Start()
     {
@@ -41,9 +48,22 @@ public class Act2SceneManager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             Debug.Log("Trigger Dialogue");
-            chairInputProvider.enabled = true;
             startDialogue.StartDialogue();
         });
+    }
+
+    void Update()
+    {
+        if(personRunning)
+        {
+            personRunningGO.transform.position = Vector3.MoveTowards(personRunningGO.transform.position, new Vector3(60, personRunningGO.transform.position.y, personRunningGO.transform.position.z), Time.deltaTime * personRunningSpeed);
+
+            if(personRunningGO.transform.position == new Vector3(60, personRunningGO.transform.position.y, personRunningGO.transform.position.z))
+            {
+                personRunning = false;
+                Destroy(personRunningGO);
+            }
+        }
     }
 
     // FOR TESTING
@@ -54,11 +74,15 @@ public class Act2SceneManager : MonoBehaviour
 
     IEnumerator DelayFunction()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(.5f);
         Debug.Log("PlaceHolderForCall");
         PlaceHolderCalmAndCall.StartDialogue();
     }
 
+    public void enablePersonRunningMoveToward(bool enable)
+    {
+        personRunning = enable;
+    }
 
     // public void EndOfScene()
     // {
