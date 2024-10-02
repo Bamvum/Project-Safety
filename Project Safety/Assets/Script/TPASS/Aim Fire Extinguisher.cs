@@ -70,6 +70,7 @@ public class AimFireExtinguisher : MonoBehaviour
             // SQUEEZE AND SWEEP FUNCTION
             if(canInput)
             {
+                squeezeAndSweepFE.fireInteracted = hit.collider.gameObject;
                 squeezeAndSweepFE.enabled = true;
                 this.enabled = false;
             }
@@ -82,6 +83,7 @@ public class AimFireExtinguisher : MonoBehaviour
 
         if(PlayerScript.instance.interact.inHandItem != null)
         {
+            HUDManager.instance.missionHUD.SetActive(true);
             PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
             PlayerScript.instance.interact.inHandItem.layer = 6;
 

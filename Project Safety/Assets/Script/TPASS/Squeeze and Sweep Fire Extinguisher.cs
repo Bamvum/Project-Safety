@@ -1,7 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.iOS;
+using UnityEngine.UI;
 
 public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 {
@@ -17,11 +21,25 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     [SerializeField] RectTransform squeezeAndSweepRectTransform;
     [SerializeField] CanvasGroup squeezeAndSweepCG;
 
+    [Space(10)]
+    [SerializeField] Slider squeezeAndSweepSlider;
+    
+    [Space(10)]
+    [SerializeField] Image visualsImage;
+    [SerializeField] Sprite[] visualSprite;
+    
     [Header("Fire Extinguisher")]
+    public GameObject fireInteracted;
+    [SerializeField] ParticleSystem fireInteractedPS;
     [SerializeField] GameObject particleParent;
+    [SerializeField] ParticleSystem.MinMaxCurve fireExtinguisherPSEmission;
+    [SerializeField] ParticleSystem fireExtinguisherPS;
     
     [Header("Flag")]
+    [SerializeField] bool actionPressed;
     [SerializeField] bool canInput;
+    bool sliderLoop = true;
+    [SerializeField] float sliderSpeed = .2f;
 
 
     [Space(10)]
@@ -35,6 +53,9 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 
     void OnEnable()
     {
+        playerControls.SqueezeSweepFE.Action.performed += ctx => actionPressed = true;
+        playerControls.SqueezeSweepFE.Action.canceled += ctx => actionPressed = false;
+
         playerControls.SqueezeSweepFE.Enable();
 
         // INTANTIATE
@@ -47,6 +68,10 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     void OnDisable()
     {
         playerControls.SqueezeSweepFE.Disable();
+
+        PlayerScript.instance.playerMovement.enabled = true;
+        PlayerScript.instance.cinemachineInputProvider.enabled = true;
+        PlayerScript.instance.stamina.enabled = true;
     }
 
     void SqueezeandSweepFireExtinguisherInstance()
@@ -56,6 +81,11 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         squeezeAndSweepCG.alpha = 0;
         tpass.tpassBackgroundCG.alpha = 1;
         aimFE.aimHUD.gameObject.SetActive(false);
+
+        fireInteractedPS = fireInteracted.GetComponent<ParticleSystem>();
+
+        rotationSpeed = 0;
+        particleParent.transform.localRotation = Quaternion.Euler(0, particleParent.transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z);
     }
 
     void SqueezeandSweepFireExtinguisherTrigger()
@@ -101,7 +131,125 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (DeviceManager.instance.keyboardDevice)
+        {
+            visualsImage.sprite = visualSprite[0];
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            visualsImage.sprite = visualSprite[1];
+        }
+
+        if(rotationSpeed >= 50)
+        {
+            rotationSpeed = 0;
+
+            Debug.Log("Done");
+            canInput = false;
+            squeezeAndSweepCG.DOFade(0, 1).OnComplete(() =>
+            {
+                tpass.checkMarkDone.gameObject.SetActive(true);
+                tpass.correctSFX.Play();
+
+                tpass.checkMarkDone.DOFade(1, 1).OnComplete(() =>
+                {
+                    tpass.checkMarkDone.DOFade(0, 1).OnComplete(() =>
+                    {
+                        tpass.SqueezeAndSweepVC.Priority= 0;
+                        PlayerScript.instance.playerVC.Priority = 10;
+
+                        tpass.checkMarkDone.gameObject.SetActive(false);
+
+                        squeezeAndSweepHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                        {
+                            squeezeAndSweepHUD.gameObject.SetActive(false);
+                    
+                            HUDManager.instance.playerHUD.SetActive(true);
+                            particleParent.SetActive(false);
+                            
+                            fireInteracted.gameObject.SetActive(false);
+
+                            this.enabled = false;
+                            aimFE.enabled = true;
+                        });
+                    });
+                });
+            });
+        }
+        else
+        {
+            if (canInput)
+            {
+                if (actionPressed)
+                {
+                    var fireInteractedPSEmission = fireInteractedPS.emission;
+
+                    if (squeezeAndSweepSlider.value >= 0.475f && squeezeAndSweepSlider.value <= 0.525f)
+                    {
+                        Debug.Log("Perfect!");
+
+                        rotationSpeed += 15;
+                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 15);
+                    }
+                    else if ((squeezeAndSweepSlider.value >= 0.3f && squeezeAndSweepSlider.value <= 0.475f) || (squeezeAndSweepSlider.value > 0.525f && squeezeAndSweepSlider.value <= 0.7f))
+                    {
+                        Debug.Log("Good!");
+
+                        rotationSpeed += 7.5f;
+                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 7.5f);
+
+                    }
+                    else if ((squeezeAndSweepSlider.value >= 0f && squeezeAndSweepSlider.value <= 0.3f) || (squeezeAndSweepSlider.value >= 0.7f && squeezeAndSweepSlider.value <= 1f))
+                    {
+                        Debug.Log("Bad!");
+
+                        rotationSpeed += 1;
+                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 1);
+                    }
+
+
+                    StartCoroutine(DelayCanInput());
+                }
+            }
+        }
+        
+        // SLIDER
+
+        if (sliderLoop)
+        {
+            squeezeAndSweepSlider.value += sliderSpeed * Time.deltaTime;
+            if (squeezeAndSweepSlider.value >= 1f)
+            {
+                squeezeAndSweepSlider.value = 1f;
+                sliderLoop = false; // Change direction
+            }
+        }
+        else
+        {
+            squeezeAndSweepSlider.value -= sliderSpeed * Time.deltaTime;
+            if (squeezeAndSweepSlider.value <= 0f)
+            {
+                squeezeAndSweepSlider.value = 0f;
+                sliderLoop = true; // Change direction
+            }
+        }
+    
         float rotationX = Mathf.PingPong(Time.time * rotationSpeed, rotationRange * 2) - rotationRange;
         particleParent.transform.localRotation = Quaternion.Euler(rotationX, particleParent.transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z);
+          
     }
+
+
+    IEnumerator DelayCanInput()
+    {
+        // HIDE VISUAL
+        visualsImage.gameObject.SetActive(false);
+        canInput = false;
+
+        yield return new WaitForSeconds(2);
+        
+        visualsImage.gameObject.SetActive(true);
+        canInput = true;
+    }
+    
 }

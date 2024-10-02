@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Threading;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
 
     [Header("Dialogue Trigger")]
     [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger endDialogue;
 
     [Header("Player")]
     [SerializeField] GameObject player;
@@ -27,9 +29,18 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [Space(10)]
     [SerializeField] AudioSource streetAmbiance;
 
+    [Header("Fire Extinguisher Sequence")]
+    [SerializeField] GameObject fireSequence;
+    
+    [Space(10)]
+    [SerializeField] GameObject fireToExtinguish1;
+    [SerializeField] GameObject fireToExtinguish2;
+    [SerializeField] GameObject fireToExtinguish3;
+
     [Header("Flags")] 
     [SerializeField] float fireTruckSpeed;
     [SerializeField] bool moveTowardFireTruck;
+    [SerializeField] bool stopLoop;
     
     void Start()
     {
@@ -87,6 +98,17 @@ public class Act1Scene3SceneManager : MonoBehaviour
                 moveTowardFireTruck = true;                
             }
         }
+
+
+        if(!stopLoop) 
+        {
+            if (!fireToExtinguish1.activeSelf && !fireToExtinguish2.activeSelf && !fireToExtinguish3.activeSelf)
+            {
+                stopLoop = true;
+                endDialogue.StartDialogue();
+            }
+        }
+
     }
 
     public void EndOfScene()
@@ -104,4 +126,5 @@ public class Act1Scene3SceneManager : MonoBehaviour
                 LoadingSceneManager.instance.sceneName = "Act 1 Scene 4";
             });
     }
+
 }
