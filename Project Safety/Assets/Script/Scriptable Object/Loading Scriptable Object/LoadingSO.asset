@@ -24,6 +24,29 @@ MonoBehaviour:
     is not uncommon within both domestic and non domestic premises. Disgruntled employees,
     employees who have been arsonists in the past and unwittingly employed are both
     reasons to stay extremely vigilant as a business.
+  - CO2, or carbon dioxide, is not only a common gas but also an effective tool for
+    fighting Class B and C fires. When used in fire extinguishers, it's highly pressurized
+    and loaded with non-flammable gas, making it perfect for tackling fires involving
+    flammable liquids and electrical equipment.
+  - Wet chemical extinguishers, identified by their yellow label, are specially designed
+    for Class K and A fires. They contain a potassium-based solution that cools the
+    fire by spraying a fine mist, preventing it from spreading. Perfect for kitchen
+    fires and other high-risk areas!
+  - Water extinguishers are highly effective for Class A fires, which involve ordinary
+    combustibles like wood and paper. They soak up the materials that are on fire
+    removing its heat and it cools off.
+  - Foam extinguishers, marked with a cream label, are ideal for Class A and B fires.
+    They create a thick cooling blanket that seals burning materials, preventing
+    the fire from reigniting. These extinguishers are perfect for schools, warehouses,
+    and buildings made from organic materials.
+  - Dry powder extinguishers, marked with a blue label, are specifically designed
+    to fight Class D fires, which involve combustible metals. While highly effective
+    in industrial settings with chemical operations, the powder can be hazardous
+    if inhaled, so extra care is needed when using them.
+  - Dry chemical extinguishers are effective against Class A, B, and C fires! They
+    use a non-toxic powder to quickly suppress flames, making them an excellent choice
+    for homes, offices, and industrial settings alike. A versatile safety tool for
+    various fire hazards.
   previewScene:
   - {fileID: 21300000, guid: d473895e61586fa409f6f1b84112a6bf, type: 3}
   - {fileID: 21300000, guid: 513282da506fec1469fbfea1f3cf9c42, type: 3}
