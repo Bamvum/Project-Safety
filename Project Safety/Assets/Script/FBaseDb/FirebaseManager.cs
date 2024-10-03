@@ -45,6 +45,11 @@ public class FirebaseManager : MonoBehaviour
         });
     }
 
+    void OnApplicationQuit()
+    {
+        FirebaseAuth.DefaultInstance.SignOut();
+    }
+
     // Save the player's decision in the database
     public void SaveDecision(string userId, string act, string decisionKey, bool decisionValue)
     {
