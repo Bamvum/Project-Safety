@@ -44,7 +44,7 @@ public class StayCalm : MonoBehaviour
     {
         HUDManager.instance.playerHUD.SetActive(false);
 
-        Invoke("DisplayInstruciton", 5);
+        Invoke("DisplayInstruction", 5);
     }
 
     void DisplayInstruction()

@@ -16,7 +16,7 @@ MonoBehaviour:
   itemDescription: Effective for Class D fires only, it is identified with a blue
     label and is hazardous if breathed upon. Excellent towards industries that use
     chemical operations.
-  itemDistanceToPlayer: 0
+  itemDistanceToPlayer: 0.75
   itemYoffset: 0
-  isTakable: 0
-  isReadble: 0
+  isTakable: 1
+  isReadble: 1

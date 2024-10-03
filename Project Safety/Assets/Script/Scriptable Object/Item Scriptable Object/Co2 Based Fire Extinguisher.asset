@@ -16,7 +16,7 @@ MonoBehaviour:
   itemDescription: Co2 is commonly known as Carbon Dioxide. It is effective for Class
     B and C fires, as it is loaded with non-flammable carbon dioxide gas under high
     pressure. Ideally used against electrical equipment.
-  itemDistanceToPlayer: 0
+  itemDistanceToPlayer: 0.75
   itemYoffset: 0
-  isTakable: 0
-  isReadble: 0
+  isTakable: 1
+  isReadble: 1

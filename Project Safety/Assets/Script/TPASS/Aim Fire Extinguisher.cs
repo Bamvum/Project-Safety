@@ -80,26 +80,28 @@ public class AimFireExtinguisher : MonoBehaviour
     private void ToDrop(InputAction.CallbackContext context)
     {
         Debug.Log("Drop!~");
-
-        if(PlayerScript.instance.interact.inHandItem != null)
+        if(canInput)
         {
-            HUDManager.instance.missionHUD.SetActive(true);
-            PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
-            PlayerScript.instance.interact.inHandItem.layer = 6;
-
-            if(PlayerScript.instance.interact.inHandItemRB != null)
+            if (PlayerScript.instance.interact.inHandItem != null)
             {
-                PlayerScript.instance.interact.inHandItemRB.isKinematic = false;
+                HUDManager.instance.missionHUD.SetActive(true);
+                PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
+                PlayerScript.instance.interact.inHandItem.layer = 6;
+
+                if (PlayerScript.instance.interact.inHandItemRB != null)
+                {
+                    PlayerScript.instance.interact.inHandItemRB.isKinematic = false;
+                }
+
+                PlayerScript.instance.interact.inHandItem = null;
+                PlayerScript.instance.interact.inHandItemRB = null;
+
+                PlayerScript.instance.interact.leftHandExtinguisher.weight = 0;
+                PlayerScript.instance.interact.rightHandExtinguisher.weight = 0;
+
+                PlayerScript.instance.interact.enabled = true;
+                this.enabled = false;
             }
-
-            PlayerScript.instance.interact.inHandItem = null;
-            PlayerScript.instance.interact.inHandItemRB = null;
-
-            PlayerScript.instance.interact.leftHandExtinguisher.weight = 0;
-            PlayerScript.instance.interact.rightHandExtinguisher.weight = 0;
-
-            PlayerScript.instance.interact.enabled = true;
-            this.enabled = false;
         }
     }
 
@@ -149,7 +151,7 @@ public class AimFireExtinguisher : MonoBehaviour
             sequence.Join(tpass.tpassBackgroundCG.DOFade(0f, 1f));
             Debug.Log("Sequence Completed!");
 
-            // canInput = true;
+            canInput = true;
         });
     }
 

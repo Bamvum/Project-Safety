@@ -16,7 +16,7 @@ MonoBehaviour:
   itemDescription: Effective only against Class A fires. It works by soaking the
     fire and materials in water, removing the heat and cooling the fire significantly
     so it can no longer burn.
-  itemDistanceToPlayer: 0
+  itemDistanceToPlayer: 0.75
   itemYoffset: 0
-  isTakable: 0
-  isReadble: 0
+  isTakable: 1
+  isReadble: 1

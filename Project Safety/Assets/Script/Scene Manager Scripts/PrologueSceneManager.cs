@@ -60,7 +60,7 @@ public class PrologueSceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
-        globalVolume.profile.TryGet(out vignette);
+        // globalVolume.profile.TryGet(out vignette);
 
         StartCoroutine(FadeOutFadeImage());
     }

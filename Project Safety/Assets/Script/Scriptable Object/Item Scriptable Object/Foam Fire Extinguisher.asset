@@ -19,5 +19,5 @@ MonoBehaviour:
     warehouses, and etc with buildings constructed from organic materials.
   itemDistanceToPlayer: 0
   itemYoffset: 0
-  isTakable: 0
-  isReadble: 0
+  isTakable: 1
+  isReadble: 1

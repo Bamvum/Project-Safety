@@ -120,7 +120,7 @@ public class Act1Scene4SceneManager : MonoBehaviour
 
                 LoadingSceneManager.instance.loadingScreen.SetActive(true);
                 LoadingSceneManager.instance.enabled = true;
-                LoadingSceneManager.instance.sceneName = "Act 2";
+                LoadingSceneManager.instance.sceneName = "Act 2 Scene 1";
             });
     }
 

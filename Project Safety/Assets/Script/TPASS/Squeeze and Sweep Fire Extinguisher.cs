@@ -162,6 +162,8 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 
                         squeezeAndSweepHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                         {
+                            aimFE.aimHUD.gameObject.SetActive(true);
+
                             squeezeAndSweepHUD.gameObject.SetActive(false);
                     
                             HUDManager.instance.playerHUD.SetActive(true);
