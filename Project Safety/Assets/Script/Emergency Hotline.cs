@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class EmergencyHotline : MonoBehaviour
 {
     [Header("Cinemachine")]
-    [SerializeField] CinemachineVirtualCamera playerVC;
     [SerializeField] CinemachineVirtualCamera phoneVC;
 
     [Header("Animation")]
@@ -90,7 +89,7 @@ public class EmergencyHotline : MonoBehaviour
         // ScriptManager.instance.playerMovement.playerAnim.SetBool("Phone", true);
 
         // CINEMACHINE
-        playerVC.Priority = 0;
+        PlayerScript.instance.playerVC.Priority = 0;
         phoneVC.Priority = 10;
 
         // HUD
@@ -150,7 +149,7 @@ public class EmergencyHotline : MonoBehaviour
         // ScriptManager.instance.playerMovement.playerAnim.SetBool("Idle", false);
         
         // CINEMACHINE
-        playerVC.Priority = 10;
+        PlayerScript.instance.playerVC.Priority = 10;
         phoneVC.Priority = 0;
 
         // HUD

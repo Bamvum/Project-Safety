@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.iOS;
 using UnityEngine.UI;
 
 public class SqueezeandSweepFireExtinguisher : MonoBehaviour
