@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "431709879688",
+    "firebase_url": "https://extinguishdb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "extinguishdb",
+    "storage_bucket": "extinguishdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431709879688:android:968937733df4d31c14ce3d",
+        "android_client_info": {
+          "package_name": "com.loglineproduction.Extinguish"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdq9UkUNxSh_XGd9C7xyMf9qXVxSzndpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

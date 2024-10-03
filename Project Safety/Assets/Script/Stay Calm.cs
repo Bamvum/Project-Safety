@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.InputSystem;
-using System;
-using Microsoft.Unity.VisualStudio.Editor;
 
 public class StayCalm : MonoBehaviour
 {
@@ -16,17 +13,12 @@ public class StayCalm : MonoBehaviour
     [SerializeField] CanvasGroup stayCalmCG;
 
     [Space(10)]
-    [SerializeField] Image stayCalmVisualImage;
-    [SerializeField] Sprite[] stayCalmVisualKeyboard;
-    [SerializeField] Sprite[] stayCalmVisualGamepad;
-
-    [Space(10)]
     [SerializeField] int inputsPerformed;
     [SerializeField] int inputNeedToFinish;
 
     [Header("Flag")]
     bool canInput;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -35,47 +27,17 @@ public class StayCalm : MonoBehaviour
 
     void OnEnable()
     {
-        playerControls.StayCalm.Button1.performed += Button1Pressed;
-        playerControls.StayCalm.Button2.performed += Button2Pressed;
-        playerControls.StayCalm.Button3.performed += Button3Pressed;
-        playerControls.StayCalm.Button4.performed += Button4Pressed;
-        
         playerControls.StayCalm.Enable();
 
         StayCalmTrigger();
 
     }
 
-    private void Button1Pressed(InputAction.CallbackContext context)
+
+    // Update is called once per frame
+    void Update()
     {
-        if(canInput)
-        {
-
-        }
-    }
-
-    private void Button2Pressed(InputAction.CallbackContext context)
-    {
-        if(canInput)
-        {
-
-        }
-    }
-
-    private void Button3Pressed(InputAction.CallbackContext context)
-    {
-        if(canInput)
-        {
-
-        }
-    }
-
-    private void Button4Pressed(InputAction.CallbackContext context)
-    {
-        if(canInput)
-        {
-
-        }
+        
     }
 
     void StayCalmTrigger()
@@ -99,23 +61,5 @@ public class StayCalm : MonoBehaviour
 
             canInput = true;
         });
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        if(DeviceManager.instance.keyboardDevice)
-        {
-            
-        }
-        else if(DeviceManager.instance.gamepadDevice)
-        {
-
-        }
-    }
-
-    void ChangeImageStatus()
-    {
-        
     }
 }
