@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.ProBuilder.MeshOperations;
 
 
 public class LoadingSceneManager : MonoBehaviour
@@ -159,6 +160,14 @@ public class LoadingSceneManager : MonoBehaviour
         else if(sceneToBeLoad == "Act 1 Scene 4")
         {
             previewImg.sprite = loadingSO.previewScene[4];
+        }
+        else if(sceneToBeLoad == "Act 2 Scene 1")
+        {
+            previewImg.sprite = loadingSO.previewScene[5];
+        }
+        else if(sceneToBeLoad == "Act 2 Scene 2")
+        {
+            previewImg.sprite = loadingSO.previewScene[6];
         }
     }
 }
