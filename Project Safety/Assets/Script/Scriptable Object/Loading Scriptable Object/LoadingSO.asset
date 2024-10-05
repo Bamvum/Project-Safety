@@ -65,6 +65,18 @@ MonoBehaviour:
   - The Bureau of Fire Protection (BFP) encourages to have a fire escape plan and
     to practice it regularly with family members. Knowing the fastest and safest
     way to exit your home can save lives in case of a fire.
+  - When faced in a situation of either save someone or leave them behind in a fire
+    incident, it is advisable to leave them behind as you should prioritize yourself.
+    Unless you are physically capable of helping another.
+  - In the Philippines, besides The Bureau of Fire Protection (BFP) being the primary
+    agency to respond towards emergencies, there is also a mix of volunteers to help
+    mitigate the fire.
+  - Besides fire, The Bureau of Fire Protection (BFP) also deals with all other emergency
+    disasters.
+  - The national hotline is 911, but it is best if you know your local hotline as
+    they can respond faster.
+  - Approximately, every 30 seconds the fire burning doubles its size, but it also
+    depends on its current condition.
   previewScene:
   - {fileID: 21300000, guid: d473895e61586fa409f6f1b84112a6bf, type: 3}
   - {fileID: 21300000, guid: 513282da506fec1469fbfea1f3cf9c42, type: 3}
