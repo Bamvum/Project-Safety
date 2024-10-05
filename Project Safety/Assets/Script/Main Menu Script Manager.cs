@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using DG.Tweening;
+using TMPro;
+using UnityEngine.iOS;
 
 
 public class MainMenuScriptManager : MonoBehaviour
@@ -15,17 +17,37 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] TMP_Text pingPongText;
     [SerializeField] float pingPongSpeed;
 
-    [Header("Cinemachine")]
-    [SerializeField] CinemachineBrain cinemachineBrain;
-    [SerializeField] CinemachineVirtualCamera titleVC;
-    [SerializeField] CinemachineVirtualCamera mainMenuVC;
+    // [Header("Virtual Camera")]
+    // [SerializeField] CinemachineBrain cinemachineBrain;
+
+    // [Space(5)]
+    // [SerializeField] CinemachineVirtualCamera titleVC;
+    // [SerializeField] CinemachineVirtualCamera mainMenuVC;
+
+    [Header("HUD")]
+    [SerializeField] RectTransform mainMenuHUDRectTransform;
+    [SerializeField] CanvasGroup mainMenuButtonCG;
+    
+    [Space(10)]
+    [SerializeField] RectTransform selectSceneRectTransform;
+    [SerializeField] CanvasGroup selectSceneButtonCG;
+
+    [Header("Set Selected Game Object")]
+    [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
+    
+    [Space(5)]
+    [SerializeField] GameObject mainMenuScreenSelectedButton; 
+    [SerializeField] GameObject selectSceneScreenSelectedButton; 
+
+    [Header("Flag")]
+    [SerializeField] bool canNavigateUI; 
+
+
+
 
     [Header("Screens")]
-    [SerializeField] GameObject mainMenuScreen; 
     [SerializeField] RectTransform mainMenuRectTransform; 
-    [SerializeField] GameObject mainMenuScreenSelectedButton; 
     [SerializeField] GameObject selectSceneScreen; 
-    [SerializeField] GameObject selectSceneScreenSelectedButton; 
     
 
     [Header("Screens")]
@@ -44,7 +66,6 @@ public class MainMenuScriptManager : MonoBehaviour
     bool isGamepad;
 
     bool actionInput;
-    bool isFading;
 
     void Awake()
     {
@@ -74,6 +95,13 @@ public class MainMenuScriptManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
+        // INITIALIZATION
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        pingPongText.gameObject.SetActive(false);
+        mainMenuHUDRectTransform.gameObject.SetActive(false);
+        selectSceneRectTransform.gameObject.SetActive(false);
+        // cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+
         // FADEOUT EFFECT
         LoadingSceneManager.instance.fadeImage.DOFade(0,.5f)
             .SetEase(Ease.Linear)
@@ -85,8 +113,6 @@ public class MainMenuScriptManager : MonoBehaviour
                 pingPongText.gameObject.SetActive(true);
             });
         });
-
-
     }
 
     void Update()
@@ -108,65 +134,145 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if (actionInput)
             {
-                StartCoroutine(DelayDisplayMainMenu());
+                pingPongText.gameObject.SetActive(false);
+                ShowMainMenu();
+                // StartCoroutine(ShowMainMenu());
+
             }
         }
     }
 
-    IEnumerator DelayDisplayMainMenu()
+    // IEnumerator ShowMainMenu()
+    // {
+    //     titleVC.Priority = 0;
+    //     mainMenuVC.Priority = 10;
+
+    //     yield return new WaitUntil(() => cinemachineBrain.IsBlending);
+    // }
+
+    void ShowMainMenu()
     {
-        titleVC.Priority = 0;
-        mainMenuVC.Priority = 10;
-        
-        yield return new WaitUntil(() => !cinemachineBrain.IsBlending);
-        
-        pingPongText.gameObject.SetActive(false);
-        mainMenuScreen.SetActive(true);
-        mainMenuRectTransform.DOAnchorPos(new Vector2(mainMenuRectTransform.anchoredPosition.x, 312.5f), 1).SetEase(Ease.OutCubic);
+        mainMenuHUDRectTransform.gameObject.SetActive(true);
+        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 430), .25f)
+            .SetEase(Ease.InFlash)
+            .OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(true);
+            mainMenuButtonCG.DOFade(1, 1);
+        });
     }
-    
+
+    void ShowSelectScene()
+    {
+        mainMenuButtonCG.DOFade(0, 1).OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(false);
+            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                selectSceneRectTransform.gameObject.SetActive(true);
+                selectSceneRectTransform.DOSizeDelta(new Vector2(1920, selectSceneRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        selectSceneButtonCG.gameObject.SetActive(true);
+                        selectSceneButtonCG.DOFade(1, 1);
+                    });
+            });
+        });
+    }
+
     void DeviceInputChecker()
     {
-        if(DeviceManager.instance.keyboardDevice)
+        DeviceInputCheckerPingPongText();
+
+        DeviceInputCheckerUI();
+
+        // GAMEPAD VIBRATION ON NAVIGATION 
+        if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
         {
+            if (Gamepad.current.leftStick.ReadValue() != Vector2.zero || Gamepad.current.dpad.ReadValue() != Vector2.zero)
+            {
+                GameObject currentSelectedButton = EventSystem.current.currentSelectedGameObject;
+
+                // Check if the selected UI element has changed (button navigation)
+                if (currentSelectedButton != lastSelectedButton)
+                {
+                    // Trigger vibration when navigating to a new button
+                    VibrateGamepad();
+                    lastSelectedButton = currentSelectedButton; // Update the last selected button
+                }
+            }
+        }
+
+    }
+
+    private void VibrateGamepad()
+    {
+        // Set a short vibration
+        Gamepad.current.SetMotorSpeeds(0.3f, 0.3f); // Adjust the intensity here
+        Invoke("StopVibration", 0.1f); // Stops vibration after 0.1 seconds
+    }
+
+
+    private void StopVibration()
+    {
+        Gamepad.current.SetMotorSpeeds(0, 0);
+    }
+
+    #region - DEVICE CHECKER [PING PONG TEXT] -
+
+    void DeviceInputCheckerPingPongText()
+    {
+        if (DeviceManager.instance.keyboardDevice)
+        {
+            // PINGPONG ACTIVE
             if (pingPongText.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                pingPongText.text = "PRESS <sprite name=\"Space\"> TO CONTINUE"; 
+                pingPongText.text = "PRESS <sprite name=\"Space\"> TO CONTINUE";
             }
-            
-            if (mainMenuScreen.activeSelf)
+        } 
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            if (pingPongText.gameObject.activeSelf)
             {
-                Cursor.lockState = CursorLockMode.None;
-                EventSystem.current.SetSelectedGameObject(null);
-                isGamepad = false;
+                pingPongText.text = "PRESS <sprite name=\"Cross\"> TO CONTINUE";
             }
+        }
 
-            if (selectSceneScreen.activeSelf)
+    }
+
+    #endregion
+
+    #region - DEVICE CHECKER [HUD/UI]
+
+    void DeviceInputCheckerUI()
+    {
+
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            if (mainMenuHUDRectTransform.gameObject.activeSelf || selectSceneScreen.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
                 isGamepad = false;
             }
         }
-        else if(DeviceManager.instance.gamepadDevice)
+        else if (DeviceManager.instance.gamepadDevice)
         {
             Cursor.lockState = CursorLockMode.Locked;
-
-            if(pingPongText.gameObject.activeSelf)
+            
+            if (!isGamepad)
             {
-                pingPongText.text = "PRESS <sprite name=\"Cross\"> TO CONTINUE";
-            }
-
-            if(!isGamepad)
-            {
-                if (mainMenuScreen.activeSelf)
+                if (mainMenuHUDRectTransform.gameObject.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(mainMenuScreenSelectedButton);
                     isGamepad = true;
                 }
-
-                if(selectSceneScreen.activeSelf)
+                else if (selectSceneScreen.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(selectSceneScreenSelectedButton);
                     isGamepad = true;
@@ -175,109 +281,21 @@ public class MainMenuScriptManager : MonoBehaviour
         }
     }
 
-    // void Update()
-    // {
-    //     // TODO - DEVICE CHECKER
+    #endregion
 
-    //     if(DeviceManager.instance.keyboardDevice)
-    //     {
-    //         if(mainMenu.activeSelf)
-    //         {
-    //             Cursor.lockState = CursorLockMode.None;
-    //             isGamepad = false;
-    //         }
-    //     }
-    //     else if(DeviceManager.instance.gamepadDevice)
-    //     {
-    //         if(!isGamepad)
-    //         {
-    //             Cursor.lockState = CursorLockMode.Locked;
-
-    //             // if (titleScreen.activeSelf && !selectSceneScreen.activeSelf && !settingScreen.activeSelf)
-    //             // {  
-    //             //     Debug.Log("Title Scelect Object");
-    //             //     EventSystem.current.SetSelectedGameObject(titleSelectObject);
-    //             // }
-    //             // else if (!titleScreen.activeSelf && selectSceneScreen.activeSelf && !settingScreen.activeSelf)
-    //             // {
-    //             //     Debug.Log(" Scelect Object");
-    //             //     EventSystem.current.SetSelectedGameObject(sceneSelectObject);
-    //             // }
-    //             // else
-    //             // {
-    //             //     isGamepad = false;
-    //             // }
-
-    //             if(titleScreen.activeInHierarchy)
-    //             {
-    //                 Debug.Log("Title Scelect Object");
-    //                 EventSystem.current.SetSelectedGameObject(titleSelectObject);
-    //             }
-
-    //             // if()
-    //             // {
-
-    //             // }
-
-    //             // if (selectSceneScreen.activeSelf)
-    //             // {
-    //             //     EventSystem.current.SetSelectedGameObject(sceneSelectObject);
-    //             // }
-    //             // else
-    //             // {
-    //             //     isGamepad = false;
-    //             // }
-                
-    //             // if (settingScreen.activeSelf)
-    //             // {
-    //             //     EventSystem.current.SetSelectedGameObject(settingSelectObject);
-    //             // }
-    //             // else
-    //             // {
-    //             //     isGamepad = false;
-    //             // }
-
-    //             isGamepad = true;
-    //         }
-    //     }
-    // }
-    
     #region  - TITLE SCREEN -
-
-    public void PlayTest()
-    {   
-        // FADEIN EFFECT
-        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        mainMenuScreen.SetActive(false);
-
-        LoadingSceneManager.instance.loadingScreen.SetActive(true);
-        LoadingSceneManager.instance.enabled = true;
-        LoadingSceneManager.instance.sceneName = "Prologue";
-
-        // LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-        //     .SetEase(Ease.Linear)
-        //     .OnComplete(() =>
-        // {
-        //     mainMenu.SetActive(false);
-
-        //     LoadingSceneManager.instance.loadingScreen.SetActive(true);
-        //     LoadingSceneManager.instance.enabled = true;
-        //     LoadingSceneManager.instance.sceneName = "Prologue";
-        // });
-    }
-
     public void Play()
     {
         Debug.Log("Access Play!");
 
+        // canNavigateUI = false;
+        
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -291,8 +309,7 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Access Chapter Select!");
         
-        titleScreen.SetActive(false);
-        selectSceneScreen.SetActive(true);
+        ShowSelectScene();
 
         isGamepad = false;
     }
@@ -337,7 +354,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -353,7 +370,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -370,7 +387,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -387,7 +404,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
@@ -404,7 +421,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            mainMenuScreen.SetActive(false);
+            mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
