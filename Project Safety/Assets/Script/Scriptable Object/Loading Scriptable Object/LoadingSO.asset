@@ -47,6 +47,24 @@ MonoBehaviour:
     use a non-toxic powder to quickly suppress flames, making them an excellent choice
     for homes, offices, and industrial settings alike. A versatile safety tool for
     various fire hazards.
+  - The Bureau of Fire Protection (BFP) serves as the primary agency responsible
+    for fire suppression operations, emergency medical services, hazardous materials
+    protection, and rescue services for the public.
+  - You have to always ensure an exit is behind you, and never use a fire extinguisher
+    on a fire that could block your escape route.
+  - All things that can burn are considered fuel towards the burning fire. As those
+    things that burn spread, it fuels the burning fire turning it into a stronger
+    one.
+  - The Philippines experiences one of the longest Fire Prevention Months in the
+    world. Every March, the Bureau of Fire Protection (BFP) intensifies its campaigns
+    and activities to raise awareness of fire safety, as this is traditionally one
+    of the hottest months, increasing the risk of fires.
+  - The Bureau of Fire Protection advises keeping exits and stairways clear of obstructions
+    at all times? In case of a fire, blocked exits can slow down evacuation and trap
+    people inside buildings.
+  - The BFP encourages to have a fire escape plan and to practice it regularly with
+    family members. Knowing the fastest and safest way to exit your home can save
+    lives in case of a fire.
   previewScene:
   - {fileID: 21300000, guid: d473895e61586fa409f6f1b84112a6bf, type: 3}
   - {fileID: 21300000, guid: 513282da506fec1469fbfea1f3cf9c42, type: 3}
