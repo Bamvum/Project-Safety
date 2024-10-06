@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
-using UnityEngine.iOS;
 
 
 public class MainMenuScriptManager : MonoBehaviour
@@ -17,20 +16,17 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] TMP_Text pingPongText;
     [SerializeField] float pingPongSpeed;
 
-    // [Header("Virtual Camera")]
-    // [SerializeField] CinemachineBrain cinemachineBrain;
-
-    // [Space(5)]
-    // [SerializeField] CinemachineVirtualCamera titleVC;
-    // [SerializeField] CinemachineVirtualCamera mainMenuVC;
-
     [Header("HUD")]
     [SerializeField] RectTransform mainMenuHUDRectTransform;
     [SerializeField] CanvasGroup mainMenuButtonCG;
     
-    [Space(10)]
+    [Space(5)]
     [SerializeField] RectTransform selectSceneRectTransform;
     [SerializeField] CanvasGroup selectSceneButtonCG;
+
+    [Space(5)]
+    [SerializeField] RectTransform settingRectTransform;
+    [SerializeField] CanvasGroup settingButtonCG;
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -38,30 +34,10 @@ public class MainMenuScriptManager : MonoBehaviour
     [Space(5)]
     [SerializeField] GameObject mainMenuScreenSelectedButton; 
     [SerializeField] GameObject selectSceneScreenSelectedButton; 
+    [SerializeField] GameObject settingScreenSelectedButton; 
 
-    [Header("Flag")]
-    [SerializeField] bool canNavigateUI; 
-
-
-
-
-    [Header("Screens")]
-    [SerializeField] RectTransform mainMenuRectTransform; 
-    [SerializeField] GameObject selectSceneScreen; 
-    
-
-    [Header("Screens")]
-    [SerializeField] GameObject landingScreen; 
-    // [SerializeField] GameObject mainMenu; 
-    [SerializeField] GameObject titleScreen; 
-    [SerializeField] GameObject settingScreen; 
-    [SerializeField] GameObject[] settingContent;
-
-    
-    [Header("Event Select")]
-    [SerializeField] GameObject titleSelectObject;
-    [SerializeField] GameObject sceneSelectObject;
-    [SerializeField] GameObject settingSelectObject;
+    [Header("Audio")]
+    [SerializeField] AudioSource sfxButtom;
     
     bool isGamepad;
 
@@ -98,8 +74,24 @@ public class MainMenuScriptManager : MonoBehaviour
         // INITIALIZATION
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
         pingPongText.gameObject.SetActive(false);
+
+        // INTIALIZATION MAIN MENU
         mainMenuHUDRectTransform.gameObject.SetActive(false);
+        mainMenuHUDRectTransform.sizeDelta = new Vector2(600, 0);
+        mainMenuButtonCG.alpha = 0;
+        mainMenuButtonCG.interactable = false;
+
+        // INTIALIZATION SELECT SCENE
         selectSceneRectTransform.gameObject.SetActive(false);
+        selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
+        selectSceneButtonCG.alpha = 0;
+        selectSceneButtonCG.interactable = false;
+
+        // INTIALIZATION SETTING
+        settingRectTransform.gameObject.SetActive(false);
+        settingRectTransform.sizeDelta = new Vector2(0, 1080);
+        settingButtonCG.alpha = 0;
+        settingButtonCG.interactable = false;
         // cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
 
         // FADEOUT EFFECT
@@ -136,52 +128,8 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 pingPongText.gameObject.SetActive(false);
                 ShowMainMenu();
-                // StartCoroutine(ShowMainMenu());
-
             }
         }
-    }
-
-    // IEnumerator ShowMainMenu()
-    // {
-    //     titleVC.Priority = 0;
-    //     mainMenuVC.Priority = 10;
-
-    //     yield return new WaitUntil(() => cinemachineBrain.IsBlending);
-    // }
-
-    void ShowMainMenu()
-    {
-        mainMenuHUDRectTransform.gameObject.SetActive(true);
-        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 430), .25f)
-            .SetEase(Ease.InFlash)
-            .OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(true);
-            mainMenuButtonCG.DOFade(1, 1);
-        });
-    }
-
-    void ShowSelectScene()
-    {
-        mainMenuButtonCG.DOFade(0, 1).OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(false);
-            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
-            {
-                mainMenuHUDRectTransform.gameObject.SetActive(false);
-                selectSceneRectTransform.gameObject.SetActive(true);
-                selectSceneRectTransform.DOSizeDelta(new Vector2(1920, selectSceneRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
-                    .OnComplete(() =>
-                    {
-                        selectSceneButtonCG.gameObject.SetActive(true);
-                        selectSceneButtonCG.DOFade(1, 1);
-                    });
-            });
-        });
     }
 
     void DeviceInputChecker()
@@ -251,10 +199,10 @@ public class MainMenuScriptManager : MonoBehaviour
 
     void DeviceInputCheckerUI()
     {
-
         if(DeviceManager.instance.keyboardDevice)
         {
-            if (mainMenuHUDRectTransform.gameObject.activeSelf || selectSceneScreen.activeSelf)
+            if (mainMenuHUDRectTransform.gameObject.activeSelf || selectSceneRectTransform.gameObject.activeSelf || 
+                settingRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -272,9 +220,16 @@ public class MainMenuScriptManager : MonoBehaviour
                     EventSystem.current.SetSelectedGameObject(mainMenuScreenSelectedButton);
                     isGamepad = true;
                 }
-                else if (selectSceneScreen.activeSelf)
+                
+                if (selectSceneRectTransform.gameObject.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(selectSceneScreenSelectedButton);
+                    isGamepad = true;
+                }
+
+                if (settingRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(settingScreenSelectedButton);
                     isGamepad = true;
                 }
             }
@@ -284,6 +239,22 @@ public class MainMenuScriptManager : MonoBehaviour
     #endregion
 
     #region  - TITLE SCREEN -
+
+    void ShowMainMenu()
+    {
+        mainMenuHUDRectTransform.gameObject.SetActive(true);
+        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 430), .25f)
+            .SetEase(Ease.InFlash)
+            .OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(true);
+            mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
+            {
+                mainMenuButtonCG.interactable = true;
+            });
+        });
+    }
+
     public void Play()
     {
         Debug.Log("Access Play!");
@@ -302,25 +273,72 @@ public class MainMenuScriptManager : MonoBehaviour
             LoadingSceneManager.instance.sceneName = "Prologue";
         });
 
-        isGamepad = false;       
+        isGamepad = false;
+        lastSelectedButton = null;    
     }
 
     public void ChapterSelect()
     {
         Debug.Log("Access Chapter Select!");
         
-        ShowSelectScene();
-
-        isGamepad = false;
+        selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
+        
+        mainMenuButtonCG.interactable = false;
+        isGamepad = true;
+        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(false);
+            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                selectSceneRectTransform.gameObject.SetActive(true);
+                selectSceneRectTransform.DOSizeDelta(new Vector2(1920, selectSceneRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        selectSceneButtonCG.gameObject.SetActive(true);
+                        selectSceneButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            selectSceneButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });        
     }
 
     public void Settings()
     {
         Debug.Log("Access Settings!");
 
-        titleScreen.SetActive(false);
-
-        settingScreen.SetActive(true);
+        settingRectTransform.sizeDelta = new Vector2(0, 1080);
+        
+        mainMenuButtonCG.interactable = false;
+        isGamepad = true;
+        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(false);
+            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                settingRectTransform.gameObject.SetActive(true);
+                settingRectTransform.DOSizeDelta(new Vector2(1920, settingRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        settingButtonCG.gameObject.SetActive(true);
+                        settingButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            settingButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });
     }
 
 
@@ -332,7 +350,20 @@ public class MainMenuScriptManager : MonoBehaviour
     public void Quit()
     {
         Debug.Log("Access Quit!");
-        Application.Quit();
+
+
+        mainMenuButtonCG.interactable = false;
+        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(false);
+            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                Application.Quit();
+            });
+        });
     }
 
     #endregion
@@ -342,8 +373,31 @@ public class MainMenuScriptManager : MonoBehaviour
     public void selectSceneBack()
     {
         Debug.Log("Go back to Main Menu");
-        selectSceneScreen.SetActive(false);
-        titleScreen.SetActive(true);
+
+        selectSceneButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            selectSceneButtonCG.gameObject.SetActive(false);
+            selectSceneButtonCG.interactable = false;
+            isGamepad = true;
+            selectSceneRectTransform.DOSizeDelta(new Vector2(selectSceneRectTransform.sizeDelta.x, 0), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                selectSceneRectTransform.gameObject.SetActive(false);
+                mainMenuHUDRectTransform.gameObject.SetActive(true);
+                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        mainMenuButtonCG.gameObject.SetActive(true);
+                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            mainMenuButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });
     }
 
     public void PrologueSceneSelect()
@@ -441,87 +495,38 @@ public class MainMenuScriptManager : MonoBehaviour
 
     #endregion
 
-    #region - SETTING SCREEN -
+    #region  - SETTING SCREEN -
 
-    public void GameSetting()
+    public void SettingBack()
     {
-        Debug.Log("Access Game Setting!");
-        // ENABLE CONTENT
-        settingContent[0].SetActive(true);
+        Debug.Log("Go back to Main Menu");
 
-        // DISABLE
-        settingContent[1].SetActive(false);
-        settingContent[2].SetActive(false);
-        settingContent[3].SetActive(false);
-        settingContent[4].SetActive(false);
+        settingButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            settingButtonCG.gameObject.SetActive(false);
+            settingButtonCG.interactable = false;
+            isGamepad = true;
+            settingRectTransform.DOSizeDelta(new Vector2(settingRectTransform.sizeDelta.x, 0), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                settingRectTransform.gameObject.SetActive(false);
+                mainMenuHUDRectTransform.gameObject.SetActive(true);
+                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        mainMenuButtonCG.gameObject.SetActive(true);
+                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            mainMenuButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });
     }
 
-    public void VideoSetting()
-    {
-        Debug.Log("Access Video Setting!");
-
-        // ENABLE CONTENT
-        settingContent[1].SetActive(true);
-
-        // DISABLE
-        settingContent[0].SetActive(false);
-        settingContent[2].SetActive(false);
-        settingContent[3].SetActive(false);
-        settingContent[4].SetActive(false);
-    }
-
-    public void GraphicSetting()
-    {
-        Debug.Log("Access Graphics Setting!");
-
-        // ENABLE CONTENT
-        settingContent[2].SetActive(true);
-
-        // DISABLE
-        settingContent[0].SetActive(false);
-        settingContent[1].SetActive(false);
-        settingContent[3].SetActive(false);
-        settingContent[4].SetActive(false);
-    }
-
-    public void SoundSetting()
-    {
-        Debug.Log("Access Sound Setting!");
-
-        // ENABLE CONTENT
-        settingContent[3].SetActive(true);
-
-        // DISABLE
-        settingContent[0].SetActive(false);
-        settingContent[1].SetActive(false);
-        settingContent[2].SetActive(false);
-        settingContent[4].SetActive(false);
-    }
-    
-    public void ControlsSetting()
-    {
-        Debug.Log("Access Controls Setting!");
-
-        // ENABLE CONTENT
-        settingContent[4].SetActive(true);
-
-        // DISABLE
-        settingContent[0].SetActive(false);
-        settingContent[1].SetActive(false);
-        settingContent[2].SetActive(false);
-        settingContent[3].SetActive(false);
-    }
-    
-    public void settingBack()
-    {
-        Debug.Log("Access Setting Back!");
-
-        settingScreen.SetActive(false);
-
-        titleScreen.SetActive(true);
-        
-        GameSetting();
-    }
 
     #endregion
 }
