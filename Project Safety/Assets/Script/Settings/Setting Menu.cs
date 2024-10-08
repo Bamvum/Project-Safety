@@ -30,27 +30,25 @@ public class SettingMenu : MonoBehaviour
         qualityDropdown.value = PlayerPrefs.GetInt("QualityGraphics");
         
         resolutions = Screen.resolutions;
-
         resolutionDropdown.ClearOptions();
-
-        List<string> options = new List<string>();
         
+        List<string> options = new List<string>();
         int currentResolutionIndex = 0;
+
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " X " + resolutions[i].height;
             options.Add(option);
 
             if(resolutions[i].width == Screen.currentResolution.width &&
-                resolutions[i].height == Screen.currentResolution.height)
+               resolutions[i].height == Screen.currentResolution.height)
             {
                 currentResolutionIndex = i;
             }
         }
-        
+
         resolutionDropdown.AddOptions(options);
         int savedResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex", currentResolutionIndex);
-        // resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.value = savedResolutionIndex;
         resolutionDropdown.RefreshShownValue();
     }

@@ -169,5 +169,11 @@ public class LoadingSceneManager : MonoBehaviour
         {
             previewImg.sprite = loadingSO.previewScene[6];
         }
+        else if(sceneToBeLoad == "Act 3")
+        {
+            previewImg.sprite = loadingSO.previewScene[7];
+        }
+
+        // IF MAIN MENU RANDOMIZE loadingSO.previewScene 
     }
 }

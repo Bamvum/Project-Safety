@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
 
-
-
 public class PrologueSceneManager : MonoBehaviour
 {
     public static PrologueSceneManager instance {get; private set;}
