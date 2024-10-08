@@ -8,6 +8,13 @@ using UnityEngine.UI;
 
 public class EmergencyHotline : MonoBehaviour
 {
+    PlayerControls playerControls;
+
+    [Header("Dialogue Trigger")]
+    [SerializeField] DialogueTrigger contact1;
+    [SerializeField] DialogueTrigger contact2;
+    [SerializeField] DialogueTrigger contact3;
+    
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera phoneVC;
 
@@ -32,16 +39,16 @@ public class EmergencyHotline : MonoBehaviour
     {
         phoneAnimLength = phoneAnim.length;
         
-        // ScriptManager.instance.playerControls = new PlayerControls();
+        playerControls = new PlayerControls();
     }
 
     void OnEnable()
     {
-        // ScriptManager.instance.playerControls.Contact.Contact1.performed += AccessContact1;
-        // ScriptManager.instance.playerControls.Contact.Contact2.performed += AccessContact2;
-        // ScriptManager.instance.playerControls.Contact.Contact3.performed += AccessContact3;
+        playerControls.Contact.Contact1.performed += AccessContact1;
+        playerControls.Contact.Contact2.performed += AccessContact2;
+        playerControls.Contact.Contact3.performed += AccessContact3;
 
-        // ScriptManager.instance.playerControls.Contact.Enable();
+        playerControls.Contact.Enable();
     }
 
     private void AccessContact1(InputAction.CallbackContext context)
@@ -50,9 +57,12 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 1");
             contactMode = false;
+            contact1.StartDialogue();
+            
+            contactHUD.SetActive(false);
 
             // TODO - WORK IN PROGRESS. INVOKE IS FOR TESTING PURPORSE ONLY
-            Invoke("PreEndOfPhoneCall", 2);
+            // Invoke("PreEndOfPhoneCall", 2);
         }
     }
 
@@ -62,6 +72,9 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 2");
             contactMode = false;
+            contact2.StartDialogue();
+
+            contactHUD.SetActive(false);
         }
     }
 
@@ -71,12 +84,15 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 3");
             contactMode = false;
+            contact3.StartDialogue();
+
+            contactHUD.SetActive(false);
         }
     }
 
     void OnDisable()
     {
-        // ScriptManager.instance.playerControls.Contact.Disable();
+        playerControls.Contact.Disable();
     }
 
     public void PhoneTrigger()
@@ -85,21 +101,21 @@ public class EmergencyHotline : MonoBehaviour
         phoneGO.SetActive(true);
 
         // ANIMATION
-        // ScriptManager.instance.playerMovement.playerAnim.SetBool("Idle", true);
-        // ScriptManager.instance.playerMovement.playerAnim.SetBool("Phone", true);
+        PlayerScript.instance.playerMovement.playerAnim.SetBool("Idle", true);
+        PlayerScript.instance.playerMovement.playerAnim.SetBool("Phone", true);
 
         // CINEMACHINE
         PlayerScript.instance.playerVC.Priority = 0;
         phoneVC.Priority = 10;
 
         // HUD
-        // HUDManager.instance.playerHUD.SetActive(false);
+        HUDManager.instance.playerHUD.SetActive(false);
 
         // DISABLE SCRIPTS
-        // ScriptManager.instance.playerMovement.enabled = false;
-        // ScriptManager.instance.interact.enabled = false;
-        // ScriptManager.instance.stamina.enabled = false;
-        // ScriptManager.instance.cinemachineInputProvider.enabled = false;
+        PlayerScript.instance.playerMovement.enabled = false;
+        PlayerScript.instance.interact.enabled = false;
+        PlayerScript.instance.stamina.enabled = false;
+        PlayerScript.instance.cinemachineInputProvider.enabled = false;
         
         // DISABLE SCRIPTS
         this.enabled = true;
@@ -129,10 +145,10 @@ public class EmergencyHotline : MonoBehaviour
         contactMode = true;
     }
 
-    void PreEndOfPhoneCall()
+    public void PreEndOfPhoneCall()
     {
         //ANIMATION
-        // ScriptManager.instance.playerMovement.playerAnim.SetBool("Phone", false);
+        PlayerScript.instance.playerMovement.playerAnim.SetBool("Phone", false);
 
         // HUD
         contactHUD.SetActive(false);
@@ -146,20 +162,20 @@ public class EmergencyHotline : MonoBehaviour
         phoneGO.SetActive(false);
         
         //ANIMATION
-        // ScriptManager.instance.playerMovement.playerAnim.SetBool("Idle", false);
+        PlayerScript.instance.playerMovement.playerAnim.SetBool("Idle", false);
         
         // CINEMACHINE
         PlayerScript.instance.playerVC.Priority = 10;
         phoneVC.Priority = 0;
 
         // HUD
-        // HUDManager.instance.playerHUD.SetActive(true);
+        HUDManager.instance.playerHUD.SetActive(true);
 
-        // ENABLE SCRIPTS
-        // ScriptManager.instance.playerMovement.enabled = true;
-        // ScriptManager.instance.interact.enabled = true;
-        // ScriptManager.instance.stamina.enabled = true;
-        // ScriptManager.instance.cinemachineInputProvider.enabled = true;
+        // // ENABLE SCRIPTS
+        // PlayerScript.instance.playerMovement.enabled = true;
+        // PlayerScript.instance.interact.enabled = true;
+        // PlayerScript.instance.stamina.enabled = true;
+        // PlayerScript.instance.cinemachineInputProvider.enabled = true;
 
         // DISABLE SCRIPTS
         this.enabled = false;

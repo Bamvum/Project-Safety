@@ -11,15 +11,18 @@ public class StayCalm : MonoBehaviour
 {
     PlayerControls playerControls;
 
-    [Header("Dialogue Trigger")]
+    [Header("Player")]
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject playerSitted;
 
+    [Header("Dialogue Trigger")]
     [SerializeField] DialogueTrigger AccessPhone;
 
     [Header("HUD")]
     [SerializeField] TMP_Text playerHealthText;
 
     [Space(5)]
-    [SerializeField] Image stayCalmHUD;
+    [SerializeField] CanvasGroup stayCalmHUD;
     [SerializeField] RectTransform stayCalmRectTransform;
     [SerializeField] CanvasGroup stayCalmRectTransformCG;
     [SerializeField] CanvasGroup stayCalmCG;
@@ -74,7 +77,7 @@ public class StayCalm : MonoBehaviour
 
     void OnDisable()
     {
-
+        heartBeatSFX.Stop();
         playerControls.StayCalm.Disable();
     }
     private void Button1Pressed(InputAction.CallbackContext context)
@@ -191,7 +194,7 @@ public class StayCalm : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(stayCalmRectTransform.DOAnchorPos(new Vector2(0f, 425f), .75f));
-        sequence.Append(stayCalmRectTransform.DOScale(new Vector2(1f, 1f), 1f));
+        sequence.Join(stayCalmRectTransform.DOScale(new Vector2(1f, 1f), 1f));
 
         sequence.SetEase(Ease.InOutQuad).OnComplete(() =>
         {
@@ -301,36 +304,39 @@ public class StayCalm : MonoBehaviour
 
 
         // FINISH CHECKER
-    
-        if(inputsPerformed == inputNeedToFinish)
+        if(canInput)
         {
-            inputsPerformed = inputNeedToFinish;
-            canInput = false;
-
-            stayCalmCG.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+            if (inputsPerformed == inputNeedToFinish)
             {
-                checkMarkDone.gameObject.SetActive(true);
-                doneSFX.Play();
+                inputsPerformed = inputNeedToFinish;
+                canInput = false;
 
-                checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
+                stayCalmCG.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                 {
-                    checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                    checkMarkDone.gameObject.SetActive(true);
+                    doneSFX.Play();
+
+                    playerSitted.SetActive(false);
+                    player.SetActive(true);
+
+                    checkMarkDone.DOFade(1, 1).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        checkMarkDone.gameObject.SetActive(false);
-                        stayCalmHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                        checkMarkDone.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                         {
+                            checkMarkDone.gameObject.SetActive(false);
                             stayCalmHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                             {
                                 stayCalmHUD.gameObject.SetActive(false);
                                 AccessPhone.StartDialogue();
                                 this.enabled = false;
                             });
-                        });
 
+                        });
                     });
                 });
-            });
+            }
         }
+        
         
     }
 

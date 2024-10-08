@@ -10,6 +10,8 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Awake()
     {
+        DOTween.SetTweensCapacity(1000, 200);  // 1000 tweeners and 200 sequences
+
         instance = this;
     }
 
@@ -48,7 +50,7 @@ public class Act2Scene1Manager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             Debug.Log("Trigger Dialogue");
-            startDialogue.StartDialogue();
+            // startDialogue.StartDialogue();
         });
     }
 
@@ -84,19 +86,19 @@ public class Act2Scene1Manager : MonoBehaviour
         personRunning = enable;
     }
 
-    // public void EndOfScene()
-    // {
-    //     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+    public void EndOfScene()
+    {
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
-    //     LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-    //         .SetEase(Ease.Linear)
-    //         .OnComplete(() =>
-    //     {
-    //         PlayerScript.instance.DisablePlayerScripts();
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            PlayerScript.instance.DisablePlayerScripts();
 
-    //         LoadingSceneManager.instance.loadingScreen.SetActive(true);
-    //         LoadingSceneManager.instance.enabled = true;
-    //         LoadingSceneManager.instance.sceneName = "Act 2";
-    //     });
-    // }
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Act 2 Scene 2";
+        });
+    }
 }
