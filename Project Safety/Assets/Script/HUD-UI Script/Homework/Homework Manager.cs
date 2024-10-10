@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 
 
@@ -135,23 +136,63 @@ public class HomeworkManager : MonoBehaviour
 
     void EndOfHomework()
     {
-       LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        if(SceneManager.GetActiveScene().name == "Prologue")
+        {
+            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
 
-       LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .OnComplete(() =>
-       {
-           homeworkHUD.SetActive(false);
-
-           PrologueSceneManager.instance.monitor.layer = 0;
-           
-           LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                .OnComplete(() =>
+            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                 .OnComplete(() =>
             {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                this.enabled = false;
-                dialogueTrigger.StartDialogue();
+                homeworkHUD.SetActive(false);
+
+                PrologueSceneManager.instance.monitor.layer = 0;
+
+                LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                     .OnComplete(() =>
+                 {
+                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                     this.enabled = false;
+                     dialogueTrigger.StartDialogue();
+                 });
             });
-       });
+        }
+        else
+        {
+           EndOfScene();
+        }
+    }
+
+    void EndOfScene()
+    {
+         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                 .OnComplete(() =>
+            {
+                homeworkHUD.SetActive(false);
+
+                PrologueSceneManager.instance.monitor.layer = 0;
+
+                LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                     .OnComplete(() =>
+                 {
+                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                     
+                     this.enabled = false;
+                 });
+            });
+
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            // LoadingSceneManager.instance.sceneName = "C";
+            // DISPLAY CREDITS
+        });
     }
 }
 

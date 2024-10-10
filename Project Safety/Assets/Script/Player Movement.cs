@@ -21,7 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float upperLimit = -40f;
     [SerializeField] float bottomLimit = 70f;
     [Range(0, 50)]
-    [SerializeField] float mouseSensitivity = 21.9f;
+    public float mouseSensitivity = 21.9f;
+    public float gamepadSensitivity = 21.9f;
 
      [Header("Movement")]
     [SerializeField] float movementSpeed;
@@ -219,25 +220,32 @@ public class PlayerMovement : MonoBehaviour
 
     void CamMovement()
     {
-        if(DeviceManager.instance.keyboardDevice)
+        horizontalLookInput = lookInput.x;
+        verticalLookInput = lookInput.y;
+        
+        if (DeviceManager.instance.keyboardDevice)
         {
-            mouseSensitivity = 21.9f;
+            // mouseSensitivity = 21.9f;
+
+            // Camera.main.transform.position = cameraRoot.transform.position;
+
+            xRotation -= verticalLookInput * mouseSensitivity * Time.deltaTime;
+            xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
+
+            Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+            transform.Rotate(Vector3.up, horizontalLookInput * mouseSensitivity * Time.deltaTime);
+
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            mouseSensitivity = 121.9f;
+            // gamepadSensitivity = 121.9f;
+
+            xRotation -= verticalLookInput * gamepadSensitivity * Time.deltaTime;
+            xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
+
+            Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+            transform.Rotate(Vector3.up, horizontalLookInput * mouseSensitivity * Time.deltaTime);
         }
-
-        horizontalLookInput = lookInput.x;
-        verticalLookInput = lookInput.y;
-
-        // Camera.main.transform.position = cameraRoot.transform.position;
-
-        xRotation -= verticalLookInput * mouseSensitivity * Time.deltaTime;
-        xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
-
-        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0,0);
-        transform.Rotate(Vector3.up, horizontalLookInput * mouseSensitivity * Time.deltaTime);
     }
 }
 

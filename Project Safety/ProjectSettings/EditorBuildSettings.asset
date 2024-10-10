@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Scenes/Act 2 Scene 1.unity
     guid: a5750a92376b28a469ed90e092a412ba
   - enabled: 1
+    path: Assets/Scenes/Game Scenes/Act 2 Scene 2.unity
+    guid: 3d6974de801fe2946a714ad3d0b0c780
+  - enabled: 1
     path: Assets/Scenes/Game Scenes/Act 2 Scene 0.unity
     guid: e06ee6c9d3b78354b9ccb47ecb09b3ad
   - enabled: 1

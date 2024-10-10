@@ -16,16 +16,24 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] Slider masterVolumeSlider;
     [SerializeField] Slider musicVolumeSlider;
     [SerializeField] Slider sfxVolumeSlider;
-    [SerializeField] Toggle fullScreenToggle;
+    
+    [Space(5)]
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] TMP_Dropdown qualityDropdown;
+    [SerializeField] Toggle fullScreenToggle;
+
+    [Space(5)]
+    [SerializeField] Slider mouseSensSlider;
+    [SerializeField] Slider gamepadSensSlider;
 
     void Start()
     {
+        // VOLUME PLAYER PREFS
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume");
         musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume");
         sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume");
 
+        // GRAPHICS PLAYER PREFS
         fullScreenToggle.isOn = PlayerPrefs.GetInt("IsFullScreen") != 0;
         qualityDropdown.value = PlayerPrefs.GetInt("QualityGraphics");
         
@@ -51,6 +59,10 @@ public class SettingMenu : MonoBehaviour
         int savedResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex", currentResolutionIndex);
         resolutionDropdown.value = savedResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+        // CONTROLS PLAYER PREFS    
+        mouseSensSlider.value = PlayerPrefs.GetFloat("MouseSensitivity");
+        gamepadSensSlider.value = PlayerPrefs.GetFloat("GamepadSensitivity");
     }
 
     #region - VOLUME -
@@ -91,7 +103,7 @@ public class SettingMenu : MonoBehaviour
     {
         Screen.fullScreen = isFullScreen;
         PlayerPrefs.SetInt("IsFullscreen", isFullScreen ? 1 : 0);
-    } 
+    }
 
     #endregion
 
@@ -103,6 +115,26 @@ public class SettingMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
         PlayerPrefs.SetInt("Resolution", resolutionIndex);
     }
-    
+
+    #endregion
+
+    #region - MOUSE SENSITIVITY - 
+
+    public void SetMouseSensitivity(float mouseSens)
+    {
+        PlayerScript.instance.playerMovement.mouseSensitivity = mouseSens;
+        PlayerPrefs.SetFloat("MouseSensitivity", mouseSens);
+    }
+
+    #endregion
+
+    #region - GAMEPAD SENSITIVITY - 
+
+    public void SetGamepadSensitivity(float gamepadSens)
+    {
+        PlayerScript.instance.playerMovement.gamepadSensitivity = gamepadSens;
+        PlayerPrefs.SetFloat("GamepadSensitivity", gamepadSens);
+    }
+
     #endregion
 }

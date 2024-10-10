@@ -19,6 +19,8 @@ public class GameOver : MonoBehaviour
 
     public void GameIsOver()
     {
+        Time.timeScale = 0;
+
         if(SceneManager.GetActiveScene().name == "Act 2 Scene 1")
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -56,7 +58,7 @@ public class GameOver : MonoBehaviour
         }
     }
 
-        public void ShowGameOver()
+    public void ShowGameOver()
     {
         gameOverHUDRectTransform.sizeDelta = new Vector2(0, 700);
         gameOverCG.interactable = false;

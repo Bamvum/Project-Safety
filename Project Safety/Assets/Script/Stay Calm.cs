@@ -295,9 +295,10 @@ public class StayCalm : MonoBehaviour
             stayCalmCG.DOFade(0, 1).OnComplete(() =>
             {
                 GameOver.instance.ShowGameOver();
+                PlayerScript.instance.DisablePlayerScripts();
                 this.enabled = false;
                 Debug.Log("Game OVer!");
-        
+
             });
 
         }
