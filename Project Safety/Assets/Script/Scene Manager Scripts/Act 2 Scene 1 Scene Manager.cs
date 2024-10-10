@@ -41,7 +41,7 @@ public class Act2Scene1Manager : MonoBehaviour
 
     IEnumerator FadeOutEffect()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
                 LoadingSceneManager.instance.fadeImage
             .DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
@@ -50,7 +50,7 @@ public class Act2Scene1Manager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             Debug.Log("Trigger Dialogue");
-            // startDialogue.StartDialogue();
+            startDialogue.StartDialogue();
         });
     }
 

@@ -28,15 +28,24 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] RectTransform settingRectTransform;
     [SerializeField] CanvasGroup settingButtonCG;
 
+    [Space(15)]
+    [SerializeField] RectTransform audioSettingRectTransform;
+    [SerializeField] RectTransform graphicsSettingRectTransform;
+    [SerializeField] RectTransform controlsSettingRectTransform;
+    [SerializeField] RectTransform languageSettingRectTransform;
+
+
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
     
     [Space(5)]
-    [SerializeField] GameObject mainMenuScreenSelectedButton; 
-    [SerializeField] GameObject selectSceneScreenSelectedButton; 
-    [SerializeField] GameObject settingScreenSelectedButton; 
+    [SerializeField] GameObject mainMenuSelectedButton; 
+    [SerializeField] GameObject selectSceneSelectedButton; 
+    [SerializeField] GameObject settingSelectedButton;
+
 
     [Header("Audio")]
+    [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource sfxButtom;
     
     bool isGamepad;
@@ -89,13 +98,19 @@ public class MainMenuScriptManager : MonoBehaviour
 
         // INTIALIZATION SETTING
         settingRectTransform.gameObject.SetActive(false);
+        audioSettingRectTransform.gameObject.SetActive(true);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        languageSettingRectTransform.gameObject.SetActive(false);
         settingRectTransform.sizeDelta = new Vector2(0, 1080);
         settingButtonCG.alpha = 0;
         settingButtonCG.interactable = false;
-        // cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
+        
+
+
 
         // FADEOUT EFFECT
-        LoadingSceneManager.instance.fadeImage.DOFade(0,.5f)
+        LoadingSceneManager.instance.fadeImage.DOFade(0, .25f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
@@ -217,19 +232,19 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 if (mainMenuHUDRectTransform.gameObject.activeSelf)
                 {
-                    EventSystem.current.SetSelectedGameObject(mainMenuScreenSelectedButton);
+                    EventSystem.current.SetSelectedGameObject(mainMenuSelectedButton);
                     isGamepad = true;
                 }
                 
                 if (selectSceneRectTransform.gameObject.activeSelf)
                 {
-                    EventSystem.current.SetSelectedGameObject(selectSceneScreenSelectedButton);
+                    EventSystem.current.SetSelectedGameObject(selectSceneSelectedButton);
                     isGamepad = true;
                 }
 
                 if (settingRectTransform.gameObject.activeSelf)
                 {
-                    EventSystem.current.SetSelectedGameObject(settingScreenSelectedButton);
+                    EventSystem.current.SetSelectedGameObject(settingSelectedButton);
                     isGamepad = true;
                 }
             }
@@ -351,7 +366,6 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Access Quit!");
 
-
         mainMenuButtonCG.interactable = false;
         mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
         {
@@ -361,7 +375,13 @@ public class MainMenuScriptManager : MonoBehaviour
                 .OnComplete(() =>
             {
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
-                Application.Quit();
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                LoadingSceneManager.instance.fadeImage.DOFade(1, 1)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                    {
+                        Application.Quit();
+                    });                
             });
         });
     }
@@ -400,10 +420,11 @@ public class MainMenuScriptManager : MonoBehaviour
         });
     }
 
-    public void PrologueSceneSelect()
+    public void SelectScene(string sceneName)
     {
+        bgm.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
+        selectSceneButtonCG.interactable = false;    
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
@@ -412,86 +433,9 @@ public class MainMenuScriptManager : MonoBehaviour
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Prologue";
+            LoadingSceneManager.instance.sceneName = sceneName;
         });
-    }
-
-    public void Act1Scene1SceneSelect()
-    {
-        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-        {
-            mainMenuHUDRectTransform.gameObject.SetActive(false);
-
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
-        });        
-    }
-
-    public void Act1Scene2SceneSelect()
-    {
-        // FADEIN EFFECT
-        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-        {
-            mainMenuHUDRectTransform.gameObject.SetActive(false);
-
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Act 1 Scene 2";
-        });
-    }
-
-    public void Act1Scene3SceneSelect()
-    {
-        // FADEIN EFFECT
-        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-        {
-            mainMenuHUDRectTransform.gameObject.SetActive(false);
-
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Act 1 Scene 3";
-        });
-    }
-
-    public void Act1Scene4SceneSelect()
-    {
-        // FADEIN EFFECT
-        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
-        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-        {
-            mainMenuHUDRectTransform.gameObject.SetActive(false);
-
-            LoadingSceneManager.instance.loadingScreen.SetActive(true);
-            LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Act 1 Scene 4";
-        });        
-    }
-
-    public void Act2SceneSelect()
-    {
-        
-    }
-
-    public void Act3SceneSelect()
-    {
-       
-    }    
+    } 
 
     #endregion
 
@@ -519,6 +463,7 @@ public class MainMenuScriptManager : MonoBehaviour
                         mainMenuButtonCG.gameObject.SetActive(true);
                         mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
                         {
+                            AccessAudioSetting();
                             mainMenuButtonCG.interactable = true;
                             isGamepad = false;
                         });
@@ -527,6 +472,37 @@ public class MainMenuScriptManager : MonoBehaviour
         });
     }
 
+    public void AccessAudioSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(true);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+    public void AccessGraphicsSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(false);
+        graphicsSettingRectTransform.gameObject.SetActive(true);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+    public void AccessControlsSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(false);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(true);
+        languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+    public void AccessLanguageSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(false);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        languageSettingRectTransform.gameObject.SetActive(true);
+    }
 
     #endregion
 }

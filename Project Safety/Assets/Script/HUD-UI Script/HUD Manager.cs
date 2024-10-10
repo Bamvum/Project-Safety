@@ -25,47 +25,6 @@ public class HUDManager : MonoBehaviour
     public GameObject dialogueHUD;    
     public GameObject missionHUD;   
 
-    [Space(10)] 
-    public RectTransform gameOverHUDRectTransform;
-    public CanvasGroup gameOverCG;
-
-    public void ShowGameOver()
-    {
-        gameOverHUDRectTransform.sizeDelta = new Vector2(0, 700);
-        gameOverCG.interactable = false;
-        
-        gameOverHUDRectTransform.gameObject.SetActive(true);
-        gameOverHUDRectTransform.DOSizeDelta(new Vector2(1250, gameOverHUDRectTransform.sizeDelta.y), .25f)
-            .SetEase(Ease.InFlash)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-               gameOverCG.gameObject.SetActive(true); 
-               gameOverCG.DOFade(1, .25f)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    gameOverCG.interactable = true;
-                }); 
-            });
-    }
-
-    public void HideGameOver()
-    {
-        gameOverCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            gameOverCG.gameObject.SetActive(false);
-            gameOverHUDRectTransform.DOSizeDelta(new Vector2(gameOverHUDRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    // TRIGGER LOADING SCREEN 
-                });
-        });
-
-    }
-
     public void FadeInForDialogue()
     {
         fadeImageForDialogue.gameObject.SetActive(true);

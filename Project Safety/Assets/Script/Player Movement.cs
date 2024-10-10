@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         playerControls.Player.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
 
         playerControls.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
-
+        
         playerControls.Player.Sprint.performed += ctx => runInput = true;
         playerControls.Player.Sprint.canceled += ctx => runInput = false;
 

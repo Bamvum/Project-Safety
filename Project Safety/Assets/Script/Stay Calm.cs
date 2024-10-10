@@ -294,7 +294,7 @@ public class StayCalm : MonoBehaviour
         {
             stayCalmCG.DOFade(0, 1).OnComplete(() =>
             {
-                HUDManager.instance.ShowGameOver();
+                GameOver.instance.ShowGameOver();
                 this.enabled = false;
                 Debug.Log("Game OVer!");
         
