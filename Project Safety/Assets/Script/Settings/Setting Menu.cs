@@ -7,10 +7,14 @@ using UnityEngine.UI;
 
 public class SettingMenu : MonoBehaviour
 {
+    public static SettingMenu instance {get; private set;}
+    void Awake()
+    {
+        instance = this;
+    }
 
     [SerializeField] AudioMixer audioMixer;
     Resolution[] resolutions;
-
 
     [Space(5)]
     [SerializeField] Slider masterVolumeSlider;
@@ -23,8 +27,14 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] Toggle fullScreenToggle;
 
     [Space(5)]
-    [SerializeField] Slider mouseSensSlider;
-    [SerializeField] Slider gamepadSensSlider;
+    public Slider xMouseSensSlider;
+    public Slider yMouseSensSlider;
+    public Slider xGamepadSensSlider;
+    public Slider yGamepadSensSlider;
+
+    [Space(5)]
+    public Slider dialogueSpeedSlider;
+    public TMP_Dropdown languageDropdown;
 
     void Start()
     {
@@ -61,8 +71,15 @@ public class SettingMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
 
         // CONTROLS PLAYER PREFS    
-        mouseSensSlider.value = PlayerPrefs.GetFloat("MouseSensitivity");
-        gamepadSensSlider.value = PlayerPrefs.GetFloat("GamepadSensitivity");
+        xMouseSensSlider.value = PlayerPrefs.GetFloat("XMouseSensitivity");
+        yMouseSensSlider.value = PlayerPrefs.GetFloat("YMouseSensitivity");
+        xGamepadSensSlider.value = PlayerPrefs.GetFloat("XGamepadSensitivity");
+        yGamepadSensSlider.value = PlayerPrefs.GetFloat("YGamepadSensitivity");
+        
+        // LANGUAGE PLAYER PREFS  
+        dialogueSpeedSlider.value = PlayerPrefs.GetFloat("DialogueSpeed");
+        languageDropdown.value = PlayerPrefs.GetInt("Language");
+
     }
 
     #region - VOLUME -
@@ -82,7 +99,7 @@ public class SettingMenu : MonoBehaviour
     public void SetSFXVolume(float sfxVolume)
     {
         audioMixer.SetFloat("SFX", sfxVolume);
-        PlayerPrefs.SetFloat("MusicVolume", sfxVolume);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
 
     #endregion
@@ -120,20 +137,57 @@ public class SettingMenu : MonoBehaviour
 
     #region - MOUSE SENSITIVITY - 
 
-    public void SetMouseSensitivity(float mouseSens)
+    public void SetXMouseSensitivity(float xMouseSens)
     {
-        PlayerScript.instance.playerMovement.mouseSensitivity = mouseSens;
-        PlayerPrefs.SetFloat("MouseSensitivity", mouseSens);
+        // PlayerScript.instance.playerMovement.xMouseSensitivity = xMouseSens;
+        xMouseSensSlider.value = xMouseSens;
+        PlayerPrefs.SetFloat("XMouseSensitivity", xMouseSens);
+    }
+
+    
+    public void SetYMouseSensitivity(float yMouseSens)
+    {
+        // PlayerScript.instance.playerMovement.yMouseSensitivity = yMouseSens;
+        yMouseSensSlider.value = yMouseSens;
+        PlayerPrefs.SetFloat("YMouseSensitivity", yMouseSens);
     }
 
     #endregion
 
     #region - GAMEPAD SENSITIVITY - 
 
-    public void SetGamepadSensitivity(float gamepadSens)
+    public void SetXGamepadSensitivity(float xGamepadSens)
     {
-        PlayerScript.instance.playerMovement.gamepadSensitivity = gamepadSens;
-        PlayerPrefs.SetFloat("GamepadSensitivity", gamepadSens);
+        // PlayerScript.instance.playerMovement.xGamepadSensitivity = xGamepadSens;
+        xGamepadSensSlider.value = xGamepadSens;
+        PlayerPrefs.SetFloat("XGamepadSensitivity", xGamepadSens);
+    }
+
+    public void SetYGamepadSensitivity(float yGamepadSens)
+    {
+        // PlayerScript.instance.playerMovement.yGamepadSensitivity = yGamepadSens;
+        yGamepadSensSlider.value = yGamepadSens;
+        PlayerPrefs.SetFloat("YGamepadSensitivity", yGamepadSens);
+    }
+
+    #endregion
+
+    #region - DIALOGUE SPEED - 
+
+    public void SetDialogueSpeed(float dialogueSpeed)
+    {
+        DialogueManager.instance.typingSpeed = dialogueSpeed;
+        // dialogueSpeedSlider.value = dialogueSpeed;
+        PlayerPrefs.SetFloat("DialogueSpeed", dialogueSpeed);
+    }
+
+    #endregion
+
+    #region - LANGUAGE PREFERENCE - 
+
+    public void SetLanguage(int languageIndex)
+    {
+        PlayerPrefs.SetInt("Language", languageIndex);
     }
 
     #endregion

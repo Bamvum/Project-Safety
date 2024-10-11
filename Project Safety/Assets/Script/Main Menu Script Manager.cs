@@ -258,7 +258,7 @@ public class MainMenuScriptManager : MonoBehaviour
     void ShowMainMenu()
     {
         mainMenuHUDRectTransform.gameObject.SetActive(true);
-        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 430), .25f)
+        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 500), .25f)
             .SetEase(Ease.InFlash)
             .OnComplete(() =>
         {
@@ -276,11 +276,13 @@ public class MainMenuScriptManager : MonoBehaviour
 
         // canNavigateUI = false;
         
+        mainMenuButtonCG.interactable = false;
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
+            bgm.DOFade(0, 1);
             mainMenuHUDRectTransform.gameObject.SetActive(false);
 
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
@@ -380,7 +382,10 @@ public class MainMenuScriptManager : MonoBehaviour
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                        Application.Quit();
+                        bgm.DOFade(0, 1).OnComplete(() =>
+                        {
+                            Application.Quit();
+                        });
                     });                
             });
         });

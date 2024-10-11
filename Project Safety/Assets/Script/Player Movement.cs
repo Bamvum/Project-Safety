@@ -21,10 +21,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float upperLimit = -40f;
     [SerializeField] float bottomLimit = 70f;
     [Range(0, 50)]
-    public float mouseSensitivity = 21.9f;
-    public float gamepadSensitivity = 21.9f;
+    public float xMouseSensitivity = 21.9f;
+    public float xGamepadSensitivity = 21.9f;
+    public float yMouseSensitivity;
+    public float yGamepadSensitivity;
 
-     [Header("Movement")]
+    [Header("Movement")]
     [SerializeField] float movementSpeed;
     [SerializeField] float walkSpeed = 3.5f;
     [SerializeField] float runSpeed = 5f;
@@ -121,11 +123,13 @@ public class PlayerMovement : MonoBehaviour
         
         if(DeviceManager.instance.keyboardDevice)
         {
-            pov.m_VerticalAxis.m_MaxSpeed = .1f;
+            // pov.m_VerticalAxis.m_MaxSpeed = yMouseSensitivity;
+            pov.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
         }
         else if (DeviceManager.instance.gamepadDevice)
         {
-            pov.m_VerticalAxis.m_MaxSpeed = 1f;
+            // pov.m_VerticalAxis.m_MaxSpeed = yGamepadSensitivity;
+            pov.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
         }
     }
 
@@ -229,22 +233,24 @@ public class PlayerMovement : MonoBehaviour
 
             // Camera.main.transform.position = cameraRoot.transform.position;
 
-            xRotation -= verticalLookInput * mouseSensitivity * Time.deltaTime;
+            // xRotation -= verticalLookInput * xMouseSensitivity * Time.deltaTime;
+            xRotation -= verticalLookInput * SettingMenu.instance.xMouseSensSlider.value * Time.deltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
             Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-            transform.Rotate(Vector3.up, horizontalLookInput * mouseSensitivity * Time.deltaTime);
+            transform.Rotate(Vector3.up, horizontalLookInput * xMouseSensitivity * Time.deltaTime);
 
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
             // gamepadSensitivity = 121.9f;
 
-            xRotation -= verticalLookInput * gamepadSensitivity * Time.deltaTime;
+            // xRotation -= verticalLookInput * xGamepadSensitivity * Time.deltaTime;
+            xRotation -= verticalLookInput * SettingMenu.instance.yMouseSensSlider.value * Time.deltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
             Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-            transform.Rotate(Vector3.up, horizontalLookInput * mouseSensitivity * Time.deltaTime);
+            transform.Rotate(Vector3.up, horizontalLookInput * xMouseSensitivity * Time.deltaTime);
         }
     }
 }

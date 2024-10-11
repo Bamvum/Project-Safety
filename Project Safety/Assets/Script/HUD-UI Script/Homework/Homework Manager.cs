@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using DG.Tweening;
 
 
 
@@ -32,6 +33,9 @@ public class HomeworkManager : MonoBehaviour
     [SerializeField] TMP_Text homeworkScoreText;
     [SerializeField] TMP_Text questionText;
     [SerializeField] GameObject[] homeworkChoices;
+
+    [Header("Set Selected Game Object")]
+    [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
 
     [Header("Flag")]
     int score = 0;
@@ -65,8 +69,38 @@ public class HomeworkManager : MonoBehaviour
                 isGamepad = true;
             }
         }
+
+        // GAMEPAD VIBRATION ON NAVIGATION 
+        if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
+        {
+            if (Gamepad.current.leftStick.ReadValue() != Vector2.zero || Gamepad.current.dpad.ReadValue() != Vector2.zero)
+            {
+                GameObject currentSelectedButton = EventSystem.current.currentSelectedGameObject;
+
+                // Check if the selected UI element has changed (button navigation)
+                if (currentSelectedButton != lastSelectedButton)
+                {
+                    // Trigger vibration when navigating to a new button
+                    VibrateGamepad();
+                    lastSelectedButton = currentSelectedButton; // Update the last selected button
+                }
+            }
+        }
     }
-    
+
+    private void VibrateGamepad()
+    {
+        // Set a short vibration
+        Gamepad.current.SetMotorSpeeds(0.3f, 0.3f); // Adjust the intensity here
+        Invoke("StopVibration", 0.1f); // Stops vibration after 0.1 seconds
+    }
+
+
+    private void StopVibration()
+    {
+        Gamepad.current.SetMotorSpeeds(0, 0);
+    }
+
     void OnDisable()
     {
         // Cursor.lockState = CursorLockMode.Locked;

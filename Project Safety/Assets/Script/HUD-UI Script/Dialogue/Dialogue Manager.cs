@@ -9,7 +9,15 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager instance {get; private set;}
+
     PlayerControls playerControls;
+
+    void Awake()
+    {
+        instance = this;
+        playerControls = new PlayerControls();
+    }
     
     [Header("Dialogue")]
     bool actionInput;
@@ -18,7 +26,7 @@ public class DialogueManager : MonoBehaviour
     bool option3Input;
     
     [Range(0.01f, 0.09f)]
-    [SerializeField] float typingSpeed = 0.03f;
+    public float typingSpeed = 0.03f;
     List<DialogueProperties> dialogueList;
     int currentDialogueIndex;
     [SerializeField] float elpasedTime;
@@ -58,11 +66,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float punchScale = 0.2f;
 
 
-    void Awake()
-    {
-        
-        playerControls = new PlayerControls();
-    }
+
 
     void OnEnable()
     {
@@ -211,7 +215,8 @@ public class DialogueManager : MonoBehaviour
         foreach(char letter in text.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
+            // yield return new WaitForSeconds(typingSpeed);
+            yield return new WaitForSeconds(SettingMenu.instance.dialogueSpeedSlider.value);
         }
 
         if(dialogueList[currentDialogueIndex].isOtherEvent)

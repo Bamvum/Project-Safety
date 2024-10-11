@@ -8,6 +8,9 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [Header("HUD")]
     [SerializeField] CanvasGroup sceneNameText;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource sceneBGM;
+
     void Start()
     {
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
@@ -28,15 +31,17 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 sceneNameText.DOFade(0, 1);
             });
         });
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
 
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                HomeworkManager.instance.enabled = true;
+                sceneBGM.Play();
             });
     }
 
-
+    
 }
