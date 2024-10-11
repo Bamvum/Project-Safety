@@ -137,26 +137,76 @@ public class LoginRegisterManager : MonoBehaviour
     // Play as Guest
     public void PlayAsGuest()
     {
-        FirebaseManager.auth.SignInAnonymouslyAsync().ContinueWith(task => {
-        if (task.IsCanceled)
+        StartCoroutine(CheckInternetConnection((isConnected) =>
         {
-            Debug.LogError("Guest sign-in canceled.");
-            return;
-        }
-        if (task.IsFaulted)
-        {
-            Debug.LogError("Guest sign-in failed: " + task.Exception.Flatten().InnerExceptions[0].Message);
-            return;
-        }
-
-        FirebaseUser user = task.Result.User;
-        Debug.Log("Logged in as guest: " + user.UserId); // User ID of the guest
-
-        UnitySynchronizationContext.ExecuteOnMainThread(() =>
+            if (isConnected)
             {
-                SceneManager.LoadScene("Main Menu"); // or use index
-            });
-    });
+                // Online guest mode (use Firebase)
+                FirebaseManager.auth.SignInAnonymouslyAsync().ContinueWith(task => {
+                    if (task.IsCanceled)
+                    {
+                        Debug.LogError("Guest sign-in canceled.");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Debug.LogError("Guest sign-in failed: " + task.Exception.Flatten().InnerExceptions[0].Message);
+                        return;
+                    }
+
+                    FirebaseUser user = task.Result.User;
+                    Debug.Log("Logged in as guest: " + user.UserId); // User ID of the guest
+
+                    // Proceed to game using the Firebase guest user
+                    UnitySynchronizationContext.ExecuteOnMainThread(() =>
+                    {
+                        SceneManager.LoadScene("Main Menu"); // or use index
+                    });
+                });
+            }
+            else
+            {
+                // Offline guest mode
+                Debug.Log("No internet connection, playing as guest offline.");
+                UnitySynchronizationContext.ExecuteOnMainThread(() =>
+                {
+                    SceneManager.LoadScene("Main Menu"); // or use index
+                });
+            }
+        }));
+    }
+
+    // Coroutine to check if the device can reach a remote server (a more reliable internet check)
+    private IEnumerator CheckInternetConnection(System.Action<bool> action)
+    {
+        Ping ping = new Ping("8.8.8.8"); // Google's public DNS
+        float timeout = 5.0f; // Timeout duration (in seconds)
+        float startTime = Time.time;
+
+        while (!ping.isDone && Time.time - startTime < timeout)
+        {
+            yield return null; // Wait for the ping to finish
+        }
+
+        if (ping.isDone && ping.time >= 0)
+        {
+            action(true); // Internet is reachable
+        }
+        else
+        {
+            action(false); // Internet is not reachable
+        }
+    }
+
+    public void ExitGame()
+    {
+        Debug.Log("Exit button pressed");
+        // Closes the application
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     // Error Handling

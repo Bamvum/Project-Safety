@@ -35,6 +35,7 @@ public class FirebaseManager : MonoBehaviour
                 app = FirebaseApp.DefaultInstance;
                 auth = FirebaseAuth.DefaultInstance;
                 database = FirebaseDatabase.DefaultInstance;
+                FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(true);
                 databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
                 Debug.Log("Firebase initialized.");
             }
@@ -44,6 +45,60 @@ public class FirebaseManager : MonoBehaviour
             }
         });
     }
+
+    public static void DeleteGuestData()
+    {
+        if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous)
+        {
+            // Delete guest user's data from the database
+            databaseReference
+                .Child("users")
+                .Child(auth.CurrentUser.UserId)
+                .RemoveValueAsync()
+                .ContinueWithOnMainThread(task => {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log("Guest user data deleted successfully.");
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to delete guest data: " + task.Exception);
+                    }
+                });
+        }
+    }
+
+    public static void DeleteGuestAccount()
+    {
+        if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous)
+        {
+            auth.CurrentUser.DeleteAsync().ContinueWithOnMainThread(task => {
+                if (task.IsCompleted)
+                {
+                    Debug.Log("Guest user account deleted successfully.");
+                }
+                else
+                {
+                    Debug.LogError("Failed to delete guest account: " + task.Exception);
+                }
+            });
+        }
+    }
+
+    public static void SignOut()
+    {
+        auth.SignOut();
+        Debug.Log("User has been signed out.");
+    }
+
+    // This method is called when the application is about to quit
+    private void OnApplicationQuit()
+    {
+        FirebaseManager.DeleteGuestData();
+        FirebaseManager.DeleteGuestAccount();
+        SignOut();  // Log the user out when the game quits
+    }
+
 
     // Save the player's decision in the database
     public void SaveDecision(string userId, string act, string decisionKey, bool decisionValue)
