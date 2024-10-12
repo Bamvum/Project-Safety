@@ -238,7 +238,7 @@ public class PlayerMovement : MonoBehaviour
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
             Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-            transform.Rotate(Vector3.up, horizontalLookInput * xMouseSensitivity * Time.deltaTime);
+            transform.Rotate(Vector3.up, horizontalLookInput * SettingMenu.instance.xMouseSensSlider.value * Time.deltaTime);
 
         }
         else if(DeviceManager.instance.gamepadDevice)
@@ -246,11 +246,11 @@ public class PlayerMovement : MonoBehaviour
             // gamepadSensitivity = 121.9f;
 
             // xRotation -= verticalLookInput * xGamepadSensitivity * Time.deltaTime;
-            xRotation -= verticalLookInput * SettingMenu.instance.yMouseSensSlider.value * Time.deltaTime;
+            xRotation -= verticalLookInput * SettingMenu.instance.xGamepadSensSlider.value * Time.deltaTime;
             xRotation = Mathf.Clamp(xRotation, upperLimit, bottomLimit);
 
             Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-            transform.Rotate(Vector3.up, horizontalLookInput * xMouseSensitivity * Time.deltaTime);
+            transform.Rotate(Vector3.up, horizontalLookInput * SettingMenu.instance.xGamepadSensSlider.value * Time.deltaTime);
         }
     }
 }

@@ -15,6 +15,12 @@ public class Act2Scene2SceneManager : MonoBehaviour
     [Header("Trigger Dialogue")]
     [SerializeField] DialogueTrigger startDialogue;
 
+    [Header("HUD")]
+    [SerializeField] CanvasGroup sceneNameText;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource bgm;
+
     void Start()
     {
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
@@ -27,16 +33,34 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     IEnumerator FadeOutEffect()
     {
-        yield return new WaitForSeconds(3);
-                        LoadingSceneManager.instance.fadeImage
-            .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+        yield return new WaitForSeconds(1);
+        sceneNameText.gameObject.SetActive(true);
+        sceneNameText.DOFade(1, 1).OnComplete(() =>
+        {
+            sceneNameText.DOFade(1,1).OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1).OnComplete(() =>
+                {
+                    sceneNameText.gameObject.SetActive(false);
+                });
+            });
+        });
+
+
+        yield return new WaitForSeconds(5);
+        
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-            // TRIGGER DIALOGUE
-            Debug.Log("Trigger Dialogue");
-            startDialogue.StartDialogue();
+            bgm.Play();
+            bgm.DOFade(1, 1).OnComplete(() =>
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                // TRIGGER DIALOGUE
+                Debug.Log("Trigger Dialogue");
+                startDialogue.StartDialogue();
+            });
         });
     }
 

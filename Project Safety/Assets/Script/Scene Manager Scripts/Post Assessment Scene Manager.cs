@@ -24,13 +24,20 @@ public class PostAssessmentSceneManager : MonoBehaviour
     IEnumerator FadeOutEffect()
     {
         yield return new WaitForSeconds(1);
-        sceneNameText.DOFade(1, 1).OnComplete(() =>
-        {
-            sceneNameText.DOFade(1,1).OnComplete(() =>
-            {
-                sceneNameText.DOFade(0, 1);
-            });
-        });
+        // sceneNameText.DOFade(1, 1).OnComplete(() =>
+        // {
+        //     sceneNameText.DOFade(1,1).OnComplete(() =>
+        //     {
+        //         sceneNameText.DOFade(0, 1);
+        //     });
+        // });
+
+        sceneNameText.DOFade(1, 1);
+        
+        yield return new WaitForSeconds(1);
+
+        sceneNameText.DOFade(0, 1);
+
         yield return new WaitForSeconds(5);
 
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
@@ -42,6 +49,4 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 sceneBGM.Play();
             });
     }
-
-    
 }
