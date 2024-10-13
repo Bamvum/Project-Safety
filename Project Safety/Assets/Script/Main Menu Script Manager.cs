@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
+using System;
 
 
 public class MainMenuScriptManager : MonoBehaviour
@@ -23,10 +24,12 @@ public class MainMenuScriptManager : MonoBehaviour
     [Space(5)]
     [SerializeField] RectTransform selectSceneRectTransform;
     [SerializeField] CanvasGroup selectSceneButtonCG;
+    [SerializeField] TMP_Text selectSceneNavGuide;
 
     [Space(5)]
     [SerializeField] RectTransform settingRectTransform;
     [SerializeField] CanvasGroup settingButtonCG;
+    [SerializeField] TMP_Text settingNavGuide;
 
     [Space(15)]
     [SerializeField] RectTransform audioSettingRectTransform;
@@ -42,6 +45,12 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] GameObject mainMenuSelectedButton; 
     [SerializeField] GameObject selectSceneSelectedButton; 
     [SerializeField] GameObject settingSelectedButton;
+
+    [Space(5)]
+    [SerializeField] GameObject audioSettingSelectedButton;
+    [SerializeField] GameObject graphicsSettingSelectedButton;
+    [SerializeField] GameObject controlsSettingSelectedButton;
+    [SerializeField] GameObject languageSettingSelectedButton;
 
 
     [Header("Audio")]
@@ -62,10 +71,84 @@ public class MainMenuScriptManager : MonoBehaviour
         playerControls.MainMenu.Action.performed += ctx => actionInput = true; 
         playerControls.MainMenu.Action.canceled += ctx => actionInput = false; 
 
+        playerControls.MainMenu.PreviousCategory.performed += SettingPreviousCategory;
+        playerControls.MainMenu.NextCategory.performed += SettingNextCategory;
+
+        playerControls.MainMenu.Back.performed += ToBack;
+
         playerControls.MainMenu.Enable();
     }
 
+    #region - SETTING PREVIOUS CATEGORY -
+
+    private void SettingPreviousCategory(InputAction.CallbackContext context)
+    {
+        if(audioSettingRectTransform.gameObject.activeSelf)
+        {
+            Debug.Log("Can't previous Category");
+        }
+        else if(graphicsSettingRectTransform.gameObject.activeSelf)
+        {
+            audioSettingRectTransform.gameObject.SetActive(true);
+            graphicsSettingRectTransform.gameObject.SetActive(false);
+        }
+        else if(controlsSettingRectTransform.gameObject.activeSelf)
+        {
+            graphicsSettingRectTransform.gameObject.SetActive(true);
+            controlsSettingRectTransform.gameObject.SetActive(false);
+        }
+        else if (languageSettingRectTransform.gameObject.activeSelf)
+        {
+            controlsSettingRectTransform.gameObject.SetActive(true);
+            languageSettingRectTransform.gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
+
+    #region - SETTING NEXT CATEGORY -
+
+    private void SettingNextCategory(InputAction.CallbackContext context)
+    {
+        if (audioSettingRectTransform.gameObject.activeSelf)
+        {
+            audioSettingRectTransform.gameObject.SetActive(false);
+            graphicsSettingRectTransform.gameObject.SetActive(true);
+        }
+        else if(graphicsSettingRectTransform.gameObject.activeSelf)
+        {
+            graphicsSettingRectTransform.gameObject.SetActive(false);
+            controlsSettingRectTransform.gameObject.SetActive(true);
+        }
+        else if(controlsSettingRectTransform.gameObject.activeSelf)
+        {
+            controlsSettingRectTransform.gameObject.SetActive(false);
+            languageSettingRectTransform.gameObject.SetActive(true);
+        }
+        else if(languageSettingRectTransform.gameObject.activeSelf)
+        {
+            Debug.Log("Can't Next Category");
+        }
+    }
+
+    #endregion
     
+    #region - RETURN OR BACK -
+
+    private void ToBack(InputAction.CallbackContext context)
+    {
+        if(selectSceneRectTransform.gameObject.activeSelf)
+        {
+            selectSceneBack();
+        }
+        else if(settingRectTransform.gameObject.activeSelf)
+        {
+            SettingBack();
+        }
+    }
+    
+    #endregion
+
     void OnDisable()
     {
         playerControls.MainMenu.Disable();
@@ -152,6 +235,8 @@ public class MainMenuScriptManager : MonoBehaviour
         DeviceInputCheckerPingPongText();
 
         DeviceInputCheckerUI();
+
+        DeviceInputCheckerNavGuide();
 
         // GAMEPAD VIBRATION ON NAVIGATION 
         if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
@@ -244,9 +329,62 @@ public class MainMenuScriptManager : MonoBehaviour
 
                 if (settingRectTransform.gameObject.activeSelf)
                 {
-                    EventSystem.current.SetSelectedGameObject(settingSelectedButton);
-                    isGamepad = true;
+                    if(audioSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(audioSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if(graphicsSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(graphicsSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if (controlsSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(controlsSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if (languageSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(languageSettingSelectedButton);
+                        isGamepad = true;
+                    }
                 }
+            }
+        }
+    }
+
+    #endregion
+
+    #region  - NAVIGATION GUIDE -
+
+    void DeviceInputCheckerNavGuide()
+    {
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            if(selectSceneRectTransform.gameObject.activeSelf)
+            {
+                selectSceneNavGuide.text = "<sprite name=\"Escape\"> Back   ";
+            }
+            
+            if(settingRectTransform.gameObject.activeSelf)
+            {
+                selectSceneNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+            }
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            if(selectSceneRectTransform.gameObject.activeSelf)
+            {
+                settingNavGuide.text = "<sprite name=\"Circle\"> Back   ";
+            }
+            
+            if(settingRectTransform.gameObject.activeSelf)
+            {
+                settingNavGuide.text = "<sprite name=\"Left Shoulder\"> <sprite name=\"Right Shoulder\">  Switch Category   <sprite name=\"Circle\"> Back   ";
             }
         }
     }

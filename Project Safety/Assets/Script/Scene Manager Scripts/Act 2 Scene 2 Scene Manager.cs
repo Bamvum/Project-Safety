@@ -37,7 +37,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
         sceneNameText.gameObject.SetActive(true);
         sceneNameText.DOFade(1, 1).OnComplete(() =>
         {
-            sceneNameText.DOFade(1,1).OnComplete(() =>
+            sceneNameText.DOFade(1,2).OnComplete(() =>
             {
                 sceneNameText.DOFade(0, 1).OnComplete(() =>
                 {

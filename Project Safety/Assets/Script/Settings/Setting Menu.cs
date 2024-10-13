@@ -80,6 +80,8 @@ public class SettingMenu : MonoBehaviour
         dialogueSpeedSlider.value = PlayerPrefs.GetFloat("DialogueSpeed");
         languageDropdown.value = PlayerPrefs.GetInt("Language");
 
+        Debug.Log("Dialogue Slider: " + dialogueSpeedSlider.value);
+
     }
 
     #region - VOLUME -
@@ -176,8 +178,8 @@ public class SettingMenu : MonoBehaviour
 
     public void SetDialogueSpeed(float dialogueSpeed)
     {
-        DialogueManager.instance.typingSpeed = dialogueSpeed;
-        // dialogueSpeedSlider.value = dialogueSpeed;
+        // DialogueManager.instance.typingSpeed = dialogueSpeed;
+        dialogueSpeedSlider.value = dialogueSpeed;
         PlayerPrefs.SetFloat("DialogueSpeed", dialogueSpeed);
     }
 

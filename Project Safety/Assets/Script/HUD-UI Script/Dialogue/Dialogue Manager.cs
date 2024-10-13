@@ -66,7 +66,10 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float punchScale = 0.2f;
 
 
-
+    void Start()
+    {
+        Debug.Log(SettingMenu.instance.dialogueSpeedSlider.value);
+    }
 
     void OnEnable()
     {
@@ -83,6 +86,8 @@ public class DialogueManager : MonoBehaviour
         playerControls.SpeechDialogue.Option3.canceled += ctx => option3Input = false;
 
         playerControls.SpeechDialogue.Enable();
+
+       
     }
 
     void OnDisable()
