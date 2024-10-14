@@ -30,7 +30,13 @@ public class Pause : MonoBehaviour
     [Space(5)]
     [SerializeField] RectTransform settingRectTransform;
     [SerializeField] CanvasGroup settingButtonCG;
-    
+
+    [Space(15)]
+    [SerializeField] RectTransform audioSettingRectTransform;
+    [SerializeField] RectTransform graphicsSettingRectTransform;
+    [SerializeField] RectTransform controlsSettingRectTransform;
+    [SerializeField] RectTransform languageSettingRectTransform;
+
     [Header("Selected Button")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
     
@@ -49,6 +55,10 @@ public class Pause : MonoBehaviour
     {
         pauseHUDRectTransform.gameObject.SetActive(false);
         pauseHUDRectTransform.localScale = Vector3.zero;
+        pauseButtonCG.interactable = false;
+
+        settingRectTransform.gameObject.SetActive(false);
+        settingButtonCG.interactable = false;
     }
 
     void OnEnable()
@@ -65,7 +75,14 @@ public class Pause : MonoBehaviour
         }
         else 
         {
-            HidePause();
+            if(settingRectTransform.gameObject.activeSelf)
+            {
+                SettingBack();
+            }
+            else
+            {
+                HidePause();
+            }
         }
     }
 
@@ -102,11 +119,13 @@ public class Pause : MonoBehaviour
         // Set a short vibration
         Gamepad.current.SetMotorSpeeds(0.3f, 0.3f); // Adjust the intensity here
         Invoke("StopVibration", 0.1f); // Stops vibration after 0.1 seconds
+        StartCoroutine(StopVibration(.1f));
     }
 
 
-    private void StopVibration()
+    IEnumerator StopVibration(float delay)
     {
+        yield return new WaitForSecondsRealtime(delay);
         Gamepad.current.SetMotorSpeeds(0, 0);
     }
 
@@ -147,7 +166,7 @@ public class Pause : MonoBehaviour
 
     void ShowPause()
     {
-        // Time.timeScale = 0;
+        Time.timeScale = 0;
         // CAN DISABLE SCRIPTS
 
         pauseHUDRectTransform.gameObject.SetActive(true);
@@ -172,7 +191,7 @@ public class Pause : MonoBehaviour
             .OnComplete(() =>
             {
                 pauseHUDRectTransform.gameObject.SetActive(false);
-                // Time.timeScale = 1;
+                Time.timeScale = 1;
                 isPause = false;
             });
 
@@ -215,7 +234,7 @@ public class Pause : MonoBehaviour
                 .OnComplete(() =>
                 {
                     settingRectTransform.gameObject.SetActive(false);
-                    // PAUSE PROPERRTIES
+                    pauseButtonCG.interactable = true;
                 });
         });
     }

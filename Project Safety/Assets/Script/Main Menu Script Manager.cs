@@ -83,25 +83,31 @@ public class MainMenuScriptManager : MonoBehaviour
 
     private void SettingPreviousCategory(InputAction.CallbackContext context)
     {
-        if(audioSettingRectTransform.gameObject.activeSelf)
+        if(settingRectTransform.gameObject.activeSelf)
         {
-            Debug.Log("Can't previous Category");
+            if (audioSettingRectTransform.gameObject.activeSelf)
+            {
+                Debug.Log("Can't previous Category");
+            }
+            else if (graphicsSettingRectTransform.gameObject.activeSelf)
+            {
+                audioSettingRectTransform.gameObject.SetActive(true);
+                graphicsSettingRectTransform.gameObject.SetActive(false);
+            }
+            else if (controlsSettingRectTransform.gameObject.activeSelf)
+            {
+                graphicsSettingRectTransform.gameObject.SetActive(true);
+                controlsSettingRectTransform.gameObject.SetActive(false);
+            }
+            else if (languageSettingRectTransform.gameObject.activeSelf)
+            {
+                controlsSettingRectTransform.gameObject.SetActive(true);
+                languageSettingRectTransform.gameObject.SetActive(false);
+            }
+            
+            isGamepad = false;
         }
-        else if(graphicsSettingRectTransform.gameObject.activeSelf)
-        {
-            audioSettingRectTransform.gameObject.SetActive(true);
-            graphicsSettingRectTransform.gameObject.SetActive(false);
-        }
-        else if(controlsSettingRectTransform.gameObject.activeSelf)
-        {
-            graphicsSettingRectTransform.gameObject.SetActive(true);
-            controlsSettingRectTransform.gameObject.SetActive(false);
-        }
-        else if (languageSettingRectTransform.gameObject.activeSelf)
-        {
-            controlsSettingRectTransform.gameObject.SetActive(true);
-            languageSettingRectTransform.gameObject.SetActive(false);
-        }
+        
     }
 
     #endregion
@@ -110,24 +116,29 @@ public class MainMenuScriptManager : MonoBehaviour
 
     private void SettingNextCategory(InputAction.CallbackContext context)
     {
-        if (audioSettingRectTransform.gameObject.activeSelf)
+        if(settingRectTransform.gameObject.activeSelf)
         {
-            audioSettingRectTransform.gameObject.SetActive(false);
-            graphicsSettingRectTransform.gameObject.SetActive(true);
-        }
-        else if(graphicsSettingRectTransform.gameObject.activeSelf)
-        {
-            graphicsSettingRectTransform.gameObject.SetActive(false);
-            controlsSettingRectTransform.gameObject.SetActive(true);
-        }
-        else if(controlsSettingRectTransform.gameObject.activeSelf)
-        {
-            controlsSettingRectTransform.gameObject.SetActive(false);
-            languageSettingRectTransform.gameObject.SetActive(true);
-        }
-        else if(languageSettingRectTransform.gameObject.activeSelf)
-        {
-            Debug.Log("Can't Next Category");
+            if (audioSettingRectTransform.gameObject.activeSelf)
+            {
+                audioSettingRectTransform.gameObject.SetActive(false);
+                graphicsSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (graphicsSettingRectTransform.gameObject.activeSelf)
+            {
+                graphicsSettingRectTransform.gameObject.SetActive(false);
+                controlsSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (controlsSettingRectTransform.gameObject.activeSelf)
+            {
+                controlsSettingRectTransform.gameObject.SetActive(false);
+                languageSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (languageSettingRectTransform.gameObject.activeSelf)
+            {
+                Debug.Log("Can't Next Category");
+            }
+        
+            isGamepad = false;
         }
     }
 
@@ -372,14 +383,14 @@ public class MainMenuScriptManager : MonoBehaviour
             
             if(settingRectTransform.gameObject.activeSelf)
             {
-                selectSceneNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+                settingNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
             }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
             if(selectSceneRectTransform.gameObject.activeSelf)
             {
-                settingNavGuide.text = "<sprite name=\"Circle\"> Back   ";
+                selectSceneNavGuide.text = "<sprite name=\"Circle\"> Back   ";
             }
             
             if(settingRectTransform.gameObject.activeSelf)
