@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.iOS;
 using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
@@ -16,6 +17,21 @@ public class GameOver : MonoBehaviour
     [Header("HUD")] 
     [SerializeField] RectTransform gameOverHUDRectTransform;
     [SerializeField] CanvasGroup gameOverCG;
+
+    [Header("Flag")]
+    [SerializeField] bool isGamepad;
+
+    void Update()
+    {
+        if(DeviceManager.instance.keyboardDevice)
+        {
+            
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+
+        }
+    }
 
     public void GameIsOver()
     {

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
+using TMPro;
+using UnityEditor.PackageManager;
 
 public class Act2Scene2SceneManager : MonoBehaviour
 {
@@ -18,8 +21,18 @@ public class Act2Scene2SceneManager : MonoBehaviour
     [Header("HUD")]
     [SerializeField] CanvasGroup sceneNameText;
 
+    [Space(10)]
+    [SerializeField] TMP_Text timerText;
+    [SerializeField] float remainingTime;
+
+    // [Space(10)]
+    // [SerializeField] GameObject ;
+
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
+    
+    [Header("Flag")]
+    [SerializeField] bool isStopTimer;
 
     void Start()
     {
@@ -27,7 +40,9 @@ public class Act2Scene2SceneManager : MonoBehaviour
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
                                                          1);
-        
+        TimerStatus(true);
+        EscapeTimer();
+
         StartCoroutine(FadeOutEffect());
     }
 
@@ -66,6 +81,61 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     void Update()
     {
-        
+        if(!isStopTimer)
+        {
+            EscapeTimer();
+        }
     }
+
+    #region - TIMER -
+
+    void EscapeTimer()
+    {
+        remainingTime -= Time.deltaTime;
+
+        // Calculate minutes, seconds, and centiseconds
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
+        int centiseconds = Mathf.FloorToInt((remainingTime * 100) % 100);
+
+        // Update the timer text with minutes, seconds, and centiseconds
+        timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, centiseconds);
+
+    }
+
+    public void TimerStatus(bool stopTimer)
+    {
+        isStopTimer = stopTimer;
+    }
+
+    public void DecreaseTimer(float decreaseValue)
+    {
+        remainingTime -= decreaseValue;
+    }
+
+    #endregion
+
+    #region - ELEVATOR SPECIAL EVENT -
+
+    public void Elevator()
+    {
+        StartCoroutine(ElevatorGameOver());
+    }
+
+    IEnumerator ElevatorGameOver()
+    {
+        yield return new WaitForSeconds(1);
+
+        // FADE IN
+        // TELEPORT PLAYER INSIDE ELEVATOR
+        // FADE OUT
+        // DOOR MALFUNCTION 
+        // SMOKE FRON BELOW FLOOR RAISE AND ENTER INSIDE THE ELEVATOR
+        // PLAYER SUFFOCATE INSIDE
+        
+        //
+
+    }
+
+    #endregion
 }

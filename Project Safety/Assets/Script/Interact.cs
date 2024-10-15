@@ -150,6 +150,18 @@ public class Interact : MonoBehaviour
                 {
                     interactable.BussEnter();
                 }
+                else if(interactable.toGatherBelongings)
+                {
+                    interactable.GatherBelongings();
+                }
+                else if(interactable.FallInLineInStairs)
+                {
+                    interactable.WaitInStairs();
+                }
+                else if(interactable.Elevator)
+                {
+                    interactable.UseElevator();
+                }
             }
         }
     }

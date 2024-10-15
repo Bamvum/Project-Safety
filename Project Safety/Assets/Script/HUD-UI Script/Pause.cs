@@ -26,12 +26,13 @@ public class Pause : MonoBehaviour
     [Space(5)]
     [SerializeField] RectTransform pauseHUDRectTransform;
     [SerializeField] CanvasGroup pauseButtonCG;
+    [SerializeField] TMP_Text settingNavGuide;
 
     [Space(5)]
     [SerializeField] RectTransform settingRectTransform;
     [SerializeField] CanvasGroup settingButtonCG;
 
-    [Space(15)]
+    [Space(5)]
     [SerializeField] RectTransform audioSettingRectTransform;
     [SerializeField] RectTransform graphicsSettingRectTransform;
     [SerializeField] RectTransform controlsSettingRectTransform;
@@ -42,8 +43,14 @@ public class Pause : MonoBehaviour
     
     [Space(5)]
     [SerializeField] GameObject pauseSelectedButton; 
-    [SerializeField] GameObject settingSelectedButton; 
+    [SerializeField] GameObject settingSelectedButton;
 
+    [Space(5)]
+    [SerializeField] GameObject audioSettingSelectedButton;
+    [SerializeField] GameObject graphicsSettingSelectedButton;
+    [SerializeField] GameObject controlsSettingSelectedButton;
+    [SerializeField] GameObject languageSettingSelectedButton;
+    
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
 
@@ -64,8 +71,91 @@ public class Pause : MonoBehaviour
     void OnEnable()
     {
         playerControls.Pause.Action.performed += ToPause;
+
+        playerControls.Pause.NextCategory.performed += SettingNextCategoty;
+        playerControls.Pause.PreviousCategory.performed += SettingPreviousCategoty;
+
+        playerControls.Pause.Back.performed += ToBack;
+
         playerControls.Pause.Enable();
     }
+
+    #region - SETTING NEXT CATEGORY -
+    private void SettingNextCategoty(InputAction.CallbackContext context)
+    {
+        if(settingRectTransform.gameObject.activeSelf)
+        {
+            if (audioSettingRectTransform.gameObject.activeSelf)
+            {
+                audioSettingRectTransform.gameObject.SetActive(false);
+                graphicsSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (graphicsSettingRectTransform.gameObject.activeSelf)
+            {
+                graphicsSettingRectTransform.gameObject.SetActive(false);
+                controlsSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (controlsSettingRectTransform.gameObject.activeSelf)
+            {
+                controlsSettingRectTransform.gameObject.SetActive(false);
+                languageSettingRectTransform.gameObject.SetActive(true);
+            }
+            else if (languageSettingRectTransform.gameObject.activeSelf)
+            {
+                Debug.Log("Can't Next Category");
+            }
+        
+            isGamepad = false;
+        }
+    }
+
+    #endregion
+
+    #region - SETTING PREVIOUS CATEGORY - 
+
+    private void SettingPreviousCategoty(InputAction.CallbackContext context)
+    {
+        if (settingRectTransform.gameObject.activeSelf)
+        {
+            if (audioSettingRectTransform.gameObject.activeSelf)
+            {
+                Debug.Log("Can't previous Category");
+            }
+            else if (graphicsSettingRectTransform.gameObject.activeSelf)
+            {
+                audioSettingRectTransform.gameObject.SetActive(true);
+                graphicsSettingRectTransform.gameObject.SetActive(false);
+            }
+            else if (controlsSettingRectTransform.gameObject.activeSelf)
+            {
+                graphicsSettingRectTransform.gameObject.SetActive(true);
+                controlsSettingRectTransform.gameObject.SetActive(false);
+            }
+            else if (languageSettingRectTransform.gameObject.activeSelf)
+            {
+                controlsSettingRectTransform.gameObject.SetActive(true);
+                languageSettingRectTransform.gameObject.SetActive(false);
+            }
+            
+            isGamepad = false;
+        }
+    }
+
+    #endregion
+
+    #region - TO BACK - 
+
+    private void ToBack(InputAction.CallbackContext context)
+    {
+        if(settingRectTransform.gameObject.activeSelf)
+        {
+            SettingBack();
+        }
+    }
+
+    #endregion
+
+    #region - TO PAUSE - 
 
     private void ToPause(InputAction.CallbackContext context)
     {
@@ -75,16 +165,48 @@ public class Pause : MonoBehaviour
         }
         else 
         {
-            if(settingRectTransform.gameObject.activeSelf)
-            {
-                SettingBack();
-            }
-            else
+            if(!settingRectTransform.gameObject.activeSelf)
             {
                 HidePause();
             }
         }
     }
+
+    void ShowPause()
+    {
+        Time.timeScale = 0;
+        // CAN DISABLE SCRIPTS
+
+        pauseHUDRectTransform.gameObject.SetActive(true);
+        pauseButtonCG.interactable = false;
+
+        bgm.DOFade(.25f, 1);
+        pauseHUDRectTransform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBack)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                pauseButtonCG.interactable = true;
+                isGamepad = false;
+                isPause = true;
+            });
+    }
+    
+    public void HidePause()
+    {
+        bgm.DOFade(1, 1);
+        pauseButtonCG.interactable = false;
+        pauseHUDRectTransform.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                pauseHUDRectTransform.gameObject.SetActive(false);
+                Time.timeScale = 1;
+                isGamepad = false;
+                isPause = false;
+            });
+    }
+
+    #endregion
 
     void OnDisable()
     {
@@ -94,6 +216,7 @@ public class Pause : MonoBehaviour
     void Update()
     {
         DeviceInputCheckerUI();
+        DeviceInputCheckerNavGuide();
 
         // GAMEPAD VIBRATION ON NAVIGATION 
         if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
@@ -129,6 +252,7 @@ public class Pause : MonoBehaviour
         Gamepad.current.SetMotorSpeeds(0, 0);
     }
 
+    #region - DEVICE INPUT CHECKER [HUD/UI]
 
     void DeviceInputCheckerUI()
     {
@@ -154,48 +278,60 @@ public class Pause : MonoBehaviour
                     isGamepad = true;
                 }
 
-                if(settingRectTransform.gameObject.activeSelf)
+                if (settingRectTransform.gameObject.activeSelf)
                 {
-                    EventSystem.current.SetSelectedGameObject(settingSelectedButton);
-                    isGamepad = true;
+                    if(audioSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(audioSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if(graphicsSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(graphicsSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if (controlsSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(controlsSettingSelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if (languageSettingRectTransform.gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(languageSettingSelectedButton);
+                        isGamepad = true;
+                    }
                 }
                 
             }
         }
     }
 
-    void ShowPause()
+    #endregion
+
+    #region - NAVIGATION GUIDE -
+
+    void DeviceInputCheckerNavGuide()
     {
-        Time.timeScale = 0;
-        // CAN DISABLE SCRIPTS
-
-        pauseHUDRectTransform.gameObject.SetActive(true);
-        pauseButtonCG.interactable = false;
-
-        bgm.DOFade(.25f, 1);
-        pauseHUDRectTransform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBack)
-            .SetUpdate(true)
-            .OnComplete(() =>
+        if(DeviceManager.instance.keyboardDevice)
+        {   
+            if(settingRectTransform.gameObject.activeSelf)
             {
-                pauseButtonCG.interactable = true;
-                isPause = true;
-            });
+                settingNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+            }
+        }
+        else if(DeviceManager.instance.gamepadDevice)
+        {
+            if(settingRectTransform.gameObject.activeSelf)
+            {
+                settingNavGuide.text = "<sprite name=\"Left Shoulder\"> <sprite name=\"Right Shoulder\">  Switch Category   <sprite name=\"Circle\"> Back   ";
+            }
+        }
     }
 
-    void HidePause()
-    {
-        bgm.DOFade(1, 1);
-        pauseButtonCG.interactable = false;
-        pauseHUDRectTransform.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                pauseHUDRectTransform.gameObject.SetActive(false);
-                Time.timeScale = 1;
-                isPause = false;
-            });
-
-    }
+    #endregion
 
 
     public void DisplaySetting()
@@ -235,6 +371,7 @@ public class Pause : MonoBehaviour
                 {
                     settingRectTransform.gameObject.SetActive(false);
                     pauseButtonCG.interactable = true;
+                    isGamepad = false;
                 });
         });
     }
