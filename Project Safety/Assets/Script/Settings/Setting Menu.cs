@@ -169,6 +169,8 @@ public class SettingMenu : MonoBehaviour
             else
             {
                 Debug.Log("No settings found for the user in Firebase.");
+                Debug.Log("Loading local.");
+                LoadSettingsFromPlayerPrefs();
             }
         });
     }
