@@ -24,9 +24,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
     [Space(10)]
     [SerializeField] TMP_Text timerText;
     [SerializeField] float remainingTime;
-
-    // [Space(10)]
-    // [SerializeField] GameObject ;
+    [SerializeField] TMP_Text timerDecrease;
 
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
@@ -117,24 +115,10 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     #region - ELEVATOR SPECIAL EVENT -
 
-    public void Elevator()
+    public void PlayerToElevator(Transform locationPosition)
     {
-        StartCoroutine(ElevatorGameOver());
-    }
-
-    IEnumerator ElevatorGameOver()
-    {
-        yield return new WaitForSeconds(1);
-
-        // FADE IN
-        // TELEPORT PLAYER INSIDE ELEVATOR
-        // FADE OUT
-        // DOOR MALFUNCTION 
-        // SMOKE FRON BELOW FLOOR RAISE AND ENTER INSIDE THE ELEVATOR
-        // PLAYER SUFFOCATE INSIDE
-        
-        //
-
+        PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
+        // ROTATE PLAYER
     }
 
     #endregion

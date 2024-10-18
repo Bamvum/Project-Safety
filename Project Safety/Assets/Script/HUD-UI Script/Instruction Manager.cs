@@ -47,8 +47,12 @@ public class InstructionManager : MonoBehaviour
         // Ensure buttons are set correctly
         UpdateButtonStates();
 
-        instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
-        instructionContentCG.alpha = 0;
+        // instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
+        // instructionContentCG.alpha = 0;
+
+        // instructionBGRectTransform.localScale = Vector3.one;
+        // instructionContentCG.interactable = false;
+
     }
     
     void Update()
@@ -161,14 +165,29 @@ public class InstructionManager : MonoBehaviour
 
         Debug.Log("Display Instruction!");
         instructionHUD.SetActive(true);
-        instructionBGRectTransform.DOSizeDelta(new Vector2(1920, instructionBGRectTransform.sizeDelta.y), .5f)
-            .SetEase(Ease.InQuad)
+        
+        // FOR NEW LOOK FOR INSTRUCTION HUD
+
+        instructionBGRectTransform.DOScale(Vector3.one, .5f)
+            .SetEase(Ease.OutBack)
             .SetUpdate(true)
             .OnComplete(() =>
         {
             instructionContent.SetActive(true);
-            instructionContentCG.DOFade(1, .75f).SetUpdate(true);
+            instructionContentCG.interactable = true;
         });
+
+        
+
+
+        // instructionBGRectTransform.DOSizeDelta(new Vector2(1920, instructionBGRectTransform.sizeDelta.y), .5f)
+        //     .SetEase(Ease.InQuad)
+        //     .SetUpdate(true)
+        //     .OnComplete(() =>
+        // {
+        //     instructionContent.SetActive(true);
+        //     instructionContentCG.DOFade(1, .75f).SetUpdate(true);
+        // });
     }
 
     public void HideInstruction()
