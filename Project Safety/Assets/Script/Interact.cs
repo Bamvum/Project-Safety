@@ -21,6 +21,8 @@ public class Interact : MonoBehaviour
     [HideInInspector] public DialogueTrigger dialogueTrigger;
     Interactable interactable;
 
+    DoorChecking doorChecking;
+
     [Header("Interact")]     
     [SerializeField] float interactRange = 1.5f;
     public GameObject inHandItem;
@@ -112,6 +114,12 @@ public class Interact : MonoBehaviour
                 Debug.Log("NPC Interact!");
                 dialogueTrigger.StartDialogue(); 
             }
+            else if (doorChecking != null)
+            {
+                Debug.Log("Door Checking!");
+                doorChecking.enabled = true;
+                this.enabled = false;
+            }
             else if(interactable != null)
             {
                 if(interactable.isAlarm)
@@ -149,18 +157,6 @@ public class Interact : MonoBehaviour
                 else if (interactable.isBus)
                 {
                     interactable.BussEnter();
-                }
-                else if(interactable.toGatherBelongings)
-                {
-                    interactable.GatherBelongings();
-                }
-                else if(interactable.FallInLineInStairs)
-                {
-                    interactable.WaitInStairs();
-                }
-                else if(interactable.Elevator)
-                {
-                    interactable.UseElevator();
                 }
             }
         }
@@ -276,6 +272,12 @@ public class Interact : MonoBehaviour
                 Debug.Log("Interactable");
                 InteractableRaycast();
             }
+
+            if(hit.collider.gameObject.layer == 14)
+            {
+                Debug.Log("Door Checking");
+                DoorCheckingRaycast();
+            }
         }
     }
 
@@ -287,6 +289,7 @@ public class Interact : MonoBehaviour
         dialogueTrigger = null;
         interactable = null;
         interactObject = null;
+        doorChecking = null;
         rb = null;
         
         PlayerScript.instance.playerMovement.playerAnim.SetBool("Interact", false);
@@ -334,6 +337,17 @@ public class Interact : MonoBehaviour
     void InteractableRaycast()
     {
         interactable = hit.collider.GetComponent<Interactable>();
+
+        ChangeImageStatus(false, true, sprite[0]);
+    }
+
+    #endregion
+
+    #region -DOOR CHECKING RAYCAST -
+    
+    void DoorCheckingRaycast()
+    {
+        doorChecking = hit.collider.GetComponent<DoorChecking>();
 
         ChangeImageStatus(false, true, sprite[0]);
     }

@@ -23,9 +23,7 @@ public class Interactable : MonoBehaviour
     public bool isBus;
 
     [Header("Flags - ACT 2 SCENE 2")]
-    public bool toGatherBelongings;
-    public bool FallInLineInStairs;
-    public bool Elevator;
+    public bool toCheckDoor;
 
 
     [Header("Alarm")]
@@ -284,23 +282,4 @@ public class Interactable : MonoBehaviour
         
         PrologueSceneManager.instance.alarmSFX.volume = 0;
     }
-
-    #region - ACT 2 SCENE 2 INTERACTABLES -
-
-    public void GatherBelongings()
-    {
-        Debug.Log("Gather Belongings");
-    }
-
-    public void WaitInStairs()
-    {
-        Debug.Log("Wait in Line - Stairs");
-    }
-
-    public void UseElevator()
-    {
-        Debug.Log("Use Elevator");
-    }
-
-    #endregion
 }

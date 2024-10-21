@@ -4,7 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using TMPro;
-using UnityEditor.PackageManager;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Act2Scene2SceneManager : MonoBehaviour
 {
@@ -15,8 +16,16 @@ public class Act2Scene2SceneManager : MonoBehaviour
         instance = this;
     }
 
+    [Header("Player")]
+    public float playerHealth;
+    [SerializeField] float playerMaxHealth = 100;
+
     [Header("Trigger Dialogue")]
     [SerializeField] DialogueTrigger startDialogue;
+
+    [Header("Global Volume")]
+    [SerializeField] Volume globalVolume;
+    [SerializeField] Vignette vignette;
 
     [Header("HUD")]
     [SerializeField] CanvasGroup sceneNameText;
@@ -40,6 +49,8 @@ public class Act2Scene2SceneManager : MonoBehaviour
                                                          1);
         TimerStatus(true);
         EscapeTimer();
+
+        GetGlobalVolumeVignette();
 
         StartCoroutine(FadeOutEffect());
     }
@@ -71,17 +82,40 @@ public class Act2Scene2SceneManager : MonoBehaviour
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                 // TRIGGER DIALOGUE
-                Debug.Log("Trigger Dialogue");
-                startDialogue.StartDialogue();
+                // Debug.Log("Trigger Dialogue");
+                // startDialogue.StartDialogue();
+
+                // ENABLE MOVEMENT
+                PlayerScript.instance.playerMovement.enabled = true;
+                PlayerScript.instance.cinemachineInputProvider.enabled = true;
+                PlayerScript.instance.interact.enabled = true;
+                PlayerScript.instance.stamina.enabled = true;
+
+                isStopTimer = false;
             });
         });
     }
+
+    #region - GLOBAL VOLUME -
+
+    void GetGlobalVolumeVignette()
+    {
+        // Try to get the Vignette effect from the volume profile
+        if (globalVolume.profile.TryGet<Vignette>(out vignette))
+        {
+            // Vignette successfully retrieved
+        }
+        
+    }
+
+    #endregion
 
     void Update()
     {
         if(!isStopTimer)
         {
             EscapeTimer();
+            PlayerHealthInhilationChecker();
         }
     }
 
@@ -118,7 +152,32 @@ public class Act2Scene2SceneManager : MonoBehaviour
     public void PlayerToElevator(Transform locationPosition)
     {
         PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
-        // ROTATE PLAYER
+        PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0,0,0);
+    }
+
+    #endregion
+
+    #region - PLAYER SMOKE INHILATION
+ 
+    void PlayerHealthInhilationChecker()
+    {
+        if(playerHealth <= 0)
+        {
+            GameOver.instance.ShowGameOver();
+        }
+        else
+        {
+            // GET GLOBAL VOLUME VIGNETTE INTENSITY AND SMOOTHNESS
+
+            // Adjust the vignette based on player's health
+            vignette.intensity.value = Mathf.Lerp(0.25f, 1f, 1 - (playerHealth / playerMaxHealth));
+            vignette.smoothness.value = Mathf.Lerp(0.4f, 0.8f, 1 - (playerHealth / playerMaxHealth));
+        }
+    }
+
+    public void PlayerHealthDamage(float damage)
+    {
+        playerHealth -= damage;
     }
 
     #endregion

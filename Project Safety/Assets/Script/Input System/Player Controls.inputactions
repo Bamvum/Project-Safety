@@ -1619,6 +1619,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "CheckDoor",
+            "id": "c01fd5e1-14d7-4389-a646-66a90243b768",
+            "actions": [
+                {
+                    "name": "Open",
+                    "type": "Button",
+                    "id": "0a1e4a83-b26f-4bfb-8264-a71de3c7483b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": " Test",
+                    "type": "Button",
+                    "id": "ef71fe44-ad5e-4097-8e57-990d361658b1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4ff2994f-f52a-4d8d-ba13-9ed413e59b37",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5bae23f-21ed-4980-99f6-efe69da43abc",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c76c6f3d-316f-4665-b5c2-34d9477516a4",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": " Test",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "757f5aed-cada-43d6-893e-74eca798ba7b",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": " Test",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

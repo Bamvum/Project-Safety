@@ -35,8 +35,6 @@ public class GameOver : MonoBehaviour
 
     public void GameIsOver()
     {
-        Time.timeScale = 0;
-
         if(SceneManager.GetActiveScene().name == "Act 2 Scene 1")
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -76,6 +74,8 @@ public class GameOver : MonoBehaviour
 
     public void ShowGameOver()
     {
+        Time.timeScale = 0;
+
         gameOverHUDRectTransform.sizeDelta = new Vector2(0, 700);
         gameOverCG.interactable = false;
         
@@ -95,18 +95,22 @@ public class GameOver : MonoBehaviour
             });
     }
 
-    public void HideGameOver()
+    public void GoToMainMenu()
     {
-        gameOverCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            gameOverCG.gameObject.SetActive(false);
-            gameOverHUDRectTransform.DOSizeDelta(new Vector2(gameOverHUDRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    // TRIGGER LOADING SCREEN 
-                });
-        });
+        gameOverCG.interactable = false;
+
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                PlayerScript.instance.DisablePlayerScripts();
+
+                LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                LoadingSceneManager.instance.enabled = true;
+
+                LoadingSceneManager.instance.sceneName = "Main Menu";
+            });
     }
 }

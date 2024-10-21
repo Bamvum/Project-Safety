@@ -1641,6 +1641,76 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""CheckDoor"",
+            ""id"": ""c01fd5e1-14d7-4389-a646-66a90243b768"",
+            ""actions"": [
+                {
+                    ""name"": ""Open"",
+                    ""type"": ""Button"",
+                    ""id"": ""0a1e4a83-b26f-4bfb-8264-a71de3c7483b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": "" Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef71fe44-ad5e-4097-8e57-990d361658b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4ff2994f-f52a-4d8d-ba13-9ed413e59b37"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5bae23f-21ed-4980-99f6-efe69da43abc"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c76c6f3d-316f-4665-b5c2-34d9477516a4"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": "" Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""757f5aed-cada-43d6-893e-74eca798ba7b"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": "" Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1723,6 +1793,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_StayCalm_Button2 = m_StayCalm.FindAction("Button 2", throwIfNotFound: true);
         m_StayCalm_Button3 = m_StayCalm.FindAction("Button 3", throwIfNotFound: true);
         m_StayCalm_Button4 = m_StayCalm.FindAction("Button 4", throwIfNotFound: true);
+        // CheckDoor
+        m_CheckDoor = asset.FindActionMap("CheckDoor", throwIfNotFound: true);
+        m_CheckDoor_Open = m_CheckDoor.FindAction("Open", throwIfNotFound: true);
+        m_CheckDoor_Test = m_CheckDoor.FindAction(" Test", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2734,6 +2808,60 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public StayCalmActions @StayCalm => new StayCalmActions(this);
+
+    // CheckDoor
+    private readonly InputActionMap m_CheckDoor;
+    private List<ICheckDoorActions> m_CheckDoorActionsCallbackInterfaces = new List<ICheckDoorActions>();
+    private readonly InputAction m_CheckDoor_Open;
+    private readonly InputAction m_CheckDoor_Test;
+    public struct CheckDoorActions
+    {
+        private @PlayerControls m_Wrapper;
+        public CheckDoorActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Open => m_Wrapper.m_CheckDoor_Open;
+        public InputAction @Test => m_Wrapper.m_CheckDoor_Test;
+        public InputActionMap Get() { return m_Wrapper.m_CheckDoor; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CheckDoorActions set) { return set.Get(); }
+        public void AddCallbacks(ICheckDoorActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CheckDoorActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CheckDoorActionsCallbackInterfaces.Add(instance);
+            @Open.started += instance.OnOpen;
+            @Open.performed += instance.OnOpen;
+            @Open.canceled += instance.OnOpen;
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
+        }
+
+        private void UnregisterCallbacks(ICheckDoorActions instance)
+        {
+            @Open.started -= instance.OnOpen;
+            @Open.performed -= instance.OnOpen;
+            @Open.canceled -= instance.OnOpen;
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
+        }
+
+        public void RemoveCallbacks(ICheckDoorActions instance)
+        {
+            if (m_Wrapper.m_CheckDoorActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICheckDoorActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CheckDoorActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CheckDoorActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CheckDoorActions @CheckDoor => new CheckDoorActions(this);
     public interface IMainMenuActions
     {
         void OnAction(InputAction.CallbackContext context);
@@ -2826,5 +2954,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnButton2(InputAction.CallbackContext context);
         void OnButton3(InputAction.CallbackContext context);
         void OnButton4(InputAction.CallbackContext context);
+    }
+    public interface ICheckDoorActions
+    {
+        void OnOpen(InputAction.CallbackContext context);
+        void OnTest(InputAction.CallbackContext context);
     }
 }
