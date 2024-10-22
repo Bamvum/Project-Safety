@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
-  m_Name: Hammer
+  m_Name: Basketball
   m_EditorClassIdentifier: 
-  itemName: Hammer
-  itemDescription: A sturdy iron hammer with a wooden handle. Perfect for driving
-    nails and general tasks, it's essential for any craftsman or adventurer. Simple,
-    reliable, and built to last.
-  itemDistanceToPlayer: 1.49
+  itemName: Basketball
+  itemDescription: Used to shoot on those basketball hoops to score.
+  itemDistanceToPlayer: 0.5
   itemYoffset: 0
-  isTakable: 1
+  isTakable: 0
   isReadble: 1
