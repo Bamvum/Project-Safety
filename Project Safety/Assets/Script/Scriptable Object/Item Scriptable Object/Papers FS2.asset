@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fire Safety #2
   itemDescription: 
-  itemDistanceToPlayer: 0
+  itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0
-  isReadble: 0
+  isReadble: 1
