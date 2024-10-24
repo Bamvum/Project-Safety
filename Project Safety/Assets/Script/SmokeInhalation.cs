@@ -14,7 +14,7 @@ public class SmokeInhalation : MonoBehaviour
             // HEALTH
 
             Debug.Log("Player inside Smoke");
-            Act2Scene2SceneManager.instance.playerHealth -= .075f;
+            Act2Scene2SceneManager.instance.playerHealth -= .5f;
         }
     }
 }

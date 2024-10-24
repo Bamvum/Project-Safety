@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using UnityEngine.ProBuilder.MeshOperations;
 
 
 public class LoadingSceneManager : MonoBehaviour
@@ -70,7 +69,10 @@ public class LoadingSceneManager : MonoBehaviour
         
         PreviewChecer(sceneName);
         
-        fadeImage.DOFade(0, fadeDuration).SetEase(Ease.Linear).OnComplete(() =>
+        fadeImage.DOFade(0, fadeDuration)
+            .SetEase(Ease.Linear)
+            .SetUpdate(true)
+            .OnComplete(() =>
         {
             Debug.Log("Scene to be Load: " + sceneName);
             StartCoroutine(LoadSceneCoroutine(sceneName));
@@ -118,7 +120,9 @@ public class LoadingSceneManager : MonoBehaviour
                 if(actionPressed)
                 {
                     // Fade Image Problem!!
-                    fadeImage.DOFade(1, fadeDuration).OnComplete(() =>
+                    fadeImage.DOFade(1, fadeDuration)
+                        .SetUpdate(true)
+                        .OnComplete(() =>
                     {
                         asyncOperation.allowSceneActivation = true;
                         sceneName = string.Empty;
@@ -174,6 +178,11 @@ public class LoadingSceneManager : MonoBehaviour
             previewImg.sprite = loadingSO.previewScene[7];
         }
         else if (sceneToBeLoad == "Post Assessment")
+        {
+            int randomIndex = Random.Range(0, loadingSO.previewScene.Length);
+            previewImg.sprite = loadingSO.previewScene[randomIndex];
+        }
+        else if (sceneToBeLoad == "Main Menu")
         {
             int randomIndex = Random.Range(0, loadingSO.previewScene.Length);
             previewImg.sprite = loadingSO.previewScene[randomIndex];

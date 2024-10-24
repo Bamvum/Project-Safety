@@ -24,6 +24,7 @@ public class HUDManager : MonoBehaviour
     public GameObject examineHUD;
     public GameObject dialogueHUD;    
     public GameObject missionHUD;   
+    public GameObject gameOverHUD;
 
     public void FadeInForDialogue()
     {

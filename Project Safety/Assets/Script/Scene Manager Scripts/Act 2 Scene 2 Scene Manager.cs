@@ -41,8 +41,15 @@ public class Act2Scene2SceneManager : MonoBehaviour
     [Header("Flag")]
     [SerializeField] bool isStopTimer;
 
+    [Space(20)]
+    [SerializeField] GameObject firstFloor;
+    [SerializeField] GameObject flashLight;
+    [SerializeField] GameObject invWallGroundToBasement;
+
     void Start()
     {
+        Time.timeScale = 1;
+        
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
@@ -53,17 +60,25 @@ public class Act2Scene2SceneManager : MonoBehaviour
         GetGlobalVolumeVignette();
 
         StartCoroutine(FadeOutEffect());
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     IEnumerator FadeOutEffect()
     {
         yield return new WaitForSeconds(1);
         sceneNameText.gameObject.SetActive(true);
-        sceneNameText.DOFade(1, 1).OnComplete(() =>
+        sceneNameText.DOFade(1, 1)
+            .SetUpdate(true)
+            .OnComplete(() =>
         {
-            sceneNameText.DOFade(1,2).OnComplete(() =>
+            sceneNameText.DOFade(1,2)
+                .SetUpdate(true)
+                .OnComplete(() =>
             {
-                sceneNameText.DOFade(0, 1).OnComplete(() =>
+                sceneNameText.DOFade(0, 1)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
                 {
                     sceneNameText.gameObject.SetActive(false);
                 });
@@ -74,11 +89,14 @@ public class Act2Scene2SceneManager : MonoBehaviour
         yield return new WaitForSeconds(5);
         
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetUpdate(true)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
             bgm.Play();
-            bgm.DOFade(1, 1).OnComplete(() =>
+            bgm.DOFade(1, 1)
+                .SetUpdate(true)
+                .OnComplete(() =>
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                 // TRIGGER DIALOGUE
@@ -90,6 +108,8 @@ public class Act2Scene2SceneManager : MonoBehaviour
                 PlayerScript.instance.cinemachineInputProvider.enabled = true;
                 PlayerScript.instance.interact.enabled = true;
                 PlayerScript.instance.stamina.enabled = true;
+
+                Pause.instance.canInput = true;
 
                 isStopTimer = false;
             });
@@ -116,6 +136,14 @@ public class Act2Scene2SceneManager : MonoBehaviour
         {
             EscapeTimer();
             PlayerHealthInhilationChecker();
+        }
+
+        if(firstFloor.activeSelf)
+        {
+            if(!flashLight.activeSelf)
+            {
+                invWallGroundToBasement.SetActive(false);
+            }
         }
     }
 
@@ -157,7 +185,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     #endregion
 
-    #region - PLAYER SMOKE INHILATION
+    #region - PLAYER HEALTH [SMOKE INHILATION/INJURY]-
  
     void PlayerHealthInhilationChecker()
     {
@@ -178,6 +206,65 @@ public class Act2Scene2SceneManager : MonoBehaviour
     public void PlayerHealthDamage(float damage)
     {
         playerHealth -= damage;
+    }
+
+    #endregion
+
+    #region - HELP ME TRIGGER -
+
+    public void HelpMeTrigger()
+    {
+        StartCoroutine(HelpMe());
+    }
+
+    IEnumerator HelpMe()
+    {
+        yield return new WaitForSeconds(1);
+
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+    }
+
+    #endregion
+
+    #region - TELEPORT TO 1ST FLOOR -
+
+    public void TeleportToFirstFloor()
+    {
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(80, 0, 48);
+                PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                        .SetUpdate(true)
+                        .OnComplete(() =>
+                        {
+                            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                                .SetUpdate(true)
+                                .SetEase(Ease.Linear)
+                                .OnComplete(() =>
+                                {
+                                    LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                                });
+                        });
+            });
+        
+    }
+
+    #endregion 
+
+    #region - INVISIBLE WALL GROUND TO BASEMENT -
+
+    void RemoveInvisiableWall()
+    {
+        if(flashLight)
+        {
+
+        }
     }
 
     #endregion

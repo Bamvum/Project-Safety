@@ -24,7 +24,7 @@ public class Pause : MonoBehaviour
     [SerializeField] TMP_Text currentMissionText;
     
     [Space(5)]
-    [SerializeField] RectTransform pauseHUDRectTransform;
+    public RectTransform pauseHUDRectTransform;
     [SerializeField] CanvasGroup pauseButtonCG;
     [SerializeField] TMP_Text settingNavGuide;
 
@@ -55,6 +55,7 @@ public class Pause : MonoBehaviour
     [SerializeField] AudioSource bgm;
 
     [Header("Flag")]
+    public bool canInput;
     public bool isPause;
     public bool isGamepad;
 
@@ -161,7 +162,14 @@ public class Pause : MonoBehaviour
     {
         if(!isPause)
         {
-            ShowPause();
+            if(canInput)
+            {
+                if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf && !HUDManager.instance.gameOverHUD.activeSelf)
+                {
+                    ShowPause();
+                }
+            }
+
         }
         else 
         {
@@ -203,6 +211,7 @@ public class Pause : MonoBehaviour
                 Time.timeScale = 1;
                 isGamepad = false;
                 isPause = false;
+                Cursor.lockState = CursorLockMode.Locked;
             });
     }
 
@@ -215,6 +224,7 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
+        // CursorChecker();
         DeviceInputCheckerUI();
         DeviceInputCheckerNavGuide();
 
@@ -251,6 +261,7 @@ public class Pause : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         Gamepad.current.SetMotorSpeeds(0, 0);
     }
+
 
     #region - DEVICE INPUT CHECKER [HUD/UI]
 

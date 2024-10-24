@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructions:
   - title: Movement
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 532128ce5eee5674f8faf3aea2e3a4e0,
+      type: 3}
     instructionKeyboard: USE <sprite name="T_W_Key_Dark">, <sprite name="T_A_Key_Dark">,
       <sprite name="T_S_Key_Dark">, AND <sprite name="T_D_Key_Dark"> TO WALK
     instructionGampad: USE <sprite name="Left Stick"> TO WALK
@@ -23,11 +24,13 @@ MonoBehaviour:
     instructionKeyboard: TO LOOK AROUND USE <sprite name="Mouse">
     instructionGampad: TO LOOK AROUND USE <sprite name="Right Stick">
   - title: Crouch
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 3ff97cef41ddd9a48830854700c7b6cc,
+      type: 3}
     instructionKeyboard: <sprite name="Ctrl"> TO CROUCH
     instructionGampad: <sprite name="L2"> TO CROUCH
   - title: Interact & Examine
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
+      type: 3}
     instructionKeyboard: <sprite name="E"> TO INTERACT (TALK AND TAKE) AND <sprite
       name="Q"> TO EXAMINE.
     instructionGampad: <sprite name="Square"> TO INTERACT (TALK AND TAKE) AND <sprite

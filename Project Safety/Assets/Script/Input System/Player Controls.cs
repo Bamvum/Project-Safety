@@ -1656,7 +1656,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": "" Test"",
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""eec293da-ee3b-436f-8361-60377483dd1d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
                     ""type"": ""Button"",
                     ""id"": ""ef71fe44-ad5e-4097-8e57-990d361658b1"",
                     ""expectedControlType"": ""Button"",
@@ -1695,7 +1704,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": "" Test"",
+                    ""action"": ""Exit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1706,7 +1715,29 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": "" Test"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48fbed1f-a244-4a70-8373-c7d8e4872708"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d169b7d-504a-464d-95d2-a5fc9be45b7d"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1796,7 +1827,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // CheckDoor
         m_CheckDoor = asset.FindActionMap("CheckDoor", throwIfNotFound: true);
         m_CheckDoor_Open = m_CheckDoor.FindAction("Open", throwIfNotFound: true);
-        m_CheckDoor_Test = m_CheckDoor.FindAction(" Test", throwIfNotFound: true);
+        m_CheckDoor_Test = m_CheckDoor.FindAction("Test", throwIfNotFound: true);
+        m_CheckDoor_Exit = m_CheckDoor.FindAction("Exit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2814,12 +2846,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ICheckDoorActions> m_CheckDoorActionsCallbackInterfaces = new List<ICheckDoorActions>();
     private readonly InputAction m_CheckDoor_Open;
     private readonly InputAction m_CheckDoor_Test;
+    private readonly InputAction m_CheckDoor_Exit;
     public struct CheckDoorActions
     {
         private @PlayerControls m_Wrapper;
         public CheckDoorActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Open => m_Wrapper.m_CheckDoor_Open;
         public InputAction @Test => m_Wrapper.m_CheckDoor_Test;
+        public InputAction @Exit => m_Wrapper.m_CheckDoor_Exit;
         public InputActionMap Get() { return m_Wrapper.m_CheckDoor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2835,6 +2869,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started += instance.OnTest;
             @Test.performed += instance.OnTest;
             @Test.canceled += instance.OnTest;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
         }
 
         private void UnregisterCallbacks(ICheckDoorActions instance)
@@ -2845,6 +2882,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Test.started -= instance.OnTest;
             @Test.performed -= instance.OnTest;
             @Test.canceled -= instance.OnTest;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
         }
 
         public void RemoveCallbacks(ICheckDoorActions instance)
@@ -2959,5 +2999,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnOpen(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
 }

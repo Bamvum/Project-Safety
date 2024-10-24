@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
-
-public class Act2Scene23rdFloorTrigger : MonoBehaviour
+using DG.Tweening;
+public class Act2Scene22ndFloorTrigger : MonoBehaviour
 {
-    [SerializeField] GameObject thirdFloor;
     [SerializeField] GameObject secondFloor;
+    [SerializeField] GameObject firstFloor;
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Pause.instance.canInput = false;
             PlayerScript.instance.DisablePlayerScripts();
@@ -21,11 +20,11 @@ public class Act2Scene23rdFloorTrigger : MonoBehaviour
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
-                    thirdFloor.SetActive(false);
-                    secondFloor.SetActive(true);
+                    secondFloor.SetActive(false);
+                    firstFloor.SetActive(true);
                     
                     // TELEPORT PLAYER
-                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(80,6, 0);
+                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(22.5f, 3, 0);
                     PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
                     LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
                         .SetUpdate(true)
