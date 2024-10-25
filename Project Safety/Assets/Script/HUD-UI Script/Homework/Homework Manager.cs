@@ -54,20 +54,24 @@ public class HomeworkManager : MonoBehaviour
 
         if(DeviceManager.instance.keyboardDevice)
         {
-            // Cursor.lockState = CursorLockMode.None;
-            EventSystem.current.SetSelectedGameObject(null);
-            isGamepad = false;
+            if(homeworkHUD.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
+            }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            // Cursor.lockState = CursorLockMode.Locked;
-
-            // Make this if Statement occur only once
-            if(!isGamepad)
+            if (homeworkHUD.activeSelf)
             {
-                EventSystem.current.SetSelectedGameObject(choiceSelected);
-                isGamepad = true;
+                if (!isGamepad)
+                {
+                    EventSystem.current.SetSelectedGameObject(choiceSelected);
+                    isGamepad = true;
+                }
             }
+
         }
 
         // GAMEPAD VIBRATION ON NAVIGATION 
@@ -164,7 +168,7 @@ public class HomeworkManager : MonoBehaviour
         homeworkQnA.SetActive(false);
         homeworkScoreText.text = score + " / "  + totalOfQuestions;
         
-
+        Cursor.lockState = CursorLockMode.Locked;
         Invoke("EndOfHomework", 3);
     }
 

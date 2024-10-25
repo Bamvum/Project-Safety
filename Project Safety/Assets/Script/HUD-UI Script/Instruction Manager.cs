@@ -44,15 +44,7 @@ public class InstructionManager : MonoBehaviour
     {
         Debug.Log(instructionsSO.instructions.Count);
 
-        // Ensure buttons are set correctly
         UpdateButtonStates();
-
-        // instructionBGRectTransform.sizeDelta = new Vector2(0, instructionBGRectTransform.sizeDelta.y);
-        // instructionContentCG.alpha = 0;
-
-        // instructionBGRectTransform.localScale = Vector3.one;
-        // instructionContentCG.interactable = false;
-
     }
     
     void Update()
@@ -64,34 +56,40 @@ public class InstructionManager : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            Debug.Log("Keyboard");
-            DisplayInstruction("keyboard");
+            if(instructionBGRectTransform.gameObject.activeSelf)
+            {
+                Debug.Log("Keyboard");
+                DisplayInstruction("keyboard");
 
-            // Cursor.lockState = CursorLockMode.None;
-            EventSystem.current.SetSelectedGameObject(null);
-            isGamepad = false;
+                Cursor.lockState = CursorLockMode.None;
+                EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
+            }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
-            Debug.Log("Gamepad");
-            DisplayInstruction("gamepad");
-            
-            // Cursor.lockState = CursorLockMode.Locked;
-            
-            if(!isGamepad)
+            if(instructionBGRectTransform.gameObject.activeSelf)
             {
-                if(counter == instructionsSO.instructions.Count - 1)
-                {
-                    EventSystem.current.SetSelectedGameObject(instructionButton[2]);
-                    Debug.Log("Selected Instruction Button - Done");
-                }
-                else
-                {
-                    EventSystem.current.SetSelectedGameObject(instructionButton[1]);
-                    Debug.Log("Selected Instruction Button - Right");
-                }
+                Debug.Log("Gamepad");
+                DisplayInstruction("gamepad");
 
-                isGamepad = true;
+                Cursor.lockState = CursorLockMode.Locked;
+
+                if (!isGamepad)
+                {
+                    if (counter == instructionsSO.instructions.Count - 1)
+                    {
+                        EventSystem.current.SetSelectedGameObject(instructionButton[2]);
+                        Debug.Log("Selected Instruction Button - Done");
+                    }
+                    else
+                    {
+                        EventSystem.current.SetSelectedGameObject(instructionButton[1]);
+                        Debug.Log("Selected Instruction Button - Right");
+                    }
+
+                    isGamepad = true;
+                }
             }
         }
     }
@@ -212,7 +210,7 @@ public class InstructionManager : MonoBehaviour
                     PlayerScript.instance.stamina.enabled = true;
                 }
 
-                // Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.Locked;
                 
                 Time.timeScale = 1;
 
@@ -222,7 +220,6 @@ public class InstructionManager : MonoBehaviour
                 }
 
                 this.enabled = false;
-                // Bool instructionHUDActive = false (FOR PAUSE FUNCTION)
             });
         });
     }

@@ -20,7 +20,8 @@ MonoBehaviour:
       <sprite name="T_S_Key_Dark">, AND <sprite name="T_D_Key_Dark"> TO WALK
     instructionGampad: USE <sprite name="Left Stick"> TO WALK
   - title: Look
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: ed3fb24b4265a2246989764872f71104,
+      type: 3}
     instructionKeyboard: TO LOOK AROUND USE <sprite name="Mouse">
     instructionGampad: TO LOOK AROUND USE <sprite name="Right Stick">
   - title: Crouch
@@ -36,7 +37,8 @@ MonoBehaviour:
     instructionGampad: <sprite name="Square"> TO INTERACT (TALK AND TAKE) AND <sprite
       name="Triangle"> TO EXAMINE.
   - title: 'Examine Mode '
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 3295589528173a042b88a44a2b420261,
+      type: 3}
     instructionKeyboard: WHEN EXAMINING AN OBJECT. USE <sprite name="Mouse">  and
       <sprite name="Left Mouse"> TO ROTATE THE OBJECT AND <sprite name="E"> TO READ
       THE ITEM DESCRIPTION

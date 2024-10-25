@@ -12,6 +12,19 @@ public class PrologueSceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        if(SettingMenu.instance.languageDropdown.value == 0) // English
+        {
+            Debug.Log("English Preference");
+            // englishLanguage.SetActive(true);
+            // tagalogLanguage.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("Tagalog Preference");
+            // englishLanguage.SetActive(false);
+            // tagalogLanguage.SetActive(true);
+        }
     }
  
     [Header("Script")]
@@ -30,6 +43,10 @@ public class PrologueSceneManager : MonoBehaviour
     public GameObject[] monitorScreen;
     public GameObject lightSwitch;
 
+    [Header("Language Preference")]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
     
@@ -45,22 +62,15 @@ public class PrologueSceneManager : MonoBehaviour
 
     void Start()
     {
-        // TODO -   IF PAUSE UI IS ACTIVE
-        //      -   AND IF STATEMENT DEVICEMANAGER
-
-        // Cursor.lockState = CursorLockMode.Locked;
-
-        Cursor.lockState = CursorLockMode.None;  // Example: Unlock the cursor
-
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
-        // globalVolume.profile.TryGet(out vignette);
-
         StartCoroutine(FadeOutFadeImage());
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
     
     void Update()

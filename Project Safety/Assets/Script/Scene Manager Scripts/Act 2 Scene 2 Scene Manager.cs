@@ -50,6 +50,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
     {
         Time.timeScale = 1;
         
+        // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
