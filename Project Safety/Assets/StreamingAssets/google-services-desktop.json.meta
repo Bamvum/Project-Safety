@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Project Safety/Assets/StreamingAssets/google-services-desktop.json.meta
 guid: 1b5b9d61a1f12d841bdb0bb68c2e29bc
+========
+guid: 26ed5e148165189458b906093616e4ca
+folderAsset: yes
+>>>>>>>> main:Project Safety/Assets/_TerrainAutoUpgrade.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
