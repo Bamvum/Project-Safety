@@ -138,13 +138,13 @@ public class Act2Scene2SceneManager : MonoBehaviour
             PlayerHealthInhilationChecker();
         }
 
-        if(firstFloor.activeSelf)
-        {
-            if(!flashLight.activeSelf)
-            {
-                invWallGroundToBasement.SetActive(false);
-            }
-        }
+        // if(firstFloor.activeSelf)
+        // {
+        //     if(!flashLight.activeSelf)
+        //     {
+        //         invWallGroundToBasement.SetActive(false);
+        //     }
+        // }
     }
 
     #region - TIMER -
@@ -257,14 +257,21 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     #endregion 
 
-    #region - INVISIBLE WALL GROUND TO BASEMENT -
+    #region - NEXT SCENE -
 
-    void RemoveInvisiableWall()
+    public void NextScene()
     {
-        if(flashLight)
-        {
+        bgm.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetUpdate(true);
 
-        }
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+        {
+            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+            LoadingSceneManager.instance.enabled = true;
+            LoadingSceneManager.instance.sceneName = "Post Assessment";
+        });
     }
 
     #endregion

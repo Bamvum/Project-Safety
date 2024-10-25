@@ -205,8 +205,6 @@ public class HomeworkManager : MonoBehaviour
             {
                 homeworkHUD.SetActive(false);
 
-                PrologueSceneManager.instance.monitor.layer = 0;
-
                 LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
                      .OnComplete(() =>
                  {
@@ -224,7 +222,7 @@ public class HomeworkManager : MonoBehaviour
         {
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
-            // LoadingSceneManager.instance.sceneName = "C";
+            LoadingSceneManager.instance.sceneName = "Main Menu";
             // DISPLAY CREDITS
         });
     }
