@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Act1Scene2SceneManager : MonoBehaviour
 {
     public static Act1Scene2SceneManager instance {get; private set;}
     
     [Header("Dialogue Triggers")]
-    [SerializeField] DialogueTrigger startDialogueTrigger;
+    [SerializeField] DialogueTrigger startDialogueTriggerEnglish;
+    [SerializeField] DialogueTrigger startDialogueTriggerTagalog;
+    
+    [Header("Language Preference")]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(5)]
+    [SerializeField] InstructionSO englishInstructionSO;
+    [SerializeField] InstructionSO tagalogInstructionSO;
+
+    [Space(5)]
+    public int languageIndex;
 
     [Space(10)]
     [SerializeField] AudioSource fireTruckSirenSFX;
@@ -33,35 +46,43 @@ public class Act1Scene2SceneManager : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
+        PlayerPrefs.SetInt("Neighborhood Scene", 1);
+
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
-    
-        PlayerPrefs.SetInt("NeighborHood Scene", 1);
-    }
 
-    void Update()
-    {
-        if(!audioRepeat)
+        Cursor.lockState = CursorLockMode.Locked;
+
+
+        Debug.LogWarning("");
+        if (SettingMenu.instance.languageDropdown.value == 0)
         {
-            CheckPlayerAudioPlaying();
+            Debug.LogWarning("English Preference");
+            InstructionManager.instance.instructionsSO = englishInstructionSO;
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
+            languageIndex = 0;
+        }
+        else
+        {
+            Debug.LogWarning("Tagalog Preference");
+            InstructionManager.instance.instructionsSO = tagalogInstructionSO;
+            englishLanguage.gameObject.SetActive(false);
+            tagalogLanguage.gameObject.SetActive(true);
+            languageIndex = 1;
         }
 
-       VehicleLerp();
-
-        // if (HUDManager.instance.instructionHUD.activeSelf)
-        // {
-        //     DeviceChecker();
-        // }
+        StartCoroutine(FadeOutEffect());
     }
 
-    void CheckPlayerAudioPlaying()
+    IEnumerator FadeOutEffect()
     {
-        if(!doorPlayerAudio.isPlaying)
-        {
-            // FADEOUT EFFECTS
+        yield return new WaitForSeconds(1);
+
+        // FADEOUT EFFECTS
             LoadingSceneManager.instance.fadeImage
                 .DOFade(0, LoadingSceneManager.instance.fadeDuration)
                 .SetEase(Ease.Linear)
@@ -70,9 +91,24 @@ public class Act1Scene2SceneManager : MonoBehaviour
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
 
                 audioRepeat = true;
-                startDialogueTrigger.StartDialogue();
+
+                if (languageIndex == 0)
+                {
+                    startDialogueTriggerEnglish.StartDialogue();
+                }
+                else
+                {
+                    startDialogueTriggerTagalog.StartDialogue();
+                }
             });
-        }
+
+
+    }
+
+    void Update()
+    {
+
+       VehicleLerp();
     }
 
     void VehicleLerp()

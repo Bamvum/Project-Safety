@@ -16,10 +16,10 @@ MonoBehaviour:
   - title: Run
     instructionSprite: {fileID: 21300000, guid: 33c2f4ef04779aa4c849daf5765386f0,
       type: 3}
-    instructionKeyboard: Press and hold <sprite name="Left Shift"> to sprint.
-    instructionGampad: Press and hold <sprite name="Left Trigger"> to sprint.
+    instructionKeyboard: PRESS AND HOLD <sprite name="Left Shift"> TO SPRINT
+    instructionGampad: PRESS AND HOLD<sprite name="Left Trigger"> TO SPRINT
   - title: Stamina
     instructionSprite: {fileID: 21300000, guid: 33c2f4ef04779aa4c849daf5765386f0,
       type: 3}
-    instructionKeyboard: But be mindful, your stamina will decrease while running
-    instructionGampad: But be mindful, your stamina will decrease while running
+    instructionKeyboard: BUT BE MINDFUL, YOUR STAMINA WILL DECREASE WHILE RUNNING
+    instructionGampad: BUT BE MINDFUL, YOUR STAMINA WILL DECREASE WHILE RUNNING

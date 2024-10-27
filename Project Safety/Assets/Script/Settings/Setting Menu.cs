@@ -78,7 +78,8 @@ public class SettingMenu : MonoBehaviour
         Debug.Log("Y Gamepad Sensitity: " + PlayerPrefs.GetFloat("YGamepadSensitivity"));
 
         Debug.Log("Dialogue Speed: " + PlayerPrefs.GetFloat("DialogueSpeed"));
-        Debug.Log("Language Preference: " + PlayerPrefs.GetFloat("Language"));
+        // Debug.Log("Language Preference: " + PlayerPrefs.GetInt("Language"));
+        Debug.LogWarning("Language Preference: " + languageDropdown.value);
     }
 
     #region - LOAD SETTINGS FROM PLAYER PREFS -
