@@ -78,7 +78,7 @@ public class SettingMenu : MonoBehaviour
         Debug.Log("Y Gamepad Sensitity: " + PlayerPrefs.GetFloat("YGamepadSensitivity"));
 
         Debug.Log("Dialogue Speed: " + PlayerPrefs.GetFloat("DialogueSpeed"));
-        // Debug.Log("Language Preference: " + PlayerPrefs.GetInt("Language"));
+        Debug.Log("PP Language Preference:  " + PlayerPrefs.GetInt("Language"));
         Debug.LogWarning("Language Preference: " + languageDropdown.value);
     }
 
@@ -295,6 +295,7 @@ public class SettingMenu : MonoBehaviour
             dialogueSpeedSlider.value = float.Parse(settingsData["DialogueSpeed"].ToString());
             SetDialogueSpeed(dialogueSpeedSlider.value);
         }
+
         if (settingsData.ContainsKey("Language"))
         {
             languageDropdown.value = int.Parse(settingsData["Language"].ToString());

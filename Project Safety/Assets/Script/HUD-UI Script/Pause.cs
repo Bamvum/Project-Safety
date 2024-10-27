@@ -198,7 +198,10 @@ public class Pause : MonoBehaviour
     {
         Time.timeScale = 0;
 
-        currentMissionText.text = MissionManager.instance.missionSO.missions[MissionManager.instance.missionIndex];
+        if (MissionManager.instance.missionSO != null)
+        {
+            currentMissionText.text = MissionManager.instance.missionSO.missions[MissionManager.instance.missionIndex];
+        }
         
         pauseHUDRectTransform.gameObject.SetActive(true);
         pauseButtonCG.interactable = false;
