@@ -10,17 +10,14 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Awake()
     {
+        DOTween.SetTweensCapacity(1000, 200);  // 1000 tweeners and 200 sequences
+
         instance = this;
     }
 
     [Header("Trigger Dialogue")]
-    [SerializeField] DialogueTrigger startDialogueEnglish;
-    [SerializeField] DialogueTrigger startDialogueTagalog;
-    [SerializeField] DialogueTrigger PlaceHolderCalmAndCallEnglish;
-    [SerializeField] DialogueTrigger PlaceHolderCalmAndCallTagalog;
-
-    [Space(5)]
-    public int languageIndex;
+    [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger PlaceHolderCalmAndCall;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineInputProvider chairInputProvider;
@@ -34,23 +31,12 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("School: Start", 1);   
-
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
                                                          1);
 
         StartCoroutine(FadeOutEffect());
-
-        if(SettingMenu.instance.languageDropdown.value == 0) // English
-        {
-            languageIndex = 0;
-        }
-        else
-        {
-            languageIndex = 1;
-        }
     }
 
     IEnumerator FadeOutEffect()
@@ -64,15 +50,7 @@ public class Act2Scene1Manager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             Debug.Log("Trigger Dialogue");
-
-            if(languageIndex == 0)
-            {
-                startDialogueTagalog.StartDialogue();
-            }
-            else
-            {
-                startDialogueTagalog.StartDialogue();
-            }
+            startDialogue.StartDialogue();
         });
     }
 
@@ -100,16 +78,7 @@ public class Act2Scene1Manager : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         Debug.Log("PlaceHolderForCall");
-
-        if(languageIndex == 0)
-        {
-            PlaceHolderCalmAndCallEnglish.StartDialogue();
-
-        }
-        else
-        {
-            PlaceHolderCalmAndCallTagalog.StartDialogue();
-        }
+        PlaceHolderCalmAndCall.StartDialogue();
     }
 
     public void enablePersonRunningMoveToward(bool enable)

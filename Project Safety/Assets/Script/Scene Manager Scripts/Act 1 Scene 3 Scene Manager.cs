@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System.Threading;
-using TMPro;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class Act1Scene3SceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+    
+        PlayerPrefs.SetInt("Fire Station Scene", 1);
     }
 
     [Header("Dialogue Trigger")]
@@ -23,8 +24,6 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [SerializeField] InstructionSO englishInstructionSO;
     [SerializeField] InstructionSO tagalogInstructionSO;
     
-    [Space(5)]
-    [SerializeField] TMP_Text monologueText;
 
     [Header("Player")]
     [SerializeField] GameObject player;
@@ -52,26 +51,20 @@ public class Act1Scene3SceneManager : MonoBehaviour
     
     void Start()
     {
-        PlayerPrefs.SetInt("Fire Station Scene", 1);
-        
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
+        // TODO -   MONOLOGUE BY PLAYER
+        //      -   
         StartCoroutine(FadeOutEffect());
-        
-        
+
     }
 
     IEnumerator FadeOutEffect()
     {
-        yield return new WaitForSeconds(1);
-        monologueText.gameObject.SetActive(true);
-
-
-
         yield return new WaitForSeconds(5);
 
         LoadingSceneManager.instance.fadeImage
