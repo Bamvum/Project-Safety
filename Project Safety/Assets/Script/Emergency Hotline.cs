@@ -11,9 +11,14 @@ public class EmergencyHotline : MonoBehaviour
     PlayerControls playerControls;
 
     [Header("Dialogue Trigger")]
-    [SerializeField] DialogueTrigger contact1;
-    [SerializeField] DialogueTrigger contact2;
-    [SerializeField] DialogueTrigger contact3;
+    [SerializeField] DialogueTrigger contact1English;
+    [SerializeField] DialogueTrigger contact1Tagalog;
+
+    [SerializeField] DialogueTrigger contact2English;
+    [SerializeField] DialogueTrigger contact2Tagalog;
+   
+    [SerializeField] DialogueTrigger contact3English;
+    [SerializeField] DialogueTrigger contact3Tagalog;
     
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera phoneVC;
@@ -57,7 +62,15 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 1");
             contactMode = false;
-            contact1.StartDialogue();
+
+            if(Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                contact1English.StartDialogue();
+            }
+            else
+            {
+                contact1Tagalog.StartDialogue();
+            }
             
             contactHUD.SetActive(false);
 
@@ -72,7 +85,15 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 2");
             contactMode = false;
-            contact2.StartDialogue();
+
+            if(Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                contact2English.StartDialogue();
+            }
+            else
+            {
+                contact2Tagalog.StartDialogue();
+            }
 
             contactHUD.SetActive(false);
         }
@@ -84,7 +105,15 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 3");
             contactMode = false;
-            contact3.StartDialogue();
+
+            if (Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                contact3English.StartDialogue();
+            }
+            else
+            {
+                contact3Tagalog.StartDialogue();
+            }
 
             contactHUD.SetActive(false);
         }

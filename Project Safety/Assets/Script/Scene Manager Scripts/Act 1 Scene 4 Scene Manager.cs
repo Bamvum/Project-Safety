@@ -38,6 +38,8 @@ public class Act1Scene4SceneManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera smokeAreaVC;
     [SerializeField] CinemachineVirtualCamera dummyVC;
     
+    // [Header("Audio")]
+    // [SerializeField] AudioSource;
 
 
     void Start()

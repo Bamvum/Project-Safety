@@ -56,6 +56,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetInt("School: Escape", 1);
         Time.timeScale = 1;
         
         // FADE IMAGE ALPHA SET 1
@@ -76,8 +77,8 @@ public class Act2Scene2SceneManager : MonoBehaviour
         {
             Debug.Log("English Preference");
             InstructionManager.instance.instructionsSO = englishInstructionSO;
-            englishLanguage.gameObject.SetActive(true);
-            tagalogLanguage.gameObject.SetActive(false);
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
             languageIndex = 0;
         }
         else
