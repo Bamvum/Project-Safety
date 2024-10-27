@@ -18,28 +18,55 @@ public class Act1Scene4SceneManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] GameObject player;
 
+    [Header("Dialogue Triggers")]
+    [SerializeField] DialogueTrigger startDialogueEnglish;
+    [SerializeField] DialogueTrigger startDialogueTagalog;
+
+    [SerializeField] TMP_Text tmpText;
+
+
+    [Header("Language Preference")]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(5)]
+    [SerializeField] int languageIndex;
+
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera cctvVC;
     [SerializeField] CinemachineVirtualCamera blueFlagVC;
     [SerializeField] CinemachineVirtualCamera smokeAreaVC;
     [SerializeField] CinemachineVirtualCamera dummyVC;
     
-    [Header("Dialogue Triggers")]
-    [SerializeField] DialogueTrigger startDialogue;
-
-    [SerializeField] TMP_Text tmpText;
 
 
     void Start()
     {
+        PlayerPrefs.SetInt("Training Grounds Scene", 1);                 
+        
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
                                                          1);
 
-        StartCoroutine(FadeOutEffect());
+        Cursor.lockState = CursorLockMode.Locked;
+        
+        if(SettingMenu.instance.languageDropdown.value == 0)
+        {
+            Debug.LogWarning("English Preference");
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
+            languageIndex = 0;
+        }
+        else
+        {
+            Debug.LogWarning("Tagalog Preference");
+            englishLanguage.SetActive(false);
+            tagalogLanguage.SetActive(true);
+            languageIndex = 1;
+        }   
 
-        PlayerPrefs.SetInt("Training Grounds Scene", 1);                 
+        StartCoroutine(FadeOutEffect());
     }
 
     IEnumerator FadeOutEffect()
@@ -54,7 +81,15 @@ public class Act1Scene4SceneManager : MonoBehaviour
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             Debug.Log("Trigger Dialogue");
-            startDialogue.StartDialogue();
+
+            if(languageIndex == 0)
+            {
+                startDialogueEnglish.StartDialogue();
+            }
+            else
+            {
+                startDialogueTagalog.StartDialogue();
+            }
         });
     }
 

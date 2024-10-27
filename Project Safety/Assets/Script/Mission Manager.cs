@@ -14,7 +14,7 @@ public class MissionManager : MonoBehaviour
         instance = this;
     }   
 
-    [SerializeField] MissionSO missionSO;
+    public MissionSO missionSO;
     
     [Space(5)]
     public TMP_Text missionText;
@@ -24,7 +24,7 @@ public class MissionManager : MonoBehaviour
     
     [Space(10)]
     public AudioSource missionSFX;
-    int missionIndex;
+    public int missionIndex;
 
     void Start()
     {

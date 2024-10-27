@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
@@ -21,12 +22,15 @@ public class Pause : MonoBehaviour
     PlayerControls playerControls;
 
     [Header("HUD")]
-    [SerializeField] TMP_Text currentMissionText;
     
     [Space(5)]
     public RectTransform pauseHUDRectTransform;
     [SerializeField] CanvasGroup pauseButtonCG;
     [SerializeField] TMP_Text settingNavGuide;
+
+    [Space(5)]
+    [SerializeField] TMP_Text currentMissionText;
+    
 
     [Space(5)]
     [SerializeField] RectTransform settingRectTransform;
@@ -164,9 +168,19 @@ public class Pause : MonoBehaviour
         {
             if(canInput)
             {
-                if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf && !HUDManager.instance.gameOverHUD.activeSelf)
+                if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
                 {
-                    ShowPause();
+                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf && !HUDManager.instance.gameOverHUD.activeSelf)
+                    {
+                        ShowPause();
+                    }
+                }
+                else
+                {
+                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf)
+                    {
+                        ShowPause();
+                    }
                 }
             }
 
@@ -183,12 +197,17 @@ public class Pause : MonoBehaviour
     void ShowPause()
     {
         Time.timeScale = 0;
-        // CAN DISABLE SCRIPTS
 
+        currentMissionText.text = MissionManager.instance.missionSO.missions[MissionManager.instance.missionIndex];
+        
         pauseHUDRectTransform.gameObject.SetActive(true);
         pauseButtonCG.interactable = false;
 
-        bgm.DOFade(.25f, 1);
+        if(bgm != null)
+        {
+            bgm.DOFade(.25f, 1);
+        }
+        
         pauseHUDRectTransform.DOScale(Vector3.one, .5f).SetEase(Ease.OutBack)
             .SetUpdate(true)
             .OnComplete(() =>
@@ -201,7 +220,11 @@ public class Pause : MonoBehaviour
     
     public void HidePause()
     {
-        bgm.DOFade(1, 1);
+        if (bgm != null)
+        {
+            bgm.DOFade(1, 1);
+        }
+
         pauseButtonCG.interactable = false;
         pauseHUDRectTransform.DOScale(Vector3.zero, .5f).SetEase(Ease.InBack)
             .SetUpdate(true)
