@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa93e81ad458c4c4bba258bac3d0a283, type: 3}
-  m_Name: Act 1 Scene 2 Instruction
+  m_Name: Act 1 Scene 2 Instruction - English
   m_EditorClassIdentifier: 
   instructions:
   - title: Run
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 33c2f4ef04779aa4c849daf5765386f0,
+      type: 3}
     instructionKeyboard: Press and hold <sprite name="Left Shift"> to sprint.
     instructionGampad: Press and hold <sprite name="Left Trigger"> to sprint.
   - title: Stamina
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 33c2f4ef04779aa4c849daf5765386f0,
+      type: 3}
     instructionKeyboard: But be mindful, your stamina will decrease while running
     instructionGampad: But be mindful, your stamina will decrease while running

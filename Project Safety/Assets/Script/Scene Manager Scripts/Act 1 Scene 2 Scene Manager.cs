@@ -38,6 +38,8 @@ public class Act1Scene2SceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
+    
+        PlayerPrefs.SetInt("NeighborHood Scene", 1);
     }
 
     void Update()

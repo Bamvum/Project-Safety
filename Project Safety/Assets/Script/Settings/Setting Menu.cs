@@ -50,13 +50,35 @@ public class SettingMenu : MonoBehaviour
 
         if (auth.CurrentUser != null)
         {
+            Debug.Log("Player Has UserID");
             userId = auth.CurrentUser.UserId;
             LoadSettingsFromFirebase(userId); // Load from Firebase first
         }
         else
         {
+            Debug.Log("Player no UserID");
             LoadSettingsFromPlayerPrefs(); // Only load PlayerPrefs if no user is logged in
         }
+
+        PrintPlayerPrefs();
+    }
+
+    void PrintPlayerPrefs()
+    {
+        Debug.Log("Master Volume: " + PlayerPrefs.GetFloat("MasterVolume"));
+        Debug.Log("Music Volume: " + PlayerPrefs.GetFloat("MusicVolume"));
+        Debug.Log("SFX Volume: " + PlayerPrefs.GetFloat("SFXVolume"));
+
+        Debug.Log("Full Screen: " + PlayerPrefs.GetInt("IsFullScreen"));
+        Debug.Log("Quality Graphics: " + PlayerPrefs.GetInt("QualityGraphics"));
+
+        Debug.Log("X Mouse Sensitity: " + PlayerPrefs.GetFloat("XMouseSensitivity"));
+        Debug.Log("Y Mouse Sensitity: " + PlayerPrefs.GetFloat("YMouseSensitivity"));
+        Debug.Log("X Gamepad Sensitity: " + PlayerPrefs.GetFloat("XGamepadSensitivity"));
+        Debug.Log("Y Gamepad Sensitity: " + PlayerPrefs.GetFloat("YGamepadSensitivity"));
+
+        Debug.Log("Dialogue Speed: " + PlayerPrefs.GetFloat("DialogueSpeed"));
+        Debug.Log("Language Preference: " + PlayerPrefs.GetFloat("Language"));
     }
 
     #region - LOAD SETTINGS FROM PLAYER PREFS -
@@ -398,6 +420,7 @@ public class SettingMenu : MonoBehaviour
     {
         languageDropdown.value = languageIndex;
         PlayerPrefs.SetInt("Language", languageIndex);
+        PlayerPrefs.Save();
         SaveSettingsToFirebase();
     }
 

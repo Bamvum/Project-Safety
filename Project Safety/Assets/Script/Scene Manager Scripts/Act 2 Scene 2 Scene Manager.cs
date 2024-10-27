@@ -20,8 +20,16 @@ public class Act2Scene2SceneManager : MonoBehaviour
     public float playerHealth;
     [SerializeField] float playerMaxHealth = 100;
 
-    [Header("Trigger Dialogue")]
-    [SerializeField] DialogueTrigger startDialogue;
+    [Header("Language Preference")]
+    [SerializeField] InstructionSO englishInstructionSO;
+    [SerializeField] InstructionSO tagalogInstructionSO;
+
+    [Space(5)]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(10)]
+    public int languageIndex;
 
     [Header("Global Volume")]
     [SerializeField] Volume globalVolume;
@@ -63,6 +71,23 @@ public class Act2Scene2SceneManager : MonoBehaviour
         StartCoroutine(FadeOutEffect());
 
         Cursor.lockState = CursorLockMode.Locked;
+        
+        if(SettingMenu.instance.languageDropdown.value == 0) // English
+        {
+            Debug.Log("English Preference");
+            InstructionManager.instance.instructionsSO = englishInstructionSO;
+            englishLanguage.gameObject.SetActive(true);
+            tagalogLanguage.gameObject.SetActive(false);
+            languageIndex = 0;
+        }
+        else
+        {
+            Debug.Log("Tagalog Preference");
+            InstructionManager.instance.instructionsSO = tagalogInstructionSO;
+            englishLanguage.gameObject.SetActive(false);
+            tagalogLanguage.gameObject.SetActive(true);
+            languageIndex = 1;
+        }
     }
 
     IEnumerator FadeOutEffect()
@@ -82,6 +107,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
                     .OnComplete(() =>
                 {
                     sceneNameText.gameObject.SetActive(false);
+                    
                 });
             });
         });
@@ -100,19 +126,9 @@ public class Act2Scene2SceneManager : MonoBehaviour
                 .OnComplete(() =>
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                // TRIGGER DIALOGUE
-                // Debug.Log("Trigger Dialogue");
-                // startDialogue.StartDialogue();
 
-                // ENABLE MOVEMENT
-                PlayerScript.instance.playerMovement.enabled = true;
-                PlayerScript.instance.cinemachineInputProvider.enabled = true;
-                PlayerScript.instance.interact.enabled = true;
-                PlayerScript.instance.stamina.enabled = true;
-
-                Pause.instance.canInput = true;
-
-                isStopTimer = false;
+                InstructionManager.instance.enabled = true;
+                InstructionManager.instance.ShowInstruction();
             });
         });
     }
@@ -138,14 +154,6 @@ public class Act2Scene2SceneManager : MonoBehaviour
             EscapeTimer();
             PlayerHealthInhilationChecker();
         }
-
-        // if(firstFloor.activeSelf)
-        // {
-        //     if(!flashLight.activeSelf)
-        //     {
-        //         invWallGroundToBasement.SetActive(false);
-        //     }
-        // }
     }
 
     #region - TIMER -
@@ -161,7 +169,6 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
         // Update the timer text with minutes, seconds, and centiseconds
         timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, centiseconds);
-
     }
 
     public void TimerStatus(bool stopTimer)
@@ -257,6 +264,22 @@ public class Act2Scene2SceneManager : MonoBehaviour
     }
 
     #endregion 
+
+    #region - ENABLE MOVEMENT -
+    
+    public void enableMovement()
+    {
+        // ENABLE MOVEMENT
+        PlayerScript.instance.playerMovement.enabled = true;
+        PlayerScript.instance.cinemachineInputProvider.enabled = true;
+        PlayerScript.instance.interact.enabled = true;
+        PlayerScript.instance.stamina.enabled = true;
+
+        isStopTimer = false;      
+    }
+
+    
+    #endregion
 
     #region - NEXT SCENE -
 

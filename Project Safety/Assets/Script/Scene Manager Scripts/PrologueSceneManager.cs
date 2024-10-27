@@ -12,19 +12,6 @@ public class PrologueSceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-
-        if(SettingMenu.instance.languageDropdown.value == 0) // English
-        {
-            Debug.Log("English Preference");
-            // englishLanguage.SetActive(true);
-            // tagalogLanguage.SetActive(false);
-        }
-        else
-        {
-            Debug.Log("Tagalog Preference");
-            // englishLanguage.SetActive(false);
-            // tagalogLanguage.SetActive(true);
-        }
     }
  
     [Header("Script")]
@@ -47,6 +34,10 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] GameObject englishLanguage;
     [SerializeField] GameObject tagalogLanguage;
 
+    [Space(10)]
+    [SerializeField] InstructionSO englishInstructionsSO;
+    [SerializeField] InstructionSO tagalogInstructionsSO;
+
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
     
@@ -62,6 +53,21 @@ public class PrologueSceneManager : MonoBehaviour
 
     void Start()
     {
+        if(SettingMenu.instance.languageDropdown.value == 0) // English
+        {
+            Debug.Log("English Preference");
+            // englishLanguage.SetActive(true);
+            // tagalogLanguage.SetActive(false);
+            InstructionManager.instance.instructionsSO = englishInstructionsSO;
+        }
+        else
+        {
+            Debug.Log("Tagalog Preference");
+            // englishLanguage.SetActive(false);
+            // tagalogLanguage.SetActive(true);
+            InstructionManager.instance.instructionsSO = tagalogInstructionsSO;
+        }
+
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
@@ -169,8 +175,6 @@ public class PrologueSceneManager : MonoBehaviour
 
         suspenceSFX.Play();
         isSuspenceSFXPlaying = true; 
-
-        // vignette.intensity.
     }
 
     #endregion

@@ -83,7 +83,7 @@ public class PlayerMovementLayingDown : MonoBehaviour
                     {
                         prompt.SetActive(false);
                         sleepingAnimation.SetBool("To stand up", true);
-
+                        
                         StartCoroutine(DisableScript());
                         toRepeat = false;
                     }
@@ -127,6 +127,7 @@ public class PlayerMovementLayingDown : MonoBehaviour
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                 startDialogue.StartDialogue();
+                Pause.instance.PauseCanInput(true);
             });
 
         });
@@ -159,8 +160,6 @@ public class PlayerMovementLayingDown : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         canMove = active;
+
     }
-
-
-
 }

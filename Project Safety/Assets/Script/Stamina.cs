@@ -46,12 +46,10 @@ public class Stamina : MonoBehaviour
     {
         if (stamina <= 0)
         {
-            Debug.Log("Yield for 3 secs!");
             yield return new WaitForSeconds(3);
         }
         else
         {
-            Debug.Log("Yield for 1 secs!");
             yield return new WaitForSeconds(1);
         }
 

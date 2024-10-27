@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa93e81ad458c4c4bba258bac3d0a283, type: 3}
+  m_Name: Act 2 Scene 2 Instruction - Tagalog
+  m_EditorClassIdentifier: 
+  instructions:
+  - title: Stay low
+    instructionSprite: {fileID: 21300000, guid: 3ff97cef41ddd9a48830854700c7b6cc,
+      type: 3}
+    instructionKeyboard: GAMITIN ANG <sprite name="Ctrl"> PARA MANATILING MABABA
+      SA USOK
+    instructionGampad: GAMITIN ANG <sprite name="L2"> PARA MANATILING MABABA SA USOK
+  - title: Smoke inhalation
+    instructionSprite: {fileID: 21300000, guid: de5134dae262ccb4e9d9b7a90f04794a,
+      type: 3}
+    instructionKeyboard: ANG PAGLANGHAP NG USOK AY NAKABABAWAS NG IYONG PANINGIN
+      AT BUHAY
+    instructionGampad: ANG PAGLANGHAP NG USOK AY NAKABABAWAS NG IYONG PANINGIN AT
+      BUHAY
+  - title: Checking of door
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: PINDUTIN ANG <sprite name="E"> UPANG SURIIN KUNG MAINIT
+      O LIGTAS ANG PINTO BAGO TUMULOY
+    instructionGampad: PINDUTIN ANG <sprite name="Square"> UPANG SURIIN KUNG MAINIT
+      O LIGTAS ANG PINTO BAGO TUMULOY
+  - title: Door Check
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: PINDUTIN ANG <sprite name="1"> PARA BUKSAN, <sprite name="2">
+      PARA SUBUKAN ANG PINTO, AT <sprite name="3"> PARA HUMINTO/LUMABAS SA PAG-SURI
+      NG PINTO
+    instructionGampad: PINDUTIN ANG <sprite name="Square"> PARA BUKSAN, <sprite name="Triangle">
+      PARA SUBUKAN ANG PINTO, AT <sprite name="Circle"> PARA HUMINTO/LUMABAS SA PAG-SURI
+      NG PINTO
+  - title: Injury
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: KUNG BUBUKSAN MO ANG PINTO NANG HINDI SINUSURI AT ITO'Y
+      MAINIT, MAAARING MASUGATAN KA
+    instructionGampad: KUNG BUBUKSAN MO ANG PINTO NANG HINDI SINUSURI AT ITO'Y MAINIT,
+      MAAARING MASUGATAN KA

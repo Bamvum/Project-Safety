@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class Act2Scene21stFloorTrigger : MonoBehaviour
+public class Act2Scene22ndFloorTrigger : MonoBehaviour
 {
-
+    [SerializeField] GameObject secondFloor;
     [SerializeField] GameObject firstFloor;
-    [SerializeField] GameObject groundFloor;
-    [SerializeField] GameObject basement;
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Pause.instance.canInput = false;
+            Pause.instance.PauseCanInput(false);
             PlayerScript.instance.DisablePlayerScripts();
             
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -22,13 +20,12 @@ public class Act2Scene21stFloorTrigger : MonoBehaviour
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
-                    firstFloor.SetActive(false);
-                    groundFloor.SetActive(true);
-                    basement.SetActive(true);
-
+                    secondFloor.SetActive(false);
+                    firstFloor.SetActive(true);
+                    
                     // TELEPORT PLAYER
-                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(80, 0, 48);
-                    PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(22.5f, 3, 0);
+                    PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
                     LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
                         .SetUpdate(true)
                         .OnComplete(() =>
@@ -45,7 +42,7 @@ public class Act2Scene21stFloorTrigger : MonoBehaviour
                                     PlayerScript.instance.interact.enabled = true;
                                     PlayerScript.instance.stamina.enabled = true;
 
-                                    Pause.instance.canInput = true;
+                                    Pause.instance.PauseCanInput(true);
                                 });
                         });
                 });

@@ -132,9 +132,6 @@ public class PlayerMovement : MonoBehaviour
             // pov.m_VerticalAxis.m_MaxSpeed = yGamepadSensitivity;
             pov.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
         }
-
-
-        Debug.Log("Gamepad Slider Value:" + SettingMenu.instance.xGamepadSensSlider.value);
     }
 
     void LateUpdate()

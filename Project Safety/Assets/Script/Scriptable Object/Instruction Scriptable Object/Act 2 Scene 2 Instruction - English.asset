@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa93e81ad458c4c4bba258bac3d0a283, type: 3}
+  m_Name: Act 2 Scene 2 Instruction - English
+  m_EditorClassIdentifier: 
+  instructions:
+  - title: Stay low
+    instructionSprite: {fileID: 21300000, guid: 3ff97cef41ddd9a48830854700c7b6cc,
+      type: 3}
+    instructionKeyboard: USE <sprite name="Ctrl"> TO STAY LOW IN SMOKE
+    instructionGampad: USE <sprite name="L2"> TO STAY LOW IN SMOKE
+  - title: Smoke inhalation
+    instructionSprite: {fileID: 21300000, guid: de5134dae262ccb4e9d9b7a90f04794a,
+      type: 3}
+    instructionKeyboard: INHALING SMOKE DECREASE YOUR VISION WHICH ALSO CONNECTED
+      TO YOUR HEALTH
+    instructionGampad: INHALING SMOKE DECREASE YOUR VISION WHICH ALSO CONNECTED TO
+      YOUR HEALTH
+  - title: Checking of door
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: PRESS <sprite name="E"> TO CHECK DOORS IF ITS HOT OR SAFE
+      TO GO THROUGH
+    instructionGampad: PRESS <sprite name="Square"> TO CHECK DOORS IF ITS HOT OR
+      SAFE TO GO THROUGH
+  - title: Door Check
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: PRESS <sprite name="1"> TO OPEN, <sprite name="2"> TO TEST
+      THE DOOR, AND <sprite name="3"> TO STOP/EXIT IN CHECKING THE DOOR
+    instructionGampad: PRESS <sprite name="Square"> TO OPEN, <sprite name="Triangle">
+      TO TEST THE DOOR, AND <sprite name="Circle"> TO STOP/EXIT IN CHECKING THE DOOR
+  - title: Injury
+    instructionSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3,
+      type: 3}
+    instructionKeyboard: 'IF YOU OPEN THE DOOR WITHOUT CHECK AND ITS HOT, YOU''LL
+      INJURE YOURSELF '
+    instructionGampad: 'IF YOU OPEN THE DOOR WITHOUT CHECK AND ITS HOT, YOU''LL INJURE
+      YOURSELF '

@@ -12,11 +12,18 @@ public class Act1Scene3SceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+    
+        PlayerPrefs.SetInt("Fire Station Scene", 1);
     }
 
     [Header("Dialogue Trigger")]
     [SerializeField] DialogueTrigger startDialogue;
     [SerializeField] DialogueTrigger endDialogue;
+    
+    [Header("Language Preference")]
+    [SerializeField] InstructionSO englishInstructionSO;
+    [SerializeField] InstructionSO tagalogInstructionSO;
+    
 
     [Header("Player")]
     [SerializeField] GameObject player;

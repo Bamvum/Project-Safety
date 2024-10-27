@@ -55,7 +55,7 @@ public class Pause : MonoBehaviour
     [SerializeField] AudioSource bgm;
 
     [Header("Flag")]
-    public bool canInput;
+    [SerializeField] bool canInput;
     public bool isPause;
     public bool isGamepad;
 
@@ -387,4 +387,37 @@ public class Pause : MonoBehaviour
         });
     }
     
+    #region - MAIN MENU -
+
+    public void GoToMainMenu()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        pauseButtonCG.interactable = false;
+        
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                PlayerScript.instance.DisablePlayerScripts();
+
+                LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                LoadingSceneManager.instance.enabled = true;
+
+                LoadingSceneManager.instance.sceneName = "Main Menu";
+                Time.timeScale = 1;
+            });
+    }
+
+    #endregion
+
+    #region - CAN INPUT -
+
+    public void PauseCanInput(bool status)
+    {
+        canInput = status;
+    }
+
+    #endregion
 }

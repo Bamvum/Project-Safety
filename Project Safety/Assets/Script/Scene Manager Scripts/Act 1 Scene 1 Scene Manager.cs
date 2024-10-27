@@ -12,6 +12,21 @@ public class Act1StudentSceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        if(SettingMenu.instance.languageDropdown.value == 0) 
+        {
+            Debug.Log("English Preference");
+            // englishLanguage.SetActive(true);
+            // tagalogLanguage.SetActive(false);
+            // InstructionManager.instance.instructionsSO = tagalogInstructionsSO;
+        }
+        else
+        {
+            Debug.Log("Tagalog Preference");
+            // englishLanguage.SetActive(false);
+            // tagalogLanguage.SetActive(true);
+            // InstructionManager.instance.instructionsSO = tagalogInstructionsSO;
+        }
     }
 
     [Header("Dialogue Triggers")]
@@ -40,6 +55,8 @@ public class Act1StudentSceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
         StartCoroutine(HeavyBreathingSFX());
+
+        PlayerPrefs.SetInt("House Scene", 1);
     }
 
     IEnumerator HeavyBreathingSFX()

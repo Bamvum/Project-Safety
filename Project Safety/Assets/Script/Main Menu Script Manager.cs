@@ -200,7 +200,7 @@ public class MainMenuScriptManager : MonoBehaviour
         settingButtonCG.alpha = 0;
         settingButtonCG.interactable = false;
         
-
+        Cursor.lockState = CursorLockMode.Locked;
 
 
         // FADEOUT EFFECT
@@ -290,7 +290,6 @@ public class MainMenuScriptManager : MonoBehaviour
             // PINGPONG ACTIVE
             if (pingPongText.gameObject.activeSelf)
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 pingPongText.text = "PRESS <sprite name=\"Space\"> TO CONTINUE";
             }
         } 
@@ -424,6 +423,7 @@ public class MainMenuScriptManager : MonoBehaviour
         Debug.Log("Access Play!");
 
         // canNavigateUI = false;
+        Cursor.lockState = CursorLockMode.Locked;
         
         mainMenuButtonCG.interactable = false;
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -576,6 +576,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void SelectScene(string sceneName)
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        
         bgm.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
         selectSceneButtonCG.interactable = false;    
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);

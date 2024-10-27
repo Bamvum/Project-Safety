@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
-public class Act2Scene2BasementToEvacuation : MonoBehaviour
+public class Act2Scene21stFloorTrigger : MonoBehaviour
 {
-    [Header("DialogueTrigger")]
-    [SerializeField] DialogueTrigger dialogueTrigger;
 
-     void OnTriggerEnter(Collider other)
+    [SerializeField] GameObject firstFloor;
+    [SerializeField] GameObject groundFloor;
+    [SerializeField] GameObject basement;
+
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Pause.instance.canInput = false;
+            Pause.instance.PauseCanInput(false);
             PlayerScript.instance.DisablePlayerScripts();
             
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -20,10 +21,14 @@ public class Act2Scene2BasementToEvacuation : MonoBehaviour
                 .SetUpdate(true)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
-                {                    
+                {
+                    firstFloor.SetActive(false);
+                    groundFloor.SetActive(true);
+                    basement.SetActive(true);
+
                     // TELEPORT PLAYER
-                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(8.5f, 0, 87);
-                    PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    PlayerScript.instance.playerMovement.gameObject.transform.position = new Vector3(80, 0, 48);
+                    PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
                     LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
                         .SetUpdate(true)
                         .OnComplete(() =>
@@ -35,7 +40,12 @@ public class Act2Scene2BasementToEvacuation : MonoBehaviour
                                 {
                                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
 
-                                    dialogueTrigger.StartDialogue();
+                                    PlayerScript.instance.playerMovement.enabled = true;
+                                    PlayerScript.instance.cinemachineInputProvider.enabled = true;
+                                    PlayerScript.instance.interact.enabled = true;
+                                    PlayerScript.instance.stamina.enabled = true;
+
+                                    Pause.instance.PauseCanInput(true);
                                 });
                         });
                 });

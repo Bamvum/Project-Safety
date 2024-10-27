@@ -22,7 +22,7 @@ public class InstructionManager : MonoBehaviour
     [SerializeField] RectTransform instructionBGRectTransform;
     [SerializeField] GameObject instructionContent;
     [SerializeField] CanvasGroup instructionContentCG;
-    [SerializeField] InstructionSO instructionsSO;
+    public InstructionSO instructionsSO;
     [SerializeField] GameObject[] instructionButton;
     // 0 - Left
     // 1 - Right
@@ -200,25 +200,30 @@ public class InstructionManager : MonoBehaviour
             {
                 instructionHUD.SetActive(false);
 
+                Cursor.lockState = CursorLockMode.Locked;
+                
+                Pause.instance.PauseCanInput(true);
+                
+                HUDManager.instance.playerHUD.SetActive(true);
+                
                 // ENABLE PLAYER SCRIPTS
                 PlayerScript.instance.playerMovement.enabled = true;
                 PlayerScript.instance.cinemachineInputProvider.enabled = true;
                 PlayerScript.instance.interact.enabled = true;
 
+                // FOR SCENES WHERE PLAYER CAN RUN
                 if (PlayerScript.instance.canRunInThisScene)
                 {
                     PlayerScript.instance.stamina.enabled = true;
                 }
-
-                Cursor.lockState = CursorLockMode.Locked;
                 
-                Time.timeScale = 1;
-
+                // PROLOGUE
                 if(alarmSFX != null)
                 {
                     alarmSFX.UnPause();
                 }
 
+                Time.timeScale = 1;
                 this.enabled = false;
             });
         });

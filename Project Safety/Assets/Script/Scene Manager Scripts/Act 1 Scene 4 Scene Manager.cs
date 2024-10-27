@@ -38,7 +38,8 @@ public class Act1Scene4SceneManager : MonoBehaviour
                                                          1);
 
         StartCoroutine(FadeOutEffect());
-                                                         
+
+        PlayerPrefs.SetInt("Training Grounds Scene", 1);                 
     }
 
     IEnumerator FadeOutEffect()

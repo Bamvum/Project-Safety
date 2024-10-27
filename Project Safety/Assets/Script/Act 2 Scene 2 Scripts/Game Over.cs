@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using UnityEngine.iOS;
+
 
 public class GameOver : MonoBehaviour
 {
@@ -17,8 +17,8 @@ public class GameOver : MonoBehaviour
     }
 
     [Header("HUD")] 
-    [SerializeField] RectTransform gameOverHUDRectTransform;
-    [SerializeField] CanvasGroup gameOverCG;
+    [SerializeField] CanvasGroup gameOverHUDCG;
+    // [SerializeField] CanvasGroup gameOverCG;
 
     [Header("Selected Button")] 
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -111,28 +111,45 @@ public class GameOver : MonoBehaviour
     {
         Time.timeScale = 0;
 
-        gameOverHUDRectTransform.sizeDelta = new Vector2(0, 700);
-        gameOverCG.interactable = false;
-        
-        gameOverHUDRectTransform.gameObject.SetActive(true);
-        gameOverHUDRectTransform.DOSizeDelta(new Vector2(1250, gameOverHUDRectTransform.sizeDelta.y), .25f)
-            .SetEase(Ease.InFlash)
+        gameOverHUDCG.interactable = false;
+
+        gameOverHUDCG.gameObject.SetActive(true);
+        gameOverHUDCG.DOFade(1, 1)
+            .SetEase(Ease.Linear)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-               gameOverCG.gameObject.SetActive(true); 
-               gameOverCG.DOFade(1, .25f)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    gameOverCG.interactable = true;
-                }); 
+                gameOverHUDCG.interactable = true;
             });
+
+
+
+        // gameOverHUDCG.sizeDelta = new Vector2(0, 700);
+        // gameOverCG.interactable = false;
+        
+        // gameOverHUDRectTransform
+        
+        // gameOverHUDCG.gameObject.SetActive(true);
+        // gameOverHUDCG.DOSizeDelta(new Vector2(1250, gameOverHUDCG.sizeDelta.y), .25f)
+        //     .SetEase(Ease.InFlash)
+        //     .SetUpdate(true)
+        //     .OnComplete(() =>
+        //     {
+        //        gameOverCG.gameObject.SetActive(true); 
+        //        gameOverCG.DOFade(1, .25f)
+        //         .SetUpdate(true)
+        //         .OnComplete(() =>
+        //         {
+        //             gameOverCG.interactable = true;
+        //         }); 
+        //     });
+
+        
     }
 
     public void GoToMainMenu()
     {
-        gameOverCG.interactable = false;
+        gameOverHUDCG.interactable = false;
 
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
@@ -155,7 +172,7 @@ public class GameOver : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            if(gameOverHUDRectTransform.gameObject.activeSelf)
+            if(gameOverHUDCG.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -168,7 +185,7 @@ public class GameOver : MonoBehaviour
 
             if(!isGamepad)
             {
-                if(gameOverHUDRectTransform.gameObject.activeSelf)
+                if(gameOverHUDCG.gameObject.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(retrySelectedButton);
                     isGamepad = true;

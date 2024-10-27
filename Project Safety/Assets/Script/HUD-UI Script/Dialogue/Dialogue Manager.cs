@@ -68,7 +68,7 @@ public class DialogueManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(SettingMenu.instance.dialogueSpeedSlider.value);
+        
     }
 
     void OnEnable()
