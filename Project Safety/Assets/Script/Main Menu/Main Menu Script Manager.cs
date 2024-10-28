@@ -21,21 +21,29 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] RectTransform mainMenuHUDRectTransform;
     [SerializeField] CanvasGroup mainMenuButtonCG;
     
-    [Space(5)]
+    [Space(10)]
     [SerializeField] RectTransform selectSceneRectTransform;
     [SerializeField] CanvasGroup selectSceneButtonCG;
     [SerializeField] TMP_Text selectSceneNavGuide;
 
-    [Space(5)]
+    [Space(10)]
     [SerializeField] RectTransform settingRectTransform;
     [SerializeField] CanvasGroup settingButtonCG;
     [SerializeField] TMP_Text settingNavGuide;
 
-    [Space(15)]
+    [Space(5)]
     [SerializeField] RectTransform audioSettingRectTransform;
     [SerializeField] RectTransform graphicsSettingRectTransform;
     [SerializeField] RectTransform controlsSettingRectTransform;
     [SerializeField] RectTransform languageSettingRectTransform;
+
+    [Space(10)]
+    [SerializeField] RectTransform achievementRectTransform;
+    [SerializeField] CanvasGroup achievementButtonCG;
+    [SerializeField] TMP_Text achievementNavGuide;
+
+    [Space(5)]
+    [SerializeField] RectTransform[] achievementRectTransformPage;
 
 
     [Header("Set Selected Game Object")]
@@ -52,6 +60,9 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] GameObject controlsSettingSelectedButton;
     [SerializeField] GameObject languageSettingSelectedButton;
 
+    [Space(5)]
+    [SerializeField] GameObject achievementPage1SelectedButton;
+    [SerializeField] GameObject achievementPage2SelectedButton;
 
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
@@ -78,6 +89,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
         playerControls.MainMenu.Enable();
     }
+
+    #region - SETTING CATEGORY NAVIGATION -
 
     #region - SETTING PREVIOUS CATEGORY -
 
@@ -143,7 +156,8 @@ public class MainMenuScriptManager : MonoBehaviour
     }
 
     #endregion
-    
+    #endregion
+
     #region - RETURN OR BACK -
 
     private void ToBack(InputAction.CallbackContext context)
@@ -156,6 +170,11 @@ public class MainMenuScriptManager : MonoBehaviour
         {
             SettingBack();
         }
+        else if (achievementRectTransform.gameObject.activeSelf)
+        {
+            AchievementBack();
+        }
+
     }
     
     #endregion
@@ -187,6 +206,12 @@ public class MainMenuScriptManager : MonoBehaviour
         // INTIALIZATION SELECT SCENE
         selectSceneRectTransform.gameObject.SetActive(false);
         selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
+        selectSceneButtonCG.alpha = 0;
+        selectSceneButtonCG.interactable = false;
+
+        // INTIALIZATION SELECT SCENE
+        achievementRectTransform.gameObject.SetActive(false);
+        achievementRectTransform.sizeDelta = new Vector2(0, 1080);
         selectSceneButtonCG.alpha = 0;
         selectSceneButtonCG.interactable = false;
 
@@ -312,7 +337,7 @@ public class MainMenuScriptManager : MonoBehaviour
         if(DeviceManager.instance.keyboardDevice)
         {
             if (mainMenuHUDRectTransform.gameObject.activeSelf || selectSceneRectTransform.gameObject.activeSelf || 
-                settingRectTransform.gameObject.activeSelf)
+                settingRectTransform.gameObject.activeSelf || achievementRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -363,6 +388,21 @@ public class MainMenuScriptManager : MonoBehaviour
                         isGamepad = true;
                     }
                 }
+
+                if(achievementRectTransform.gameObject.activeSelf)
+                {
+                    if(achievementRectTransformPage[0].gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(achievementPage1SelectedButton);
+                        isGamepad = true;
+                    }
+
+                    if(achievementRectTransformPage[1].gameObject.activeSelf)
+                    {
+                        EventSystem.current.SetSelectedGameObject(achievementPage2SelectedButton);
+                        isGamepad = true;
+                    }
+                }
             }
         }
     }
@@ -384,6 +424,11 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 settingNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
             }
+
+            if(achievementRectTransform.gameObject.activeSelf)
+            {
+                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+            }
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
@@ -395,6 +440,11 @@ public class MainMenuScriptManager : MonoBehaviour
             if(settingRectTransform.gameObject.activeSelf)
             {
                 settingNavGuide.text = "<sprite name=\"Left Shoulder\"> <sprite name=\"Right Shoulder\">  Switch Category   <sprite name=\"Circle\"> Back   ";
+            }
+
+            if(achievementRectTransform.gameObject.activeSelf)
+            {
+                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
             }
         }
     }
@@ -507,7 +557,37 @@ public class MainMenuScriptManager : MonoBehaviour
         });
     }
 
+    public void Achievements()
+    {
+        Debug.Log("Access Achievements!");
 
+        achievementRectTransform.sizeDelta = new Vector2(0, 1080);
+        
+        mainMenuButtonCG.interactable = false;
+        isGamepad = true;
+        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            mainMenuButtonCG.gameObject.SetActive(false);
+            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                achievementRectTransform.gameObject.SetActive(true);
+                achievementRectTransform.DOSizeDelta(new Vector2(1920, achievementRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        achievementButtonCG.gameObject.SetActive(true);
+                        achievementButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            achievementButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });
+    }    
     public void Credits()
     {
         Debug.Log("Access Credits!");
@@ -660,5 +740,47 @@ public class MainMenuScriptManager : MonoBehaviour
         languageSettingRectTransform.gameObject.SetActive(true);
     }
 
+    #endregion
+
+    #region  = ACHIEVEMENT SCREEN -
+
+    public void AchievementBack()
+    {
+        Debug.Log("Go back to Main Menu");
+
+        achievementButtonCG.DOFade(0, .25f).OnComplete(() =>
+        {
+            achievementButtonCG.gameObject.SetActive(false);
+            achievementButtonCG.interactable = false;
+            isGamepad = true;
+            achievementRectTransform.DOSizeDelta(new Vector2(achievementRectTransform.sizeDelta.x, 0), .25f)
+                .SetEase(Ease.OutFlash)
+                .OnComplete(() =>
+            {
+                achievementRectTransform.gameObject.SetActive(false);
+                mainMenuHUDRectTransform.gameObject.SetActive(true);
+                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
+                    .SetEase(Ease.InFlash)
+                    .OnComplete(() =>
+                    {
+                        mainMenuButtonCG.gameObject.SetActive(true);
+                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
+                        {
+                            AccessAchievementFirstPage();
+                            mainMenuButtonCG.interactable = true;
+                            isGamepad = false;
+                        });
+                    });
+            });
+        });
+    }
+
+    void AccessAchievementFirstPage()
+    {
+        achievementRectTransformPage[0].gameObject.SetActive(true);
+        achievementRectTransformPage[1].gameObject.SetActive(false);
+
+        // Empty the string in achievement preview
+    }
     #endregion
 }

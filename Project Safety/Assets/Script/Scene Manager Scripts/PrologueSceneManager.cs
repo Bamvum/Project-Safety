@@ -55,14 +55,14 @@ public class PrologueSceneManager : MonoBehaviour
     {
         if(SettingMenu.instance.languageDropdown.value == 0) // English
         {
-            Debug.Log("English Preference");
+            Debug.LogWarning("English Preference");
             // englishLanguage.SetActive(true);
             // tagalogLanguage.SetActive(false);
             InstructionManager.instance.instructionsSO = englishInstructionsSO;
         }
         else
         {
-            Debug.Log("Tagalog Preference");
+            Debug.LogWarning("Tagalog Preference");
             // englishLanguage.SetActive(false);
             // tagalogLanguage.SetActive(true);
             InstructionManager.instance.instructionsSO = tagalogInstructionsSO;
