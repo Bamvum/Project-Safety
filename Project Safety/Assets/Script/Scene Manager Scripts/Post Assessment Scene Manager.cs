@@ -49,6 +49,8 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetInt("Post-Assessment", 1);
+        
         Cursor.lockState = CursorLockMode.Locked;
 
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
