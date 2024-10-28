@@ -51,6 +51,8 @@ public class Act1Scene3SceneManager : MonoBehaviour
     
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,

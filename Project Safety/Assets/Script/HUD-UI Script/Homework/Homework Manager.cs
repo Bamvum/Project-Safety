@@ -22,7 +22,6 @@ public class HomeworkManager : MonoBehaviour
 
     [SerializeField] List<QuestionandAnswer> QnA;
 
-    [SerializeField] GameObject choiceSelected;
     [SerializeField] int currentQuestion;
 
     [Header("Homework HUD")]
@@ -36,7 +35,12 @@ public class HomeworkManager : MonoBehaviour
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
+    [SerializeField] GameObject choiceSelected;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource correctSFX;
+    [SerializeField] AudioSource wrongSFX;
+    
     [Header("Flag")]
     int score = 0;
     int totalOfQuestions;
@@ -149,12 +153,14 @@ public class HomeworkManager : MonoBehaviour
     {
         QnA.RemoveAt(currentQuestion);
         score++;
+        correctSFX.Play();
         GenerateQuestions();
     }
 
     public void Wrong()
     {
         QnA.RemoveAt(currentQuestion);
+        wrongSFX.Play();
         GenerateQuestions();
     }
 
