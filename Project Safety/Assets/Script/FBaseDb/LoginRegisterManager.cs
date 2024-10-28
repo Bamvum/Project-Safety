@@ -222,8 +222,13 @@ public class LoginRegisterManager : MonoBehaviour
             Debug.LogError(message);      
     }
 
-// Start is called before the first frame update
-void Start()
+    public void DebugLogIn()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    // Start is called before the first frame update
+    void Start()
     {
         
     }
