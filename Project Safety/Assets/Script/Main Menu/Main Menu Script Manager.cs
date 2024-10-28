@@ -427,7 +427,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Page   <sprite name=\"Escape\"> Back   ";
             }
         }
         else if(DeviceManager.instance.gamepadDevice)
@@ -444,7 +444,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Page   <sprite name=\"Escape\"> Back   ";
             }
         }
     }
@@ -777,8 +777,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
     void AccessAchievementFirstPage()
     {
-        achievementRectTransformPage[0].gameObject.SetActive(true);
-        achievementRectTransformPage[1].gameObject.SetActive(false);
+        // achievementRectTransformPage[0].gameObject.SetActive(true);
+        // achievementRectTransformPage[1].gameObject.SetActive(false);
 
         // Empty the string in achievement preview
     }
