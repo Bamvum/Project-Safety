@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
   m_Name: Papers FS2
   m_EditorClassIdentifier: 
-  itemName: Fire Safety #2
-  itemDescription: 
+  itemName: Foam Extinguisher
+  itemDescription: Foam Extinguishers have a cream label and are most suited for
+    Class A and B fires. Ideal for school, warehouses, and etc. with buildings constructed
+    from organic materials. This extinguisher suppresses fire by forming a thick
+    cooling blanket effect, sealing the surface of the burning materials.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

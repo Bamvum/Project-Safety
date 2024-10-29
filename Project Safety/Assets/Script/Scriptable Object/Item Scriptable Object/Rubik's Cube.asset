@@ -10,14 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
-  m_Name: Papers FS3
+  m_Name: Rubik's Cube
   m_EditorClassIdentifier: 
-  itemName: Co2 Extinguisher
-  itemDescription: Co2 is commonly known as Carbon Dioxide. It is commonly used against
-    flammable liquids and electrical equipment. Electrical equipment can vary from
-    computers, servers, televisions, cellular devices, and etc. It is effective for
-    Class B and C fires, as it is loaded with non-flammable carbon dioxide gas under
-    high pressure.
+  itemName: Rubik's Cube
+  itemDescription: A 3D combination puzzle, proven to be difficult and needed to
+    learn to fully master it's puzzles.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0
