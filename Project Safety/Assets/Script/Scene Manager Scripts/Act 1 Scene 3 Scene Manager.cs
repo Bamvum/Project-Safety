@@ -14,6 +14,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
         instance = this;
     
         PlayerPrefs.SetInt("Fire Station Scene", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Fire Station Scene", true);
     }
 
     [Header("Dialogue Trigger")]

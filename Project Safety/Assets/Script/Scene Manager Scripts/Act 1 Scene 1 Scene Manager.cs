@@ -44,6 +44,7 @@ public class Act1StudentSceneManager : MonoBehaviour
         StartCoroutine(HeavyBreathingSFX());
 
         PlayerPrefs.SetInt("House Scene", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("House Scene", true);
     }
 
     IEnumerator HeavyBreathingSFX()
@@ -97,9 +98,31 @@ public class Act1StudentSceneManager : MonoBehaviour
         }
     }
 
-    public void PlayerToDiningArea(Transform locationPosition)
+    public void RecordPlugChoice(bool savePlug)
     {
-        PlayerScript.instance.playerMovement.gameObject.transform.position = locationPosition.position;
+        // Save choice as integer in PlayerPrefs: 1 for Unplug, 2 for not Unlpug
+        int choiceValue = savePlug ? 1 : 2;
+        PlayerPrefs.SetInt("Act1Scene1_PlugChoice", choiceValue);
+        PlayerPrefs.Save();
+
+        // Log the choice for debugging
+        Debug.Log("Plug Choice Recorded: " + (savePlug ? "UnPlug" : "Did Not UnPlug"));
+
+        // Upload the choice to Firebase
+        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene1_PlugChoice", choiceValue);
     }
+
     
+    public void OnUnPlugChoice()
+    {
+        RecordPlugChoice(true); 
+    }
+
+    public void OnDontUnPlugChoice()
+    {
+        RecordPlugChoice(false);
+    }
+
+
+
 }

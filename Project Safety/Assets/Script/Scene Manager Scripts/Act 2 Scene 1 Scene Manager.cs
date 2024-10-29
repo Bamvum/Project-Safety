@@ -31,6 +31,9 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetInt("School: Start", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("School: Start", true);
+
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
@@ -100,5 +103,53 @@ public class Act2Scene1Manager : MonoBehaviour
             LoadingSceneManager.instance.enabled = true;
             LoadingSceneManager.instance.sceneName = "Act 2 Scene 2";
         });
+    }
+
+    // Call choice functions
+    public void SaveCallChoice(string choice)
+    {
+        int choiceValue = 0;
+
+        switch (choice)
+        {
+            case "Firestation":
+                choiceValue = 1; // 1 for local fire station
+                break;
+            case "EmergencyHotline":
+                choiceValue = 2; // 2 for national emergency hotline
+                break;
+            case "Mom":
+                choiceValue = 3; // 3 for mom
+                break;
+            default:
+                Debug.LogError("Invalid choice");
+                return; // Exit if invalid choice
+        }
+
+        // Save choice in PlayerPrefs
+        PlayerPrefs.SetInt("Act2Scene1_CallChoice", choiceValue);
+        PlayerPrefs.Save();
+
+        // Log choice for debugging
+        Debug.Log("Call Choice Recorded: " + choice);
+
+        // Upload choice to Firebase
+        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene1_CallChoice", choiceValue);
+    }
+
+    
+    public void OnCallFirestationChoice()
+    {
+        SaveCallChoice("Firestation");
+    }
+
+    public void OnCallEmergencyHotlineChoice()
+    {
+        SaveCallChoice("EmergencyHotline");
+    }
+
+    public void OnCallMomChoice()
+    {
+        SaveCallChoice("Mom");
     }
 }

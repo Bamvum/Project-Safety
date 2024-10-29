@@ -100,89 +100,62 @@ public class FirebaseManager : MonoBehaviour
     }
 
 
-    // Save the player's decision in the database
-    public void SaveDecision(string userId, string act, string decisionKey, bool decisionValue)
+    public void SaveChoiceToFirebase(string choiceKey, int choiceValue)
     {
-        string decisionPath = $"users/{userId}/decisions/{act}/{decisionKey}";
-        databaseReference.Child(decisionPath).SetValueAsync(decisionValue).ContinueWith(task =>
+        if (auth.CurrentUser != null)
         {
-            if (task.IsFaulted)
-            {
-                Debug.LogError($"Failed to save decision {decisionKey} for act {act}: {task.Exception.Message}");
-            }
-            else
-            {
-                Debug.Log($"Decision {decisionKey} for act {act} saved successfully.");
-            }
-        });
-    }
-
-    // Update overall statistics based on player decisions
-    public void UpdateOverallStatistics(string act, string decisionKey, bool decisionValue)
-    {
-        string overallPath = $"statistics/{act}/{decisionKey}/totalPlayers";
-        string truePath = $"statistics/{act}/{decisionKey}/trueCount";
-
-        databaseReference.RunTransaction(mutableData =>
-        {
-            Dictionary<string, object> stats = mutableData.Value as Dictionary<string, object>;
-            if (stats == null)
-            {
-                stats = new Dictionary<string, object> { { "totalPlayers", 0 }, { "trueCount", 0 } };
-            }
-
-            stats["totalPlayers"] = (long)stats["totalPlayers"] + 1;
-
-            if (decisionValue)
-            {
-                stats["trueCount"] = (long)stats["trueCount"] + 1;
-            }
-
-            mutableData.Value = stats;
-            return TransactionResult.Success(mutableData);
-        }).ContinueWith(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.LogError("Failed to update overall statistics: " + task.Exception.Message);
-            }
-            else
-            {
-                Debug.Log("Overall statistics updated successfully.");
-            }
-        });
-    }
-
-    // Compare the player's decisions with overall statistics
-    public void ComparePlayerToOverall(string userId)
-    {
-        string userPath = $"users/{userId}/decisions";
-        string statsPath = "statistics";
-
-        // Fetch the user's decisions
-        databaseReference.Child(userPath).GetValueAsync().ContinueWith(userTask =>
-        {
-            if (userTask.IsFaulted || userTask.Result == null)
-            {
-                Debug.LogError("Failed to fetch player decisions: " + userTask.Exception.Message);
-                return;
-            }
-
-            Dictionary<string, object> playerDecisions = userTask.Result.Value as Dictionary<string, object>;
-
-            // Fetch the overall statistics
-            databaseReference.Child(statsPath).GetValueAsync().ContinueWith(statsTask =>
-            {
-                if (statsTask.IsFaulted || statsTask.Result == null)
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("choices")
+                .Child(choiceKey)
+                .SetValueAsync(choiceValue)
+                .ContinueWithOnMainThread(task =>
                 {
-                    Debug.LogError("Failed to fetch overall statistics: " + statsTask.Exception.Message);
-                    return;
-                }
-
-                Dictionary<string, object> overallStats = statsTask.Result.Value as Dictionary<string, object>; 
-                // Lagay dito playerref comparison logic
-                Debug.Log("Comparison completed.");
-            });
-        });
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log($"Choice {choiceKey} saved to Firebase with value {choiceValue}.");
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to save choice {choiceKey} to Firebase: {task.Exception}");
+                    }
+                });
+        }
+        else
+        {
+            Debug.LogWarning("No user is signed in, cannot save choice to Firebase.");
+        }
     }
+
+    public void SaveChapterUnlockToFirebase(string chapterKey, bool isUnlocked)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("chapters")
+                .Child(chapterKey)
+                .SetValueAsync(isUnlocked ? 1 : 0)
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log($"Chapter {chapterKey} unlock status saved to Firebase: {isUnlocked}");
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to save chapter {chapterKey} unlock status to Firebase: {task.Exception}");
+                    }
+                });
+        }
+        else
+        {
+            Debug.LogWarning("No user is signed in, cannot save chapter unlock status to Firebase.");
+        }
+    }
+
 }

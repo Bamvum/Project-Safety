@@ -57,6 +57,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("School: Escape", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("School: Escape", true);
         Time.timeScale = 1;
         
         // FADE IMAGE ALPHA SET 1
@@ -157,9 +158,33 @@ public class Act2Scene2SceneManager : MonoBehaviour
         }
     }
 
-    #region - TIMER -
+    public void RecordGatherBelongingsChoice(bool gatherBelongings)
+    {
+        // Save choice as integer in PlayerPrefs: 1 for gathering belongings, 2 for leaving immediately
+        int choiceValue = gatherBelongings ? 1 : 2;
+        PlayerPrefs.SetInt("Act2Scene2_GatherBelongingsChoice", choiceValue);
+        PlayerPrefs.Save();
 
-    void EscapeTimer()
+        // Log the choice for debugging
+        Debug.Log("Gather Belongings Choice Recorded: " + (gatherBelongings ? "Gathered Belongings" : "Left Immediately"));
+
+        // Upload the choice to Firebase
+        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_GatherBelongingsChoice", choiceValue);
+    }
+
+    public void OnGatherBelongingsChoice()
+    {
+        RecordGatherBelongingsChoice(true); 
+    }
+
+    public void OnLeaveImmediatelyChoice()
+    {
+        RecordGatherBelongingsChoice(false); 
+    }
+
+#region - TIMER -
+
+void EscapeTimer()
     {
         remainingTime -= Time.deltaTime;
 
@@ -192,11 +217,36 @@ public class Act2Scene2SceneManager : MonoBehaviour
         PlayerScript.instance.playerMovement.gameObject.transform.rotation = Quaternion.Euler(0,0,0);
     }
 
-    #endregion
+    // Method to save the elevator choice
+    public void RecordElevatorChoice(bool useElevator)
+    {
+        // Save choice as integer in PlayerPrefs: 1 for using the elevator, 2 for not using it
+        int choiceValue = useElevator ? 1 : 2;
+        PlayerPrefs.SetInt("Act2Scene2_ElevatorChoice", choiceValue);
+        PlayerPrefs.Save();
 
-    #region - PLAYER HEALTH [SMOKE INHILATION/INJURY]-
- 
-    void PlayerHealthInhilationChecker()
+        // Log the choice for debugging
+        Debug.Log("Elevator Choice Recorded: " + (useElevator ? "Used Elevator" : "Did Not Use Elevator"));
+
+        // Upload the choice to Firebase
+        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_ElevatorChoice", choiceValue);
+    }
+
+    public void OnUseElevatorChoice()
+    {
+        RecordElevatorChoice(true);
+    }
+
+    public void OnDontUseElevatorChoice()
+    {
+        RecordElevatorChoice(false); 
+    }
+
+#endregion
+
+#region - PLAYER HEALTH [SMOKE INHILATION/INJURY]-
+
+void PlayerHealthInhilationChecker()
     {
         if(playerHealth <= 0)
         {

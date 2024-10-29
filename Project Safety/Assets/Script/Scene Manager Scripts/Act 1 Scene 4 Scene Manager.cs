@@ -42,8 +42,9 @@ public class Act1Scene4SceneManager : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("Training Grounds Scene", 1);                 
-        
+        PlayerPrefs.SetInt("Training Grounds Scene", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Training Grounds Scene", true);
+
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
                                                          LoadingSceneManager.instance.fadeImage.color.b,
@@ -160,15 +161,29 @@ public class Act1Scene4SceneManager : MonoBehaviour
             });
     }
 
-    public void Test()
+    public void RecordDummyChoice(bool saveDummy)
     {
-        // PlayerPrefs
-        // 0 = null
-        // 1 = True
-        // 2 = false
+        // Save choice as integer in PlayerPrefs: 1 for saving the Dummy, 2 for not saving
+        int choiceValue = saveDummy ? 1 : 2;
+        PlayerPrefs.SetInt("Act1Scene4_DummyChoice", choiceValue);
+        PlayerPrefs.Save();
 
-        Debug.Log("Kunwari PlayerPrefs");
+        // Log the choice for debugging
+        Debug.Log("Dummy Choice Recorded: " + (saveDummy ? "Saved Dummy" : "Did Not Save Dummy"));
 
+        // Upload the choice to Firebase
+        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene4_DummyChoice", choiceValue);
     }
+
+    public void OnSaveDummyChoice()
+    {
+        RecordDummyChoice(true);
+    }
+
+    public void OnDontSaveDummyChoice()
+    {
+        RecordDummyChoice(false); 
+    }
+
 
 }
