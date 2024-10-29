@@ -174,7 +174,11 @@ public class HomeworkManager : MonoBehaviour
         homeworkQnA.SetActive(false);
         homeworkScoreText.text = score + " / "  + totalOfQuestions;
         
-        Cursor.lockState = CursorLockMode.Locked;
+        if(SceneManager.GetActiveScene().name == "Prologue")
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
         Invoke("EndOfHomework", 3);
     }
 
