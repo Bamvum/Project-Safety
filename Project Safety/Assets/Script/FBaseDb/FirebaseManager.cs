@@ -76,7 +76,7 @@ public class FirebaseManager : MonoBehaviour
 
     public static void DeleteGuestAccount()
     {
-        if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous)
+        if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous && databaseReference != null)
         {
             auth.CurrentUser.DeleteAsync().ContinueWithOnMainThread(task => {
                 if (task.IsCompleted)
@@ -88,6 +88,10 @@ public class FirebaseManager : MonoBehaviour
                     Debug.LogError("Failed to delete guest account: " + task.Exception);
                 }
             });
+        }
+        else
+        {
+            Debug.LogWarning("No guest data to delete or Firebase references are null.");
         }
     }
 
