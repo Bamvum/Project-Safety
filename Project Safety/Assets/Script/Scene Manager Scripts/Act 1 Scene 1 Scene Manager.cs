@@ -44,7 +44,6 @@ public class Act1StudentSceneManager : MonoBehaviour
         StartCoroutine(HeavyBreathingSFX());
 
         PlayerPrefs.SetInt("House Scene", 1);
-        FirebaseManager.Instance.SaveChapterUnlockToFirebase("House Scene", true);
     }
 
     IEnumerator HeavyBreathingSFX()

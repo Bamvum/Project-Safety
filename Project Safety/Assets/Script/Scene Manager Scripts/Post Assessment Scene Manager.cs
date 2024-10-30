@@ -62,7 +62,6 @@ public class PostAssessmentSceneManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("Post-Assessment", 1);
-        // FirebaseManager.Instance.SaveChapterUnlockToFirebase("Post-Assesment", true);
 
         Cursor.lockState = CursorLockMode.Locked;
 

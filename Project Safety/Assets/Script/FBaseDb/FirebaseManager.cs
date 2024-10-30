@@ -48,14 +48,15 @@ public class FirebaseManager : MonoBehaviour
 
     public static void DeleteGuestData()
     {
-        if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous)
+        if (auth != null && auth.CurrentUser != null && auth.CurrentUser.IsAnonymous && databaseReference != null)
         {
             // Delete guest user's data from the database
             databaseReference
                 .Child("users")
                 .Child(auth.CurrentUser.UserId)
                 .RemoveValueAsync()
-                .ContinueWithOnMainThread(task => {
+                .ContinueWithOnMainThread(task =>
+                {
                     if (task.IsCompleted)
                     {
                         Debug.Log("Guest user data deleted successfully.");
@@ -66,7 +67,12 @@ public class FirebaseManager : MonoBehaviour
                     }
                 });
         }
+        else
+        {
+            Debug.LogWarning("No guest data to delete or Firebase references are null.");
+        }
     }
+
 
     public static void DeleteGuestAccount()
     {
@@ -157,5 +163,47 @@ public class FirebaseManager : MonoBehaviour
             Debug.LogWarning("No user is signed in, cannot save chapter unlock status to Firebase.");
         }
     }
+
+    public void GetChapterUnlockStatusFromFirebase(string chapterKey, System.Action<bool> callback)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("chapters")
+                .Child(chapterKey)
+                .GetValueAsync()
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        if (task.Result.Exists)
+                        {
+                            bool isUnlocked = task.Result.Value.ToString() == "1";
+                            callback(isUnlocked);
+                        }
+                        else
+                        {
+                            // Log specific message if chapter data is missing
+                            Debug.LogWarning($"Chapter {chapterKey} not found in Firebase, defaulting to locked.");
+                            callback(false); // Default to locked if chapter is missing
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to retrieve chapter unlock status from Firebase due to: " + task.Exception);
+                        callback(false); // Default to locked if fetch fails
+                    }
+                });
+        }
+        else
+        {
+            Debug.LogWarning("No user signed in. Unable to fetch chapter unlock status from Firebase.");
+            callback(false); // Default to locked if no user is signed in
+        }
+    }
+
 
 }

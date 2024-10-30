@@ -43,7 +43,6 @@ public class Act1Scene4SceneManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("Training Grounds Scene", 1);
-        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Training Grounds Scene", true);
 
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,

@@ -47,7 +47,6 @@ public class Act1Scene2SceneManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("Neighborhood Scene", 1);
-        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Neighborhood Scene", true);
 
         // FADE IMAGE ALPHA SET 1
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
