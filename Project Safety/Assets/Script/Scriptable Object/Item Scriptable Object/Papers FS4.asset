@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
   m_Name: Papers FS4
   m_EditorClassIdentifier: 
-  itemName: Fire Safety #4
-  itemDescription: 
+  itemName: Water Extinguisher
+  itemDescription: The water type for a fire extinguisher only has one use and it
+    is against combustible fires such as wood, paper, and other kinds of textiles.
+    Effective only against Class A fires. It works by soaking the fire and materials
+    in water, removing the heat and cooling the fire significantly so it can no longer
+    burn.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

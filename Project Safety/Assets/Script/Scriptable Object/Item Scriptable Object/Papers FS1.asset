@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
   m_Name: Papers FS1
   m_EditorClassIdentifier: 
-  itemName: Fire Safety #1
-  itemDescription: 
+  itemName: Powder Extinguisher
+  itemDescription: "Powder type is the most common and found almost anywhere such
+    as office buildings, malls, schools, and etc. It is the most flexible when it
+    comes to putting out fire as it is capable of extinguishing combustible objects,
+    flammable gases, electrical equipment, and especially gaseous fires. This extinguisher
+    quickly suppresses flames using a non-toxic powder. Ideal for home, office, or
+    industrial use.\r"
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0
