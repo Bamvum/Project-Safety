@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PostAssessmentSceneManager : MonoBehaviour
 {
@@ -26,7 +27,6 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [Space(5)]
     [SerializeField] bool stopSwapperInput;
 
-
     [Header("Audio")]
     [SerializeField] AudioSource sceneBGM;
     [SerializeField] AudioSource correctSFX;
@@ -37,20 +37,32 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [SerializeField] CanvasGroup tpassExtinguisherTestCG;
 
     [Space(10)]
-
+    [SerializeField] RectTransform classFireTestRectTransform;
+    [SerializeField] CanvasGroup classFireTestCG;
+    
+    [Space(5)]
+    [SerializeField] List<ClassFireQuestionandAnswer> classFireQnA;
+    [SerializeField] GameObject[] classFireChoices;
+    [SerializeField] int classFireCurrentQuestion;
+    [SerializeField] Image questionImage;
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
 
     [Space(5)]
     [SerializeField] GameObject tpassExtinguisherTestSelectedButton;
+    [SerializeField] GameObject classFireTestSelectedButton;
+
+    [Header("Flags")]
+    [SerializeField] int tpassScore;
+    [SerializeField] int classFireScore;
 
     bool isGamepad;
 
     void Start()
     {
         PlayerPrefs.SetInt("Post-Assessment", 1);
-        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Post-Assesment", true);
+        // FirebaseManager.Instance.SaveChapterUnlockToFirebase("Post-Assesment", true);
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -141,7 +153,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            if(tpassExtinguisherTestRectTransform.gameObject.activeSelf)
+            if(tpassExtinguisherTestRectTransform.gameObject.activeSelf || classFireTestRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -154,7 +166,17 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
             if(!isGamepad)
             {
-                EventSystem.current.SetSelectedGameObject(tpassExtinguisherTestSelectedButton);
+                
+                if(tpassExtinguisherTestRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(tpassExtinguisherTestSelectedButton);
+                }
+
+                if(classFireTestRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(classFireTestSelectedButton);
+                }
+
                 isGamepad = true;
             }
         }
@@ -192,8 +214,10 @@ public class PostAssessmentSceneManager : MonoBehaviour
         tpassExtinguisherTestRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
         {
             tpassExtinguisherTestRectTransform.gameObject.SetActive(false);
-            HomeworkManager.instance.enabled = true;
-            HomeworkManager.instance.homeworkHUD.SetActive(true);
+            // HomeworkManager.instance.enabled = true;
+            // HomeworkManager.instance.homeworkHUD.SetActive(true);
+            ShowClassFireTest();
+            GenerateFireClassQuestions();
             // DISPLAY HOMEWORK
         });
 
@@ -212,30 +236,28 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     public void SubmitTPASSAnswer()
     {
-        int correctCount = 0;
-
         if (tpassButtonsRectTransform[0].anchoredPosition == new Vector2(-575.5f, 0))
         {
-            correctCount++;
+            tpassScore++;
         }
         if (tpassButtonsRectTransform[1].anchoredPosition == new Vector2(-250.5f, 0))
         {
-            correctCount++;
+            tpassScore++;
         }
         if (tpassButtonsRectTransform[2].anchoredPosition == new Vector2(74.5f, 0))
         {
-            correctCount++;
+            tpassScore++;
         }
         if (tpassButtonsRectTransform[3].anchoredPosition == new Vector2(399.5f, 0))
         {
-            correctCount++;
+            tpassScore++;
         }
         if (tpassButtonsRectTransform[4].anchoredPosition == new Vector2(724.5f, 0))
         {
-            correctCount++;
+            tpassScore++;
         }
 
-        if (correctCount == 5)
+        if (tpassScore == 5)
         {
             Debug.Log("Correct!");
             correctSFX.Play();
@@ -358,4 +380,86 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     #endregion
 
+    #region - CLASSIFICATION OF FIRE -
+
+    void ShowClassFireTest()
+    {
+        //GenerateFireClassQuestions();
+
+        classFireTestRectTransform.gameObject.SetActive(true);
+        classFireTestRectTransform.DOScale(Vector3.one, .75f).OnComplete(() =>
+        {
+            classFireTestRectTransform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1)
+                .SetEase(Ease.InFlash)
+                .OnComplete(() =>
+                {
+                    classFireTestCG.interactable = true;
+                    
+                });
+
+        });
+    }
+
+    void HideClassFireTest() 
+    {
+        // Disable interactability before starting the hide animation
+        classFireTestCG.interactable = false;
+        classFireTestRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
+        {
+            classFireTestRectTransform.gameObject.SetActive(false);
+            HomeworkManager.instance.enabled = true;
+            HomeworkManager.instance.homeworkHUD.SetActive(true);
+            // ShowClassFireTest();
+            // GenerateFireClassQuestions();
+            // DISPLAY HOMEWORK
+        });
+    }
+
+    void SetAnswer()
+    {
+        for (int i = 0; i < classFireChoices.Length; i++)
+        {
+            classFireChoices[i].GetComponent<ClassFireAnswerKey>().isCorrect = false;
+            // homeworkChoices[i].transform.GetChild(0).GetComponent<TMP_Text>().text = QnA[currentQuestion].answer[i];
+            
+            if (classFireQnA[classFireCurrentQuestion].correctAnswer == i+1)
+            {
+                classFireChoices[i].GetComponent<ClassFireAnswerKey>().isCorrect = true;
+            }
+        }
+    }
+
+    void GenerateFireClassQuestions()
+    {
+        if(classFireQnA.Count > 0)
+        {
+            classFireCurrentQuestion = Random.Range(0, classFireQnA.Count);
+            questionImage.sprite = classFireQnA[classFireCurrentQuestion].questionImage;
+
+            SetAnswer();
+        }
+        else
+        {
+            Debug.Log("Out of Questions");
+        
+            HideClassFireTest();
+        }
+    }
+
+    public void classFireCorrect()
+    {
+        classFireQnA.RemoveAt(classFireCurrentQuestion);
+        classFireScore++;
+        correctSFX.Play();
+        GenerateFireClassQuestions();
+    }
+
+    public void classFireWrong()
+    {
+        classFireQnA.RemoveAt(classFireCurrentQuestion);
+        wrongSFX.Play();
+        GenerateFireClassQuestions();
+    }
+
+    #endregion
 }
