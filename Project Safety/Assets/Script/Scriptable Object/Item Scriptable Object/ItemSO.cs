@@ -8,6 +8,7 @@ public class ItemSO : ScriptableObject
     [Header("UI")]
     public string itemName;
     [TextArea(3, 5)]
+    
     public string itemDescription;
 
     [Header("Examine")]

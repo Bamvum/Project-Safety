@@ -60,7 +60,7 @@ public class SettingMenu : MonoBehaviour
             LoadSettingsFromPlayerPrefs(); // Only load PlayerPrefs if no user is logged in
         }
 
-        PrintPlayerPrefs();
+        // PrintPlayerPrefs();
     }
 
     void PrintPlayerPrefs()

@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
-
-
 public class HomeworkManager : MonoBehaviour
 {
     public static HomeworkManager instance {get; private set;}

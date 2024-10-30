@@ -4,6 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 using System.Threading;
 
+using TMPro;
+
 public class Act1Scene3SceneManager : MonoBehaviour
 {
     public static Act1Scene3SceneManager instance { get; private set;} 
@@ -12,21 +14,32 @@ public class Act1Scene3SceneManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-    
-        PlayerPrefs.SetInt("Fire Station Scene", 1);
-        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Fire Station Scene", true);
-    }
+        sequence =  DOTween.Sequence();
 
-    [Header("Dialogue Trigger")]
-    [SerializeField] DialogueTrigger startDialogue;
-    [SerializeField] DialogueTrigger endDialogue;
+        PlayerPrefs.SetInt("Fire Station Scene", 1);
+        // FirebaseManager.Instance.SaveChapterUnlockToFirebase("Fire Station Scene", true);
+    }
+    
+    [Header("HUD")]
+    [SerializeField] CanvasGroup sceneNameText;
+    [SerializeField] Sequence sequence;
     
     [Header("Language Preference")]
     [SerializeField] InstructionSO englishInstructionSO;
     [SerializeField] InstructionSO tagalogInstructionSO;
-    
 
-    [Header("Player")]
+    [Space(5)]
+    public int languageIndex;
+    
+    [Header("Dialogue Trigger")]
+    [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger endDialogue;
+    
+    [Space(5)]
+    [SerializeField] DialogueTrigger englishMonologue;
+    [SerializeField] DialogueTrigger tagalogMonologue;
+
+    [Header("Game Objects")]
     [SerializeField] GameObject player;
 
     [Space(10)]
@@ -34,15 +47,15 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [SerializeField] GameObject fireTruckPeople;
     [SerializeField] GameObject fireTruck;
 
-    [Space(10)]
-    [SerializeField] AudioSource streetAmbiance;
+    [Header("Audio")]
+    AudioSource carAmbiance;
+    AudioSource streetAmbiance;
 
     [Header("Flags")]
     [SerializeField] GameObject fireToBeExtinguish1;
     [SerializeField] GameObject fireToBeExtinguish2;
     [SerializeField] GameObject fireToBeExtinguish3;
-
-
+    
     [Space(10)]
     [SerializeField] bool stopLoop;
 
@@ -60,21 +73,72 @@ public class Act1Scene3SceneManager : MonoBehaviour
                                                                 LoadingSceneManager.instance.fadeImage.color.b,
                                                                 1);
 
-        // TODO -   MONOLOGUE BY PLAYER
-        //      -   
-        StartCoroutine(FadeOutEffect());
+        // CAR AMBIANCE - OFF
+        if(SettingMenu.instance.languageDropdown.value == 0)
+        {
+            // englishLanguage.SetActive(true);
+            // tagalogLanguage.SetActive(false);
+            InstructionManager.instance.instructionsSO = englishInstructionSO;
+            languageIndex = 0;
+        }
+        else
+        {
+            // englishLanguage.SetActive(true);
+            // tagalogLanguage.SetActive(false);
+            InstructionManager.instance.instructionsSO = tagalogInstructionSO;
+            languageIndex = 1;
+        }
+
+
+        StartCoroutine(MonologueStart());
 
     }
 
-    IEnumerator FadeOutEffect()
+    IEnumerator MonologueStart()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1);
 
+        if(languageIndex == 0)
+        {
+            englishMonologue.StartDialogue();
+        }
+        else
+        {
+            tagalogMonologue.StartDialogue();
+        }
+    }
+
+    public void FadeOutEffect()
+    {
+        // SCENE TEXT REVEAL
+        sceneNameText.gameObject.SetActive(true);
+        sceneNameText.DOFade(1,1)
+            .SetUpdate(true)
+            .OnComplete(() => 
+            {
+                // PLAY SFX
+                sceneNameText.DOFade(1, 1)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        sceneNameText.DOFade(0, 1)
+                            .SetUpdate(true)
+                            .OnComplete(() =>
+                            {
+                                sceneNameText.gameObject.SetActive(false);
+                            });
+                    });
+            });
+        
         LoadingSceneManager.instance.fadeImage
             .DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
+            // AUDIO
+            sequence.Append(carAmbiance.DOFade(0, 1).SetUpdate(true));
+            sequence.Join(streetAmbiance.DOFade(0, 1).SetUpdate(true));
+            
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
             moveTowardFireTruck = false;   
