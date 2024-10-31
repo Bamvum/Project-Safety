@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Cinemachine;
+using Firebase;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class Act2Scene1Manager : MonoBehaviour
 {
     public static Act2Scene1Manager instance {get; private set;}
+    private FirebaseAuth auth;
 
     void Awake()
     {
@@ -31,6 +36,7 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Start()
     {
+        auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("School: Start", 1);
 
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
@@ -107,36 +113,41 @@ public class Act2Scene1Manager : MonoBehaviour
     // Call choice functions
     public void SaveCallChoice(string choice)
     {
-        int choiceValue = 0;
+        FirebaseDatabase.DefaultInstance
+            .GetReference("users")
+            .Child(auth.CurrentUser.UserId)
+            .Child("choices")
+            .Child("Act2Scene1_CallChoice")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        Debug.LogWarning("Call choice has already been saved in Firebase and cannot be changed.");
+                        return; // Exit without saving or uploading
+                    }
+                    else
+                    {
+                        // Proceed with saving if choice hasn't been made
+                        int choiceValue = choice == "Firestation" ? 1 : choice == "EmergencyHotline" ? 2 : choice == "Mom" ? 3 : 0;
+                        if (choiceValue == 0) return;
 
-        switch (choice)
-        {
-            case "Firestation":
-                choiceValue = 1; // 1 for local fire station
-                break;
-            case "EmergencyHotline":
-                choiceValue = 2; // 2 for national emergency hotline
-                break;
-            case "Mom":
-                choiceValue = 3; // 3 for mom
-                break;
-            default:
-                Debug.LogError("Invalid choice");
-                return; // Exit if invalid choice
-        }
-
-        // Save choice in PlayerPrefs
-        PlayerPrefs.SetInt("Act2Scene1_CallChoice", choiceValue);
-        PlayerPrefs.Save();
-
-        // Log choice for debugging
-        Debug.Log("Call Choice Recorded: " + choice);
-
-        // Upload choice to Firebase
-        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene1_CallChoice", choiceValue);
+                        PlayerPrefs.SetInt("Act2Scene1_CallChoice", choiceValue);
+                        PlayerPrefs.Save();
+                        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene1_CallChoice", choiceValue);
+                        Debug.Log("Call Choice Recorded: " + choice);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error checking Firebase for existing choice: " + task.Exception);
+                }
+            });
     }
 
-    
+
     public void OnCallFirestationChoice()
     {
         SaveCallChoice("Firestation");

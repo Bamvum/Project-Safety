@@ -6,10 +6,15 @@ using System;
 using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Firebase;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class Act2Scene2SceneManager : MonoBehaviour
 {
     public static Act2Scene2SceneManager instance {get; private set;}
+    private FirebaseAuth auth;
 
     void Awake()
     {
@@ -56,6 +61,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     void Start()
     {
+        auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("School: Escape", 1);
         Time.timeScale = 1;
         
@@ -159,17 +165,37 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     public void RecordGatherBelongingsChoice(bool gatherBelongings)
     {
-        // Save choice as integer in PlayerPrefs: 1 for gathering belongings, 2 for leaving immediately
-        int choiceValue = gatherBelongings ? 1 : 2;
-        PlayerPrefs.SetInt("Act2Scene2_GatherBelongingsChoice", choiceValue);
-        PlayerPrefs.Save();
-
-        // Log the choice for debugging
-        Debug.Log("Gather Belongings Choice Recorded: " + (gatherBelongings ? "Gathered Belongings" : "Left Immediately"));
-
-        // Upload the choice to Firebase
-        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_GatherBelongingsChoice", choiceValue);
+        FirebaseDatabase.DefaultInstance
+            .GetReference("users")
+            .Child(auth.CurrentUser.UserId)
+            .Child("choices")
+            .Child("Act2Scene2_GatherBelongingsChoice")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        Debug.LogWarning("Gather belongings choice has already been saved in Firebase and cannot be changed.");
+                        return; // Exit without saving or uploading
+                    }
+                    else
+                    {
+                        int choiceValue = gatherBelongings ? 1 : 2; // 1 for gathering belongings, 2 for leaving immediately
+                        PlayerPrefs.SetInt("Act2Scene2_GatherBelongingsChoice", choiceValue);
+                        PlayerPrefs.Save();
+                        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_GatherBelongingsChoice", choiceValue);
+                        Debug.Log("Gather Belongings Choice Recorded: " + (gatherBelongings ? "Gathered Belongings" : "Left Immediately"));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error checking Firebase for existing choice: " + task.Exception);
+                }
+            });
     }
+
 
     public void OnGatherBelongingsChoice()
     {
@@ -219,16 +245,35 @@ void EscapeTimer()
     // Method to save the elevator choice
     public void RecordElevatorChoice(bool useElevator)
     {
-        // Save choice as integer in PlayerPrefs: 1 for using the elevator, 2 for not using it
-        int choiceValue = useElevator ? 1 : 2;
-        PlayerPrefs.SetInt("Act2Scene2_ElevatorChoice", choiceValue);
-        PlayerPrefs.Save();
-
-        // Log the choice for debugging
-        Debug.Log("Elevator Choice Recorded: " + (useElevator ? "Used Elevator" : "Did Not Use Elevator"));
-
-        // Upload the choice to Firebase
-        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_ElevatorChoice", choiceValue);
+        FirebaseDatabase.DefaultInstance
+            .GetReference("users")
+            .Child(auth.CurrentUser.UserId)
+            .Child("choices")
+            .Child("Act2Scene2_ElevatorChoice")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        Debug.LogWarning("Elevator choice has already been saved in Firebase and cannot be changed.");
+                        return; // Exit without saving or uploading
+                    }
+                    else
+                    {
+                        int choiceValue = useElevator ? 1 : 2;
+                        PlayerPrefs.SetInt("Act2Scene2_ElevatorChoice", choiceValue);
+                        PlayerPrefs.Save();
+                        FirebaseManager.Instance.SaveChoiceToFirebase("Act2Scene2_ElevatorChoice", choiceValue);
+                        Debug.Log("Elevator Choice Recorded: " + (useElevator ? "Used Elevator" : "Did Not Use Elevator"));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error checking Firebase for existing choice: " + task.Exception);
+                }
+            });
     }
 
     public void OnUseElevatorChoice()

@@ -4,10 +4,15 @@ using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Firebase;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class Act1Scene4SceneManager : MonoBehaviour
 {
     public static Act1Scene4SceneManager instance {get; private set;}
+    private FirebaseAuth auth;
 
     void Awake()
     {
@@ -43,6 +48,7 @@ public class Act1Scene4SceneManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetInt("Training Grounds Scene", 1);
+        auth = FirebaseAuth.DefaultInstance;
 
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
@@ -162,17 +168,37 @@ public class Act1Scene4SceneManager : MonoBehaviour
 
     public void RecordDummyChoice(bool saveDummy)
     {
-        // Save choice as integer in PlayerPrefs: 1 for saving the Dummy, 2 for not saving
-        int choiceValue = saveDummy ? 1 : 2;
-        PlayerPrefs.SetInt("Act1Scene4_DummyChoice", choiceValue);
-        PlayerPrefs.Save();
-
-        // Log the choice for debugging
-        Debug.Log("Dummy Choice Recorded: " + (saveDummy ? "Saved Dummy" : "Did Not Save Dummy"));
-
-        // Upload the choice to Firebase
-        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene4_DummyChoice", choiceValue);
+        FirebaseDatabase.DefaultInstance
+            .GetReference("users")
+            .Child(auth.CurrentUser.UserId)
+            .Child("choices")
+            .Child("Act1Scene4_DummyChoice")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        Debug.LogWarning("Dummy choice has already been saved in Firebase and cannot be changed.");
+                        return; // Exit without saving or uploading
+                    }
+                    else
+                    {
+                        int choiceValue = saveDummy ? 1 : 2; // 1 for saving the Dummy, 2 for not saving
+                        PlayerPrefs.SetInt("Act1Scene4_DummyChoice", choiceValue);
+                        PlayerPrefs.Save();
+                        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene4_DummyChoice", choiceValue);
+                        Debug.Log("Dummy Choice Recorded: " + (saveDummy ? "Saved Dummy" : "Did Not Save Dummy"));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error checking Firebase for existing choice: " + task.Exception);
+                }
+            });
     }
+
 
     public void OnSaveDummyChoice()
     {

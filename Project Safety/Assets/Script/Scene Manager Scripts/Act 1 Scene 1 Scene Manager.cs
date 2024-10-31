@@ -4,10 +4,15 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.VisualScripting;
 using Cinemachine;
+using Firebase;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class Act1StudentSceneManager : MonoBehaviour
 {
     public static Act1StudentSceneManager instance {get; private set;}
+    private FirebaseAuth auth;
 
     void Awake()
     {
@@ -43,6 +48,7 @@ public class Act1StudentSceneManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(HeavyBreathingSFX());
 
+        auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("House Scene", 1);
     }
 
@@ -99,19 +105,39 @@ public class Act1StudentSceneManager : MonoBehaviour
 
     public void RecordPlugChoice(bool savePlug)
     {
-        // Save choice as integer in PlayerPrefs: 1 for Unplug, 2 for not Unlpug
-        int choiceValue = savePlug ? 1 : 2;
-        PlayerPrefs.SetInt("Act1Scene1_PlugChoice", choiceValue);
-        PlayerPrefs.Save();
-
-        // Log the choice for debugging
-        Debug.Log("Plug Choice Recorded: " + (savePlug ? "UnPlug" : "Did Not UnPlug"));
-
-        // Upload the choice to Firebase
-        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene1_PlugChoice", choiceValue);
+        FirebaseDatabase.DefaultInstance
+            .GetReference("users")
+            .Child(auth.CurrentUser.UserId)
+            .Child("choices")
+            .Child("Act1Scene1_PlugChoice")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        Debug.LogWarning("Plug choice has already been saved in Firebase and cannot be changed.");
+                        return; // Exit without saving or uploading
+                    }
+                    else
+                    {
+                        int choiceValue = savePlug ? 1 : 2; // 1 for Unplug, 2 for Not Unplug
+                        PlayerPrefs.SetInt("Act1Scene1_PlugChoice", choiceValue);
+                        PlayerPrefs.Save();
+                        FirebaseManager.Instance.SaveChoiceToFirebase("Act1Scene1_PlugChoice", choiceValue);
+                        Debug.Log("Plug Choice Recorded: " + (savePlug ? "Unplug" : "Did Not Unplug"));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Error checking Firebase for existing choice: " + task.Exception);
+                }
+            });
     }
 
-    
+
+
     public void OnUnPlugChoice()
     {
         RecordPlugChoice(true); 

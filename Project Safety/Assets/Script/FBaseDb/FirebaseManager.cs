@@ -218,7 +218,37 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public void FetchChoiceStatistics(string choiceKey, Action<int> onPercentageFetched)
+    public void FetchUserChoice(string choiceKey, Action<int?> onChoiceFetched)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("choices")
+                .Child(choiceKey)
+                .GetValueAsync()
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted && task.Result.Exists)
+                    {
+                        int choiceValue = int.Parse(task.Result.Value.ToString());
+                        onChoiceFetched.Invoke(choiceValue);
+                    }
+                    else
+                    {
+                        onChoiceFetched.Invoke(null); // No choice data found
+                    }
+                });
+        }
+        else
+        {
+            onChoiceFetched.Invoke(null); // User not logged in
+        }
+    }
+
+    public void FetchChoiceStatistics(string choiceKey, Action<int, int> onPercentagesFetched)
     {
         databaseReference
             .Child("users")
@@ -237,31 +267,91 @@ public class FirebaseManager : MonoBehaviour
                         if (userSnapshot.Child("choices").HasChild(choiceKey))
                         {
                             int choiceValue = int.Parse(userSnapshot.Child("choices").Child(choiceKey).Value.ToString());
-                            if (choiceValue == 1) choice1Count++;
-                            else if (choiceValue == 2) choice2Count++;
-
+                            switch (choiceValue)
+                            {
+                                case 1: choice1Count++; break;
+                                case 2: choice2Count++; break;
+                            }
                             totalCount++;
                         }
                     }
 
+                    // Debug log total number of users and their choices
+                    Debug.Log($"Total users: {totalCount}");
+                    Debug.Log($"Choice 1 Count: {choice1Count}, Choice 2 Count: {choice2Count}");
+
                     if (totalCount > 0)
                     {
-                        int percentage = Mathf.RoundToInt((choice1Count * 100f) / totalCount);
-                        onPercentageFetched.Invoke(percentage);
+                        int percentage1 = Mathf.RoundToInt((choice1Count * 100f) / totalCount);
+                        int percentage2 = Mathf.RoundToInt((choice2Count * 100f) / totalCount);
+                        onPercentagesFetched.Invoke(percentage1, percentage2);
                     }
                     else
                     {
-                        onPercentageFetched.Invoke(0);
+                        onPercentagesFetched.Invoke(0, 0);
                     }
                 }
                 else
                 {
                     Debug.LogError("Failed to fetch choice statistics: " + task.Exception);
-                    onPercentageFetched.Invoke(0);
+                    onPercentagesFetched.Invoke(0, 0);
                 }
             });
     }
 
+    public void FetchChoiceStatisticsThreeOptions(string choiceKey, Action<int, int, int> onPercentagesFetched)
+    {
+        databaseReference
+            .Child("users")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    int choice1Count = 0;
+                    int choice2Count = 0;
+                    int choice3Count = 0;
+                    int totalCount = 0;
+
+                    DataSnapshot snapshot = task.Result;
+                    foreach (DataSnapshot userSnapshot in snapshot.Children)
+                    {
+                        if (userSnapshot.Child("choices").HasChild(choiceKey))
+                        {
+                            int choiceValue = int.Parse(userSnapshot.Child("choices").Child(choiceKey).Value.ToString());
+                            switch (choiceValue)
+                            {
+                                case 1: choice1Count++; break;
+                                case 2: choice2Count++; break;
+                                case 3: choice3Count++; break;
+                            }
+                            totalCount++;
+                        }
+                    }
+
+                    // Debug log total number of users and their choices
+                    Debug.Log($"Total users: {totalCount}");
+                    Debug.Log($"Choice 1 Count: {choice1Count}, Choice 2 Count: {choice2Count}, Choice 3 Count: {choice3Count}");
+
+                    if (totalCount > 0)
+                    {
+                        int percentage1 = Mathf.RoundToInt((choice1Count * 100f) / totalCount);
+                        int percentage2 = Mathf.RoundToInt((choice2Count * 100f) / totalCount);
+                        int percentage3 = Mathf.RoundToInt((choice3Count * 100f) / totalCount);
+                        onPercentagesFetched.Invoke(percentage1, percentage2, percentage3);
+                    }
+                    else
+                    {
+                        onPercentagesFetched.Invoke(0, 0, 0);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fetch choice statistics: " + task.Exception);
+                    onPercentagesFetched.Invoke(0, 0, 0);
+                }
+            });
+    }
 
     public void SaveChapterUnlockToFirebase(string chapterKey, bool isUnlocked)
     {
