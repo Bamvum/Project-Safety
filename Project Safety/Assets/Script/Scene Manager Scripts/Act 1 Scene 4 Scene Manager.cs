@@ -19,15 +19,21 @@ public class Act1Scene4SceneManager : MonoBehaviour
         instance = this;
     }
 
-    // VARIABLE
+    
+    [Header("HUD")]
+    [SerializeField] CanvasGroup sceneNameText;
+    
+
     [Header("Player")]
     [SerializeField] GameObject player;
 
     [Header("Dialogue Triggers")]
+    [SerializeField] DialogueTrigger startMonologueEnglish;
+    [SerializeField] DialogueTrigger startMonologueTagalog;
+
+    [Space(5)]
     [SerializeField] DialogueTrigger startDialogueEnglish;
     [SerializeField] DialogueTrigger startDialogueTagalog;
-
-    [SerializeField] TMP_Text tmpText;
 
 
     [Header("Language Preference")]
@@ -44,6 +50,10 @@ public class Act1Scene4SceneManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera dummyVC;
     
 
+    [Header("Audio")]
+    [SerializeField] AudioSource bgm;
+    [SerializeField] AudioSource sceneNameRevealSFX;
+    [SerializeField] AudioSource ambianceSFX;
 
     void Start()
     {
@@ -72,21 +82,52 @@ public class Act1Scene4SceneManager : MonoBehaviour
             languageIndex = 1;
         }   
 
-        StartCoroutine(FadeOutEffect());
+        StartCoroutine(StartMonologue());
     }
 
-    IEnumerator FadeOutEffect()
+    IEnumerator StartMonologue()
     {
+        yield return new WaitForSeconds(2);
+
+        if(languageIndex == 0)
+        {
+            startMonologueEnglish.StartDialogue();
+        }
+        else
+        {
+            startMonologueTagalog.StartDialogue();
+        }
+    }
+
+    public void FadeOutEffect()
+    { 
+        StartCoroutine(PreFadeOutEffect());
+    }
+
+    IEnumerator PreFadeOutEffect()
+    {
+        yield return new WaitForSeconds(1);
+        
+        sceneNameRevealSFX.Play();
+        sceneNameText.DOFade(1, 1)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
+            });
+        
         yield return new WaitForSeconds(5);
 
-        LoadingSceneManager.instance.fadeImage
-            .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+        ambianceSFX.DOFade(1, 1).SetUpdate(true);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
+            .SetUpdate(true)
             .OnComplete(() =>
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-            // TRIGGER DIALOGUE
-            Debug.Log("Trigger Dialogue");
 
             if(languageIndex == 0)
             {
@@ -97,6 +138,13 @@ public class Act1Scene4SceneManager : MonoBehaviour
                 startDialogueTagalog.StartDialogue();
             }
         });
+        
+    }
+
+    public void BGMSoundStart()
+    {
+        bgm.Play();
+        bgm.DOFade(1, 1).SetUpdate(true);
     }
 
     public void CCTVDialogueOn()

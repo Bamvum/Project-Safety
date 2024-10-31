@@ -65,7 +65,6 @@ public class AchievementManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("A1S4 - Saving Private Dummy is Lock");
             beenScolded.image.sprite = achievementStatus[0];
             beenScolded.interactable = false;
         }
@@ -78,13 +77,10 @@ public class AchievementManager : MonoBehaviour
         {
             Image achievementImg = savingPrivateDummy.GetComponentInChildren<Image>();
             savingPrivateDummy.interactable = true;
-            savingPrivateDummy.image.sprite = achievementStatus[1];
-
-            Debug.Log("A1S4 - Saving Private Dummy is Unlock");
+            savingPrivateDummy.image.sprite = achievementStatus[1];        
         }
         else
         {
-            Debug.Log("A1S4 - Saving Private Dummy is Lock");
             savingPrivateDummy.image.sprite = achievementStatus[0];
             savingPrivateDummy.interactable = false;
         }
