@@ -42,6 +42,8 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("Prologue - Dreamscape", 0) == 1)
         {
             Image achievementImg = dreamscape.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[0]; 
+                
             dreamscape.interactable = true;
             dreamscape.image.sprite = achievementStatus[1];
         }

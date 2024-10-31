@@ -24,8 +24,10 @@ public class AchievementTrigger : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                PlayerPrefs.SetInt(achievementSO.achievementPlayerPrefsKey, 1);
-                //yield for 1 seconds
+                if (PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
+                {
+                    PlayerPrefs.SetInt(achievementSO.achievementPlayerPrefsKey, 1);
+                }
 
                 achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 675), 1)
                     .SetEase(Ease.OutQuad)

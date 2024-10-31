@@ -62,8 +62,7 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] GameObject languageSettingSelectedButton;
 
     [Space(5)]
-    [SerializeField] GameObject achievementPage1SelectedButton;
-    [SerializeField] GameObject achievementPage2SelectedButton;
+    [SerializeField] GameObject achievementSelectedButton;
 
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
@@ -392,17 +391,8 @@ public class MainMenuScriptManager : MonoBehaviour
 
                 if(achievementRectTransform.gameObject.activeSelf)
                 {
-                    if(achievementRectTransformPage[0].gameObject.activeSelf)
-                    {
-                        EventSystem.current.SetSelectedGameObject(achievementPage1SelectedButton);
-                        isGamepad = true;
-                    }
-
-                    if(achievementRectTransformPage[1].gameObject.activeSelf)
-                    {
-                        EventSystem.current.SetSelectedGameObject(achievementPage2SelectedButton);
-                        isGamepad = true;
-                    }
+                    EventSystem.current.SetSelectedGameObject(achievementSelectedButton);
+                    isGamepad = true;
                 }
             }
         }
@@ -463,6 +453,7 @@ public class MainMenuScriptManager : MonoBehaviour
             .OnComplete(() =>
             {
                 mainMenuButtonCG.interactable = true;
+                isGamepad = false;
             });
     }
 
@@ -613,7 +604,7 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 selectSceneRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-
+                isGamepad = false;
                 ShowMainMenu();
             });
 
@@ -653,7 +644,7 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 settingRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-
+                isGamepad = false;
                 ShowMainMenu();
             });
     }
@@ -705,7 +696,7 @@ public class MainMenuScriptManager : MonoBehaviour
             {
                 achievementRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-
+                isGamepad = false;
                 ShowMainMenu();
             });
     }
