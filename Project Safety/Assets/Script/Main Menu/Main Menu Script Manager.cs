@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
 using System;
+using Unity.VisualScripting;
 
 
 public class MainMenuScriptManager : MonoBehaviour
@@ -198,22 +199,25 @@ public class MainMenuScriptManager : MonoBehaviour
         pingPongText.gameObject.SetActive(false);
 
         // INTIALIZATION MAIN MENU
-        mainMenuHUDRectTransform.gameObject.SetActive(false);
-        mainMenuHUDRectTransform.sizeDelta = new Vector2(600, 0);
-        mainMenuButtonCG.alpha = 0;
-        mainMenuButtonCG.interactable = false;
+        // mainMenuHUDRectTransform.gameObject.SetActive(false);
+        // mainMenuHUDRectTransform.sizeDelta = new Vector2(600, 0);
+        // mainMenuButtonCG.alpha = 0;
+        // mainMenuButtonCG.interactable = false;
+
+        mainMenuHUDRectTransform.anchoredPosition = new Vector2(325, 0);
+
 
         // INTIALIZATION SELECT SCENE
-        selectSceneRectTransform.gameObject.SetActive(false);
-        selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
-        selectSceneButtonCG.alpha = 0;
-        selectSceneButtonCG.interactable = false;
+        // selectSceneRectTransform.gameObject.SetActive(false);
+        // selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
+        // selectSceneButtonCG.alpha = 0;
+        // selectSceneButtonCG.interactable = false;
 
         // INTIALIZATION SELECT SCENE
-        achievementRectTransform.gameObject.SetActive(false);
-        achievementRectTransform.sizeDelta = new Vector2(0, 1080);
-        selectSceneButtonCG.alpha = 0;
-        selectSceneButtonCG.interactable = false;
+        // achievementRectTransform.gameObject.SetActive(false);
+        // achievementRectTransform.sizeDelta = new Vector2(0, 1080);
+        // selectSceneButtonCG.alpha = 0;
+        // selectSceneButtonCG.interactable = false;
 
         // INTIALIZATION SETTING
         settingRectTransform.gameObject.SetActive(false);
@@ -221,10 +225,7 @@ public class MainMenuScriptManager : MonoBehaviour
         graphicsSettingRectTransform.gameObject.SetActive(false);
         controlsSettingRectTransform.gameObject.SetActive(false);
         languageSettingRectTransform.gameObject.SetActive(false);
-        settingRectTransform.sizeDelta = new Vector2(0, 1080);
-        settingButtonCG.alpha = 0;
-        settingButtonCG.interactable = false;
-        
+
         Cursor.lockState = CursorLockMode.Locked;
 
 
@@ -455,24 +456,21 @@ public class MainMenuScriptManager : MonoBehaviour
 
     void ShowMainMenu()
     {
+        mainMenuButtonCG.interactable = false;
         mainMenuHUDRectTransform.gameObject.SetActive(true);
-        mainMenuHUDRectTransform.DOSizeDelta(new Vector2(mainMenuHUDRectTransform.sizeDelta.x, 500), .25f)
-            .SetEase(Ease.InFlash)
+        mainMenuHUDRectTransform.DOAnchorPos(new Vector2(-325,0), .5f)
+            .SetEase(Ease.OutBack)
             .OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(true);
-            mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
             {
                 mainMenuButtonCG.interactable = true;
             });
-        });
     }
 
     public void Play()
     {
         Debug.Log("Access Play!");
 
-        // canNavigateUI = false;
+
         Cursor.lockState = CursorLockMode.Locked;
         
         mainMenuButtonCG.interactable = false;
@@ -496,98 +494,75 @@ public class MainMenuScriptManager : MonoBehaviour
     public void ChapterSelect()
     {
         Debug.Log("Access Chapter Select!");
-        
-        selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
-        
+
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
-        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(false);
-            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+
+        mainMenuHUDRectTransform.DOAnchorPos(new Vector2(325, 0), .5f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() =>
             {
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 selectSceneRectTransform.gameObject.SetActive(true);
-                selectSceneRectTransform.DOSizeDelta(new Vector2(1920, selectSceneRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
+
+                selectSceneRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                    .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
-                        selectSceneButtonCG.gameObject.SetActive(true);
-                        selectSceneButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            selectSceneButtonCG.interactable = true;
-                            isGamepad = false;
-                        });
+                        selectSceneButtonCG.interactable = true;
+                        isGamepad = false;
                     });
             });
-        });        
     }
 
     public void Settings()
     {
         Debug.Log("Access Settings!");
-
-        settingRectTransform.sizeDelta = new Vector2(0, 1080);
         
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
-        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(false);
-            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+
+        mainMenuHUDRectTransform.DOAnchorPos(new Vector2(325, 0), .5f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() =>
             {
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 settingRectTransform.gameObject.SetActive(true);
-                settingRectTransform.DOSizeDelta(new Vector2(1920, settingRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
+
+                settingRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                    .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
-                        settingButtonCG.gameObject.SetActive(true);
-                        settingButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            settingButtonCG.interactable = true;
-                            isGamepad = false;
-                        });
+                        settingButtonCG.interactable = true;
+                        isGamepad = false;
                     });
             });
-        });
     }
 
     public void Achievements()
     {
         Debug.Log("Access Achievements!");
 
-        achievementRectTransform.sizeDelta = new Vector2(0, 1080);
-        
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
-        mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            mainMenuButtonCG.gameObject.SetActive(false);
-            mainMenuHUDRectTransform.DOSizeDelta(new Vector2(0, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+
+        mainMenuHUDRectTransform.DOAnchorPos(new Vector2(325, 0), .5f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() =>
             {
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 achievementRectTransform.gameObject.SetActive(true);
-                achievementRectTransform.DOSizeDelta(new Vector2(1920, achievementRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
+
+                achievementRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                    .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
-                        achievementButtonCG.gameObject.SetActive(true);
-                        achievementButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            achievementButtonCG.interactable = true;
-                            isGamepad = false;
-                        });
+                        achievementButtonCG.interactable = true;
+                        isGamepad = false;
                     });
             });
-        });
     }    
+
     public void Credits()
     {
         Debug.Log("Access Credits!");
@@ -614,6 +589,9 @@ public class MainMenuScriptManager : MonoBehaviour
                         bgm.DOFade(0, 1).OnComplete(() =>
                         {
                             Application.Quit();
+#if UNITY_EDITOR
+                            UnityEditor.EditorApplication.isPlaying = false;
+#endif
                         });
                     });                
             });
@@ -628,30 +606,17 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Go back to Main Menu");
 
-        selectSceneButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            selectSceneButtonCG.gameObject.SetActive(false);
-            selectSceneButtonCG.interactable = false;
-            isGamepad = true;
-            selectSceneRectTransform.DOSizeDelta(new Vector2(selectSceneRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+        selectSceneButtonCG.interactable = false;
+        selectSceneRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+            .SetEase(Ease.OutExpo)
+            .OnComplete(() =>
             {
                 selectSceneRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
-                    .OnComplete(() =>
-                    {
-                        mainMenuButtonCG.gameObject.SetActive(true);
-                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            mainMenuButtonCG.interactable = true;
-                            isGamepad = false;
-                        });
-                    });
+
+                ShowMainMenu();
             });
-        });
+
     }
 
     public void SelectScene(string sceneName)
@@ -681,31 +646,16 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Go back to Main Menu");
 
-        settingButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            settingButtonCG.gameObject.SetActive(false);
-            settingButtonCG.interactable = false;
-            isGamepad = true;
-            settingRectTransform.DOSizeDelta(new Vector2(settingRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+        settingButtonCG.interactable = false;
+        settingRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+            .SetEase(Ease.OutExpo)
+            .OnComplete(() =>
             {
                 settingRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
-                    .OnComplete(() =>
-                    {
-                        mainMenuButtonCG.gameObject.SetActive(true);
-                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            AccessAudioSetting();
-                            mainMenuButtonCG.interactable = true;
-                            isGamepad = false;
-                        });
-                    });
+
+                ShowMainMenu();
             });
-        });
     }
 
     public void AccessAudioSetting()
@@ -748,44 +698,17 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Go back to Main Menu");
 
-        achievementButtonCG.DOFade(0, .25f).OnComplete(() =>
-        {
-            achievementButtonCG.gameObject.SetActive(false);
-            achievementButtonCG.interactable = false;
-            isGamepad = true;
-            achievementRectTransform.DOSizeDelta(new Vector2(achievementRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .OnComplete(() =>
+        achievementButtonCG.interactable = false;
+        achievementRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+            .SetEase(Ease.OutExpo)
+            .OnComplete(() =>
             {
                 achievementRectTransform.gameObject.SetActive(false);
                 mainMenuHUDRectTransform.gameObject.SetActive(true);
-                mainMenuHUDRectTransform.DOSizeDelta(new Vector2(600, mainMenuHUDRectTransform.sizeDelta.y), .25f)
-                    .SetEase(Ease.InFlash)
-                    .OnComplete(() =>
-                    {
-                        AchievementManager.instance.achievementTitleText.text = null;
-                        AchievementManager.instance.achievementDescriptionText.text = null;
-                        AchievementManager.instance.achievementIcon.sprite = null;
 
-                        mainMenuButtonCG.gameObject.SetActive(true);
-                        mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
-                        {
-                            AccessAchievementFirstPage();
-                            mainMenuButtonCG.interactable = true;
-                            isGamepad = false;
-
-                        });
-                    });
+                ShowMainMenu();
             });
-        });
     }
 
-    void AccessAchievementFirstPage()
-    {
-        // achievementRectTransformPage[0].gameObject.SetActive(true);
-        // achievementRectTransformPage[1].gameObject.SetActive(false);
-
-        // Empty the string in achievement preview
-    }
     #endregion
 }

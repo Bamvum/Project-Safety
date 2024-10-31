@@ -39,8 +39,8 @@ MonoBehaviour:
   - title: 'Examine Mode '
     instructionSprite: {fileID: 21300000, guid: 3295589528173a042b88a44a2b420261,
       type: 3}
-    instructionKeyboard: KAPAG SINUSURI ANG BAGAY, GAMITIN ANG <sprite name='Mouse'>
-      AT <sprite name='Left Mouse Button'> UPANG PAIKUTIN ITO AT <sprite name='E'>
+    instructionKeyboard: KAPAG SINUSURI ANG BAGAY, GAMITIN ANG <sprite name="Mouse">
+      AT <sprite name="Left Mouse Button"> UPANG PAIKUTIN ITO AT <sprite name="E">
       PARA BASAHIN ANG PAGLALARAWAN NG BAGAY.
     instructionGampad: KAPAG SINUSURI ANG BAGAY, GAMITIN ANG <sprite name='Right
       Stick'> UPANG PAIKUTIN ITO AT <sprite name='Triangle'> PARA BASAHIN ANG PAGLALARAWAN

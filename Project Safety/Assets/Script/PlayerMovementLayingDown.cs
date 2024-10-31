@@ -11,7 +11,8 @@ public class PlayerMovementLayingDown : MonoBehaviour
     PlayerControls playerControls;
 
     [Header("Trigger Dialogue")]
-    [SerializeField] DialogueTrigger startDialogue;
+    [SerializeField] DialogueTrigger startEnglishDialogue;
+    [SerializeField] DialogueTrigger startTagalogDialogue;
 
     [Header("Script")]
     [SerializeField] CinemachineInputProvider inputProviderSleeping;
@@ -126,7 +127,16 @@ public class PlayerMovementLayingDown : MonoBehaviour
                 .OnComplete(() =>
             {
                 LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                startDialogue.StartDialogue();
+                
+                if(PrologueSceneManager.instance.languageIndex == 0)
+                {
+                    startEnglishDialogue.StartDialogue();
+                }
+                else
+                {
+                    startTagalogDialogue.StartDialogue();
+                }
+
                 Pause.instance.PauseCanInput(true);
             });
 
