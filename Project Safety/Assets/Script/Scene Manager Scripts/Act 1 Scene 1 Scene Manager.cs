@@ -122,6 +122,9 @@ public class Act1StudentSceneManager : MonoBehaviour
         RecordPlugChoice(false);
     }
 
-
+    public void PlayerToDiningArea(Transform LocationPosition)
+    {
+        PlayerScript.instance.playerMovement.gameObject.transform.position = LocationPosition.position;
+    }
 
 }
