@@ -40,7 +40,7 @@ MonoBehaviour:
     instructionSprite: {fileID: 21300000, guid: 3295589528173a042b88a44a2b420261,
       type: 3}
     instructionKeyboard: WHEN EXAMINING AN OBJECT. USE <sprite name="Mouse">  and
-      <sprite name="Left Mouse"> TO ROTATE THE OBJECT AND <sprite name="E"> TO READ
-      THE ITEM DESCRIPTION
+      <sprite name="Left Mouse Button"> TO ROTATE THE OBJECT AND <sprite name="E">
+      TO READ THE ITEM DESCRIPTION
     instructionGampad: WHEN EXAMINING AN OBJECT. USE <sprite name="Right Stick">
       TO ROTATE THE OBJECT AND <sprite name="Triangle"> TO READ THE ITEM DESCRIPTION

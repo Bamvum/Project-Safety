@@ -32,6 +32,9 @@ public class InstructionManager : MonoBehaviour
     [SerializeField] Image instructionImage;
     [SerializeField] TMP_Text instructionText;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource previewNextSFX;
+
     [Header("Flag")]
     bool isGamepad = false;
     int counter;
@@ -102,6 +105,7 @@ public class InstructionManager : MonoBehaviour
             DeviceChecker();
             UpdateButtonStates();
             isGamepad = false;
+            previewNextSFX.Play();
         }
     }
 
@@ -119,6 +123,7 @@ public class InstructionManager : MonoBehaviour
             }
 
             isGamepad = false;
+            previewNextSFX.Play();
         }
     }
 

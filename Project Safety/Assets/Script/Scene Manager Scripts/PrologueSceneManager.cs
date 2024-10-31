@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using TMPro;
 
 public class PrologueSceneManager : MonoBehaviour
 {
@@ -13,9 +14,16 @@ public class PrologueSceneManager : MonoBehaviour
     {
         instance = this;
     }
+    
+    [SerializeField] CanvasGroup sceneNameText;
  
     [Header("Script")]
     public OnAndOffGameObject onAndOffGameObject;
+    [SerializeField] AchievementTrigger achievementTrigger;
+    [SerializeField] AchievementSO achievementSO;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource sceneNameReveal;
 
     [Header("Player")]
     [SerializeField] GameObject playerModel;
@@ -89,19 +97,31 @@ public class PrologueSceneManager : MonoBehaviour
             // ELAPSED TIME == suspenseSFX.Clip.length
             if(suspenceSFX.time >= suspenceSFX.clip.length)
             {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                PlayerScript.instance.DisablePlayerScripts();
 
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
                 LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
                     .SetEase(Ease.Linear)
+                    .SetUpdate(true)
                     .OnComplete(() =>
-                {
-                    PlayerScript.instance.DisablePlayerScripts();
+                    {
+                        sceneAchievementTrigger();
+                        DisplaySceneName();
 
-                    LoadingSceneManager.instance.loadingScreen.SetActive(true);
-                    LoadingSceneManager.instance.enabled = true;
-                    // NEXT SCENE NAME
-                    LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
-                });
+                        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                        .SetEase(Ease.Linear)
+                        .SetUpdate(true)
+                        .SetDelay(6)
+                        .OnComplete(() =>
+                        {
+                            PlayerScript.instance.DisablePlayerScripts();
+
+                            LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                            LoadingSceneManager.instance.enabled = true;
+                            // NEXT SCENE NAME
+                            LoadingSceneManager.instance.sceneName = "Act 1 Scene 1";
+                        });
+                    });
 
                 isSuspenceSFXPlaying = false;
             }    
@@ -128,7 +148,26 @@ public class PrologueSceneManager : MonoBehaviour
         toGetUp = true;
     }
 
+    void DisplaySceneName()
+    {
+        sceneNameReveal.Play();
+        sceneNameText.gameObject.SetActive(true);
+        sceneNameText.DOFade(1,1)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1)
+                    .SetUpdate(true)
+                    .SetDelay(3)
+                    .OnComplete(() =>
+                {
+                    sceneNameText.gameObject.SetActive(false);
+                    
+                });
+            });
 
+    }
+    
     public void TransitionToHomeworkQuiz()
     {
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
@@ -153,14 +192,12 @@ public class PrologueSceneManager : MonoBehaviour
 
     #region - SCENE MANAGEMENT -
 
-    [ContextMenu("Rotate")]
     public void RotatePlayer()
     {
         // CAMAERA FIX (MAKE IT FACE A CERTAIN AXIS)
         playerModel.transform.rotation = Quaternion.Euler(0, 120,0);
     }
 
-    [ContextMenu("Move")]
     public void MovePlayer()
     {
         playerModel.transform.position = new Vector3(-6.5f, playerModel.transform.position.y, -11);
@@ -175,6 +212,19 @@ public class PrologueSceneManager : MonoBehaviour
 
         suspenceSFX.Play();
         isSuspenceSFXPlaying = true; 
+    }
+
+    #endregion
+
+    #region - ACHIEVEMENT TRIGGER -
+
+    void sceneAchievementTrigger()
+    {
+        // Does this mean that the playerprefs is false?
+        if (PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
+        {
+            achievementTrigger.ShowAchievement(achievementSO);
+        }
     }
 
     #endregion

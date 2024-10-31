@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         playerControls.Player.Disable();
     }
 
-    void  ResetInputValue()
+    public void ResetInputValue()
     {
         playerAnim.SetFloat(xVelocityHash, 0);
         movementInput = Vector3.zero;

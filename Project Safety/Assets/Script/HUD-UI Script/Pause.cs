@@ -83,6 +83,8 @@ public class Pause : MonoBehaviour
         playerControls.Pause.Back.performed += ToBack;
 
         playerControls.Pause.Enable();
+
+        PlayerScript.instance.playerMovement.ResetInputValue();
     }
 
     #region - SETTING NEXT CATEGORY -
@@ -170,14 +172,22 @@ public class Pause : MonoBehaviour
             {
                 if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
                 {
-                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf && !HUDManager.instance.gameOverHUD.activeSelf)
+                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf  && !HUDManager.instance.gameOverHUD.activeSelf)
+                    {
+                        ShowPause();
+                    }
+                }
+                else if (SceneManager.GetActiveScene().name == "Prologue")
+                {
+                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf
+                        && !HomeworkManager.instance.homeworkHUD.activeSelf)
                     {
                         ShowPause();
                     }
                 }
                 else
                 {
-                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf)
+                    if (!LoadingSceneManager.instance.fadeImage.gameObject.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.dialogueHUD.activeSelf && !HUDManager.instance.examineHUD.activeSelf)
                     {
                         ShowPause();
                     }

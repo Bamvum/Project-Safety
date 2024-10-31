@@ -174,6 +174,7 @@ public class HomeworkManager : MonoBehaviour
         
         if(SceneManager.GetActiveScene().name == "Prologue")
         {
+            Debug.Log("Homework Manager: Cursor Lock in Prologue");
             Cursor.lockState = CursorLockMode.Locked;
         }
         

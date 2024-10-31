@@ -168,27 +168,31 @@ public class Interact : MonoBehaviour
 
     private void ToExamine(InputAction.CallbackContext context)
     {
-        if(hit.collider != null && item != null)
+        if(!Pause.instance.pauseHUDRectTransform.gameObject.activeSelf)
         {
-            Debug.Log("Item Examine!!");
-            
-            if(rb != null)
+            if (hit.collider != null && item != null)
             {
-                rb.isKinematic = true;
+                Debug.Log("Item Examine!!");
+
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+                }
+
+                HUDManager.instance.playerHUD.SetActive(false);
+                HUDManager.instance.examineHUD.SetActive(true);
+
+                // TODO - DISABLE SCRIPT
+                this.enabled = false;
+                PlayerScript.instance.playerMovement.enabled = false;
+                PlayerScript.instance.stamina.enabled = false;
+                PlayerScript.instance.cinemachineInputProvider.enabled = false;
+
+                // TODO - ENABLE SCRIPT
+                PlayerScript.instance.examine.enabled = true;
             }
-
-            HUDManager.instance.playerHUD.SetActive(false);
-            HUDManager.instance.examineHUD.SetActive(true);
-
-            // TODO - DISABLE SCRIPT
-            this.enabled = false;
-            PlayerScript.instance.playerMovement.enabled = false;
-            PlayerScript.instance.stamina.enabled = false;
-            PlayerScript.instance.cinemachineInputProvider.enabled = false;
-            
-            // TODO - ENABLE SCRIPT
-            PlayerScript.instance.examine.enabled = true;
         }
+        
     }
     
     #endregion

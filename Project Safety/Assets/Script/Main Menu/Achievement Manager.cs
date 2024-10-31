@@ -1,12 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AchievementManager : MonoBehaviour
 {
+    public static AchievementManager instance {get; private set;}
 
-    [Header("Achievements")]
+    void Awake()
+    {
+        instance = this;
+    }
+
+    [Header("HUD")]
+    public TMP_Text achievementTitleText;
+    public Image achievementIcon;
+    public TMP_Text achievementDescriptionText;
+    
+    [Space(5)]
+    [SerializeField] Button dreamscape;
     [SerializeField] Button beenScolded;
     [SerializeField] Button savingPrivateDummy;
     [SerializeField] Button dummynt;
@@ -17,11 +30,29 @@ public class AchievementManager : MonoBehaviour
     [SerializeField] Button tooHotToHandle;
     [SerializeField] Button chainSmoker;
     
+    [Space(5)]
     [SerializeField] Sprite[] achievementStatus;
     [SerializeField] Sprite[] achievementSprite;
 
     void Start()
     {
+
+        #region  Dreamscape
+
+        if (PlayerPrefs.GetInt("Prologue - Dreamscape", 0) == 1)
+        {
+            Image achievementImg = dreamscape.GetComponentInChildren<Image>();
+            dreamscape.interactable = true;
+            dreamscape.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            dreamscape.image.sprite = achievementStatus[0];
+            dreamscape.interactable = false;
+        }
+
+        #endregion
+
         #region  Been Scolded
 
         if (PlayerPrefs.GetInt("A1S1 - Been Scolded!", 0) == 1)
@@ -171,6 +202,13 @@ public class AchievementManager : MonoBehaviour
 
         #endregion
     }
+
+    public void DisplayAchievementDescription(AchievementSO achievementSO)
+    {
+        achievementTitleText.text = achievementSO.achievementName;
+        achievementDescriptionText.text = achievementSO.achievementDescription;
+        achievementIcon.sprite = achievementSO.achievementSprite;   
+    }
 }
 
 
@@ -211,62 +249,4 @@ A2S2 Smoke Inhalation:
 Chainsmoker - 80% Lungs is filled with smoke
 */
 
-/*
 
-#region Data Types
-
-    #region Achievements
-    [Header("Achievements")]
-    [SerializeField] private GameObject weStartOffSomewhereAchievement;
-    [SerializeField] private GameObject bravoAchievement;
-    #endregion  
-    
-    #region Achievements Checker
-
-    [Header("Achievements Checker")]
-    [SerializeField] public bool isAID1Unlocked;
-    [SerializeField] public bool isAID2Unlocked;
-    #endregion
-    
-#endregion
-
-#region Start
-
-    // Start is called before the first frame update
-    void Start()
-    {
-#region Checking of Null
-        if(SceneManager.GetActiveScene().name != "0 - Lobby")
-        {
-            if(weStartOffSomewhereAchievement == null)
-            {
-                return;
-            }
-
-            if(bravoAchievement == null)
-            {
-                return;
-            }
-        }
-#endregion
-
-#region PlayerPrefs
-        // We Start Off Somewhere Achievement
-        if(PlayerPrefs.GetInt("We Start Off Somewhere Achievement", 0) == 1)    
-        {
-            weStartOffSomewhereAchievement.SetActive(true);
-            isAID1Unlocked = true;
-        }
-        
-        // Bravo
-        if (PlayerPrefs.GetInt("Bravo Achievement", 0) == 1)
-        {
-            bravoAchievement.SetActive(true);
-            isAID2Unlocked = true;
-        }
-#endregion
-    
-    } 
-#endregion  
-
-*/

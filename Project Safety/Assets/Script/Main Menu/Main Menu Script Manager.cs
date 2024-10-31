@@ -427,7 +427,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Page   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Left Mouse Button\">  Show Description   <sprite name=\"Escape\"> Back   ";
             }
         }
         else if(DeviceManager.instance.gamepadDevice)
@@ -444,7 +444,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Page   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Cross\">  Show Description   <sprite name=\"Escape\"> Back   ";
             }
         }
     }
@@ -763,12 +763,17 @@ public class MainMenuScriptManager : MonoBehaviour
                     .SetEase(Ease.InFlash)
                     .OnComplete(() =>
                     {
+                        AchievementManager.instance.achievementTitleText.text = null;
+                        AchievementManager.instance.achievementDescriptionText.text = null;
+                        AchievementManager.instance.achievementIcon.sprite = null;
+
                         mainMenuButtonCG.gameObject.SetActive(true);
                         mainMenuButtonCG.DOFade(1, .25f).OnComplete(() =>
                         {
                             AccessAchievementFirstPage();
                             mainMenuButtonCG.interactable = true;
                             isGamepad = false;
+
                         });
                     });
             });

@@ -29,7 +29,8 @@ public class AchievementTrigger : MonoBehaviour
 
                 achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 675), 1)
                     .SetEase(Ease.OutQuad)
-                    .SetUpdate(true);
+                    .SetUpdate(true)
+                    .SetDelay(2);
             });
     }
 }
