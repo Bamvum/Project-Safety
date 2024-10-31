@@ -130,15 +130,26 @@ public class Interactable : MonoBehaviour
     public void PC()
     {
         PrologueSceneManager.instance.PC.layer = 0;
-        PrologueSceneManager.instance.monitorScreen[0].SetActive(true);
+        PrologueSceneManager.instance.monitorScreen[0].SetActive(true);        
         Invoke("DelayStartPC", 20);
     }
 
     void DelayStartPC()
     {
-        PrologueSceneManager.instance.monitor.layer = 8;
-        PrologueSceneManager.instance.monitorScreen[0].SetActive(false);
-        PrologueSceneManager.instance.monitorScreen[1].SetActive(true);
+
+        if(PrologueSceneManager.instance.languageIndex == 0)
+        {
+            PrologueSceneManager.instance.englishMonitor.layer = 8;
+            PrologueSceneManager.instance.monitorScreen[0].SetActive(false);
+            PrologueSceneManager.instance.monitorScreen[1].SetActive(true);
+        }
+        else
+        {
+            PrologueSceneManager.instance.tagalogMonitor.layer = 8;
+            PrologueSceneManager.instance.monitorScreen[2].SetActive(false);
+            PrologueSceneManager.instance.monitorScreen[3].SetActive(true);
+        }
+
         PrologueSceneManager.instance.monitorSFX.Play();
     }
 

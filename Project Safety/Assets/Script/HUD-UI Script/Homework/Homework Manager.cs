@@ -192,7 +192,14 @@ public class HomeworkManager : MonoBehaviour
             {
                 homeworkHUD.SetActive(false);
 
-                PrologueSceneManager.instance.monitor.layer = 0;
+                if(PrologueSceneManager.instance.languageIndex == 0)
+                {
+                    PrologueSceneManager.instance.englishMonitor.layer = 0;
+                }
+                else
+                {
+                    PrologueSceneManager.instance.tagalogMonitor.layer = 0;
+                }
 
                 LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
                      .OnComplete(() =>

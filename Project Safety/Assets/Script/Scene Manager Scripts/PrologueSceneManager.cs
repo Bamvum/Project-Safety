@@ -34,7 +34,8 @@ public class PrologueSceneManager : MonoBehaviour
 
     [Header("Prologue Game Object")]
     public GameObject PC;
-    public GameObject monitor;
+    public GameObject englishMonitor;
+    public GameObject tagalogMonitor;
     public GameObject[] monitorScreen;
     public GameObject lightSwitch;
 
@@ -42,9 +43,12 @@ public class PrologueSceneManager : MonoBehaviour
     [SerializeField] GameObject englishLanguage;
     [SerializeField] GameObject tagalogLanguage;
 
-    [Space(10)]
+    [Space(5)]
     [SerializeField] InstructionSO englishInstructionsSO;
     [SerializeField] InstructionSO tagalogInstructionsSO;
+
+    [Space(5)]
+    public int languageIndex;
 
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTrigger;
@@ -64,16 +68,18 @@ public class PrologueSceneManager : MonoBehaviour
         if(SettingMenu.instance.languageDropdown.value == 0) // English
         {
             Debug.LogWarning("English Preference");
-            // englishLanguage.SetActive(true);
-            // tagalogLanguage.SetActive(false);
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
             InstructionManager.instance.instructionsSO = englishInstructionsSO;
+            languageIndex = 0;
         }
         else
         {
             Debug.LogWarning("Tagalog Preference");
-            // englishLanguage.SetActive(false);
-            // tagalogLanguage.SetActive(true);
+            englishLanguage.SetActive(false);
+            tagalogLanguage.SetActive(true);
             InstructionManager.instance.instructionsSO = tagalogInstructionsSO;
+            languageIndex = 1;
         }
 
         // FADE IMAGE ALPHA SET 1
@@ -105,7 +111,7 @@ public class PrologueSceneManager : MonoBehaviour
                     .SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        sceneAchievementTrigger();
+                        achievementTrigger.ShowAchievement(achievementSO);
                         DisplaySceneName();
 
                         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
@@ -216,16 +222,4 @@ public class PrologueSceneManager : MonoBehaviour
 
     #endregion
 
-    #region - ACHIEVEMENT TRIGGER -
-
-    void sceneAchievementTrigger()
-    {
-        // Does this mean that the playerprefs is false?
-        if (PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
-        {
-            achievementTrigger.ShowAchievement(achievementSO);
-        }
-    }
-
-    #endregion
 }
