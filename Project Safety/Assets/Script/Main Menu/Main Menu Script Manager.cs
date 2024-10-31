@@ -459,9 +459,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void Play()
     {
-        Debug.Log("Access Play!");
-
-
         Cursor.lockState = CursorLockMode.Locked;
         
         mainMenuButtonCG.interactable = false;
@@ -484,8 +481,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void ChapterSelect()
     {
-        Debug.Log("Access Chapter Select!");
-
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
 
@@ -508,8 +503,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void Settings()
     {
-        Debug.Log("Access Settings!");
-        
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
 
@@ -532,8 +525,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void Achievements()
     {
-        Debug.Log("Access Achievements!");
-
         mainMenuButtonCG.interactable = false;
         isGamepad = true;
 
@@ -561,8 +552,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void Quit()
     {
-        Debug.Log("Access Quit!");
-
         mainMenuButtonCG.interactable = false;
         mainMenuButtonCG.DOFade(0, .25f).OnComplete(() =>
         {
@@ -595,8 +584,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void selectSceneBack()
     {
-        Debug.Log("Go back to Main Menu");
-
         selectSceneButtonCG.interactable = false;
         selectSceneRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
             .SetEase(Ease.OutExpo)
@@ -635,8 +622,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void SettingBack()
     {
-        Debug.Log("Go back to Main Menu");
-
         settingButtonCG.interactable = false;
         settingRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
             .SetEase(Ease.OutExpo)
@@ -687,8 +672,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void AchievementBack()
     {
-        Debug.Log("Go back to Main Menu");
-
         achievementButtonCG.interactable = false;
         achievementRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
             .SetEase(Ease.OutExpo)

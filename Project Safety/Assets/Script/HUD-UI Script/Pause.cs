@@ -83,8 +83,6 @@ public class Pause : MonoBehaviour
         playerControls.Pause.Back.performed += ToBack;
 
         playerControls.Pause.Enable();
-
-        PlayerScript.instance.playerMovement.ResetInputValue();
     }
 
     #region - SETTING NEXT CATEGORY -

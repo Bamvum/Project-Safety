@@ -16,7 +16,9 @@ public class HomeworkManager : MonoBehaviour
         instance = this;
     }
 
-    [SerializeField] DialogueTrigger dialogueTrigger;
+    [Header("Trigger Dialogue")]
+    [SerializeField] DialogueTrigger englishDialogueTrigger;
+    [SerializeField] DialogueTrigger tagalogDialogueTrigger;
 
     [SerializeField] List<QuestionandAnswer> QnA;
 
@@ -206,7 +208,16 @@ public class HomeworkManager : MonoBehaviour
                  {
                      LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                      this.enabled = false;
-                     dialogueTrigger.StartDialogue();
+
+                     if(PrologueSceneManager.instance.languageIndex == 0)
+                     {
+                        englishDialogueTrigger.StartDialogue();
+                     }
+                     else
+                     {
+                        tagalogDialogueTrigger.StartDialogue();
+                     }
+                     
                  });
             });
         }

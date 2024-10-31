@@ -9,7 +9,8 @@ using DG.Tweening;
 public class Interactable : MonoBehaviour
 {
     [Header("Script")]
-    [SerializeField] DialogueTrigger dialogueTrigger;
+    [SerializeField] DialogueTrigger englishDialogueTrigger;
+    [SerializeField] DialogueTrigger tagalogDialogueTrigger;
     
     [Header("Flags")]
     public bool isAlarm;
@@ -90,7 +91,15 @@ public class Interactable : MonoBehaviour
         {
             if(!isInteracted)
             {
-                dialogueTrigger.StartDialogue();
+                if(PrologueSceneManager.instance.languageIndex == 0)
+                {
+                    englishDialogueTrigger.StartDialogue();
+                }
+                else
+                {
+                    tagalogDialogueTrigger.StartDialogue();
+                }
+
                 isInteracted = true;
             }
         }
@@ -130,7 +139,17 @@ public class Interactable : MonoBehaviour
     public void PC()
     {
         PrologueSceneManager.instance.PC.layer = 0;
-        PrologueSceneManager.instance.monitorScreen[0].SetActive(true);        
+
+        if (PrologueSceneManager.instance.languageIndex == 0)
+        {
+            PrologueSceneManager.instance.monitorScreen[0].SetActive(true);
+        }
+        else
+        {
+            PrologueSceneManager.instance.monitorScreen[2].SetActive(true);
+        }
+
+
         Invoke("DelayStartPC", 20);
     }
 
@@ -157,7 +176,16 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log("Player Accessed the Monitor!");
         // prologueSceneManager.TransitionToHomeworkQuiz();
-        dialogueTrigger.StartDialogue();
+
+        if(PrologueSceneManager.instance.languageIndex == 0)
+        {
+            englishDialogueTrigger.StartDialogue();
+        }
+        else
+        {
+            tagalogDialogueTrigger.StartDialogue();
+        }
+
     }
 
     public void Unplug()

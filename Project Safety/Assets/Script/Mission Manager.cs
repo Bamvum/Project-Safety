@@ -48,7 +48,7 @@ public class MissionManager : MonoBehaviour
 
         sequence.Append(missionCG.DOFade(1,1));
         sequence.AppendInterval(2);
-        sequence.Append(missionTextRectTransform.DOAnchorPos(new Vector3(0, -25, 0), 1));
+        sequence.Append(missionTextRectTransform.DOAnchorPos(new Vector3(0, 50, 0), 1));
         sequence.Join(missionTextRectTransform.DOScale(Vector3.one, 1));
 
     
