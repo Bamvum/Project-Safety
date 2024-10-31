@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
-using UnityEngine.SocialPlatforms.Impl;
+using TMPro;
 
 public class PostAssessmentSceneManager : MonoBehaviour
 {
@@ -31,12 +31,14 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [SerializeField] AudioSource sceneBGM;
     [SerializeField] AudioSource correctSFX;
     [SerializeField] AudioSource wrongSFX;
+    [SerializeField] AudioSource sceneNameRevealSFX;
 
-    [Header("HUD")]
+    [Header("TPASS Extinguisher Test")]
     [SerializeField] RectTransform tpassExtinguisherTestRectTransform;
     [SerializeField] CanvasGroup tpassExtinguisherTestCG;
 
-    [Space(10)]
+    
+    [Header("Classes of Fire Test")]
     [SerializeField] RectTransform classFireTestRectTransform;
     [SerializeField] CanvasGroup classFireTestCG;
     
@@ -44,7 +46,18 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [SerializeField] List<ClassFireQuestionandAnswer> classFireQnA;
     [SerializeField] GameObject[] classFireChoices;
     [SerializeField] int classFireCurrentQuestion;
-    [SerializeField] Image questionImage;
+    [SerializeField] Image classFireQuestionImage;
+
+    [Header("Types of Fire Extinguisher Test")]
+    [SerializeField] RectTransform fireExtinguisherTestRectTransform;
+    [SerializeField] CanvasGroup fireExtinguisherTestCG;
+
+    [Space(5)]
+    [SerializeField] List<FireExtinguisherQuestionandAnswer> fireExtinguisherQnA;
+    [SerializeField] GameObject[] fireExtinguisherChoices;
+    [SerializeField] int fireExtinguisherCurrentQuestion;
+    [SerializeField] Image fireExtinguisherQuestionImage;
+    [SerializeField] TMP_Text fireExtinguisherQuestionText;
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -52,10 +65,12 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [Space(5)]
     [SerializeField] GameObject tpassExtinguisherTestSelectedButton;
     [SerializeField] GameObject classFireTestSelectedButton;
+    [SerializeField] GameObject fireExtinguisherTestSelectedButton;
 
     [Header("Flags")]
     [SerializeField] int tpassScore;
     [SerializeField] int classFireScore;
+    [SerializeField] int fireExtinguisherScore;
 
     bool isGamepad;
 
@@ -77,22 +92,20 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     IEnumerator FadeOutEffect()
     {
-        yield return new WaitForSeconds(1);
-        // sceneNameText.DOFade(1, 1).OnComplete(() =>
-        // {
-        //     sceneNameText.DOFade(1,1).OnComplete(() =>
-        //     {
-        //         sceneNameText.DOFade(0, 1);
-        //     });
-        // });
-
-        sceneNameText.DOFade(1, 1);
         
-        yield return new WaitForSeconds(1);
+        sceneNameText.DOFade(1,1)
+            .SetDelay(2)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameRevealSFX.Play();
+                
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
+            });
 
-        sceneNameText.DOFade(0, 1);
-
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
 
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
@@ -213,24 +226,9 @@ public class PostAssessmentSceneManager : MonoBehaviour
         tpassExtinguisherTestRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
         {
             tpassExtinguisherTestRectTransform.gameObject.SetActive(false);
-            // HomeworkManager.instance.enabled = true;
-            // HomeworkManager.instance.homeworkHUD.SetActive(true);
             ShowClassFireTest();
             GenerateFireClassQuestions();
-            // DISPLAY HOMEWORK
         });
-
-        // // Punch scale effect before hiding
-        // tpassExtinguisherTestRectTransform.DOPunchScale(Vector3.one * -0.2f, 0.3f, 10, 1)
-        //     .SetEase(Ease.OutFlash)
-        //     .OnComplete(() =>
-        //     {
-        //         // Scale down to zero
-        //         tpassExtinguisherTestRectTransform.DOScale(Vector3.zero, 1f).OnComplete(() =>
-        //         {
-                   
-        //         });
-        //     });
     }
 
     public void SubmitTPASSAnswer()
@@ -383,8 +381,6 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     void ShowClassFireTest()
     {
-        //GenerateFireClassQuestions();
-
         classFireTestRectTransform.gameObject.SetActive(true);
         classFireTestRectTransform.DOScale(Vector3.one, .75f).OnComplete(() =>
         {
@@ -406,15 +402,13 @@ public class PostAssessmentSceneManager : MonoBehaviour
         classFireTestRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
         {
             classFireTestRectTransform.gameObject.SetActive(false);
-            HomeworkManager.instance.enabled = true;
-            HomeworkManager.instance.homeworkHUD.SetActive(true);
-            // ShowClassFireTest();
-            // GenerateFireClassQuestions();
+            ShowFireExtinguisherTest();
+            GenerateFireExtinguisherQuestions();
             // DISPLAY HOMEWORK
         });
     }
 
-    void SetAnswer()
+    void SetClassFireAnswer()
     {
         for (int i = 0; i < classFireChoices.Length; i++)
         {
@@ -433,9 +427,8 @@ public class PostAssessmentSceneManager : MonoBehaviour
         if(classFireQnA.Count > 0)
         {
             classFireCurrentQuestion = Random.Range(0, classFireQnA.Count);
-            questionImage.sprite = classFireQnA[classFireCurrentQuestion].questionImage;
-
-            SetAnswer();
+            classFireQuestionImage.sprite = classFireQnA[classFireCurrentQuestion].questionImage;
+            SetClassFireAnswer();
         }
         else
         {
@@ -459,6 +452,88 @@ public class PostAssessmentSceneManager : MonoBehaviour
         wrongSFX.Play();
         GenerateFireClassQuestions();
     }
+
+    #endregion
+
+    #region  - FIRE EXTINGUISHER TYPES -
+
+    void ShowFireExtinguisherTest()
+    {
+        fireExtinguisherTestRectTransform.gameObject.SetActive(true);
+        fireExtinguisherTestRectTransform.DOScale(Vector3.one, .75f).OnComplete(() =>
+        {
+            fireExtinguisherTestRectTransform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1)
+                .SetEase(Ease.InFlash)
+                .OnComplete(() =>
+                {
+                    fireExtinguisherTestCG.interactable = true;
+                    
+                });
+
+        });
+    }
+
+    void HideFireExtinguisherTest()
+    {
+        fireExtinguisherTestCG.interactable = false;
+        fireExtinguisherTestRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
+        {
+            fireExtinguisherTestRectTransform.gameObject.SetActive(false);
+            HomeworkManager.instance.enabled = true;
+            HomeworkManager.instance.homeworkHUD.SetActive(true);
+            // ShowClassFireTest();
+            // GenerateFireClassQuestions();
+            // DISPLAY HOMEWORK
+        });
+    }
+
+    void SetFireExtinguisherAnswer()
+    {
+        for(int i = 0; i < fireExtinguisherChoices.Length; i++)
+        {
+            fireExtinguisherChoices[i].GetComponent<FireExtinguisherAnswerKey>().isCorrect = false;
+            fireExtinguisherChoices[i].transform.GetChild(0).GetComponent<TMP_Text>().text = fireExtinguisherQnA[fireExtinguisherCurrentQuestion].answer[i];
+
+            if(fireExtinguisherQnA[fireExtinguisherCurrentQuestion].correctAnswer == i+1)
+            {
+                fireExtinguisherChoices[i].GetComponent<FireExtinguisherAnswerKey>().isCorrect = true;
+            }
+        }
+    }
+
+    void GenerateFireExtinguisherQuestions()
+    {
+        if(fireExtinguisherQnA.Count > 0)
+        {
+            fireExtinguisherCurrentQuestion = Random.Range(0, fireExtinguisherQnA.Count);
+            fireExtinguisherQuestionImage.sprite = fireExtinguisherQnA[fireExtinguisherCurrentQuestion].questionImage;
+            fireExtinguisherQuestionText.text = fireExtinguisherQnA[fireExtinguisherCurrentQuestion].question;
+
+            SetFireExtinguisherAnswer();
+        }
+        else
+        {
+            Debug.Log("Out of Questions");
+        
+            HideFireExtinguisherTest();
+        }
+    }
+
+    public void FireExtinguisherCorrect()
+    {
+        fireExtinguisherQnA.RemoveAt(fireExtinguisherCurrentQuestion);
+        fireExtinguisherScore++;
+        correctSFX.Play();
+        GenerateFireExtinguisherQuestions();
+    }
+
+    public void FireExtinguisherWrong()
+    {
+        fireExtinguisherQnA.RemoveAt(fireExtinguisherCurrentQuestion);
+        wrongSFX.Play();
+        GenerateFireExtinguisherQuestions();
+    }
+
 
     #endregion
 }
