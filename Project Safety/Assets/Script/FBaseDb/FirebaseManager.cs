@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Firebase;
@@ -109,6 +110,84 @@ public class FirebaseManager : MonoBehaviour
         SignOut();  // Log the user out when the game quits
     }
 
+    public void SaveSettingsToFirebase(float masterVolume, float musicVolume, float sfxVolume, bool isFullScreen, int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens, float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+
+            DatabaseReference userSettingsRef = databaseReference.Child("users").Child(userId).Child("settings");
+
+            userSettingsRef.Child("masterVolume").SetValueAsync(masterVolume);
+            userSettingsRef.Child("musicVolume").SetValueAsync(musicVolume);
+            userSettingsRef.Child("sfxVolume").SetValueAsync(sfxVolume);
+            userSettingsRef.Child("isFullScreen").SetValueAsync(isFullScreen ? 1 : 0);
+            userSettingsRef.Child("qualityIndex").SetValueAsync(qualityIndex);
+            userSettingsRef.Child("resolutionIndex").SetValueAsync(resolutionIndex);
+            userSettingsRef.Child("xMouseSensitivity").SetValueAsync(xMouseSens);
+            userSettingsRef.Child("yMouseSensitivity").SetValueAsync(yMouseSens);
+            userSettingsRef.Child("xGamepadSensitivity").SetValueAsync(xGamepadSens);
+            userSettingsRef.Child("yGamepadSensitivity").SetValueAsync(yGamepadSens);
+            userSettingsRef.Child("dialogueSpeed").SetValueAsync(dialogueSpeed);
+            userSettingsRef.Child("languageIndex").SetValueAsync(languageIndex);
+
+            Debug.Log("User settings saved to Firebase.");
+        }
+        else
+        {
+            Debug.LogWarning("No user is signed in, cannot save settings to Firebase.");
+        }
+    }
+
+    public void FetchSettingsFromFirebase(Action<float, float, float, bool, int, int, float, float, float, float, float, int> onSettingsFetched)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+
+            databaseReference.Child("users").Child(userId).Child("settings").GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    if (task.Result.Exists)
+                    {
+                        var settingsSnapshot = task.Result;
+
+                        float masterVolume = float.Parse(settingsSnapshot.Child("masterVolume").Value.ToString());
+                        float musicVolume = float.Parse(settingsSnapshot.Child("musicVolume").Value.ToString());
+                        float sfxVolume = float.Parse(settingsSnapshot.Child("sfxVolume").Value.ToString());
+                        bool isFullScreen = settingsSnapshot.Child("isFullScreen").Value.ToString() == "1";
+                        int qualityIndex = int.Parse(settingsSnapshot.Child("qualityIndex").Value.ToString());
+                        int resolutionIndex = int.Parse(settingsSnapshot.Child("resolutionIndex").Value.ToString());
+                        float xMouseSens = float.Parse(settingsSnapshot.Child("xMouseSensitivity").Value.ToString());
+                        float yMouseSens = float.Parse(settingsSnapshot.Child("yMouseSensitivity").Value.ToString());
+                        float xGamepadSens = float.Parse(settingsSnapshot.Child("xGamepadSensitivity").Value.ToString());
+                        float yGamepadSens = float.Parse(settingsSnapshot.Child("yGamepadSensitivity").Value.ToString());
+                        float dialogueSpeed = float.Parse(settingsSnapshot.Child("dialogueSpeed").Value.ToString());
+                        int languageIndex = int.Parse(settingsSnapshot.Child("languageIndex").Value.ToString());
+
+                        onSettingsFetched(masterVolume, musicVolume, sfxVolume, isFullScreen, qualityIndex, resolutionIndex, xMouseSens, yMouseSens, xGamepadSens, yGamepadSens, dialogueSpeed, languageIndex);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No settings found for user, using default values.");
+                        onSettingsFetched(1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fetch settings from Firebase: " + task.Exception);
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("No user is signed in, cannot fetch settings from Firebase.");
+            onSettingsFetched(1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
+        }
+    }
+
+
 
     public void SaveChoiceToFirebase(string choiceKey, int choiceValue)
     {
@@ -138,6 +217,51 @@ public class FirebaseManager : MonoBehaviour
             Debug.LogWarning("No user is signed in, cannot save choice to Firebase.");
         }
     }
+
+    public void FetchChoiceStatistics(string choiceKey, Action<int> onPercentageFetched)
+    {
+        databaseReference
+            .Child("users")
+            .GetValueAsync()
+            .ContinueWithOnMainThread(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    int choice1Count = 0;
+                    int choice2Count = 0;
+                    int totalCount = 0;
+
+                    DataSnapshot snapshot = task.Result;
+                    foreach (DataSnapshot userSnapshot in snapshot.Children)
+                    {
+                        if (userSnapshot.Child("choices").HasChild(choiceKey))
+                        {
+                            int choiceValue = int.Parse(userSnapshot.Child("choices").Child(choiceKey).Value.ToString());
+                            if (choiceValue == 1) choice1Count++;
+                            else if (choiceValue == 2) choice2Count++;
+
+                            totalCount++;
+                        }
+                    }
+
+                    if (totalCount > 0)
+                    {
+                        int percentage = Mathf.RoundToInt((choice1Count * 100f) / totalCount);
+                        onPercentageFetched.Invoke(percentage);
+                    }
+                    else
+                    {
+                        onPercentageFetched.Invoke(0);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to fetch choice statistics: " + task.Exception);
+                    onPercentageFetched.Invoke(0);
+                }
+            });
+    }
+
 
     public void SaveChapterUnlockToFirebase(string chapterKey, bool isUnlocked)
     {
