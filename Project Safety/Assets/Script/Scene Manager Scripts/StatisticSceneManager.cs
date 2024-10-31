@@ -2,11 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class StatisticSceneManager : MonoBehaviour
 {
+    PlayerControls playerControls;
+
+    [Header("HUD")]
+    [SerializeField] RectTransform statisticRectTransform;
+    [SerializeField] CanvasGroup statisticButtonCG;
+    [SerializeField] RectTransform statisticAdditionalInformationRectTransform;
+    [SerializeField] TMP_Text statisticAdditionalInformationText;
+    [SerializeField] TMP_Text statisticNavGuide;
+
+    
+    [Header("SELECTED BUTTON")]
+    [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
+
+    [Space(5)]
+    [SerializeField] GameObject statisticSelectedButton;
+
+    [Header("FLAG")]
+    [SerializeField] bool isGamepad;
+
     public Slider plugChoiceSlider;
     public TextMeshProUGUI plugChoiceText;
 
@@ -21,6 +41,86 @@ public class StatisticSceneManager : MonoBehaviour
 
     public Slider elevatorChoiceSlider;
     public TextMeshProUGUI elevatorChoiceText;
+
+
+    void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
+
+    void OnEnable()
+    {
+        playerControls.Statistics.Back.performed += ToBack;
+        
+        playerControls.Statistics.Enable();
+    }
+
+    void OnDisable()
+    {
+        playerControls.Statistics.Disable();
+    }
+
+    private void ToBack(InputAction.CallbackContext context)
+    {
+        if(statisticAdditionalInformationRectTransform.gameObject.activeSelf)
+        {
+            HideAdditionalInformation();
+        }
+    }
+
+    void Update()
+    {
+        DeviceInputCheckerNavGuide();
+
+        // GAMEPAD VIBRATION ON NAVIGATION 
+        if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
+        {
+            if (Gamepad.current.leftStick.ReadValue() != Vector2.zero || Gamepad.current.dpad.ReadValue() != Vector2.zero)
+            {
+                GameObject currentSelectedButton = EventSystem.current.currentSelectedGameObject;
+
+                Debug.Log("Inputed Leftstick and Dpad");
+                // Check if the selected UI element has changed (button navigation)
+                if (currentSelectedButton != lastSelectedButton)
+                {
+                    // Trigger vibration when navigating to a new button
+                    VibrateGamepad();
+                    lastSelectedButton = currentSelectedButton; // Update the last selected button
+                }
+            }
+        }
+    }
+
+    private void VibrateGamepad()
+    {
+        // Set a short vibration
+        Gamepad.current.SetMotorSpeeds(0.3f, 0.3f); // Adjust the intensity here
+        Invoke("StopVibration", 0.1f); // Stops vibration after 0.1 seconds
+        StartCoroutine(StopVibration(.1f));
+    }
+
+
+    IEnumerator StopVibration(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Gamepad.current.SetMotorSpeeds(0, 0);
+    }
+
+    #region - NAVIGATION GUIDE -
+
+    void DeviceInputCheckerNavGuide()
+    {
+        if (DeviceManager.instance.keyboardDevice)
+        {
+            statisticNavGuide.text = "<sprite name=\"Left Mouse Button\"> Show Additional Information <sprite name=\"Escape\"> Back   ";
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            statisticNavGuide.text = "<sprite name=\"Cross\"> Show Additional Information <sprite name=\"Circle\"> Back   ";
+        }
+    }
+
+    #endregion
 
     void Start()
     {
@@ -178,4 +278,29 @@ public class StatisticSceneManager : MonoBehaviour
                 break;
         }
     }
+
+    #region - STATISTIC ADDITIONAL INFORMATION - 
+
+    public void ShowAdditionalInformation(StatisticSO statisticSO)
+    {
+        statisticAdditionalInformationText.text = statisticSO.statisticAdditionalInformation;
+
+        // RECT TRANSFORM OF THINGS
+        statisticButtonCG.interactable = false;
+        isGamepad = true;
+
+
+    }
+
+    void HideAdditionalInformation()
+    {
+        // RECT TRANSFORM HIDE
+
+
+        statisticButtonCG.interactable = true;
+        statisticAdditionalInformationText.text = null;
+    }
+
+    #endregion 
+
 }

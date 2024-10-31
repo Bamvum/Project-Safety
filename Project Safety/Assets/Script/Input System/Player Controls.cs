@@ -1742,6 +1742,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Statistics"",
+            ""id"": ""f065a32a-4204-4cc5-9288-d2720853a856"",
+            ""actions"": [
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""e88c404c-5d41-4c57-985a-9d58049df727"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""539e6ff2-81a1-4231-aab6-19aead7f1860"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7cba890-e83c-472c-8c71-4fcaebaf5d51"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -1829,6 +1868,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_CheckDoor_Open = m_CheckDoor.FindAction("Open", throwIfNotFound: true);
         m_CheckDoor_Test = m_CheckDoor.FindAction("Test", throwIfNotFound: true);
         m_CheckDoor_Exit = m_CheckDoor.FindAction("Exit", throwIfNotFound: true);
+        // Statistics
+        m_Statistics = asset.FindActionMap("Statistics", throwIfNotFound: true);
+        m_Statistics_Back = m_Statistics.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2902,6 +2944,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public CheckDoorActions @CheckDoor => new CheckDoorActions(this);
+
+    // Statistics
+    private readonly InputActionMap m_Statistics;
+    private List<IStatisticsActions> m_StatisticsActionsCallbackInterfaces = new List<IStatisticsActions>();
+    private readonly InputAction m_Statistics_Back;
+    public struct StatisticsActions
+    {
+        private @PlayerControls m_Wrapper;
+        public StatisticsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Back => m_Wrapper.m_Statistics_Back;
+        public InputActionMap Get() { return m_Wrapper.m_Statistics; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StatisticsActions set) { return set.Get(); }
+        public void AddCallbacks(IStatisticsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_StatisticsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_StatisticsActionsCallbackInterfaces.Add(instance);
+            @Back.started += instance.OnBack;
+            @Back.performed += instance.OnBack;
+            @Back.canceled += instance.OnBack;
+        }
+
+        private void UnregisterCallbacks(IStatisticsActions instance)
+        {
+            @Back.started -= instance.OnBack;
+            @Back.performed -= instance.OnBack;
+            @Back.canceled -= instance.OnBack;
+        }
+
+        public void RemoveCallbacks(IStatisticsActions instance)
+        {
+            if (m_Wrapper.m_StatisticsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IStatisticsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_StatisticsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_StatisticsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public StatisticsActions @Statistics => new StatisticsActions(this);
     public interface IMainMenuActions
     {
         void OnAction(InputAction.CallbackContext context);
@@ -3000,5 +3088,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOpen(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+    }
+    public interface IStatisticsActions
+    {
+        void OnBack(InputAction.CallbackContext context);
     }
 }

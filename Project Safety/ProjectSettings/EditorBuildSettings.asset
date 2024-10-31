@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Act 1 Household.unity
     guid: d5082f92df233ea44bb75bc6ca872587
+  - enabled: 1
+    path: Assets/Scenes/Template.unity
+    guid: 6bf458c4253253a429011048d8fff8d9
   - enabled: 0
     path: Assets/Scenes/Loading Scene.unity
     guid: 62e7fa0fbb4dd2340bd63ba0140ac3f8
