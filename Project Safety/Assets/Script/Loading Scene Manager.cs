@@ -177,6 +177,11 @@ public class LoadingSceneManager : MonoBehaviour
         {
             previewImg.sprite = loadingSO.previewScene[7];
         }
+        else if (sceneToBeLoad == "Statistic")
+        {
+            int randomIndex = Random.Range(0, loadingSO.previewScene.Length);
+            previewImg.sprite = loadingSO.previewScene[randomIndex];
+        }
         else if (sceneToBeLoad == "Post Assessment")
         {
             int randomIndex = Random.Range(0, loadingSO.previewScene.Length);

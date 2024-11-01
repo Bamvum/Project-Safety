@@ -11,10 +11,15 @@ public class EmergencyHotline : MonoBehaviour
     PlayerControls playerControls;
 
     [Header("Dialogue Trigger")]
-    [SerializeField] DialogueTrigger contact1;
-    [SerializeField] DialogueTrigger contact2;
-    [SerializeField] DialogueTrigger contact3;
-    
+    [SerializeField] DialogueTrigger englishContact1;
+    [SerializeField] DialogueTrigger englishContact2;
+    [SerializeField] DialogueTrigger englishContact3;
+
+    [Space(5)]
+    [SerializeField] DialogueTrigger tagalogContact1;
+    [SerializeField] DialogueTrigger tagalogContact2;
+    [SerializeField] DialogueTrigger tagalogContact3;
+
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera phoneVC;
 
@@ -57,8 +62,16 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 1");
             contactMode = false;
-            contact1.StartDialogue();
-            
+
+            if (Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                englishContact1.StartDialogue();
+            }
+            else
+            {
+                tagalogContact1.StartDialogue();
+            }
+
             contactHUD.SetActive(false);
 
             // TODO - WORK IN PROGRESS. INVOKE IS FOR TESTING PURPORSE ONLY
@@ -72,7 +85,15 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 2");
             contactMode = false;
-            contact2.StartDialogue();
+
+            if (Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                englishContact2.StartDialogue();
+            }
+            else
+            {
+                tagalogContact2.StartDialogue();
+            }
 
             contactHUD.SetActive(false);
         }
@@ -84,7 +105,16 @@ public class EmergencyHotline : MonoBehaviour
         {
             Debug.Log("Accessing Contact 3");
             contactMode = false;
-            contact3.StartDialogue();
+            
+
+            if (Act2Scene1Manager.instance.languageIndex == 0)
+            {
+                englishContact1.StartDialogue();
+            }
+            else
+            {
+                tagalogContact1.StartDialogue();
+            }
 
             contactHUD.SetActive(false);
         }

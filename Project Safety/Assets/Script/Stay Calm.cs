@@ -16,7 +16,8 @@ public class StayCalm : MonoBehaviour
     [SerializeField] GameObject playerSitted;
 
     [Header("Dialogue Trigger")]
-    [SerializeField] DialogueTrigger AccessPhone;
+    [SerializeField] DialogueTrigger englishAccessPhone;
+    [SerializeField] DialogueTrigger tagalogAccessPhone;
 
     [Header("HUD")]
     [SerializeField] TMP_Text playerHealthText;
@@ -45,8 +46,7 @@ public class StayCalm : MonoBehaviour
     [Header("Audio")]
     [SerializeField] AudioSource doneSFX;
     [SerializeField] AudioSource wrongSFX;
-    [SerializeField] AudioSource heartBeatSFX;
-    
+    [SerializeField] AudioSource heartBeatSFX;    
 
 
     [Header("Flag")]
@@ -279,7 +279,6 @@ public class StayCalm : MonoBehaviour
         {
             if (stayCalmCG.alpha == 1)
             {
-        
                 stayCalmTimer.fillAmount -= timerDescrease * Time.deltaTime;
 
                 if (stayCalmTimer.fillAmount <= 0)
@@ -328,7 +327,16 @@ public class StayCalm : MonoBehaviour
                             stayCalmHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
                             {
                                 stayCalmHUD.gameObject.SetActive(false);
-                                AccessPhone.StartDialogue();
+                                
+                                if(Act2Scene1Manager.instance.languageIndex == 0)
+                                {
+                                    englishAccessPhone.StartDialogue();
+                                }
+                                else
+                                {
+                                    tagalogAccessPhone.StartDialogue();
+                                }
+
                                 this.enabled = false;
                             });
 

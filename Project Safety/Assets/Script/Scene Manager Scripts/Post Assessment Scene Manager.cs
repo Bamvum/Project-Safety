@@ -101,7 +101,6 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 sceneNameRevealSFX.Play();
                 
                 sceneNameText.DOFade(0, 1)
-                    .SetDelay(3)
                     .SetUpdate(true);
             });
 

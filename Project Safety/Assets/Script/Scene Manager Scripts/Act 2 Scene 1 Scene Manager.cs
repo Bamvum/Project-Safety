@@ -15,14 +15,26 @@ public class Act2Scene1Manager : MonoBehaviour
 
     void Awake()
     {
-        DOTween.SetTweensCapacity(1000, 200);  // 1000 tweeners and 200 sequences
-
         instance = this;
     }
 
+    [Header("HUD")]
+    [SerializeField] CanvasGroup sceneNameText;
+
+    
     [Header("Trigger Dialogue")]
-    [SerializeField] DialogueTrigger startDialogue;
-    [SerializeField] DialogueTrigger PlaceHolderCalmAndCall;
+    [SerializeField] DialogueTrigger englishStartDialogue;
+    [SerializeField] DialogueTrigger tagalogStartDialogue;
+    [SerializeField] DialogueTrigger englishPlaceHolderCalmAndCall;
+    [SerializeField] DialogueTrigger tagalogPlaceHolderCalmAndCall;
+
+    [Header("Language Preference")]
+
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(5)]
+    public int languageIndex;
 
     [Header("Cinemachine")]
     [SerializeField] CinemachineInputProvider chairInputProvider;
@@ -34,6 +46,8 @@ public class Act2Scene1Manager : MonoBehaviour
     [Space(10)]
     [SerializeField] bool personRunning;
 
+    [SerializeField] AudioSource sceneNameRevealSFX;
+
     void Start()
     {
         auth = FirebaseAuth.DefaultInstance;
@@ -44,21 +58,56 @@ public class Act2Scene1Manager : MonoBehaviour
                                                          LoadingSceneManager.instance.fadeImage.color.b,
                                                          1);
 
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if(SettingMenu.instance.languageDropdown.value == 0)
+        {
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
+            languageIndex = 0;
+        }
+        else
+        {
+            englishLanguage.SetActive(false);
+            tagalogLanguage.SetActive(true);
+            languageIndex = 1;
+        }
+
         StartCoroutine(FadeOutEffect());
     }
 
     IEnumerator FadeOutEffect()
     {
         yield return new WaitForSeconds(3);
-                LoadingSceneManager.instance.fadeImage
-            .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+        sceneNameRevealSFX.Play();
+        sceneNameText.DOFade(1, 1)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
+            });
+
+        yield return new WaitForSeconds(5);
+        
+        // AMBIANCE START 
+
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
+            .SetUpdate(true)
             .OnComplete(() =>
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-            // TRIGGER DIALOGUE
-            Debug.Log("Trigger Dialogue");
-            startDialogue.StartDialogue();
+
+            if(languageIndex == 0)
+            {
+                englishStartDialogue.StartDialogue();
+            }
+            else
+            {
+                tagalogStartDialogue.StartDialogue();
+            }
         });
     }
 
@@ -85,8 +134,15 @@ public class Act2Scene1Manager : MonoBehaviour
     IEnumerator DelayFunction()
     {
         yield return new WaitForSeconds(.5f);
-        Debug.Log("PlaceHolderForCall");
-        PlaceHolderCalmAndCall.StartDialogue();
+
+        if(languageIndex == 0)
+        {
+            englishPlaceHolderCalmAndCall.StartDialogue();
+        }
+        else
+        {
+            tagalogPlaceHolderCalmAndCall.StartDialogue();
+        }
     }
 
     public void enablePersonRunningMoveToward(bool enable)

@@ -21,6 +21,8 @@ public class AchievementManager : MonoBehaviour
     [Space(5)]
     [SerializeField] Button dreamscape;
     [SerializeField] Button beenScolded;
+    [SerializeField] Button triangleOfFire;
+    [SerializeField] Button fireForce;
     [SerializeField] Button savingPrivateDummy;
     [SerializeField] Button dummynt;
     [SerializeField] Button justKeepBreathingDory;
@@ -29,6 +31,10 @@ public class AchievementManager : MonoBehaviour
     [SerializeField] Button anyPercent;
     [SerializeField] Button tooHotToHandle;
     [SerializeField] Button chainSmoker;
+    [SerializeField] Button tpassMaster;
+    [SerializeField] Button fireClassMaster;
+    [SerializeField] Button fireExtinguishMaster;
+    [SerializeField] Button fireSafetyMaster;
     
     [Space(5)]
     [SerializeField] Sprite[] achievementStatus;
@@ -43,7 +49,6 @@ public class AchievementManager : MonoBehaviour
         {
             Image achievementImg = dreamscape.GetComponentInChildren<Image>();
             achievementImg.sprite = achievementSprite[0]; 
-                
             dreamscape.interactable = true;
             dreamscape.image.sprite = achievementStatus[1];
         }
@@ -60,6 +65,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A1S1 - Been Scolded!", 0) == 1)
         {
             Image achievementImg = beenScolded.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[1]; 
             beenScolded.interactable = true;
             beenScolded.image.sprite = achievementStatus[1];
         }
@@ -71,11 +77,46 @@ public class AchievementManager : MonoBehaviour
 
         #endregion
 
+        #region Triangle of Fire
+
+        if (PlayerPrefs.GetInt("A1S2 - Triangle of Fire") == 1)
+        {
+            Image achievementImg = triangleOfFire.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[2];
+            triangleOfFire.interactable = true;
+            triangleOfFire.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            triangleOfFire.image.sprite = achievementStatus[0];
+            triangleOfFire.interactable = false;
+        }
+
+        #endregion
+        
+        #region Fire Force
+
+        if (PlayerPrefs.GetInt("A1S3 - Fire Force") == 1)
+        {
+            Image achievementImg = fireForce.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[3];
+            fireForce.interactable = true;
+            fireForce.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            fireForce.image.sprite = achievementStatus[0];
+            fireForce.interactable = false;
+        }
+
+        #endregion
+
         #region Saving Private Dummy
 
         if (PlayerPrefs.GetInt("A1S4 - Saving Private Dummy", 0) == 1)
         {
             Image achievementImg = savingPrivateDummy.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[4];
             savingPrivateDummy.interactable = true;
             savingPrivateDummy.image.sprite = achievementStatus[1];        
         }
@@ -92,6 +133,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A1S4 - Dummyn\'t", 0) == 1)
         {
             Image achievementImg = dummynt.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[5];
             dummynt.interactable = true;
             dummynt.image.sprite = achievementStatus[1];
         }
@@ -105,9 +147,10 @@ public class AchievementManager : MonoBehaviour
 
         #region  Just Keep Breating, Dory!
         
-        if (PlayerPrefs.GetInt("A2S1 - Just Keep Breating, Dory!") == 1)
+        if (PlayerPrefs.GetInt("A2S1 - Just Keep Breathing, Dory!") == 1)
         {
             Image achievementImg = justKeepBreathingDory.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[6];
             justKeepBreathingDory.interactable = true;
             justKeepBreathingDory.image.sprite = achievementStatus[1];
         }
@@ -124,6 +167,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A2S1 - Who You Gonna Call? FireBusters!!") == 1)
         {
             Image achievementImg = whoYouGonnaCallFirebuster.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[7];
             whoYouGonnaCallFirebuster.interactable = true;
             whoYouGonnaCallFirebuster.image.sprite = achievementStatus[1];
         }
@@ -141,6 +185,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A2S1 - Do not Disturb?") == 1)
         {
             Image achievementImg = doNotDisturb.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[8];
             doNotDisturb.interactable = true;
             doNotDisturb.image.sprite = achievementStatus[1];
         }
@@ -157,6 +202,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A2S2 - Any%?") == 1)
         {
             Image achievementImg = anyPercent.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[9];
             anyPercent.interactable = true;
             anyPercent.image.sprite = achievementStatus[1];
         }
@@ -173,6 +219,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A2S2 - Too Hot To Handle") == 1)
         {
             Image achievementImg = tooHotToHandle.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[10];
             tooHotToHandle.interactable = true;
             tooHotToHandle.image.sprite = achievementStatus[1];
         }
@@ -189,6 +236,7 @@ public class AchievementManager : MonoBehaviour
         if (PlayerPrefs.GetInt("A2S2 - Chain Smoker") == 1)
         {
             Image achievementImg = chainSmoker.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[11];
             chainSmoker.interactable = true;
             chainSmoker.image.sprite = achievementStatus[1];
         }
@@ -196,6 +244,75 @@ public class AchievementManager : MonoBehaviour
         {
             chainSmoker.image.sprite = achievementStatus[0];
             chainSmoker.interactable = false;
+        }
+
+        #endregion
+
+        #region TPASS master
+
+        if (PlayerPrefs.GetInt("Post Assessment - TPASS Master") == 1)
+        {
+            Image achievementImg = tpassMaster.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[12];
+            tpassMaster.interactable = true;
+            tpassMaster.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            tpassMaster.image.sprite = achievementStatus[0];
+            tpassMaster.interactable = false;
+        }
+
+        #endregion
+
+        #region Fire Class Master
+
+        if (PlayerPrefs.GetInt("Post Assessment - Fire Class Master") == 1)
+        {
+            Image achievementImg = fireClassMaster.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[13];
+            fireClassMaster.interactable = true;
+            fireClassMaster.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            fireClassMaster.image.sprite = achievementStatus[0];
+            fireClassMaster.interactable = false;
+        }
+
+        #endregion 
+
+        #region Fire Extinguisher Master
+
+        if (PlayerPrefs.GetInt("Post Assessment - Fire Extinguisher Master") == 1)
+        {
+            Image achievementImg = fireExtinguishMaster.GetComponentInChildren<Image>();
+            achievementImg.sprite = achievementSprite[14];
+            fireExtinguishMaster.interactable = true;
+            fireExtinguishMaster.interactable = achievementStatus[1];
+
+        }
+        else
+        {
+            fireExtinguishMaster.image.sprite = achievementStatus[0];
+            fireExtinguishMaster.interactable = false;
+        }
+
+        #endregion
+
+        #region Fire Safety Master
+
+        if (PlayerPrefs.GetInt("Post Assessment - Extinguish Master") == 1)
+        {
+            Image achievementImg = fireSafetyMaster.GetComponentInChildren<Image>(); // CHANGE "?" TO "Achievement Image"
+            achievementImg.sprite = achievementSprite[15];
+            fireSafetyMaster.interactable = true;
+            fireSafetyMaster.image.sprite = achievementStatus[1];
+        }
+        else
+        {
+            fireSafetyMaster.image.sprite = achievementStatus[0];
+            fireSafetyMaster.interactable = false;
         }
 
         #endregion
@@ -210,41 +327,5 @@ public class AchievementManager : MonoBehaviour
 }
 
 
-// PlayerPrefs.SetInt("Key Name", 1);
-
-/*
-A1S1 Television - 
-
-Been Scolded - Choose not to unplug the plugs
-
-A1S4 Dummy:
-
-Saving Private Dummy - Choose to save the Dummy
-
-Dummyn’t - Choose to not save the Dummy
-
-
-A2S1 Stay Calm:
-
-Just Keep Breathing, Dory! - Complete Stay Calm
-
-A2S1 Contact:
-
-Who you gonna call? Firebusters!! - Local Fire Station and National Emergency Hotline
-
-Do not Disturb? - Mom’s number
-
-A2S2 Escape:
-
-Any%? - Escape under 3 minutes
-
-A2S2 Check Door:
-
-Too Hot to Handle - Try to open a burning door 2 times.
-
-A2S2 Smoke Inhalation:
-
-Chainsmoker - 80% Lungs is filled with smoke
-*/
 
 

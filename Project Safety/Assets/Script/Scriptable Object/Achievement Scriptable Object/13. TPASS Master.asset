@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
-  m_Name: Dreamscape
+  m_Name: 13. TPASS Master
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: 9e24809c8c25599498b5691fd649dedb, type: 3}
-  achievementName: Dreamscape
-  achievementDescription: Finish Prologue Scene
-  achievementPlayerPrefsKey: Prologue - Dreamscape
+  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementName: TPASS Master
+  achievementDescription: Arrange TPASS correctly in Post Assessment
+  achievementPlayerPrefsKey: Post Assessment - TPASS Master

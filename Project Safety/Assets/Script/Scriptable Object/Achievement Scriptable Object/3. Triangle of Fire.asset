@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
-  m_Name: Saving Private Dummy
+  m_Name: 3. Triangle of Fire
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
-  achievementName: Saving Private Dummy
-  achievementDescription: You chose to help the dummy in Act 1, Scene 4
-  achievementPlayerPrefsKey: A1S4 - Saving Private Dummy
+  achievementSprite: {fileID: 21300000, guid: f6b7ca69222072742bf5d93bd6018e40, type: 3}
+  achievementName: Triangle of Fire
+  achievementDescription: Learned Fire Triangle and Fire Tetrahedron in Neighborhood
+  achievementPlayerPrefsKey: A1S2 - Triangle of Fire
