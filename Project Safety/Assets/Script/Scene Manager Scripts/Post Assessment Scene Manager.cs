@@ -9,6 +9,19 @@ using TMPro;
 
 public class PostAssessmentSceneManager : MonoBehaviour
 {
+    public static PostAssessmentSceneManager instance {get; private set;}
+
+    void Awake()
+    {
+        instance = this;
+    }
+
+    public AchievementTrigger achievementTrigger;
+    AchievementSO tpassMaster;
+    AchievementSO fireClassMaster;
+    AchievementSO fireExtinguisherMaster;
+    public AchievementSO fireSafetyMaster;
+
     [Header("HUD")]
     [SerializeField] CanvasGroup sceneNameText;
 
@@ -68,9 +81,13 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [SerializeField] GameObject fireExtinguisherTestSelectedButton;
 
     [Header("Flags")]
-    [SerializeField] int tpassScore;
-    [SerializeField] int classFireScore;
-    [SerializeField] int fireExtinguisherScore;
+    public int tpassScore;
+    public int classFireScore;
+    public int fireExtinguisherScore;
+    [SerializeField] bool stopTPASSMasterLoop;
+    [SerializeField] bool stopFireClassMasterLoop;
+    [SerializeField] bool stopFireExtinguisherMasterLoop;
+    [SerializeField] bool stopFireSafetyMasterLoop;
 
     bool isGamepad;
 
@@ -86,6 +103,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
         StartCoroutine(FadeOutEffect());
 
         RandomTPASSPosition();
+        achievementTrigger.ShowAchievement(fireSafetyMaster);
     }
 
     IEnumerator FadeOutEffect()
@@ -254,6 +272,9 @@ public class PostAssessmentSceneManager : MonoBehaviour
         if (tpassScore == 5)
         {
             Debug.Log("Correct!");
+
+            // ACHIEVEMENT TPASS MASTER
+            achievementTrigger.ShowAchievement(tpassMaster);
             correctSFX.Play();
         }
         else
@@ -401,6 +422,13 @@ public class PostAssessmentSceneManager : MonoBehaviour
             classFireTestRectTransform.gameObject.SetActive(false);
             ShowFireExtinguisherTest();
             GenerateFireExtinguisherQuestions();
+
+            // ACHIEVEMENT FIRE CLASS MASTER
+            if (classFireScore == 13)
+            {
+                achievementTrigger.ShowAchievement(fireClassMaster);
+            }
+
             // DISPLAY HOMEWORK
         });
     }
@@ -478,9 +506,11 @@ public class PostAssessmentSceneManager : MonoBehaviour
             fireExtinguisherTestRectTransform.gameObject.SetActive(false);
             HomeworkManager.instance.enabled = true;
             HomeworkManager.instance.homeworkHUD.SetActive(true);
-            // ShowClassFireTest();
-            // GenerateFireClassQuestions();
-            // DISPLAY HOMEWORK
+
+            if(fireExtinguisherScore == 1) // CHANGE IF FINALIZE
+            {
+                achievementTrigger.ShowAchievement(fireExtinguisherMaster);
+            }
         });
     }
 

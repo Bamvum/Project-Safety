@@ -179,6 +179,17 @@ public class HomeworkManager : MonoBehaviour
             Debug.Log("Homework Manager: Cursor Lock in Prologue");
             Cursor.lockState = CursorLockMode.Locked;
         }
+        else if (SceneManager.GetActiveScene().name == "Post Assessment")
+        {
+            if (PostAssessmentSceneManager.instance.tpassScore == 5 && 
+                PostAssessmentSceneManager.instance.classFireScore == 13 &&
+                PostAssessmentSceneManager.instance.fireExtinguisherScore == 1 && // CHANGE THIS
+                score == totalOfQuestions)
+            {
+                PostAssessmentSceneManager.instance.achievementTrigger.ShowAchievement(PostAssessmentSceneManager.instance.fireSafetyMaster);
+            }
+        }
+        
         
         Invoke("EndOfHomework", 3);
     }
