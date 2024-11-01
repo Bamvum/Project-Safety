@@ -9,6 +9,8 @@ public class Act1Scene2SceneManager : MonoBehaviour
 {
     public static Act1Scene2SceneManager instance {get; private set;}
     
+    [SerializeField] CanvasGroup sceneNameText;
+
     [Header("Dialogue Triggers")]
     [SerializeField] DialogueTrigger startDialogueTriggerEnglish;
     [SerializeField] DialogueTrigger startDialogueTriggerTagalog;
@@ -37,6 +39,9 @@ public class Act1Scene2SceneManager : MonoBehaviour
     bool audioRepeat;
     [SerializeField] bool lerpFireTruck;
     [SerializeField] bool lerpBus;
+
+    [Space(10)]
+    [SerializeField] AudioSource sceneNameRevealSFX;
 
     void Awake()
     {
@@ -81,6 +86,17 @@ public class Act1Scene2SceneManager : MonoBehaviour
     IEnumerator FadeOutEffect()
     {
         yield return new WaitForSeconds(1);
+        sceneNameRevealSFX.Play();
+        sceneNameText.DOFade(1, 1)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
+            });
+
+        yield return new WaitForSeconds(5);
 
         // FADEOUT EFFECTS
             LoadingSceneManager.instance.fadeImage
