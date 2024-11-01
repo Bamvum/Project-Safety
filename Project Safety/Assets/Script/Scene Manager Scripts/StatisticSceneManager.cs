@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using TMPro;
+using DG.Tweening;
 
 public class StatisticSceneManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class StatisticSceneManager : MonoBehaviour
 
     [Header("FLAG")]
     [SerializeField] bool isGamepad;
+    [SerializeField] bool canInput;
 
     public Slider plugChoiceSlider;
     public TextMeshProUGUI plugChoiceText;
@@ -57,6 +59,8 @@ public class StatisticSceneManager : MonoBehaviour
     void OnEnable()
     {
         playerControls.Statistics.Back.performed += ToBack;
+        playerControls.Statistics.ToMainMenu.performed += ToMainMenu;
+        playerControls.Statistics.ToPostAssessment.performed += ToPostAssessment;
         
         playerControls.Statistics.Enable();
     }
@@ -72,6 +76,64 @@ public class StatisticSceneManager : MonoBehaviour
         {
             HideAdditionalInformation();
         }
+    }
+
+    private void ToMainMenu(InputAction.CallbackContext context)
+    {
+        if (!statisticAdditionalInformationRectTransform.gameObject.activeSelf)
+        {
+            if(canInput)
+            {
+                Debug.Log("To Main Menu");
+
+                canInput = false;
+
+                statisticButtonCG.interactable = false;
+
+                Cursor.lockState = CursorLockMode.Locked;
+
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                .SetEase(Ease.Linear)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                    LoadingSceneManager.instance.enabled = true;
+                    LoadingSceneManager.instance.sceneName = "Main Menu";
+                });
+            }
+
+        }
+    }
+
+    private void ToPostAssessment(InputAction.CallbackContext context)
+    {
+        if (!statisticAdditionalInformationRectTransform.gameObject.activeSelf)
+        {
+            if (canInput)
+            {
+                Debug.Log("To Main Menu");
+                
+                canInput = false;
+        
+                statisticButtonCG.interactable = false;
+
+                Cursor.lockState = CursorLockMode.Locked;
+
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+                    .SetEase(Ease.Linear)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        LoadingSceneManager.instance.loadingScreen.SetActive(true);
+                        LoadingSceneManager.instance.enabled = true;
+                        LoadingSceneManager.instance.sceneName = "Post Assessment";
+                    });
+            }
+        }
+
     }
 
     void Update()
@@ -118,11 +180,11 @@ public class StatisticSceneManager : MonoBehaviour
     {
         if (DeviceManager.instance.keyboardDevice)
         {
-            statisticNavGuide.text = "<sprite name=\"Left Mouse Button\"> Show Additional Information <sprite name=\"Escape\"> Back   ";
+            statisticNavGuide.text = "<sprite name=\"1\"> Proceed to Post-Assessment <sprite name=\"2\"> Main Menu <sprite name=\"Left Mouse Button\"> Show Additional Information <sprite name=\"Escape\"> Back   ";
         }
         else if (DeviceManager.instance.gamepadDevice)
         {
-            statisticNavGuide.text = "<sprite name=\"Cross\"> Show Additional Information <sprite name=\"Circle\"> Back   ";
+            statisticNavGuide.text = "<sprite name=\"Square\"> Proceed to Post-Assessment <sprite name=\"Triangle\"> Main Menu <sprite name=\"Cross\"> Show Additional Information <sprite name=\"Circle\"> Back   ";
         }
     }
 
@@ -192,6 +254,24 @@ public class StatisticSceneManager : MonoBehaviour
                 UpdateElevatorChoiceUI(userChoice, percentage1, percentage2, language);
             });
         });
+
+        PlayerPrefs.SetInt("Post-Assessment", 1);
+        PlayerPrefs.SetInt("Statistics", 1);
+
+        StartCoroutine(FadeOutEffect());
+    }
+
+    IEnumerator FadeOutEffect()
+    {
+        yield return new WaitForSeconds(1);
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                statisticButtonCG.interactable = true;
+            });
+
     }
 
     #region - STATISTIC Data Set - 
@@ -435,16 +515,27 @@ public class StatisticSceneManager : MonoBehaviour
         statisticButtonCG.interactable = false;
         isGamepad = true;
 
+        statisticAdditionalInformationRectTransform.gameObject.SetActive(true);
+        statisticAdditionalInformationRectTransform.DOScale(Vector3.one, .75f).OnComplete(() =>
+        {
+            statisticAdditionalInformationRectTransform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1)
+                .SetEase(Ease.InFlash)
+                .SetUpdate(true);
+        });
+
 
     }
 
     void HideAdditionalInformation()
     {
         // RECT TRANSFORM HIDE
+        statisticAdditionalInformationRectTransform.DOScale(Vector3.zero, .75f).OnComplete(() =>
+           {
+               statisticAdditionalInformationRectTransform.gameObject.SetActive(false);
+               statisticButtonCG.interactable = true;
+               // statisticAdditionalInformationText.text = null;
 
-
-        statisticButtonCG.interactable = true;
-        statisticAdditionalInformationText.text = null;
+           });
     }
 
     #endregion 

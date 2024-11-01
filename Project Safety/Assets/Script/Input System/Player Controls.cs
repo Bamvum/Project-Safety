@@ -1755,6 +1755,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""To Post Assessment"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1234d17-3ad6-4b01-bdd8-48fa2073ab22"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""To Main Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""2fab9f02-e373-44d3-8052-bc3780150f7b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1777,6 +1795,50 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d94a8150-ed2b-436b-b507-9cae13ad48e9"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""To Post Assessment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""618fa099-5aff-4fc7-b0b1-b412fac29615"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""To Post Assessment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b6e970a-5646-4b68-a052-5ca8bb83108b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""To Main Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0f97b73-2359-4522-bddb-78c6b59a1169"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""To Main Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1871,6 +1933,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Statistics
         m_Statistics = asset.FindActionMap("Statistics", throwIfNotFound: true);
         m_Statistics_Back = m_Statistics.FindAction("Back", throwIfNotFound: true);
+        m_Statistics_ToPostAssessment = m_Statistics.FindAction("To Post Assessment", throwIfNotFound: true);
+        m_Statistics_ToMainMenu = m_Statistics.FindAction("To Main Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -2949,11 +3013,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Statistics;
     private List<IStatisticsActions> m_StatisticsActionsCallbackInterfaces = new List<IStatisticsActions>();
     private readonly InputAction m_Statistics_Back;
+    private readonly InputAction m_Statistics_ToPostAssessment;
+    private readonly InputAction m_Statistics_ToMainMenu;
     public struct StatisticsActions
     {
         private @PlayerControls m_Wrapper;
         public StatisticsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Back => m_Wrapper.m_Statistics_Back;
+        public InputAction @ToPostAssessment => m_Wrapper.m_Statistics_ToPostAssessment;
+        public InputAction @ToMainMenu => m_Wrapper.m_Statistics_ToMainMenu;
         public InputActionMap Get() { return m_Wrapper.m_Statistics; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2966,6 +3034,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Back.started += instance.OnBack;
             @Back.performed += instance.OnBack;
             @Back.canceled += instance.OnBack;
+            @ToPostAssessment.started += instance.OnToPostAssessment;
+            @ToPostAssessment.performed += instance.OnToPostAssessment;
+            @ToPostAssessment.canceled += instance.OnToPostAssessment;
+            @ToMainMenu.started += instance.OnToMainMenu;
+            @ToMainMenu.performed += instance.OnToMainMenu;
+            @ToMainMenu.canceled += instance.OnToMainMenu;
         }
 
         private void UnregisterCallbacks(IStatisticsActions instance)
@@ -2973,6 +3047,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Back.started -= instance.OnBack;
             @Back.performed -= instance.OnBack;
             @Back.canceled -= instance.OnBack;
+            @ToPostAssessment.started -= instance.OnToPostAssessment;
+            @ToPostAssessment.performed -= instance.OnToPostAssessment;
+            @ToPostAssessment.canceled -= instance.OnToPostAssessment;
+            @ToMainMenu.started -= instance.OnToMainMenu;
+            @ToMainMenu.performed -= instance.OnToMainMenu;
+            @ToMainMenu.canceled -= instance.OnToMainMenu;
         }
 
         public void RemoveCallbacks(IStatisticsActions instance)
@@ -3092,5 +3172,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IStatisticsActions
     {
         void OnBack(InputAction.CallbackContext context);
+        void OnToPostAssessment(InputAction.CallbackContext context);
+        void OnToMainMenu(InputAction.CallbackContext context);
     }
 }

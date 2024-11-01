@@ -59,6 +59,7 @@ public class Act2Scene1Manager : MonoBehaviour
                                                          1);
 
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1;
 
         if(SettingMenu.instance.languageDropdown.value == 0)
         {

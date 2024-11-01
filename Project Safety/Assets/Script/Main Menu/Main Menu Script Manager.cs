@@ -8,6 +8,7 @@ using DG.Tweening;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 
 public class MainMenuScriptManager : MonoBehaviour
@@ -43,9 +44,8 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] CanvasGroup achievementButtonCG;
     [SerializeField] TMP_Text achievementNavGuide;
 
-    [Space(5)]
-    [SerializeField] RectTransform[] achievementRectTransformPage;
-
+    [Space(10)]
+    [SerializeField] Button statisticButton;
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -187,6 +187,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
         // FADE IMAGE ALPHA
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                                 LoadingSceneManager.instance.fadeImage.color.g,
@@ -197,26 +198,7 @@ public class MainMenuScriptManager : MonoBehaviour
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
         pingPongText.gameObject.SetActive(false);
 
-        // INTIALIZATION MAIN MENU
-        // mainMenuHUDRectTransform.gameObject.SetActive(false);
-        // mainMenuHUDRectTransform.sizeDelta = new Vector2(600, 0);
-        // mainMenuButtonCG.alpha = 0;
-        // mainMenuButtonCG.interactable = false;
-
         mainMenuHUDRectTransform.anchoredPosition = new Vector2(325, 0);
-
-
-        // INTIALIZATION SELECT SCENE
-        // selectSceneRectTransform.gameObject.SetActive(false);
-        // selectSceneRectTransform.sizeDelta = new Vector2(0, 1080);
-        // selectSceneButtonCG.alpha = 0;
-        // selectSceneButtonCG.interactable = false;
-
-        // INTIALIZATION SELECT SCENE
-        // achievementRectTransform.gameObject.SetActive(false);
-        // achievementRectTransform.sizeDelta = new Vector2(0, 1080);
-        // selectSceneButtonCG.alpha = 0;
-        // selectSceneButtonCG.interactable = false;
 
         // INTIALIZATION SETTING
         settingRectTransform.gameObject.SetActive(false);
@@ -227,6 +209,14 @@ public class MainMenuScriptManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
 
+        if (PlayerPrefs.GetInt("Statistics", 1) == 0)
+        {
+            statisticButton.interactable = true;
+        }
+        else
+        {
+            statisticButton.interactable = false;
+        }
 
         // FADEOUT EFFECT
         LoadingSceneManager.instance.fadeImage.DOFade(0, .25f)
@@ -549,6 +539,7 @@ public class MainMenuScriptManager : MonoBehaviour
     {
         Debug.Log("Access Credits!");
     }
+
 
     public void Quit()
     {
