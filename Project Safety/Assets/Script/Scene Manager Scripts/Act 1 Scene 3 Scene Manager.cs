@@ -5,6 +5,7 @@ using DG.Tweening;
 using System.Threading;
 
 using TMPro;
+using Cinemachine;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -28,18 +29,29 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [SerializeField] InstructionSO tagalogInstructionSO;
 
     [Space(5)]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(5)]
     public int languageIndex;
     
     [Header("Dialogue Trigger")]
-    [SerializeField] DialogueTrigger startDialogue;
-    [SerializeField] DialogueTrigger endDialogue;
+    [SerializeField] DialogueTrigger englishStartDialogue;
+    [SerializeField] DialogueTrigger tagalogStartDialogue;
+    
+    [Space(5)]
+    [SerializeField] DialogueTrigger englishEndDialogue;
+    [SerializeField] DialogueTrigger tagalogEndDialogue;
     
     [Space(5)]
     [SerializeField] DialogueTrigger englishMonologue;
     [SerializeField] DialogueTrigger tagalogMonologue;
+    
+
 
     [Header("Game Objects")]
     [SerializeField] GameObject player;
+    // [SerializeField] CinemachineInputProvider;
 
     [Space(10)]
     [SerializeField] GameObject fireFighter;
@@ -47,8 +59,10 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [SerializeField] GameObject fireTruck;
 
     [Header("Audio")]
-    AudioSource carAmbiance;
-    AudioSource streetAmbiance;
+    [SerializeField] AudioSource englishCarAmbiance;
+    [SerializeField] AudioSource tagalogCarAmbiance;
+    [SerializeField] AudioSource streetAmbiance;
+    [SerializeField] AudioSource sceneNameRevealSFX;
 
     [Header("Flags")]
     [SerializeField] GameObject fireToBeExtinguish1;
@@ -75,15 +89,15 @@ public class Act1Scene3SceneManager : MonoBehaviour
         // CAR AMBIANCE - OFF
         if(SettingMenu.instance.languageDropdown.value == 0)
         {
-            // englishLanguage.SetActive(true);
-            // tagalogLanguage.SetActive(false);
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
             InstructionManager.instance.instructionsSO = englishInstructionSO;
             languageIndex = 0;
         }
         else
         {
-            // englishLanguage.SetActive(true);
-            // tagalogLanguage.SetActive(false);
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
             InstructionManager.instance.instructionsSO = tagalogInstructionSO;
             languageIndex = 1;
         }
@@ -109,39 +123,49 @@ public class Act1Scene3SceneManager : MonoBehaviour
 
     public void FadeOutEffect()
     {
-        // SCENE TEXT REVEAL
-        sceneNameText.gameObject.SetActive(true);
-        sceneNameText.DOFade(1,1)
+        StartCoroutine(PreFadeOutEffect());
+    }
+
+    IEnumerator PreFadeOutEffect()
+    {
+        yield return new WaitForSeconds(1);
+        
+        sceneNameRevealSFX.Play();
+        sceneNameText.DOFade(1, 1)
             .SetUpdate(true)
-            .OnComplete(() => 
+            .OnComplete(() =>
             {
-                // PLAY SFX
-                sceneNameText.DOFade(1, 1)
-                    .SetUpdate(true)
-                    .OnComplete(() =>
-                    {
-                        sceneNameText.DOFade(0, 1)
-                            .SetUpdate(true)
-                            .OnComplete(() =>
-                            {
-                                sceneNameText.gameObject.SetActive(false);
-                            });
-                    });
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
             });
         
-        LoadingSceneManager.instance.fadeImage
-            .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+        yield return new WaitForSeconds(5);
+
+        LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
         {
-            // AUDIO
-            sequence.Append(carAmbiance.DOFade(0, 1).SetUpdate(true));
-            sequence.Join(streetAmbiance.DOFade(0, 1).SetUpdate(true));
-            
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             // TRIGGER DIALOGUE
+            EnableAmbiance();
+
             moveTowardFireTruck = false;   
         });
+    }
+
+    public void EnableAmbiance()
+    {
+        if (languageIndex == 0)
+        {
+            englishCarAmbiance.Play();
+        }
+        else
+        {
+            tagalogCarAmbiance.Play();
+        }
+
+        streetAmbiance.Play();
     }
 
     void Update()
@@ -162,8 +186,15 @@ public class Act1Scene3SceneManager : MonoBehaviour
                     LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
                     {
                         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                        startDialogue.StartDialogue();
-
+                        
+                        if(languageIndex == 0)
+                        {
+                            englishStartDialogue.StartDialogue();
+                        }
+                        else
+                        {
+                            tagalogStartDialogue.StartDialogue();
+                        }
                         streetAmbiance.Play();
                     });
                 });
@@ -176,7 +207,14 @@ public class Act1Scene3SceneManager : MonoBehaviour
         {
             if(!fireToBeExtinguish1.activeSelf && !fireToBeExtinguish2.activeSelf && !fireToBeExtinguish3.activeSelf)
             {
-                endDialogue.StartDialogue();
+                if (languageIndex == 0)
+                {
+                    englishEndDialogue.StartDialogue();
+                }
+                else
+                {
+                    tagalogEndDialogue.StartDialogue();
+                }
                 stopLoop = false;
             }
         }
