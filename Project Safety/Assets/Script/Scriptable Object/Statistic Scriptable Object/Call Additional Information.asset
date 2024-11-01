@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16fd8f30983cc4689098dcd870c65b, type: 3}
   m_Name: Call Additional Information
   m_EditorClassIdentifier: 
-  statisticAdditionalInformation: 
+  englishStatisticAdditionalInformation: "Contacting the local fire station is the
+    quickest way to alert professionals who can respond to a fire immediately. They\u2019ll
+    have the best knowledge of the area, can get there faster, and will dispatch
+    any additional resources needed. Calling the national hotline can cause delays,
+    and calling family members instead won\u2019t help in a time-sensitive emergency."
+  tagalogStatisticAdditionalInformation: Ang pagtawag sa lokal na istasyon ng bumbero
+    ang pinakamabilis na paraan upang makahingi ng agarang tulong sa mga propesyonal
+    na may kaalaman sa lugar. Sila ang pinakamalapit at mabilis na makakaresponde.
+    Ang pagtawag sa national hotline ay maaaring magdulot ng kaunting pagkaantala,
+    at ang pagtawag sa pamilya ay hindi makakatulong sa agarang pagresponde.

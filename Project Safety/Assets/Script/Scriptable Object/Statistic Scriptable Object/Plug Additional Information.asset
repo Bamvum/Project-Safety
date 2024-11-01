@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16fd8f30983cc4689098dcd870c65b, type: 3}
   m_Name: Plug Additional Information
   m_EditorClassIdentifier: 
-  statisticAdditionalInformation: 
+  englishStatisticAdditionalInformation: Unplugging devices from outlets is important
+    to prevent electrical fires. Many appliances can overheat or malfunction while
+    plugged in, leading to sparks or short circuits. By unplugging devices, you minimize
+    the risk of a fire starting in your home.
+  tagalogStatisticAdditionalInformation: Mahalaga ang pag-tanggal ng mga device mula
+    sa mga sockets upang maiwasan ang mga sunog na dulot ng kuryente. Maraming appliances
+    ang maaaring mag-overheat o masira habang naka-plug in, na nagiging sanhi ng
+    mga pagsiklab o short circuits. kapag tinanggal ang mga device, nababawasan ang
+    panganib ng pagsimula ng sunog sa iyong tahanan.

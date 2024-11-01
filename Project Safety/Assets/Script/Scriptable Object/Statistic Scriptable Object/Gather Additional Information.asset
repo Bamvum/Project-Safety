@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16fd8f30983cc4689098dcd870c65b, type: 3}
   m_Name: Gather Additional Information
   m_EditorClassIdentifier: 
-  statisticAdditionalInformation: 
+  englishStatisticAdditionalInformation: "Every second counts in an emergency, and
+    taking time to gather personal items can greatly increase the risk of injury.
+    Fires can spread rapidly, and escape routes may become blocked if you delay.
+    Personal safety should always come first\u2014possessions can be replaced, but
+    lives cannot."
+  tagalogStatisticAdditionalInformation: "Bawat segundo ay mahalaga sa emergency.
+    Ang pagkuha ng mga personal na gamit ay magpapataas sa iyong panganib na masaktan.
+    Ang sunog ay mabilis na kumakalat, at maaaring masarahan ang mga daan ng paglikas
+    kapag naantala ka. Ang kaligtasan ng buhay ang laging unahin\u2014maaaring palitan
+    ang mga gamit, ngunit ang buhay ay hindi na maaaring ibalik."

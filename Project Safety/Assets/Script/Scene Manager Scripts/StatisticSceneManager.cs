@@ -8,6 +8,7 @@ using TMPro;
 
 public class StatisticSceneManager : MonoBehaviour
 {
+    private int language;
     PlayerControls playerControls;
 
     [Header("HUD")]
@@ -29,18 +30,23 @@ public class StatisticSceneManager : MonoBehaviour
 
     public Slider plugChoiceSlider;
     public TextMeshProUGUI plugChoiceText;
+    public TextMeshProUGUI plugChoicedescText;
 
     public Slider dummyChoiceSlider;
     public TextMeshProUGUI dummyChoiceText;
+    public TextMeshProUGUI dummyChoicedescText;
 
     public Slider callChoiceSlider;
     public TextMeshProUGUI callChoiceText;
+    public TextMeshProUGUI callChoicedescText;
 
     public Slider gatherBelongingsSlider;
     public TextMeshProUGUI gatherBelongingsText;
+    public TextMeshProUGUI gatherBelongingsdescText;
 
     public Slider elevatorChoiceSlider;
     public TextMeshProUGUI elevatorChoiceText;
+    public TextMeshProUGUI elevatorChoicedescText;
 
 
     void Awake()
@@ -124,12 +130,27 @@ public class StatisticSceneManager : MonoBehaviour
 
     void Start()
     {
+        FirebaseManager firebaseManager = FindObjectOfType<FirebaseManager>();
+
+        if (firebaseManager != null)
+        {
+            // Fetch settings, including language, from Firebase
+            firebaseManager.FetchSettingsFromFirebase(OnSettingsFetched);
+        }
+        else
+        {
+            Debug.LogError("FirebaseManager not found in the scene. Ensure it is accessible.");
+        }
+        language = PlayerPrefs.GetInt("Language", 0);
+        Debug.Log($"Language setting on Statistics Scene load: {language}");
+        ApplyLanguageToUI(language);
+
         FirebaseManager.Instance.FetchUserChoice("Act1Scene1_PlugChoice", choiceValue =>
         {
             int userChoice = choiceValue ?? PlayerPrefs.GetInt("Act1Scene1_PlugChoice", 0);
             FirebaseManager.Instance.FetchChoiceStatistics("Act1Scene1_PlugChoice", (percentage1, percentage2) =>
             {
-                UpdatePlugChoiceUI(userChoice, percentage1, percentage2);
+                UpdatePlugChoiceUI(userChoice, percentage1, percentage2, language);
             });
         });
 
@@ -139,7 +160,7 @@ public class StatisticSceneManager : MonoBehaviour
 
             FirebaseManager.Instance.FetchChoiceStatistics("Act1Scene4_DummyChoice", (percentage1, percentage2) =>
             {
-                UpdateDummyChoiceUI(userChoice, percentage1, percentage2);
+                UpdateDummyChoiceUI(userChoice, percentage1, percentage2, language);
             });
         });
 
@@ -148,7 +169,7 @@ public class StatisticSceneManager : MonoBehaviour
             int userChoice = choiceValue ?? PlayerPrefs.GetInt("Act2Scene1_CallChoice", 0); 
             FirebaseManager.Instance.FetchChoiceStatisticsThreeOptions("Act2Scene1_CallChoice", (percentage1, percentage2, percentage3) =>
             {
-                UpdateCallChoiceUI(userChoice, percentage1, percentage2, percentage3);
+                UpdateCallChoiceUI(userChoice, percentage1, percentage2, percentage3, language);
             });
         });
 
@@ -158,7 +179,7 @@ public class StatisticSceneManager : MonoBehaviour
 
             FirebaseManager.Instance.FetchChoiceStatistics("Act2Scene2_GatherBelongingsChoice", (percentage1, percentage2) =>
             {
-                UpdateGatherBelongingsChoiceUI(userChoice, percentage1, percentage2);
+                UpdateGatherBelongingsChoiceUI(userChoice, percentage1, percentage2, language);
             });
         });
 
@@ -168,122 +189,247 @@ public class StatisticSceneManager : MonoBehaviour
 
             FirebaseManager.Instance.FetchChoiceStatistics("Act2Scene2_ElevatorChoice", (percentage1, percentage2) =>
             {
-                UpdateElevatorChoiceUI(userChoice, percentage1, percentage2);
+                UpdateElevatorChoiceUI(userChoice, percentage1, percentage2, language);
             });
         });
     }
 
-    private void UpdatePlugChoiceUI(int userChoice, int percentage1, int percentage2)
-    {
-        Debug.Log($"Updating Plug Choice UI. User choice: {userChoice}, Percentages: {percentage1}, {percentage2}");
+    #region - STATISTIC Data Set - 
 
-        switch (userChoice)
+    private void OnSettingsFetched(
+    float masterVolume, float musicVolume, float sfxVolume, bool isFullScreen,
+    int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens,
+    float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
+    {
+        // Save the language index to PlayerPrefs (optional, if used elsewhere)
+        PlayerPrefs.SetInt("Language", languageIndex);
+        PlayerPrefs.Save();
+
+        Debug.Log($"Fetched language index from Firebase: {languageIndex}");
+    }
+
+    private void ApplyLanguageToUI(int language)
+    {
+        if (language == 1)
         {
-            case 1:
-                plugChoiceSlider.value = percentage1 / 100f;
-                plugChoiceText.text = $"You and {percentage1}% chose to unplug the devices in your room.";
-                break;
-            case 2:
-                plugChoiceSlider.value = percentage2 / 100f;
-                plugChoiceText.text = $"You and {percentage2}% got scolded by your mom.";
-                break;
-            default:
-                plugChoiceText.text = "No valid choice recorded.";
-                break;
+            Debug.Log("Applying Tagalog language settings to UI.");
+        }
+        else
+        {
+            Debug.Log("Applying English language settings to UI.");
         }
     }
 
-    private void UpdateDummyChoiceUI(int userChoice, int percentage1, int percentage2)
+    private void UpdatePlugChoiceUI(int userChoice, int percentage1, int percentage2, int language)
+{
+    string unplugText, scoldedText, descriptionText;
+
+    if (language == 0)
+    {
+        unplugText = $"You and {percentage1}% chose to unplug the devices in your room.";
+        scoldedText = $"You and {percentage2}% got scolded by mom.";
+        descriptionText = "Did you unplug the devices in your room on your own?";
+    }
+    else
+    {
+        unplugText = $"Ikaw at {percentage1}% ay nagtanggal ng mga aparato sa iyong silid.";
+        scoldedText = $"Ikaw at {percentage2}% ay pinagalitan ng nanay.";
+        descriptionText = "Ikaw ba'y nagtanggal ng mga aparato sa sarili mong kusa?";
+    }
+
+    switch (userChoice)
+    {
+        case 1:
+            plugChoiceSlider.value = percentage1 / 100f;
+            plugChoiceText.text = unplugText;
+            plugChoicedescText.text = descriptionText;
+            break;
+        case 2:
+            plugChoiceSlider.value = percentage2 / 100f;
+            plugChoiceText.text = scoldedText;
+            plugChoicedescText.text = descriptionText;
+            break;
+        default:
+            plugChoiceText.text = "-";
+            plugChoicedescText.text = "-";
+            break;
+    }
+}
+
+    private void UpdateDummyChoiceUI(int userChoice, int percentage1, int percentage2, int language)
     {
         Debug.Log($"Updating Dummy Choice UI. User choice: {userChoice}, Percentages: {percentage1}, {percentage2}");
+
+        string heroText, selfText, descriptionText;
+
+        if (language == 0) 
+        {
+            heroText = $"You and {percentage1}% tried to be a hero.";
+            selfText = $"You and {percentage2}% looked out for themselves.";
+            descriptionText = "Did you try to save the training dummy?";
+        }
+        else 
+        {
+            heroText = $"Ikaw at {percentage1}% ay nagpakabayani.";
+            selfText = $"Ikaw at {percentage2}% ay nag-isip ng sariling kaligtasan.";
+            descriptionText = "Sinubukan mo bang iligtas ang training dummy?";
+        }
 
         switch (userChoice)
         {
             case 1:
                 dummyChoiceSlider.value = percentage1 / 100f;
-                dummyChoiceText.text = $"You and {percentage1}% chose to save the dummy.";
+                dummyChoiceText.text = heroText;
+                dummyChoicedescText.text = descriptionText;
                 break;
             case 2:
                 dummyChoiceSlider.value = percentage2 / 100f;
-                dummyChoiceText.text = $"You and {percentage2}% did not save the dummy.";
+                dummyChoiceText.text = selfText;
+                dummyChoicedescText.text = descriptionText;
                 break;
             default:
-                dummyChoiceText.text = "No valid choice recorded.";
+                dummyChoiceText.text = "-";
+                dummyChoicedescText.text = "-";
                 break;
         }
     }
 
-    private void UpdateCallChoiceUI(int userChoice, int percentage1, int percentage2, int percentage3)
+    private void UpdateCallChoiceUI(int userChoice, int percentage1, int percentage2, int percentage3, int language)
     {
         Debug.Log($"Updating Call Choice UI. User choice: {userChoice}, Percentages: {percentage1}, {percentage2}, {percentage3}");
 
-        // Update UI based on the player's choice
+        string fireStationText, hotlineText, momText, descriptionText;
+
+        if (language == 0)
+        {
+            fireStationText = $"You and {percentage1}% of players called the local fire station.";
+            hotlineText = $"You and {percentage2}% of players called the national emergency hotline.";
+            momText = $"You and {percentage3}% of players called mom.";
+            descriptionText = "Who did you call first for help?";
+        }
+        else
+        {
+            fireStationText = $"Ikaw at {percentage1}% ay tumawag sa lokal na bumbero.";
+            hotlineText = $"Ikaw at {percentage2}% ay tumawag sa pambansang emergency hotline.";
+            momText = $"Ikaw at {percentage3}% ay tumawag kay nanay.";
+            descriptionText = "Sino ang una mong tinawagan para humingi ng tulong?";
+        }
+
         switch (userChoice)
         {
             case 1:
                 callChoiceSlider.value = percentage1 / 100f;
-                callChoiceText.text = $"You and {percentage1}% of players called the local fire station.";
+                callChoiceText.text = fireStationText;
+                callChoicedescText.text = descriptionText;
                 break;
             case 2:
                 callChoiceSlider.value = percentage2 / 100f;
-                callChoiceText.text = $"You and {percentage2}% of players called the national emergency hotline.";
+                callChoiceText.text = hotlineText;
+                callChoicedescText.text = descriptionText;
                 break;
             case 3:
                 callChoiceSlider.value = percentage3 / 100f;
-                callChoiceText.text = $"You and {percentage3}% of players called mom.";
+                callChoiceText.text = momText;
+                callChoicedescText.text = descriptionText;
                 break;
             default:
-                callChoiceText.text = "No valid choice recorded.";
+                callChoiceText.text = "-";
+                callChoicedescText.text = "-";
                 break;
         }
     }
 
 
-    private void UpdateGatherBelongingsChoiceUI(int userChoice, int percentage1, int percentage2)
+    private void UpdateGatherBelongingsChoiceUI(int userChoice, int percentage1, int percentage2, int language)
     {
         Debug.Log($"Updating Gather Belongings Choice UI. User choice: {userChoice}, Percentages: {percentage1}, {percentage2}");
 
+        string gatheredText, leftImmediatelyText, descriptionText;
+
+        if (language == 0)
+        {
+            gatheredText = $"You and {percentage1}% of players gathered their belongings first.";
+            leftImmediatelyText = $"You and {percentage2}% of players left immediately.";
+            descriptionText = "Did you leave immediately during an emergency?";
+        }
+        else
+        {
+            gatheredText = $"Ikaw at {percentage1}% ay nagtipon ng kanilang mga gamit muna.";
+            leftImmediatelyText = $"Ikaw at {percentage2}% ay agad na umalis.";
+            descriptionText = "Ikaw ba'y agad umalis sa oras ng emergency?";
+        }
+
         switch (userChoice)
         {
             case 1:
-                plugChoiceSlider.value = percentage1 / 100f;
-                plugChoiceText.text = $"You and {percentage1}% of players are materialistic.";
+                gatherBelongingsSlider.value = percentage1 / 100f;
+                gatherBelongingsText.text = gatheredText;
+                gatherBelongingsdescText.text = descriptionText;
                 break;
             case 2:
-                plugChoiceSlider.value = percentage2 / 100f;
-                plugChoiceText.text = $"You and {percentage2}% of players are realistic.";
+                gatherBelongingsSlider.value = percentage2 / 100f;
+                gatherBelongingsText.text = leftImmediatelyText;
+                gatherBelongingsdescText.text = descriptionText;
                 break;
             default:
-                plugChoiceText.text = "No valid choice recorded.";
+                gatherBelongingsText.text = "-";
+                gatherBelongingsdescText.text = "-";
                 break;
         }
     }
 
-    private void UpdateElevatorChoiceUI(int userChoice, int percentage1, int percentage2)
+    private void UpdateElevatorChoiceUI(int userChoice, int percentage1, int percentage2, int language)
     {
         Debug.Log($"Updating Elevator Choice UI. User choice: {userChoice}, Percentages: {percentage1}, {percentage2}");
 
+        string elevatorText, stairsText, descriptionText;
+
+        if (language == 0)
+        {
+            elevatorText = $"You and {percentage1}% of players rode the elevator.";
+            stairsText = $"You and {percentage2}% of players went down the stairs.";
+            descriptionText = "Which path did you take first to the lower floors?";
+        }
+        else
+        {
+            elevatorText = $"Ikaw at {percentage1}% ay sumakay ng elevator.";
+            stairsText = $"Ikaw at {percentage2}% ay bumaba sa hagdan.";
+            descriptionText = "Aling daan ang una mong tinahak papunta sa ibabang palapag?";
+        }
+
         switch (userChoice)
         {
             case 1:
-                plugChoiceSlider.value = percentage1 / 100f;
-                plugChoiceText.text = $"You and {percentage1}% of players first fell to their death.";
+                elevatorChoiceSlider.value = percentage1 / 100f;
+                elevatorChoiceText.text = elevatorText;
+                elevatorChoicedescText.text = descriptionText;
                 break;
             case 2:
-                plugChoiceSlider.value = percentage2 / 100f;
-                plugChoiceText.text = $"You and {percentage2}% of players went down the stairs.";
+                elevatorChoiceSlider.value = percentage2 / 100f;
+                elevatorChoiceText.text = stairsText;
+                elevatorChoicedescText.text = descriptionText;
                 break;
             default:
-                plugChoiceText.text = "No valid choice recorded.";
+                elevatorChoiceText.text = "-";
+                elevatorChoicedescText.text = "-";
                 break;
         }
     }
+
+    #endregion 
 
     #region - STATISTIC ADDITIONAL INFORMATION - 
 
     public void ShowAdditionalInformation(StatisticSO statisticSO)
     {
-        statisticAdditionalInformationText.text = statisticSO.statisticAdditionalInformation;
+        if (language == 0)
+        {
+            statisticAdditionalInformationText.text = statisticSO.englishStatisticAdditionalInformation;
+        }
+        else
+        {
+            statisticAdditionalInformationText.text = statisticSO.tagalogStatisticAdditionalInformation;
+        }
 
         // RECT TRANSFORM OF THINGS
         statisticButtonCG.interactable = false;

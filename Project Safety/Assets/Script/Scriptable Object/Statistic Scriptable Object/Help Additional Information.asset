@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16fd8f30983cc4689098dcd870c65b, type: 3}
   m_Name: Help Additional Information
   m_EditorClassIdentifier: 
-  statisticAdditionalInformation: 
+  englishStatisticAdditionalInformation: In a real emergency, your safety and the
+    safety of others depend on quick and clear evacuation. Taking time to assist
+    someone without knowing their needs or the risks involved can delay your escape
+    and endanger others.
+  tagalogStatisticAdditionalInformation: Sa isang tunay na emergency, ang kaligtasan
+    mo at ng iba ay nakasalalay sa mabilis at maayos na paglikas. Ang pagtulong nang
+    walang tamang pag-unawa sa sitwasyon ay maaaring makapagpabagal sa iyong paglikas
+    at makapagdulot ng panganib sa iba.

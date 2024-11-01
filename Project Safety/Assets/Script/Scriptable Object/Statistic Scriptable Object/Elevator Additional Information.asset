@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d16fd8f30983cc4689098dcd870c65b, type: 3}
   m_Name: Elevator Additional Information
   m_EditorClassIdentifier: 
-  statisticAdditionalInformation: 
+  englishStatisticAdditionalInformation: "Elevators are extremely unsafe during a
+    fire. Fires can cause power failures, trapping people inside, and the elevator
+    shaft can fill with smoke, creating a life-threatening situation. The stairs
+    provide a safer, direct route to exit, as they remain accessible and don\u2019t
+    rely on power."
+  tagalogStatisticAdditionalInformation: Delikado ang elevator sa kapag may sunog.
+    Maaaring mawalan ng kuryente at makulong ang mga taong nakasakay sa elevator.
+    Maaari din mapuno ng usok ang elevator. Mas ligtas ang hagdan dahil walang inaasahang
+    kuryente at mas direktang daan sa labasan.
