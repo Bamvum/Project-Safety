@@ -15,24 +15,27 @@ public class AchievementTrigger : MonoBehaviour
 
     public void ShowAchievement(AchievementSO achievementSO)
     {
-        achievementName.text = achievementSO.achievementName;
-        achievementImage.sprite = achievementSO.achievementSprite;
+        // CHECK IF ACHIEVEMENT IS ALREADY UNLOCK (IF ACHIEVEMENET IS NOT UNLOCK CODE EXCUTE BELOW)
+        if(PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
+        {
+            achievementName.text = achievementSO.achievementName;
+            achievementImage.sprite = achievementSO.achievementSprite;
 
-        achievementSFX.Play();
-        achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 425), 1)
-            .SetEase(Ease.OutQuad)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                if (PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
+            // ACHIEVEMENT STORE IN PLAYER PREFS
+            PlayerPrefs.SetInt(achievementSO.achievementPlayerPrefsKey, 1);
+
+            achievementSFX.Play();
+            achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 425), 1)
+                .SetEase(Ease.OutQuad)
+                .SetUpdate(true)
+                .OnComplete(() =>
                 {
-                    PlayerPrefs.SetInt(achievementSO.achievementPlayerPrefsKey, 1);
-                }
+                    achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 675), 1)
+                        .SetEase(Ease.OutQuad)
+                        .SetUpdate(true)
+                        .SetDelay(5);
+                });
+        }
 
-                achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 675), 1)
-                    .SetEase(Ease.OutQuad)
-                    .SetUpdate(true)
-                    .SetDelay(2);
-            });
     }
 }

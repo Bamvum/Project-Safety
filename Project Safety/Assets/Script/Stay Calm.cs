@@ -11,6 +11,10 @@ public class StayCalm : MonoBehaviour
 {
     PlayerControls playerControls;
 
+
+    [SerializeField] AchievementTrigger achievementTrigger;
+    [SerializeField] AchievementSO achievementSO;
+
     [Header("Player")]
     [SerializeField] GameObject player;
     [SerializeField] GameObject playerSitted;
@@ -328,6 +332,8 @@ public class StayCalm : MonoBehaviour
                             {
                                 stayCalmHUD.gameObject.SetActive(false);
                                 
+                                achievementTrigger.ShowAchievement(achievementSO);
+
                                 if(Act2Scene1Manager.instance.languageIndex == 0)
                                 {
                                     englishAccessPhone.StartDialogue();
