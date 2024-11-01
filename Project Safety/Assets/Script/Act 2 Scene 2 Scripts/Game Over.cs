@@ -69,8 +69,16 @@ public class GameOver : MonoBehaviour
 
     public void GameIsOver()
     {
+        Time.timeScale = 1;
 
-        if(SceneManager.GetActiveScene().name == "Act 2 Scene 1")
+        PlayerScript.instance.DisablePlayerScripts();
+
+        if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
+        {
+            Act2Scene2SceneManager.instance.TimerStatus(true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Act 2 Scene 1")
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
             
@@ -149,6 +157,15 @@ public class GameOver : MonoBehaviour
 
     public void GoToMainMenu()
     {
+        Time.timeScale = 1;
+
+        PlayerScript.instance.DisablePlayerScripts();
+
+        if(SceneManager.GetActiveScene().name == "Act 2 Scene 2")
+        {
+            Act2Scene2SceneManager.instance.TimerStatus(true);
+        }
+
         gameOverHUDCG.interactable = false;
 
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
