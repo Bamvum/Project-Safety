@@ -9,10 +9,11 @@ public class Act2Scene2BasementToEvacuation : MonoBehaviour
     [SerializeField] DialogueTrigger evacuationDialogueEng;
     [SerializeField] DialogueTrigger evacuationDialogueTag;
 
-     void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+
             Pause.instance.PauseCanInput(false);
             PlayerScript.instance.DisablePlayerScripts();
             
