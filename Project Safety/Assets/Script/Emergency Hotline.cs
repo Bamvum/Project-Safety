@@ -109,11 +109,11 @@ public class EmergencyHotline : MonoBehaviour
 
             if (Act2Scene1Manager.instance.languageIndex == 0)
             {
-                englishContact1.StartDialogue();
+                englishContact3.StartDialogue();
             }
             else
             {
-                tagalogContact1.StartDialogue();
+                tagalogContact3.StartDialogue();
             }
 
             contactHUD.SetActive(false);

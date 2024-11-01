@@ -19,9 +19,20 @@ public class Act1StudentSceneManager : MonoBehaviour
         instance = this;
     }
 
+    [SerializeField] CanvasGroup sceneNameText;
+
     [Header("Dialogue Triggers")]
-    [SerializeField] DialogueTrigger startDialogueTrigger;
-    [SerializeField] DialogueTrigger momDialogueTrigger;
+    [SerializeField] DialogueTrigger englishStartDialogue;
+    [SerializeField] DialogueTrigger tagalogStartDialogue;
+    [SerializeField] DialogueTrigger englishMomDialogue;
+    [SerializeField] DialogueTrigger tagalogMomDialogue;
+
+    [Space(10)]
+    [SerializeField] GameObject englishLanguage;
+    [SerializeField] GameObject tagalogLanguage;
+
+    [Space(5)]
+    public int languageIndex;
 
     [Space(15)]
     public GameObject DoorEndingScene;
@@ -32,6 +43,7 @@ public class Act1StudentSceneManager : MonoBehaviour
     [Space(15)]
     [SerializeField] AudioSource bedPlayerAudio;
     [SerializeField] AudioClip heavyBreathingSFX;
+    [SerializeField] AudioSource sceneNameRevealSFX;
 
     [Header("Flag")]
     bool audioRepeat;
@@ -50,11 +62,36 @@ public class Act1StudentSceneManager : MonoBehaviour
 
         auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("House Scene", 1);
+
+                if(SettingMenu.instance.languageDropdown.value == 0)
+        {
+            englishLanguage.SetActive(true);
+            tagalogLanguage.SetActive(false);
+            languageIndex = 0;
+        }
+        else
+        {
+            englishLanguage.SetActive(false);
+            tagalogLanguage.SetActive(true);
+            languageIndex = 1;
+        }
     }
 
     IEnumerator HeavyBreathingSFX()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
+
+        sceneNameRevealSFX.Play();
+        sceneNameText.DOFade(1, 1)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
+                    .SetUpdate(true);
+            });
+
+        yield return new WaitForSeconds(5);
             
         bedPlayerAudio.clip = heavyBreathingSFX;
         bedPlayerAudio.Play();
@@ -66,7 +103,15 @@ public class Act1StudentSceneManager : MonoBehaviour
         {
             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
             
-            startDialogueTrigger.StartDialogue();
+            if (languageIndex == 0)
+            {
+                englishStartDialogue.StartDialogue();
+            } 
+            else
+            {
+                tagalogStartDialogue.StartDialogue();
+            }
+            
         });
     }
 
@@ -79,29 +124,47 @@ public class Act1StudentSceneManager : MonoBehaviour
 
         if (plugInteracted == 4)
         {
-            momDialogueTrigger.StartDialogue();
+            if (languageIndex == 0)
+            {
+                englishMomDialogue.StartDialogue();
+            }
+            else
+            {
+                tagalogMomDialogue.StartDialogue();
+
+            }
+            
             PlayerScript.instance.DisablePlayerScripts();
             plugInteracted++;
         }
     }
 
-    void CheckPlayerAudioPlaying()
-    {
-        if(!bedPlayerAudio.isPlaying)
-        {
-            // FADEOUT EFFECTS
-            LoadingSceneManager.instance.fadeImage
-                .DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() =>
-            {
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+    // void CheckPlayerAudioPlaying()
+    // {
+    //     if(!bedPlayerAudio.isPlaying)
+    //     {
+    //         // FADEOUT EFFECTS
+    //         LoadingSceneManager.instance.fadeImage
+    //             .DOFade(0, LoadingSceneManager.instance.fadeDuration)
+    //             .SetEase(Ease.Linear)
+    //             .OnComplete(() =>
+    //         {
+    //             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
 
-                audioRepeat = true;
-                startDialogueTrigger.StartDialogue();
-            });
-        }
-    }
+    //             audioRepeat = true;
+
+    //             if (languageIndex == 0)
+    //             {
+    //                 englishStartDialogue.StartDialogue();
+
+    //             }
+    //             else
+    //             {
+    //                 tagalogStartDialogue.StartDialogue();            
+    //             }
+    //         });
+    //     }
+    // }
 
     public void RecordPlugChoice(bool savePlug)
     {
