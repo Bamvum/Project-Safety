@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 9. Do not Disturb
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: e357ff9c5489cbd449081bb0df7b8d56, type: 3}
   achievementName: Do not Disturb?
   achievementDescription: 'Called Mom in School: Start'
   achievementPlayerPrefsKey: A2S1 - Do not Disturb?

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 11. Too Hot To Handle
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: bc0cd3cab6927914397f756a64a89b84, type: 3}
   achievementName: Too Hot To Handle
   achievementDescription: 'Tried to open a burning door 2 times in School: Escape'
   achievementPlayerPrefsKey: A2S2 - Too Hot To Handle

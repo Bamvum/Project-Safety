@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 8. Who You Gonna Call FireBusters!!
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: 83f72b3f9f2fe094a83a5bd6b952e091, type: 3}
   achievementName: Who You Gonna Call? FireBusters!!
   achievementDescription: 'Called National Emergency Hotline or Local Fire Station
     in School: Start'

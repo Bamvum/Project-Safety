@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 6. Dummyn't
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: f6b7ca69222072742bf5d93bd6018e40, type: 3}
+  achievementSprite: {fileID: 21300000, guid: 508ff87cb0a590d49b8da58a29a2f885, type: 3}
   achievementName: Dummyn't
   achievementDescription: Chose not to help the dummy in Traing Grounds
   achievementPlayerPrefsKey: A1S4 - Dummyn't

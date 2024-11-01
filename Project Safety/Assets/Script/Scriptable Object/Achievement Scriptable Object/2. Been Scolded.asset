@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 2. Been Scolded
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: 26de1a14ad5acb0499f263268eb773f3, type: 3}
+  achievementSprite: {fileID: 21300000, guid: ce135dab0001e104fb902f0781a8df7c, type: 3}
   achievementName: Been Scolded!
   achievementDescription: 'Chose not to unplug the plug in House
 

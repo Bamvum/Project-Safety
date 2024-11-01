@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 10. Any%
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: bfc11224d1703d44cbce75f12d00ae6b, type: 3}
   achievementName: Any%?
   achievementDescription: 'Escape under 3 minutes (?) in School: Escape'
   achievementPlayerPrefsKey: A2S2 - Any%
