@@ -110,6 +110,8 @@ public class FirebaseManager : MonoBehaviour
         SignOut();  // Log the user out when the game quits
     }
 
+    #region SettingsDB
+
     public void SaveSettingsToFirebase(float masterVolume, float musicVolume, float sfxVolume, bool isFullScreen, int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens, float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
     {
         if (auth.CurrentUser != null)
@@ -187,7 +189,9 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
+    #endregion
 
+    #region ChoicesDB
 
     public void SaveChoiceToFirebase(string choiceKey, int choiceValue)
     {
@@ -353,6 +357,10 @@ public class FirebaseManager : MonoBehaviour
             });
     }
 
+    #endregion
+
+    #region ChaptersDB
+
     public void SaveChapterUnlockToFirebase(string chapterKey, bool isUnlocked)
     {
         if (auth.CurrentUser != null)
@@ -422,6 +430,81 @@ public class FirebaseManager : MonoBehaviour
             callback(false); // Default to locked if no user is signed in
         }
     }
+
+    #endregion
+
+    #region AchievementDB
+
+    public void SaveAchievementToFirebase(string achievementKey, bool isUnlocked)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("achievements")
+                .Child(achievementKey)
+                .SetValueAsync(isUnlocked ? 1 : 0)
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log($"Achievement {achievementKey} unlock status saved to Firebase: {isUnlocked}");
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to save achievement {achievementKey} unlock status to Firebase: {task.Exception}");
+                    }
+                });
+        }
+        else
+        {
+            Debug.LogWarning("No user is signed in, cannot save achievement unlock status to Firebase.");
+        }
+    }
+
+    public void GetAchievementStatusFromFirebase(string achievementKey, System.Action<bool> callback)
+    {
+        if (auth.CurrentUser != null)
+        {
+            string userId = auth.CurrentUser.UserId;
+            databaseReference
+                .Child("users")
+                .Child(userId)
+                .Child("achievements")
+                .Child(achievementKey)
+                .GetValueAsync()
+                .ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        if (task.Result.Exists)
+                        {
+                            bool isUnlocked = task.Result.Value.ToString() == "1";
+                            callback(isUnlocked);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Achievement {achievementKey} not found in Firebase, defaulting to locked.");
+                            callback(false); // Default to locked if achievement data is missing
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to retrieve achievement status from Firebase due to: " + task.Exception);
+                        callback(false); // Default to locked if fetch fails
+                    }
+                });
+        }
+        else
+        {
+            Debug.LogWarning("No user signed in. Unable to fetch achievement status from Firebase.");
+            callback(false); // Default to locked if no user is signed in
+        }
+    }
+
+    #endregion
 
 
 }
