@@ -5,6 +5,7 @@ using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
 using Firebase;
 using Firebase.Database;
@@ -21,9 +22,20 @@ public class Act2Scene2SceneManager : MonoBehaviour
         instance = this;
     }
 
+    [SerializeField] AchievementTrigger achievementTrigger;
+    [SerializeField] AchievementSO tooHotToHandleAchievement;
+    [SerializeField] AchievementSO anyPercentAchievement;
+    [SerializeField] AchievementSO chainSmokerAchievement;
+
+    public int doorChecked;
+    bool stopTooHotToHandleLoop;
+    bool stopChainSmokerAchievementLoop;
+
     [Header("Player")]
     public float playerHealth;
     [SerializeField] float playerMaxHealth = 100;
+
+    [SerializeField] Image lungsVisualHealth;
 
     [Header("Language Preference")]
     [SerializeField] InstructionSO englishInstructionSO;
@@ -50,6 +62,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
+    [SerializeField] AudioSource sceneNameRevealSFX;
     
     [Header("Flag")]
     [SerializeField] bool isStopTimer;
@@ -72,8 +85,6 @@ public class Act2Scene2SceneManager : MonoBehaviour
                                                          1);
         TimerStatus(true);
         EscapeTimer();
-
-        GetGlobalVolumeVignette();
 
         StartCoroutine(FadeOutEffect());
 
@@ -100,24 +111,15 @@ public class Act2Scene2SceneManager : MonoBehaviour
     IEnumerator FadeOutEffect()
     {
         yield return new WaitForSeconds(1);
-        sceneNameText.gameObject.SetActive(true);
+        sceneNameRevealSFX.Play();
         sceneNameText.DOFade(1, 1)
             .SetUpdate(true)
             .OnComplete(() =>
-        {
-            sceneNameText.DOFade(1,2)
-                .SetUpdate(true)
-                .OnComplete(() =>
             {
                 sceneNameText.DOFade(0, 1)
-                    .SetUpdate(true)
-                    .OnComplete(() =>
-                {
-                    sceneNameText.gameObject.SetActive(false);
-                    
-                });
+                    .SetDelay(3)
+                    .SetUpdate(true);
             });
-        });
 
 
         yield return new WaitForSeconds(5);
@@ -140,26 +142,26 @@ public class Act2Scene2SceneManager : MonoBehaviour
         });
     }
 
-    #region - GLOBAL VOLUME -
-
-    void GetGlobalVolumeVignette()
-    {
-        // Try to get the Vignette effect from the volume profile
-        if (globalVolume.profile.TryGet<Vignette>(out vignette))
-        {
-            // Vignette successfully retrieved
-        }
-        
-    }
-
-    #endregion
-
     void Update()
     {
         if(!isStopTimer)
         {
             EscapeTimer();
             PlayerHealthInhilationChecker();
+        }
+
+        if(remainingTime <= 0)
+        {
+            GameOver.instance.ShowGameOver();
+        }
+
+        if (!stopTooHotToHandleLoop)
+        {
+            if(doorChecked == 2)
+            {
+                achievementTrigger.ShowAchievement(tooHotToHandleAchievement);
+                stopTooHotToHandleLoop = true;
+            }
         }
     }
 
@@ -296,13 +298,17 @@ void PlayerHealthInhilationChecker()
         {
             GameOver.instance.ShowGameOver();
         }
+        else if (playerHealth < 20)
+        {
+            if (!stopChainSmokerAchievementLoop)
+            {
+                achievementTrigger.ShowAchievement(chainSmokerAchievement);
+                stopChainSmokerAchievementLoop = true;
+            }
+        }
         else
         {
-            // GET GLOBAL VOLUME VIGNETTE INTENSITY AND SMOOTHNESS
-
-            // Adjust the vignette based on player's health
-            vignette.intensity.value = Mathf.Lerp(0.25f, 1f, 1 - (playerHealth / playerMaxHealth));
-            vignette.smoothness.value = Mathf.Lerp(0.4f, 0.8f, 1 - (playerHealth / playerMaxHealth));
+            lungsVisualHealth.fillAmount = Mathf.Lerp(1f, 0f, playerHealth / playerMaxHealth);
         }
     }
 
@@ -389,8 +395,20 @@ void PlayerHealthInhilationChecker()
         {
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
             LoadingSceneManager.instance.enabled = true;
-            LoadingSceneManager.instance.sceneName = "Post Assessment";
+            LoadingSceneManager.instance.sceneName = "Statistic";
         });
+    }
+
+    #endregion
+
+    #region - ANY%? -
+
+    public void anyPercentTrigger()
+    {
+        if (remainingTime >= 240) // 240 seconds is equivalent to 4 minutes
+        {
+            achievementTrigger.ShowAchievement(anyPercentAchievement);
+        }
     }
 
     #endregion

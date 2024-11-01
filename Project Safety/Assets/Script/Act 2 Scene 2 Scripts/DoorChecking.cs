@@ -92,6 +92,7 @@ public class DoorChecking : MonoBehaviour
                 }
                 else
                 {
+                    Act2Scene2SceneManager.instance.doorChecked++;
                     DoorDamage();
                 }
             }
