@@ -25,6 +25,9 @@ public class ChapterManager : MonoBehaviour
     [SerializeField] Button schoolEscapeButton;
     [SerializeField] Button postAssessmentButton;
 
+    [Space(10)]
+    [SerializeField] Button statisticButton;
+
 
 
     void Start()
@@ -173,6 +176,26 @@ public class ChapterManager : MonoBehaviour
             else
             {
                 schoolEscapeButton.interactable = false;
+            }
+        });
+
+        FirebaseManager.Instance.GetChapterUnlockStatusFromFirebase("Statistics", (isUnlocked) =>
+        {
+            if (isUnlocked)
+            {
+                PlayerPrefs.SetInt("Statistics", 1);
+            }
+            if (PlayerPrefs.GetInt("Statistics", 0) == 1)
+            {
+            statisticButton.interactable = true;
+                if (!isUnlocked)
+                {
+                    FirebaseManager.Instance.SaveChapterUnlockToFirebase("Statistics", true);
+                }
+            }
+            else
+            {
+            statisticButton.interactable = false;
             }
         });
 

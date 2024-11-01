@@ -209,15 +209,6 @@ public class MainMenuScriptManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        if (PlayerPrefs.GetInt("Statistics", 1) == 0)
-        {
-            statisticButton.interactable = true;
-        }
-        else
-        {
-            statisticButton.interactable = false;
-        }
-
         // FADEOUT EFFECT
         LoadingSceneManager.instance.fadeImage.DOFade(0, .25f)
             .SetEase(Ease.Linear)
