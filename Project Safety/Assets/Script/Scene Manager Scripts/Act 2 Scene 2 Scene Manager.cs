@@ -66,6 +66,8 @@ public class Act2Scene2SceneManager : MonoBehaviour
     
     [Header("Flag")]
     [SerializeField] bool isStopTimer;
+    [SerializeField] bool stopZeroTimerLoop;
+    [SerializeField] bool stopSmokeHealthLoop;
 
     [Space(20)]
     [SerializeField] GameObject firstFloor;
@@ -153,7 +155,11 @@ public class Act2Scene2SceneManager : MonoBehaviour
 
         if(remainingTime <= 0)
         {
-            GameOver.instance.ShowGameOver();
+            if (!stopZeroTimerLoop)
+            {
+                GameOver.instance.ShowGameOver();
+                stopZeroTimerLoop = true;
+            }
         }
 
         if (!stopTooHotToHandleLoop)
@@ -297,7 +303,11 @@ void PlayerHealthInhilationChecker()
     {
         if(playerHealth <= 0)
         {
-            GameOver.instance.ShowGameOver();
+            if (!stopSmokeHealthLoop)
+            {
+                GameOver.instance.ShowGameOver();
+                stopSmokeHealthLoop = true;
+            }
         }
         else if (playerHealth < 20)
         {

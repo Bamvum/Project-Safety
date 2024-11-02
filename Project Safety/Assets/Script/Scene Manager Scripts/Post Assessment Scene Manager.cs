@@ -17,9 +17,9 @@ public class PostAssessmentSceneManager : MonoBehaviour
     }
 
     public AchievementTrigger achievementTrigger;
-    AchievementSO tpassMaster;
-    AchievementSO fireClassMaster;
-    AchievementSO fireExtinguisherMaster;
+    [SerializeField] AchievementSO tpassMaster;
+    [SerializeField] AchievementSO fireClassMaster;
+    [SerializeField] AchievementSO fireExtinguisherMaster;
     public AchievementSO fireSafetyMaster;
 
     [Header("HUD")]
@@ -103,7 +103,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
         StartCoroutine(FadeOutEffect());
 
         RandomTPASSPosition();
-        achievementTrigger.ShowAchievement(fireSafetyMaster);
+        // achievementTrigger.ShowAchievement(fireSafetyMaster);
     }
 
     IEnumerator FadeOutEffect()

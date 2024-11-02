@@ -69,7 +69,7 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
   - m_From: Player - Chair VC
-    m_To: Fire Figther Instructor
+    m_To: Player VC
     m_Blend:
       m_Style: 0
       m_Time: 2
