@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missions:
   - Head to the Fire station
-  - Talk to the Fire Figthers
+  - Talk to the Fire Fighters
   - Go to the Parking Lot
   - Extinguished the Fire
   missionCompleted: {fileID: 0}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wet Chemical - Fire Extinguisher
   itemDescription: Wet Chemical have a yellow label and are designed to be effective
-    against Class K. It contains a solution of potassium which extinguishes the fire
-    by spraying a fine mist that cols the fire to stop it from spreading.
+    against Class K and Class A. It contains a solution of potassium which extinguishes
+    the fire by spraying a fine mist that cols the fire to stop it from spreading.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1

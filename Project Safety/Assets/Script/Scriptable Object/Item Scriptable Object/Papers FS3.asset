@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6804161bf26e0604e85ecc68390c6436, type: 3}
   m_Name: Papers FS3
   m_EditorClassIdentifier: 
-  itemName: Co2 Extinguisher
+  itemName: Co2 Extinguisher Notes
   itemDescription: Co2 is commonly known as Carbon Dioxide. It is commonly used against
     flammable liquids and electrical equipment. Electrical equipment can vary from
     computers, servers, televisions, cellular devices, and etc. It is effective for
