@@ -21,7 +21,8 @@ MonoBehaviour:
     instructionGampad: IF FIRE EXTINGUISHER IN HAND, PRESS <sprite name="Cross">
       TO USE THE USE THE FIRE EXTINGUISHER.
   - title: FF THE INSTRUCTION
-    instructionSprite: {fileID: 0}
+    instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
+      type: 3}
     instructionKeyboard: PRESS THE CORRESPONDING BUTTON DISPLAYED IN THE SCREEN WHEN
       USING THE FIRE EXTINGUISHER
     instructionGampad: PRESS THE CORRESPONDING BUTTON DISPLAYED IN THE SCREEN WHEN

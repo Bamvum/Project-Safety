@@ -30,16 +30,20 @@ public class TPASS : MonoBehaviour
 
     public void CheckTPASS()
     {
-        if(!twistAndPull)
+        if(Pause.instance.pauseHUDRectTransform.gameObject.activeSelf)
         {
-            twistFE.enabled = true;
-            this.enabled = false;
+            if (!twistAndPull)
+            {
+                twistFE.enabled = true;
+                this.enabled = false;
+            }
+            else
+            {
+                aimFE.enabled = true;
+                this.enabled = false;
+            }
         }
-        else
-        {
-            aimFE.enabled = true;
-            this.enabled = false;
-        }
+        
     }
     
 }

@@ -54,9 +54,12 @@ public class Act1Scene3SceneManager : MonoBehaviour
     // [SerializeField] CinemachineInputProvider;
 
     [Space(10)]
-    [SerializeField] GameObject fireFighter;
-    [SerializeField] GameObject fireTruckPeople;
-    [SerializeField] GameObject fireTruck;
+    [SerializeField] GameObject englishFireFighter;
+    [SerializeField] GameObject tagalogFireFighter;
+    [SerializeField] GameObject englishFireTruckPeople;
+    [SerializeField] GameObject tagalogFireTruckPeople;
+    [SerializeField] GameObject englishFireTruck;
+    [SerializeField] GameObject tagalogFireTruck;
 
     [Header("Audio")]
     [SerializeField] AudioSource englishCarAmbiance;
@@ -68,6 +71,12 @@ public class Act1Scene3SceneManager : MonoBehaviour
     [SerializeField] GameObject fireToBeExtinguish1;
     [SerializeField] GameObject fireToBeExtinguish2;
     [SerializeField] GameObject fireToBeExtinguish3;
+
+    [Space(5)]
+    [SerializeField] GameObject tagalogFireToBeExtinguish1;
+    [SerializeField] GameObject tagalogFireToBeExtinguish2;
+    [SerializeField] GameObject tagalogFireToBeExtinguish3;
+
     
     [Space(10)]
     [SerializeField] bool stopLoop;
@@ -172,53 +181,92 @@ public class Act1Scene3SceneManager : MonoBehaviour
     {
         if(!moveTowardFireTruck)
         {
-            fireTruck.transform.position = Vector3.MoveTowards(fireTruck.transform.position, new Vector3 (fireTruck.transform.position.x, fireTruck.transform.position.y, -21), Time.deltaTime * fireTruckSpeed);
-
-            if(fireTruck.transform.position == new Vector3(fireTruck.transform.position.x, fireTruck.transform.position.y, -21))
+            if(languageIndex == 0)
             {
-                // FADE IN 
-                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-                LoadingSceneManager.instance.fadeImage.DOFade(1, 2).OnComplete(() =>
-                {
-                    player.SetActive(true);
-                    fireFighter.SetActive(true);
-                    fireTruckPeople.SetActive(false);
-                    LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
-                    {
-                        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                        
-                        Debug.LogError("Fire Truck Trigger Dialogue");
+                englishFireTruck.transform.position = Vector3.MoveTowards(englishFireTruck.transform.position, new Vector3(englishFireTruck.transform.position.x, englishFireTruck.transform.position.y, -21), Time.deltaTime * fireTruckSpeed);
 
-                        if(languageIndex == 0)
+                if (englishFireTruck.transform.position == new Vector3(englishFireTruck.transform.position.x, englishFireTruck.transform.position.y, -21))
+                {
+                    // FADE IN 
+                    LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                    LoadingSceneManager.instance.fadeImage.DOFade(1, 2).OnComplete(() =>
+                    {
+                        player.SetActive(true);
+
+                        if (languageIndex == 0)
                         {
-                            englishStartDialogue.StartDialogue();
+                            englishFireFighter.SetActive(true);
+                            englishFireTruckPeople.SetActive(false);
                         }
                         else
                         {
-                            tagalogStartDialogue.StartDialogue();
+                            tagalogFireFighter.SetActive(true);
+                            tagalogFireTruckPeople.SetActive(false);
                         }
-                        streetAmbiance.Play();
-                    });
-                });
 
-                moveTowardFireTruck = true;                
+                        LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
+                        {
+                            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+
+                            Debug.LogError("Fire Truck Trigger Dialogue");
+                            englishStartDialogue.StartDialogue();
+                            streetAmbiance.Play();
+                        });
+                    });
+                    moveTowardFireTruck = true;
+                }
             }
+            else
+            {
+                tagalogFireTruck.transform.position = Vector3.MoveTowards(tagalogFireTruck.transform.position, new Vector3(tagalogFireTruck.transform.position.x, tagalogFireTruck.transform.position.y, -21), Time.deltaTime * fireTruckSpeed);
+
+                if (tagalogFireTruck.transform.position == new Vector3(tagalogFireTruck.transform.position.x, tagalogFireTruck.transform.position.y, -21))
+                {
+                    // FADE IN 
+                    LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+                    LoadingSceneManager.instance.fadeImage.DOFade(1, 2).OnComplete(() =>
+                    {
+                        player.SetActive(true);
+                        tagalogFireFighter.SetActive(true);
+                        tagalogFireTruckPeople.SetActive(false);
+
+                        LoadingSceneManager.instance.fadeImage.DOFade(0, 2).OnComplete(() =>
+                        {
+                            LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+
+                            tagalogStartDialogue.StartDialogue();
+                            streetAmbiance.Play();
+                        });
+                    });
+
+                    moveTowardFireTruck = true;
+                }
+            }
+            
         }
 
         if(!stopLoop)
         {
-            if(!fireToBeExtinguish1.activeSelf && !fireToBeExtinguish2.activeSelf && !fireToBeExtinguish3.activeSelf)
+            if(languageIndex == 0)
             {
-                if (languageIndex == 0)
+                if (!fireToBeExtinguish1.activeSelf && !fireToBeExtinguish2.activeSelf && !fireToBeExtinguish3.activeSelf)
                 {
                     englishEndDialogue.StartDialogue();
+
+                    stopLoop = false;
                 }
-                else
-                {
-                    tagalogEndDialogue.StartDialogue();
-                }
-                stopLoop = false;
             }
+            else
+            {
+                if (!tagalogFireToBeExtinguish1.activeSelf && !tagalogFireToBeExtinguish2.activeSelf && !tagalogFireToBeExtinguish3.activeSelf)
+                {
+
+                    tagalogEndDialogue.StartDialogue();
+
+                    stopLoop = false;
+                }
+            }
+
         }
     }
 
