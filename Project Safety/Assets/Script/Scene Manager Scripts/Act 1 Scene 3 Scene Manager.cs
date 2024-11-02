@@ -96,8 +96,8 @@ public class Act1Scene3SceneManager : MonoBehaviour
         }
         else
         {
-            englishLanguage.SetActive(true);
-            tagalogLanguage.SetActive(false);
+            englishLanguage.SetActive(false);
+            tagalogLanguage.SetActive(true);
             InstructionManager.instance.instructionsSO = tagalogInstructionSO;
             languageIndex = 1;
         }

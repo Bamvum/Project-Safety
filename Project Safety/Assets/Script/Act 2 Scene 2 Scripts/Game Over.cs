@@ -17,7 +17,7 @@ public class GameOver : MonoBehaviour
     }
 
     [Header("HUD")] 
-    [SerializeField] CanvasGroup gameOverHUDCG;
+    public  CanvasGroup gameOverHUDCG;
     // [SerializeField] CanvasGroup gameOverCG;
 
     [Header("Selected Button")] 
@@ -69,6 +69,8 @@ public class GameOver : MonoBehaviour
 
     public void GameIsOver()
     {
+        Debug.Log("Game Over - Retry");
+
         Time.timeScale = 1;
 
         PlayerScript.instance.DisablePlayerScripts();
@@ -117,6 +119,8 @@ public class GameOver : MonoBehaviour
 
     public void ShowGameOver()
     {
+        Debug.Log("Game Over - Retry");
+
         Time.timeScale = 0;
 
         gameOverHUDCG.interactable = false;

@@ -47,15 +47,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Template.unity
     guid: 6bf458c4253253a429011048d8fff8d9
-  - enabled: 0
-    path: Assets/Scenes/Loading Scene.unity
-    guid: 62e7fa0fbb4dd2340bd63ba0140ac3f8
-  - enabled: 0
-    path: Assets/Scenes/Prologue Test.unity
-    guid: 08ebc98be851a0d44af8690a5bee12ae
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 86eb66a92ec78474c9dcdac6dc3ede8b,
       type: 2}

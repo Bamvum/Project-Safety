@@ -45,7 +45,12 @@ public class MainMenuScriptManager : MonoBehaviour
     [SerializeField] TMP_Text achievementNavGuide;
 
     [Space(10)]
-    [SerializeField] Button statisticButton;
+    [SerializeField] RectTransform creditsRectTransform;
+    [SerializeField] CanvasGroup creditsButtonCG;
+    [SerializeField] TMP_Text creditsNavGuide;
+    [SerializeField] Animator creditsAnimator;
+
+
 
     [Header("Set Selected Game Object")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -173,6 +178,10 @@ public class MainMenuScriptManager : MonoBehaviour
         else if (achievementRectTransform.gameObject.activeSelf)
         {
             AchievementBack();
+        }
+        else if (creditsRectTransform.gameObject.activeSelf)
+        {
+            CreditsBack();
         }
 
     }
@@ -318,7 +327,8 @@ public class MainMenuScriptManager : MonoBehaviour
         if(DeviceManager.instance.keyboardDevice)
         {
             if (mainMenuHUDRectTransform.gameObject.activeSelf || selectSceneRectTransform.gameObject.activeSelf || 
-                settingRectTransform.gameObject.activeSelf || achievementRectTransform.gameObject.activeSelf)
+                settingRectTransform.gameObject.activeSelf || achievementRectTransform.gameObject.activeSelf ||
+                creditsRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -375,6 +385,13 @@ public class MainMenuScriptManager : MonoBehaviour
                     EventSystem.current.SetSelectedGameObject(achievementSelectedButton);
                     isGamepad = true;
                 }
+
+                if (creditsRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                    isGamepad = true;
+                }
+
             }
         }
     }
@@ -394,13 +411,20 @@ public class MainMenuScriptManager : MonoBehaviour
             
             if(settingRectTransform.gameObject.activeSelf)
             {
-                settingNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\">  Switch Category   <sprite name=\"Escape\"> Back   ";
+                settingNavGuide.text = "<sprite name=\"Q\"> <sprite name=\"E\"> Switch Category <sprite name=\"Escape\"> Back   ";
             }
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Left Mouse Button\">  Show Description   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Left Mouse Button\"> Show Description <sprite name=\"Escape\"> Back   ";
             }
+            
+            if(creditsRectTransform.gameObject.activeSelf)
+            {
+                // achievementNavGuide.text = "<sprite name=\"Space\">  Speed up <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Escape\"> Back   ";
+            }
+
         }
         else if(DeviceManager.instance.gamepadDevice)
         {
@@ -411,12 +435,18 @@ public class MainMenuScriptManager : MonoBehaviour
             
             if(settingRectTransform.gameObject.activeSelf)
             {
-                settingNavGuide.text = "<sprite name=\"Left Shoulder\"> <sprite name=\"Right Shoulder\">  Switch Category   <sprite name=\"Circle\"> Back   ";
+                settingNavGuide.text = "<sprite name=\"Left Shoulder\"> <sprite name=\"Right Shoulder\">  Switch Category <sprite name=\"Circle\"> Back   ";
             }
 
             if(achievementRectTransform.gameObject.activeSelf)
             {
-                achievementNavGuide.text = "<sprite name=\"Cross\">  Show Description   <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Cross\"> Show Description <sprite name=\"Escape\"> Back   ";
+            }
+
+            if (creditsRectTransform.gameObject.activeSelf)
+            {
+                // achievementNavGuide.text = "<sprite name=\"Cross\"> Speed up <sprite name=\"Escape\"> Back   ";
+                achievementNavGuide.text = "<sprite name=\"Escape\"> Back   ";
             }
         }
     }
@@ -529,6 +559,27 @@ public class MainMenuScriptManager : MonoBehaviour
     public void Credits()
     {
         Debug.Log("Access Credits!");
+
+        mainMenuButtonCG.interactable = false;
+        isGamepad = true;
+
+        mainMenuHUDRectTransform.DOAnchorPos(new Vector2(325, 0), .5f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() =>
+            {
+                mainMenuHUDRectTransform.gameObject.SetActive(false);
+                creditsRectTransform.gameObject.SetActive(true);
+
+                creditsRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() =>
+                    {
+                        creditsButtonCG.interactable = true;
+                        // CREDITS ANIMATION
+                        // creditsAnimator.Play();
+                        isGamepad = false;
+                    });
+            });
     }
 
 
@@ -650,7 +701,7 @@ public class MainMenuScriptManager : MonoBehaviour
 
     #endregion
 
-    #region  = ACHIEVEMENT SCREEN -
+    #region  - ACHIEVEMENT SCREEN -
 
     public void AchievementBack()
     {
@@ -665,6 +716,26 @@ public class MainMenuScriptManager : MonoBehaviour
                 ShowMainMenu();
             });
     }
+
+    #endregion
+
+    #region - CREDITS BACK -
+
+    void CreditsBack()
+    {
+        creditsButtonCG.interactable = false;
+        creditsRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+            .SetEase(Ease.OutExpo)
+            .OnComplete(() =>
+            {
+                creditsRectTransform.gameObject.SetActive(false);
+                mainMenuHUDRectTransform.gameObject.SetActive(true);
+                isGamepad = false;
+                // creditsAnimator.Play("Credits Animation", -1, 0f);
+                ShowMainMenu();
+            });
+    }
+
 
     #endregion
 }

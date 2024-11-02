@@ -9,12 +9,12 @@ public class SmokeInhalation : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            // DAMAGE OVERTIME
-            // DECREASE MAXIMUM PLAYER STAMINA
-            // HEALTH
+            if(!GameOver.instance.gameOverHUDCG.gameObject.activeSelf)
+            {
+                Debug.Log("Player inside Smoke");
+                Act2Scene2SceneManager.instance.playerHealth -= .5f;
 
-            Debug.Log("Player inside Smoke");
-            Act2Scene2SceneManager.instance.playerHealth -= .5f;
+            }
         }
     }
 }
