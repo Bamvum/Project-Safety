@@ -105,6 +105,8 @@ public class FirebaseManager : MonoBehaviour
     // This method is called when the application is about to quit
     private void OnApplicationQuit()
     {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
         FirebaseManager.DeleteGuestData();
         FirebaseManager.DeleteGuestAccount();
         SignOut();  // Log the user out when the game quits
