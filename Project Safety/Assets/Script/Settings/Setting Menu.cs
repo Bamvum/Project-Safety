@@ -54,22 +54,31 @@ public static SettingMenu instance { get; private set; }
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
-        HashSet<string> uniqueResolutions = new HashSet<string>();
         List<string> options = new List<string>();
         int currentResolutionIndex = 0;
 
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + " X " + resolutions[i].height;
+        List<(int width, int height)> allowedResolutions = new List<(int, int)>
+    {
+        (1920, 1080),  // 1080p
+        (1280, 720),   // 720p
+        (640, 480),    // 480p
+        (1366, 768)    // 1366x768
+    };
 
-            // Only add unique resolutions
-            if (uniqueResolutions.Add(option))
+        foreach (var res in resolutions)
+        {
+            // Check if the resolution matches one of the allowed resolutions
+            if (allowedResolutions.Contains((res.width, res.height)))
             {
+                string option = $"{res.width} X {res.height} @ {res.refreshRateRatio.value}Hz";
                 options.Add(option);
-                if (resolutions[i].width == Screen.currentResolution.width &&
-                    resolutions[i].height == Screen.currentResolution.height)
+
+                // Set the current resolution index if this resolution is the current screen resolution
+                if (res.width == Screen.currentResolution.width &&
+                    res.height == Screen.currentResolution.height &&
+                    res.refreshRateRatio.value == Screen.currentResolution.refreshRateRatio.value)
                 {
-                    currentResolutionIndex = options.Count - 1; // Update current index
+                    currentResolutionIndex = options.Count - 1; // Set to the index of the current resolution
                 }
             }
         }
@@ -108,18 +117,18 @@ public static SettingMenu instance { get; private set; }
             // Set the quality dropdown value
             qualityDropdown.value = qualityIndex;
 
-            // Set the resolution dropdown value (assuming you have a dropdown for this)
+            // Set the resolution dropdown value
             resolutionDropdown.value = resolutionIndex;
 
             // Set mouse sensitivity sliders
             xMouseSensSlider.value = xMouseSens;
             yMouseSensSlider.value = yMouseSens;
 
-            // Set gamepad sensitivity sliders (if you have them)
+            // Set gamepad sensitivity sliders
             xGamepadSensSlider.value = xGamepadSens;
             yGamepadSensSlider.value = yGamepadSens;
 
-            // Set dialogue speed (assuming you have a slider for this)
+            // Set dialogue speed
             dialogueSpeedSlider.value = dialogueSpeed;
 
             // Set the language dropdown value
@@ -199,9 +208,24 @@ public static SettingMenu instance { get; private set; }
 
     public void SetResolution(int resolutionIndex)
     {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-        PlayerPrefs.SetInt("Resolution", resolutionIndex);
+        List<(int width, int height)> allowedResolutions = new List<(int, int)>
+    {
+        (1920, 1080),  // 1080p
+        (1280, 720),   // 720p
+        (640, 480),    // 480p
+        (1366, 768)    // 1366x768
+    };
+
+        var selectedResolution = allowedResolutions[resolutionIndex];
+
+        Screen.SetResolution(
+            selectedResolution.width,
+            selectedResolution.height,
+            FullScreenMode.FullScreenWindow,
+            Screen.currentResolution.refreshRateRatio
+        );
+
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
         SaveSettings();
     }
 
