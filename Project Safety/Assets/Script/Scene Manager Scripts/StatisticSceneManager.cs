@@ -257,6 +257,8 @@ public class StatisticSceneManager : MonoBehaviour
 
         PlayerPrefs.SetInt("Post-Assessment", 1);
         PlayerPrefs.SetInt("Statistics", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Post-Assessment", true);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Statistics", true);
 
         StartCoroutine(FadeOutEffect());
     }

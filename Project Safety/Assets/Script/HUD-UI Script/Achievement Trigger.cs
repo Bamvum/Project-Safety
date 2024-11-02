@@ -15,14 +15,17 @@ public class AchievementTrigger : MonoBehaviour
 
     public void ShowAchievement(AchievementSO achievementSO)
     {
-        // CHECK IF ACHIEVEMENT IS ALREADY UNLOCK (IF ACHIEVEMENET IS NOT UNLOCK CODE EXCUTE BELOW)
-        if(PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
+        // CHECK IF ACHIEVEMENT IS ALREADY UNLOCKED (IF ACHIEVEMENT IS NOT UNLOCKED, CODE EXECUTES BELOW)
+        if (PlayerPrefs.GetInt(achievementSO.achievementPlayerPrefsKey) == 0)
         {
             achievementName.text = achievementSO.achievementName;
             achievementImage.sprite = achievementSO.achievementSprite;
 
             // ACHIEVEMENT STORE IN PLAYER PREFS
             PlayerPrefs.SetInt(achievementSO.achievementPlayerPrefsKey, 1);
+
+            // SAVE ACHIEVEMENT TO FIREBASE
+            FirebaseManager.Instance.SaveAchievementToFirebase(achievementSO.achievementPlayerPrefsKey, true);
 
             achievementSFX.Play();
             achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 425), 1)
@@ -36,6 +39,5 @@ public class AchievementTrigger : MonoBehaviour
                         .SetDelay(5);
                 });
         }
-
     }
 }

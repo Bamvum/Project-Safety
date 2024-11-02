@@ -62,8 +62,9 @@ public class Act1StudentSceneManager : MonoBehaviour
 
         auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("House Scene", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("House Scene", true);
 
-                if(SettingMenu.instance.languageDropdown.value == 0)
+        if (SettingMenu.instance.languageDropdown.value == 0)
         {
             englishLanguage.SetActive(true);
             tagalogLanguage.SetActive(false);

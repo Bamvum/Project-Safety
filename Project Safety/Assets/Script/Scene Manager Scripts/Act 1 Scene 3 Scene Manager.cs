@@ -18,6 +18,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
         sequence =  DOTween.Sequence();
 
         PlayerPrefs.SetInt("Fire Station Scene", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("Fire Station Scene", true);
     }
     
     [Header("HUD")]

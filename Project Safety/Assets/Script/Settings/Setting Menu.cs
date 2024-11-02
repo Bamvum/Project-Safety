@@ -54,18 +54,23 @@ public static SettingMenu instance { get; private set; }
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
+        HashSet<string> uniqueResolutions = new HashSet<string>();
         List<string> options = new List<string>();
         int currentResolutionIndex = 0;
 
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " X " + resolutions[i].height;
-            options.Add(option);
 
-            if (resolutions[i].width == Screen.currentResolution.width &&
-               resolutions[i].height == Screen.currentResolution.height)
+            // Only add unique resolutions
+            if (uniqueResolutions.Add(option))
             {
-                currentResolutionIndex = i;
+                options.Add(option);
+                if (resolutions[i].width == Screen.currentResolution.width &&
+                    resolutions[i].height == Screen.currentResolution.height)
+                {
+                    currentResolutionIndex = options.Count - 1; // Update current index
+                }
             }
         }
 

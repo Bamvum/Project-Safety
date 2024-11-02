@@ -76,6 +76,7 @@ public class Act2Scene2SceneManager : MonoBehaviour
     {
         auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("School: Escape", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("School: Escape", true);
         Time.timeScale = 1;
         
         // FADE IMAGE ALPHA SET 1

@@ -52,6 +52,7 @@ public class Act2Scene1Manager : MonoBehaviour
     {
         auth = FirebaseAuth.DefaultInstance;
         PlayerPrefs.SetInt("School: Start", 1);
+        FirebaseManager.Instance.SaveChapterUnlockToFirebase("School: Start", true);
 
         LoadingSceneManager.instance.fadeImage.color = new Color(LoadingSceneManager.instance.fadeImage.color.r,
                                                          LoadingSceneManager.instance.fadeImage.color.g,
