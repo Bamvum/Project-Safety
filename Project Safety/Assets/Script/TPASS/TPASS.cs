@@ -30,7 +30,7 @@ public class TPASS : MonoBehaviour
 
     public void CheckTPASS()
     {
-        if(Pause.instance.pauseHUDRectTransform.gameObject.activeSelf)
+        if(!Pause.instance.pauseHUDRectTransform.gameObject.activeSelf)
         {
             if (!twistAndPull)
             {
