@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Controller
   m_EditorClassIdentifier: 
   itemName: Controller
-  itemDescription: A handheld device that allows players to interact with video games,
-    computers, or even mobile devices.
+  englishItemDescription: A handheld device that allows players to interact with
+    video games, computers, or even mobile devices.
+  tagalogItemDescription: Isang handheld na aparato na nagpapahintulot sa mga manlalaro
+    na makigalaw sa mga video game, computer, o kahit sa mobile devices.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Basketball
   m_EditorClassIdentifier: 
   itemName: Basketball
-  itemDescription: Used to shoot on those basketball hoops to score.
+  englishItemDescription: Used to shoot on those basketball hoops to score.
+  tagalogItemDescription: Ginagamit para ibato at pang score sa basketbol.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

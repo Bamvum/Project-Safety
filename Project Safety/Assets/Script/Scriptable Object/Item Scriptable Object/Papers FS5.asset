@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: Papers FS5
   m_EditorClassIdentifier: 
   itemName: Wet Chemical Extinguisher Notes
-  itemDescription: Wet Chemical have a yellow label and are designed to be effective
-    against Class K and Class A as it's main purpose is to extinguish fires that
-    come from cooking oils, or generally kitchen fires. It contains a solution of
-    potassium which extinguishes the fire by spraying a fine mist that cols the fire
-    to stop it from spreading. They are commonly in Kitchens and Restaurants.
+  englishItemDescription: Wet Chemical have a yellow label and are designed to be
+    effective against Class K and Class A as it's main purpose is to extinguish fires
+    that come from cooking oils, or generally kitchen fires. It contains solution
+    of potassium which extinguishes the fire by spraying a fine mist that cools the
+    fire to stop it from spreading. They are commonly in kitchens and restaurants.
+  tagalogItemDescription: Ang Wet Chemical fire extinguisher ay may dilaw na label
+    at idinisenyo upang maging epektibo laban sa Class K at Class A fires, dahil
+    ang pangunahing layunin nito ay patayin ang mga apoy na nagmumula sa mga cooking
+    oils o karaniwang mga apoy sa kusina. Naglalaman ito ng solusyon ng potassium
+    na pinapatay ang apoy sa pamamagitan ng pag-spray ng pinong mist na nagpapalamig
+    sa apoy upang hindi ito kumalat. Karaniwang matatagpuan ang mga ito sa mga kusina
+    at restaurant.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

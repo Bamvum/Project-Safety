@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Fruits
   m_EditorClassIdentifier: 
   itemName: Bowl of Fruits
-  itemDescription: A delicious bowl of fruits.
+  englishItemDescription: A bowl of many delicous fruits.
+  tagalogItemDescription: Isang mangkok na puno ng masasarap na prutas.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

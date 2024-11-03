@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: Papers FS4
   m_EditorClassIdentifier: 
   itemName: Water Extinguisher Notes
-  itemDescription: The water type for a fire extinguisher only has one use and it
-    is against combustible fires such as wood, paper, and other kinds of textiles.
+  englishItemDescription: The water type for a fire extinguisher only has one use
+    and it is against combustible fires such as wood, paper, and other kinds of textiles.
     Effective only against Class A fires. It works by soaking the fire and materials
     in water, removing the heat and cooling the fire significantly so it can no longer
     burn.
+  tagalogItemDescription: Ang water type na fire extinguisher ay may isang layunin
+    lamang at ito ay laban sa mga combustible fires tulad ng kahoy, papel, at iba
+    pang uri ng tela. Epektibo lamang ito laban sa Class A fires. Ito ay gumagana
+    sa pamamagitan ng pagbabad sa apoy at mga materyales ng tubig, inaalis ang init
+    at nagpapalamig sa apoy nang malaki upang hindi na ito makasunog.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Dry Powder Fire Extinguisher
   m_EditorClassIdentifier: 
   itemName: Dry Powder - Fire Extinguisher
-  itemDescription: Effective for Class D fires only, it is identified with a blue
-    label and is hazardous if breathed upon. Excellent towards industries that use
-    chemical operations.
+  englishItemDescription: Effective for Class D fires only, it is identified with
+    a blue label and is hazardous if breathed upon. Excellent towards industries
+    that use chemical operations.
+  tagalogItemDescription: Ang fire extinguisher na ito ay epektibo lamang para sa
+    Class D fires. Mayroon itong asul na label at delikado kung malanghap. Napakabisa
+    sa mga industriya na gumagamit ng mga operasyong kemikal.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1

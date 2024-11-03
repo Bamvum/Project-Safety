@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Magazine
   m_EditorClassIdentifier: 
   itemName: Magazine
-  itemDescription: Regular publication featuring articles, photos, and ads, often
-    focused on specific topics like fashion, tech, or sports. Available in print
-    and digital formats, it aims to inform and entertain readers.
+  englishItemDescription: Contains the latest fashion trend.
+  tagalogItemDescription: Naglalaman ng pinakabagong uso sa fashion.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

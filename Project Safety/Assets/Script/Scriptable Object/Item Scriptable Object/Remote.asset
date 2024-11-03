@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Remote
   m_EditorClassIdentifier: 
   itemName: Remote
-  itemDescription: A device used to control other devices.
+  englishItemDescription: A piece of hardware that usually helps with controller
+    other devices.
+  tagalogItemDescription: Isang piraso ng hardware na kadalasang tumutulong sa pagkontrol
+    ng ibang mga aparato.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

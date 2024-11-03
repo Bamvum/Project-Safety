@@ -13,12 +13,18 @@ MonoBehaviour:
   m_Name: Papers FS1
   m_EditorClassIdentifier: 
   itemName: Powder Extinguisher Notes
-  itemDescription: "Powder type is the most common and found almost anywhere such
-    as office buildings, malls, schools, and etc. It is the most flexible when it
-    comes to putting out fire as it is capable of extinguishing combustible objects,
+  englishItemDescription: Powder type is the most common and found almost anywhere
+    such as office buildings, malls, schools, and etc. It is the most flexible when
+    it comes to putting out fire as it is capable of extinguishing combustible objects,
     flammable gases, electrical equipment, and especially gaseous fires. This extinguisher
-    quickly suppresses flames using a non-toxic powder. Ideal for home, office, or
-    industrial use.\r"
+    quickly suppresses flames using a non-toxic powder. Ideal for home office, or
+    industial use.
+  tagalogItemDescription: Ang powder type extinguisher ay ang pinakakaraniwan at
+    matatagpuan halos saanman tulad ng mga opisina, mall, paaralan, at iba pa. Ito
+    ang pinaka-flexible pagdating sa pag-apula ng apoy dahil kayang patayin ang apoy
+    mula sa mga nasusunog na bagay, flammable gases, electrical equipment, at lalo
+    na sa mga gaseous fires. Mabilis nitong pinapahinto ang mga apoy gamit ang non-toxic
+    powder. Mainam itong gamitin sa bahay, opisina, o sa mga industriya.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Ballpen
   m_EditorClassIdentifier: 
   itemName: Ballpen
-  itemDescription: A pen with a tiny ball as its writing point. The ball transfers
+  englishItemDescription: A pen with a tiny ball as its writing point. The ball transfers
     ink from a cartridge to the paper.
+  tagalogItemDescription: Isang pen na may maliit na bola sa dulo. Ang bola ang naglilipat
+    ng tinta mula sa kartridge papunta sa papel.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

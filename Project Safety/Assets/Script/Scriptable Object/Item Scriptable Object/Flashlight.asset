@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Flashlight
   m_EditorClassIdentifier: 
   itemName: Flashlight
-  itemDescription: This device helps light up dark areas especially during emergencies
-    they come in handy as sometimes it is really dark when hazards happen.
+  englishItemDescription: A device used to light up dark areas. It can be useful
+    in times of emergency.
+  tagalogItemDescription: Isang aparato na ginagamit upang magbigay-liwanag sa madilim
+    na lugar. Maaari itong maging kapaki-pakinabang sa mga oras ng emergency.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

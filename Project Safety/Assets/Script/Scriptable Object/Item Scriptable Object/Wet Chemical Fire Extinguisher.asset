@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: Wet Chemical Fire Extinguisher
   m_EditorClassIdentifier: 
   itemName: Wet Chemical - Fire Extinguisher
-  itemDescription: Wet Chemical have a yellow label and are designed to be effective
-    against Class K and Class A. It contains a solution of potassium which extinguishes
-    the fire by spraying a fine mist that cols the fire to stop it from spreading.
+  englishItemDescription: Wet Chemical have a yellow label and are designed to be
+    effective against Class K and A types. It contains a solution of potassium which
+    extinguishes the fire by spraying a fine mist that cols the fire to stop it from
+    spreading.
+  tagalogItemDescription: Ang Wet Chemical ay may dilaw na label at ginawa para maging
+    epektibo laban sa Class K at A na sunog. Mayroon itong potassium solution na
+    nag-aapula ng apoy sa pamamagitan ng pag-spray ng pino at malamig na mist para
+    pigilan ang pagkalat ng apoy.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1

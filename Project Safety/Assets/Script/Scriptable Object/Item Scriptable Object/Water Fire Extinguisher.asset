@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Water Fire Extinguisher
   m_EditorClassIdentifier: 
   itemName: Water - Fire Extinguisher
-  itemDescription: Effective only against Class A fires. It works by soaking the
-    fire and materials in water, removing the heat and cooling the fire significantly
-    so it can no longer burn.
+  englishItemDescription: The water type for a fire extinguisher only has one use
+    and iti s against combustible fires such as wood, paper, and other kinds of textiles.
+  tagalogItemDescription: Ang water-type fire extinguisher ay para lamang sa mga
+    combustible fires gaya ng kahoy, papel, at iba pang uri ng tela.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1

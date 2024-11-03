@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Picture
   m_EditorClassIdentifier: 
   itemName: Group of Friends
-  itemDescription: A picture with the boys.
-  itemDistanceToPlayer: 0.75
+  englishItemDescription: A picture of friends.
+  tagalogItemDescription: Larawan ng magkakaibigan.
+  itemDistanceToPlayer: 0.8
   itemYoffset: 0
   isTakable: 0
   isReadble: 1

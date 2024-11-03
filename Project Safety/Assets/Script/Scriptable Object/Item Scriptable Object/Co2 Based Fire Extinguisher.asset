@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Co2 Based Fire Extinguisher
   m_EditorClassIdentifier: 
   itemName: Co2 Based - Fire Extinguisher
-  itemDescription: Co2 is commonly known as Carbon Dioxide. It is effective for Class
-    B and C fires, as it is loaded with non-flammable carbon dioxide gas under high
-    pressure. Ideally used against electrical equipment.
+  englishItemDescription: Co2 is commonly known as Carbon Dioxide. It is effective
+    for Class B and C fires, as it is loaded with non-flammable carbon dioxide gas
+    under high pressure. Ideally used against electrical equipment.
+  tagalogItemDescription: Ang Co2 ay kilala bilang Carbon Dioxide. Epektibo ito para
+    sa Class B at C na sunog, dahil puno ito ng hindi madaling magliyab na carbon
+    dioxide gas na may mataas na presyon. Mainam itong gamitin laban sa mga electrical
+    equipment.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1

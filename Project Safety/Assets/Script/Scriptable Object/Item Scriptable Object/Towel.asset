@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: Towel
   m_EditorClassIdentifier: 
   itemName: Towel
-  itemDescription: 'A towel that can be used to cover your mouth and nose during
-    a fire. It can also be watered down to use to wet yourself during a fire incident. '
+  englishItemDescription: A piece of cloth that can be used to cover your mouth or
+    to wet and use to wash yourself during a fire incident. Placing it in your mouth
+    prevents smoke inhalation and washing yourself with a wet towel could lessen
+    the heat.
+  tagalogItemDescription: Isang piraso ng tela na maaaring gamitin upang takpan ang
+    iyong bibig o upang basain at gamitin sa paghuhugas ng sarili sa panahon ng insidente
+    ng apoy. Ang paglalagay nito sa iyong bibig ay nakakatulong upang maiwasan ang
+    paglanghap ng usok, at ang paghuhugas ng sarili gamit ang basang tuwalya ay makakapagpababa
+    ng init.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: Papers FS2
   m_EditorClassIdentifier: 
   itemName: Foam Extinguisher Notes
-  itemDescription: Foam Extinguishers have a cream label and are most suited for
-    Class A and B fires. Ideal for school, warehouses, and etc. with buildings constructed
-    from organic materials. This extinguisher suppresses fire by forming a thick
-    cooling blanket effect, sealing the surface of the burning materials.
+  englishItemDescription: Foam Extinguishers have a cream label and are most suited
+    for Class A and B fires. Ideal for school, warehouses, and etc. with buildings
+    constructed from organic materials. This extinguisher suppresses fire by forming
+    a thick cooling blanket effect, sealing the surface of the burning materials.
+  tagalogItemDescription: Ang Foam Extinguishers ay may cream na label at pinaka-angkop
+    para sa Class A at B na apoy. Mainam ito para sa mga paaralan, warehouses, at
+    iba pang mga gusali na gawa sa mga organikong materyales. Ang extinguisher na
+    ito ay pumipigil sa apoy sa pamamagitan ng pagbuo ng isang makapal na cooling
+    blanket effect, na nagsasara sa ibabaw ng mga nasusunog na materyales.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

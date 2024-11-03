@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Water Bucket
   m_EditorClassIdentifier: 
   itemName: Water Bucket
-  itemDescription: It can be used as a temporary way of dealing against fire especially
-    smaller ones, but preferably use a fire extinguisher when dealing against fire
-    as it can be more effective.
+  englishItemDescription: Buckets are often used for holding and carrying water.
+    This can be used when dealing with smaller fires, but it is advised to use a
+    fire extinguisher for better results.
+  tagalogItemDescription: Ang mga balde ay madalas na ginagamit para sa paghawak
+    at pagbitbit ng tubig. Maaaring gamitin ito sa mas maliliit na sunog, pero mas
+    mainam na gumamit ng fire extinguisher para sa mas mahusay na resulta.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 0

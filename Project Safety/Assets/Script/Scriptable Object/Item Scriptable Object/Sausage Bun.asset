@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: Sausage Bun
   m_EditorClassIdentifier: 
   itemName: Sausage Bun
-  itemDescription: A soft, fluffy bun filled with a savory sausage, baked to golden
-    perfection. This delicious treat offers a satisfying blend of tender bread and
-    flavorful sausage in every bite, perfect for a quick snack or hearty meal on
-    the go.
+  englishItemDescription: JM's Hotdog, delicious...
+  tagalogItemDescription: JM's Hotdog, sarap...
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

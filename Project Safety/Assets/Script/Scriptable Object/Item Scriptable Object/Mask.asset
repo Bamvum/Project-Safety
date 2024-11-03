@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Mask
   m_EditorClassIdentifier: 
   itemName: Mask
-  itemDescription: Used to cover your mouth against deadly air such as smokes from
-    a fire.
+  englishItemDescription: Used to cover your face to prevent inhaling smoke.
+  tagalogItemDescription: Ginagamit upang takpan ang iyong bibig para maiwasan ang
+    paglanghap ng usok.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

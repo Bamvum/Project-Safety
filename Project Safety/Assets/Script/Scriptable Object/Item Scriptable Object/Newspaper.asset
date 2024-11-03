@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Newspaper
   m_EditorClassIdentifier: 
   itemName: Newspaper
-  itemDescription: Some news related towards the fire prevention month.
+  englishItemDescription: A printed publication... seems to be related to fire prevention
+    month.
+  tagalogItemDescription: Isang naka-print na publikasyon... mukhang inaano ang fire
+    prevention month.
   itemDistanceToPlayer: 0
   itemYoffset: 0
   isTakable: 0

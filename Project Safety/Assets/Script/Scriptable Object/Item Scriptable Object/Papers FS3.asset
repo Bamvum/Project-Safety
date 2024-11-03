@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: Papers FS3
   m_EditorClassIdentifier: 
   itemName: Co2 Extinguisher Notes
-  itemDescription: Co2 is commonly known as Carbon Dioxide. It is commonly used against
-    flammable liquids and electrical equipment. Electrical equipment can vary from
-    computers, servers, televisions, cellular devices, and etc. It is effective for
-    Class B and C fires, as it is loaded with non-flammable carbon dioxide gas under
-    high pressure.
+  englishItemDescription: Co2 is commonly known as Carbon Dioxide. It is commonly
+    used against flammable liquids and electrical equipment. Electrical equipment
+    can vary from computers, servers, televisions, cellular devices, and etc. It
+    is effective for Class B and C fires, as it is loaded with non-flammable carbon
+    dioxide gas under high pressure.
+  tagalogItemDescription: Ang Co2 ay karaniwang kilala bilang Carbon Dioxide. Ito
+    ay karaniwang ginagamit laban sa mga flammable liquids at electrical equipment.
+    Ang mga electrical equipment ay maaaring mag-iba mula sa mga computer, server,
+    telebisyon, cellular devices, at iba pa. Ito ay epektibo para sa Class B at C
+    na apoy, dahil ito ay puno ng non-flammable na carbon dioxide gas sa ilalim ng
+    mataas na presyon.
   itemDistanceToPlayer: 0.5
   itemYoffset: 0
   isTakable: 0

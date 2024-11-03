@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Dry Chemical Fire Extinguisher
   m_EditorClassIdentifier: 
   itemName: Dry Chemical - Fire Extinguisher
-  itemDescription: Effective for Class A, B, and C fires, this extinguisher quickly
-    suppresses flames using a non-toxic powder. Ideal for home, office, or industrial
-    use.
+  englishItemDescription: Effective for Class A, B, and C fires, this extinguisher
+    quickly suppresses flames using a non-toxic powder. Ideal for home, office, or
+    industrial use.
+  tagalogItemDescription: Ang dry powder extinguisher ay epektibo para sa Class A,
+    B, at C fires. Mabilis nitong napapatay ang apoy gamit ang non-toxic powder.
+    Mainam itong gamitin sa bahay, opisina, o sa mga industriya.
   itemDistanceToPlayer: 0.75
   itemYoffset: 0
   isTakable: 1
