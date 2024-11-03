@@ -184,12 +184,12 @@ public class HomeworkManager : MonoBehaviour
         {
             homeworkScoreText.text = "TPASS: " + PostAssessmentSceneManager.instance.tpassScore + " / 5 \n" + 
                                     "Fire Class: " + PostAssessmentSceneManager.instance.classFireScore + " / 13 \n" + 
-                                    "Fire Extinguisher: " + PostAssessmentSceneManager.instance.fireExtinguisherScore + " / 1 \n " + // CHANGE THIS FOR FINALIZATION
+                                    "Fire Extinguisher: " + PostAssessmentSceneManager.instance.fireExtinguisherScore + " / 10 \n " + // CHANGE THIS FOR FINALIZATION
                                     "General: " + score + " / "  + totalOfQuestions;
 
             if (PostAssessmentSceneManager.instance.tpassScore == 5 && 
                 PostAssessmentSceneManager.instance.classFireScore == 13 &&
-                PostAssessmentSceneManager.instance.fireExtinguisherScore == 1 && // CHANGE THIS
+                PostAssessmentSceneManager.instance.fireExtinguisherScore == 10 && // CHANGE THIS
                 score == totalOfQuestions)
             {
                 PostAssessmentSceneManager.instance.achievementTrigger.ShowAchievement(PostAssessmentSceneManager.instance.fireSafetyMaster);
