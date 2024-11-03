@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using Firebase.Auth;
+using System.Linq;
 
 public class SettingMenu : MonoBehaviour
 {
@@ -55,34 +56,23 @@ public static SettingMenu instance { get; private set; }
         resolutionDropdown.ClearOptions();
 
         List<string> options = new List<string>();
-        int currentResolutionIndex = 0;
 
-        List<(int width, int height)> allowedResolutions = new List<(int, int)>
-    {
-        (1920, 1080),  // 1080p
-        (1280, 720),   // 720p
-        (640, 480),    // 480p
-        (1366, 768)    // 1366x768
-    };
+        // Sort resolutions by width, height, and refresh rate in descending order
+        resolutions = resolutions.OrderByDescending(r => r.width)
+                                 .ThenByDescending(r => r.height)
+                                 .ThenByDescending(r => r.refreshRateRatio.numerator / r.refreshRateRatio.denominator)
+                                 .ToArray();
 
-        foreach (var res in resolutions)
+        int currentResolutionIndex = 0; // Start with the highest resolution after sorting
+
+        for (int i = 0; i < resolutions.Length; i++)
         {
-            // Check if the resolution matches one of the allowed resolutions
-            if (allowedResolutions.Contains((res.width, res.height)))
-            {
-                string option = $"{res.width} X {res.height} @ {res.refreshRateRatio.value}Hz";
-                options.Add(option);
-
-                // Set the current resolution index if this resolution is the current screen resolution
-                if (res.width == Screen.currentResolution.width &&
-                    res.height == Screen.currentResolution.height &&
-                    res.refreshRateRatio.value == Screen.currentResolution.refreshRateRatio.value)
-                {
-                    currentResolutionIndex = options.Count - 1; // Set to the index of the current resolution
-                }
-            }
+            int refreshRateHz = (int)(resolutions[i].refreshRateRatio.numerator / resolutions[i].refreshRateRatio.denominator);
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + refreshRateHz + "Hz";
+            options.Add(option);
         }
 
+        // Add sorted options to the dropdown
         resolutionDropdown.AddOptions(options);
         int savedResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex", currentResolutionIndex);
         resolutionDropdown.value = savedResolutionIndex;
@@ -208,21 +198,14 @@ public static SettingMenu instance { get; private set; }
 
     public void SetResolution(int resolutionIndex)
     {
-        List<(int width, int height)> allowedResolutions = new List<(int, int)>
-    {
-        (1920, 1080),  // 1080p
-        (1280, 720),   // 720p
-        (640, 480),    // 480p
-        (1366, 768)    // 1366x768
-    };
-
-        var selectedResolution = allowedResolutions[resolutionIndex];
+        Resolution resolution = resolutions[resolutionIndex];
+        uint refreshRateHz = (uint)(resolution.refreshRateRatio.numerator / resolution.refreshRateRatio.denominator);
 
         Screen.SetResolution(
-            selectedResolution.width,
-            selectedResolution.height,
-            FullScreenMode.FullScreenWindow,
-            Screen.currentResolution.refreshRateRatio
+            resolution.width,
+            resolution.height,
+            FullScreenMode.FullScreenWindow, // Change as needed
+            new RefreshRate { numerator = refreshRateHz, denominator = 1 }
         );
 
         PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
