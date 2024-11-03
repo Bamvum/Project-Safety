@@ -7,9 +7,12 @@ public class ItemSO : ScriptableObject
 {
     [Header("UI")]
     public string itemName;
+
     [TextArea(3, 5)]
-    
-    public string itemDescription;
+    public string englishItemDescription;
+
+    [TextArea(3, 5)]
+    public string tagalogItemDescription;
 
     [Header("Examine")]
     [Range(0, 5)]

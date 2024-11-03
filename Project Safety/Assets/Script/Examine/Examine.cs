@@ -91,7 +91,14 @@ public class Examine : MonoBehaviour
             {
                 itemDescriptionHUD.SetActive(true);
                 
-                itemDescriptionText.text = item.itemSO.itemDescription;
+                if (SettingMenu.instance.languageDropdown.value == 0)
+                {
+                    itemDescriptionText.text = item.itemSO.englishItemDescription;
+                }
+                else
+                {
+                    itemDescriptionText.text = item.itemSO.tagalogItemDescription;
+                }
             }
         }
     }

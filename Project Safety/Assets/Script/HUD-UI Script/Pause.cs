@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.Universal;
 
 public class Pause : MonoBehaviour
 {
@@ -209,7 +210,14 @@ public class Pause : MonoBehaviour
 
         if (MissionManager.instance.missionSO != null)
         {
-            currentMissionText.text = MissionManager.instance.missionSO.missions[MissionManager.instance.missionIndex];
+            if (SettingMenu.instance.languageDropdown.value == 0)
+            {
+                currentMissionText.text = MissionManager.instance.missionSO.missions[MissionManager.instance.missionIndex];
+            }
+            else
+            {
+                currentMissionText.text = MissionManager.instance.tagalogMissionSO.missions[MissionManager.instance.missionIndex];
+            }
         }
         
         pauseHUDRectTransform.gameObject.SetActive(true);
