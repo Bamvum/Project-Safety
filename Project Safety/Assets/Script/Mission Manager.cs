@@ -39,9 +39,7 @@ public class MissionManager : MonoBehaviour
     [ContextMenu("Display Mission")]
     public void DisplayMission()
     {
-        
-
-        if(missionLanguageIndex == 0)
+        if(SettingMenu.instance.languageDropdown.value == 0)
         {
             missionText.text = missionSO.missions[missionIndex];
         }
