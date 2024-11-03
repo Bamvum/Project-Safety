@@ -41,7 +41,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
     [SerializeField] bool stopSwapperInput;
 
     [Header("Audio")]
-    [SerializeField] AudioSource sceneBGM;
+    public AudioSource sceneBGM;
     [SerializeField] AudioSource correctSFX;
     [SerializeField] AudioSource wrongSFX;
     [SerializeField] AudioSource sceneNameRevealSFX;
