@@ -24,10 +24,10 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Player VC
-    m_To: Clock VC
+  - m_From: Television VC
+    m_To: Player VC
     m_Blend:
-      m_Style: 6
+      m_Style: 1
       m_Time: 1
       m_CustomCurve:
         serializedVersion: 2

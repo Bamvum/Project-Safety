@@ -25,7 +25,6 @@ public class MissionManager : MonoBehaviour
     public TMP_Text missionText;
     public RectTransform missionTextRectTransform;
     public CanvasGroup missionCG;
-    // public RectTransform missionRectTransform;
     
     [Space(10)]
     public AudioSource missionSFX;
@@ -33,20 +32,19 @@ public class MissionManager : MonoBehaviour
 
     void Start()
     {
-        SceneChecker();
     }
 
     [ContextMenu("Display Mission")]
     public void DisplayMission()
     {
-        
-
-        if(missionLanguageIndex == 0)
+        if(SettingMenu.instance.languageDropdown.value == 0)
         {
+            Debug.LogWarning("English Mission");
             missionText.text = missionSO.missions[missionIndex];
         }
         else
         {
+            Debug.LogWarning("Tagalog Mission");
             missionText.text = tagalogMissionSO.missions[missionIndex];
         }
 
@@ -89,87 +87,6 @@ public class MissionManager : MonoBehaviour
 
             DisplayMission();
         });
-    }
-
-    void SceneChecker()
-    {
-        if(SceneManager.GetActiveScene().name == "Prologue")
-        {
-            if (PrologueSceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 1")
-        {
-            if (Act1StudentSceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if(SceneManager.GetActiveScene().name == "Act 1 Scene 2")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 3")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 4")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 1")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
     }
 
 }
