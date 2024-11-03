@@ -17,9 +17,11 @@ MonoBehaviour:
     instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
       type: 3}
     instructionKeyboard: IF FIRE EXTINGUISHER IN HAND, PRESS <sprite name="Space">
-      TO USE THE USE THE FIRE EXTINGUISHER.
+      TO USE THE USE THE FIRE EXTINGUISHER AND PRESS <sprite name="G"> TO DROP FIRE
+      EXTINGUISHER.
     instructionGampad: IF FIRE EXTINGUISHER IN HAND, PRESS <sprite name="Cross">
-      TO USE THE USE THE FIRE EXTINGUISHER.
+      TO USE THE USE THE FIRE EXTINGUISHER AND PRESS <sprite name="Circle"> TO DROP
+      FIRE EXTINGUISHER.
   - title: FF THE INSTRUCTION
     instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
       type: 3}

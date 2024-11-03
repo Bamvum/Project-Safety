@@ -16,10 +16,12 @@ MonoBehaviour:
   - title: USE ITEM
     instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
       type: 3}
-    instructionKeyboard: KUNG MAY HAWAK NA FIRE EXTINGUISHER, PINUTIN ANG <sprite
-      name="Space"> PARA GAMITIN ITO.
-    instructionGampad: KUNG MAY HAWAK NA FIRE EXTINGUISHER, PINUTIN ANG <sprite name="Cross">
-      PARA GAMITIN ITO.
+    instructionKeyboard: KUNG MAY HAWAK NA FIRE EXTINGUISHER, PINDUTIN ANG <sprite
+      name="Space"> PARA GAMITIN ITO AT PINDUTIN ANG <sprite name="G"> PARA IBABA
+      ANG FIRE EXTINGUISHER.
+    instructionGampad: KUNG MAY HAWAK NA FIRE EXTINGUISHER, PINDUTIN ANG <sprite
+      name="Cross"> PARA GAMITIN ITO AT PINDUTIN ANG <sprite name="Circle"> PARA
+      IBABA ANG FIRE EXTINGUISHER.
   - title: FF THE INSTRUCTION
     instructionSprite: {fileID: 21300000, guid: 28e9b3aaed1bd124ebb5c80f63ecd983,
       type: 3}

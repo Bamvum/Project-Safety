@@ -172,15 +172,21 @@ public class HomeworkManager : MonoBehaviour
             homeworkScoreRectTransform.DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetEase(Ease.InFlash);
         });
         homeworkQnA.SetActive(false);
-        homeworkScoreText.text = score + " / "  + totalOfQuestions;
+        
         
         if(SceneManager.GetActiveScene().name == "Prologue")
         {
+            homeworkScoreText.text = score + " / "  + totalOfQuestions;
             Debug.Log("Homework Manager: Cursor Lock in Prologue");
             Cursor.lockState = CursorLockMode.Locked;
         }
         else if (SceneManager.GetActiveScene().name == "Post Assessment")
         {
+            homeworkScoreText.text = "TPASS: " + PostAssessmentSceneManager.instance.tpassScore + " / 5 \n" + 
+                                    "Fire Class: " + PostAssessmentSceneManager.instance.classFireScore + " / 13 \n" + 
+                                    "Fire Extinguisher: " + PostAssessmentSceneManager.instance.fireExtinguisherScore + " / 1 \n " + // CHANGE THIS FOR FINALIZATION
+                                    "General: " + score + " / "  + totalOfQuestions;
+
             if (PostAssessmentSceneManager.instance.tpassScore == 5 && 
                 PostAssessmentSceneManager.instance.classFireScore == 13 &&
                 PostAssessmentSceneManager.instance.fireExtinguisherScore == 1 && // CHANGE THIS

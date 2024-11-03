@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 15. Fire Extinguisher Master
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: 4e9d3c7a6af4fe647ac566ebe4c52b0a, type: 3}
   achievementName: Fire Extinguisher Master
   achievementDescription: Perfect score on Fire Extinguisher in Post Assessment
   achievementPlayerPrefsKey: Post Assessment - Fire Extinguisher Master

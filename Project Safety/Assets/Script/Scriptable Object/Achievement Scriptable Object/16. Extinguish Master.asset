@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55907b558bc222d4abe71ceb6ae05001, type: 3}
   m_Name: 16. Extinguish Master
   m_EditorClassIdentifier: 
-  achievementSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+  achievementSprite: {fileID: 21300000, guid: e3021999816438041b620f0e9850bdd6, type: 3}
   achievementName: Extinguish Master
   achievementDescription: Perfect score in all Fire Safety in Post Assessment
   achievementPlayerPrefsKey: Post Assessment - Extinguish Master

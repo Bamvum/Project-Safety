@@ -229,6 +229,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     tpassExtinguisherTestCG.interactable = true;
+                    isGamepad = false;
                 });
 
         });
@@ -407,7 +408,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     classFireTestCG.interactable = true;
-                    
+                    isGamepad = false;
                 });
 
         });
@@ -492,7 +493,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     fireExtinguisherTestCG.interactable = true;
-                    
+                    isGamepad = false;
                 });
 
         });

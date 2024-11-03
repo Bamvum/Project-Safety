@@ -40,7 +40,7 @@ public class Pause : MonoBehaviour
     [SerializeField] RectTransform audioSettingRectTransform;
     [SerializeField] RectTransform graphicsSettingRectTransform;
     [SerializeField] RectTransform controlsSettingRectTransform;
-    [SerializeField] RectTransform languageSettingRectTransform;
+    // [SerializeField] RectTransform languageSettingRectTransform;
 
     [Header("Selected Button")]
     [SerializeField] GameObject lastSelectedButton; // FOR GAMEPAD
@@ -53,7 +53,7 @@ public class Pause : MonoBehaviour
     [SerializeField] GameObject audioSettingSelectedButton;
     [SerializeField] GameObject graphicsSettingSelectedButton;
     [SerializeField] GameObject controlsSettingSelectedButton;
-    [SerializeField] GameObject languageSettingSelectedButton;
+    // [SerializeField] GameObject languageSettingSelectedButton;
     
     [Header("Audio")]
     [SerializeField] AudioSource bgm;
@@ -102,13 +102,14 @@ public class Pause : MonoBehaviour
             }
             else if (controlsSettingRectTransform.gameObject.activeSelf)
             {
-                controlsSettingRectTransform.gameObject.SetActive(false);
-                languageSettingRectTransform.gameObject.SetActive(true);
-            }
-            else if (languageSettingRectTransform.gameObject.activeSelf)
-            {
+                // controlsSettingRectTransform.gameObject.SetActive(false);
+                // languageSettingRectTransform.gameObject.SetActive(true);
                 Debug.Log("Can't Next Category");
             }
+            // else if (languageSettingRectTransform.gameObject.activeSelf)
+            // {
+            //     Debug.Log("Can't Next Category");
+            // }
         
             isGamepad = false;
         }
@@ -136,11 +137,11 @@ public class Pause : MonoBehaviour
                 graphicsSettingRectTransform.gameObject.SetActive(true);
                 controlsSettingRectTransform.gameObject.SetActive(false);
             }
-            else if (languageSettingRectTransform.gameObject.activeSelf)
-            {
-                controlsSettingRectTransform.gameObject.SetActive(true);
-                languageSettingRectTransform.gameObject.SetActive(false);
-            }
+            // else if (languageSettingRectTransform.gameObject.activeSelf)
+            // {
+            //     controlsSettingRectTransform.gameObject.SetActive(true);
+            //     // languageSettingRectTransform.gameObject.SetActive(false);
+            // }
             
             isGamepad = false;
         }
@@ -343,11 +344,11 @@ public class Pause : MonoBehaviour
                         isGamepad = true;
                     }
 
-                    if (languageSettingRectTransform.gameObject.activeSelf)
-                    {
-                        EventSystem.current.SetSelectedGameObject(languageSettingSelectedButton);
-                        isGamepad = true;
-                    }
+                    // if (languageSettingRectTransform.gameObject.activeSelf)
+                    // {
+                    //     EventSystem.current.SetSelectedGameObject(languageSettingSelectedButton);
+                    //     isGamepad = true;
+                    // }
                 }
                 
             }
@@ -420,7 +421,36 @@ public class Pause : MonoBehaviour
                 });
         });
     }
-    
+
+    #region - SETTING BUTTONS -
+
+    public void AccessAudioSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(true);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        // languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+    public void AccessGraphicsSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(false);
+        graphicsSettingRectTransform.gameObject.SetActive(true);
+        controlsSettingRectTransform.gameObject.SetActive(false);
+        // languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+    public void AccessControlsSetting()
+    {
+        audioSettingRectTransform.gameObject.SetActive(false);
+        graphicsSettingRectTransform.gameObject.SetActive(false);
+        controlsSettingRectTransform.gameObject.SetActive(true);
+        // languageSettingRectTransform.gameObject.SetActive(false);
+    }
+
+
+    #endregion
+
     #region - MAIN MENU -
 
     public void GoToMainMenu()

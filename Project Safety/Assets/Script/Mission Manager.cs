@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System;
+using System.IO;
 
 public class MissionManager : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class MissionManager : MonoBehaviour
     }   
 
     public MissionSO missionSO;
+    public MissionSO tagalogMissionSO;
+
+    [SerializeField] int missionLanguageIndex;
     
     [Space(5)]
     public TMP_Text missionText;
@@ -28,20 +33,23 @@ public class MissionManager : MonoBehaviour
 
     void Start()
     {
-        MissionPropertiesReset();
-    }
-
-    void MissionPropertiesReset()
-    {
-        // ASSIGN
-        // missionRectTransform.anchoredPosition = new Vector2(-325, missionRectTransform.anchoredPosition.y);
-        // missionCG.alpha = 0;
+        SceneChecker();
     }
 
     [ContextMenu("Display Mission")]
     public void DisplayMission()
     {
-        missionText.text = missionSO.missions[missionIndex];
+        
+
+        if(missionLanguageIndex == 0)
+        {
+            missionText.text = missionSO.missions[missionIndex];
+        }
+        else
+        {
+            missionText.text = tagalogMissionSO.missions[missionIndex];
+        }
+
         missionSFX.Play();
 
         Sequence sequence = DOTween.Sequence();
@@ -82,4 +90,86 @@ public class MissionManager : MonoBehaviour
             DisplayMission();
         });
     }
+
+    void SceneChecker()
+    {
+        if(SceneManager.GetActiveScene().name == "Prologue")
+        {
+            if (PrologueSceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 1")
+        {
+            if (Act1StudentSceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if(SceneManager.GetActiveScene().name == "Act 1 Scene 2")
+        {
+            if (Act1Scene2SceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 3")
+        {
+            if (Act1Scene2SceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 4")
+        {
+            if (Act1Scene2SceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 1")
+        {
+            if (Act1Scene2SceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
+        {
+            if (Act1Scene2SceneManager.instance.languageIndex == 0)
+            {
+                missionLanguageIndex = 0;
+            }
+            else
+            {
+                missionLanguageIndex = 1;
+            }
+        }
+    }
+
 }
