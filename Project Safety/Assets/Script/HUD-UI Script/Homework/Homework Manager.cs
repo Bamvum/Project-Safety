@@ -184,12 +184,12 @@ public class HomeworkManager : MonoBehaviour
         {
             homeworkScoreText.text = "TPASS: " + PostAssessmentSceneManager.instance.tpassScore + " / 5 \n" + 
                                     "Fire Class: " + PostAssessmentSceneManager.instance.classFireScore + " / 13 \n" + 
-                                    "Fire Extinguisher: " + PostAssessmentSceneManager.instance.fireExtinguisherScore + " / 1 \n " + // CHANGE THIS FOR FINALIZATION
+                                    "Fire Extinguisher: " + PostAssessmentSceneManager.instance.fireExtinguisherScore + " / 10 \n " + // CHANGE THIS FOR FINALIZATION
                                     "General: " + score + " / "  + totalOfQuestions;
 
             if (PostAssessmentSceneManager.instance.tpassScore == 5 && 
                 PostAssessmentSceneManager.instance.classFireScore == 13 &&
-                PostAssessmentSceneManager.instance.fireExtinguisherScore == 1 && // CHANGE THIS
+                PostAssessmentSceneManager.instance.fireExtinguisherScore == 10 && // CHANGE THIS
                 score == totalOfQuestions)
             {
                 PostAssessmentSceneManager.instance.achievementTrigger.ShowAchievement(PostAssessmentSceneManager.instance.fireSafetyMaster);
@@ -221,19 +221,19 @@ public class HomeworkManager : MonoBehaviour
                 }
 
                 LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                     .OnComplete(() =>
+                    .OnComplete(() =>
                  {
-                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                     this.enabled = false;
+                    LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                    this.enabled = false;
 
-                     if(PrologueSceneManager.instance.languageIndex == 0)
-                     {
+                    if(PrologueSceneManager.instance.languageIndex == 0)
+                    {
                         englishDialogueTrigger.StartDialogue();
-                     }
-                     else
-                     {
+                    }
+                    else
+                    {
                         tagalogDialogueTrigger.StartDialogue();
-                     }
+                    }
                      
                  });
             });
@@ -246,26 +246,28 @@ public class HomeworkManager : MonoBehaviour
 
     void EndOfScene()
     {
-         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        PostAssessmentSceneManager.instance.sceneBGM.DOFade(0,1).SetUpdate(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetUpdate(true)
+            .OnComplete(() =>
+        {
+            homeworkHUD.SetActive(false);
 
-            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-                 .OnComplete(() =>
+            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                .SetUpdate(true)
+                .OnComplete(() =>
             {
-                homeworkHUD.SetActive(false);
-
-                LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                     .OnComplete(() =>
-                 {
-                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                      
-                     this.enabled = false;
-                 });
+                this.enabled = false;
             });
+        });
 
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
+            .SetUpdate(true)
             .OnComplete(() =>
         {
             LoadingSceneManager.instance.loadingScreen.SetActive(true);

@@ -108,19 +108,19 @@ public class PostAssessmentSceneManager : MonoBehaviour
 
     IEnumerator FadeOutEffect()
     {
+        yield return new WaitForSeconds(1);
         
+        sceneNameRevealSFX.Play();
         sceneNameText.DOFade(1,1)
-            .SetDelay(2)
             .SetUpdate(true)
             .OnComplete(() =>
-            {
-                sceneNameRevealSFX.Play();
-                
+            {        
                 sceneNameText.DOFade(0, 1)
+                    .SetDelay(3)
                     .SetUpdate(true);
             });
 
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(5);
 
         LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
@@ -180,7 +180,8 @@ public class PostAssessmentSceneManager : MonoBehaviour
     {
         if(DeviceManager.instance.keyboardDevice)
         {
-            if(tpassExtinguisherTestRectTransform.gameObject.activeSelf || classFireTestRectTransform.gameObject.activeSelf)
+            if(tpassExtinguisherTestRectTransform.gameObject.activeSelf || classFireTestRectTransform.gameObject.activeSelf ||
+                fireExtinguisherTestRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
                 EventSystem.current.SetSelectedGameObject(null);
@@ -202,6 +203,11 @@ public class PostAssessmentSceneManager : MonoBehaviour
                 if(classFireTestRectTransform.gameObject.activeSelf)
                 {
                     EventSystem.current.SetSelectedGameObject(classFireTestSelectedButton);
+                }
+
+                if (fireExtinguisherTestRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(fireExtinguisherTestSelectedButton);
                 }
 
                 isGamepad = true;
@@ -508,7 +514,7 @@ public class PostAssessmentSceneManager : MonoBehaviour
             HomeworkManager.instance.enabled = true;
             HomeworkManager.instance.homeworkHUD.SetActive(true);
 
-            if(fireExtinguisherScore == 1) // CHANGE IF FINALIZE
+            if(fireExtinguisherScore == 10) // CHANGE IF FINALIZE
             {
                 achievementTrigger.ShowAchievement(fireExtinguisherMaster);
             }

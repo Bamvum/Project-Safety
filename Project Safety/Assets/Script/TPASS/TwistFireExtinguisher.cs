@@ -10,6 +10,8 @@ public class TwistFireExtinguisher : MonoBehaviour
 {
     PlayerControls playerControls;
 
+    [SerializeField] GameObject fireExtinguisherSafetySeal;
+
     [Header("Script")]
     [SerializeField] TPASS tpass;
     [SerializeField] PullFireExtinguisher pullFE;
