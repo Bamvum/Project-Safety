@@ -221,19 +221,19 @@ public class HomeworkManager : MonoBehaviour
                 }
 
                 LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                     .OnComplete(() =>
+                    .OnComplete(() =>
                  {
-                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
-                     this.enabled = false;
+                    LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                    this.enabled = false;
 
-                     if(PrologueSceneManager.instance.languageIndex == 0)
-                     {
+                    if(PrologueSceneManager.instance.languageIndex == 0)
+                    {
                         englishDialogueTrigger.StartDialogue();
-                     }
-                     else
-                     {
+                    }
+                    else
+                    {
                         tagalogDialogueTrigger.StartDialogue();
-                     }
+                    }
                      
                  });
             });
@@ -246,26 +246,28 @@ public class HomeworkManager : MonoBehaviour
 
     void EndOfScene()
     {
-         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
+        PostAssessmentSceneManager.instance.sceneBGM.DOFade(0,1).SetUpdate(true);
+        LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
+            .SetUpdate(true)
+            .OnComplete(() =>
+        {
+            homeworkHUD.SetActive(false);
 
-            LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
-                 .OnComplete(() =>
+            LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
+                .SetUpdate(true)
+                .OnComplete(() =>
             {
-                homeworkHUD.SetActive(false);
-
-                LoadingSceneManager.instance.fadeImage.DOFade(0, LoadingSceneManager.instance.fadeDuration)
-                     .OnComplete(() =>
-                 {
-                     LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
+                LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
                      
-                     this.enabled = false;
-                 });
+                this.enabled = false;
             });
+        });
 
         LoadingSceneManager.instance.fadeImage.gameObject.SetActive(true);
-
         LoadingSceneManager.instance.fadeImage.DOFade(1, LoadingSceneManager.instance.fadeDuration)
             .SetEase(Ease.Linear)
+            .SetUpdate(true)
             .OnComplete(() =>
         {
             LoadingSceneManager.instance.loadingScreen.SetActive(true);
