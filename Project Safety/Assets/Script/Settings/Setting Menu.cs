@@ -200,11 +200,12 @@ public static SettingMenu instance { get; private set; }
     {
         Resolution resolution = resolutions[resolutionIndex];
         uint refreshRateHz = (uint)(resolution.refreshRateRatio.numerator / resolution.refreshRateRatio.denominator);
+        Debug.LogError(fullScreenToggle.isOn);
 
         Screen.SetResolution(
             resolution.width,
             resolution.height,
-            FullScreenMode.FullScreenWindow, // Change as needed
+            fullScreenToggle.isOn ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed, // Toggle fullscreen 
             new RefreshRate { numerator = refreshRateHz, denominator = 1 }
         );
 

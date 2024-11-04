@@ -6,13 +6,24 @@ using UnityEngine;
 public class SmokeInhalation : MonoBehaviour
 {
     [SerializeField] AudioSource coughSFX;
+    [SerializeField] AudioSource hurtSFX;
+
+    [SerializeField] bool isFire;
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            coughSFX.Play();
-            coughSFX.DOFade(1, 1).SetUpdate(true);
+            if (isFire)
+            {
+                hurtSFX.Play();
+                hurtSFX.DOFade(1, 1).SetUpdate(true);
+            }
+            else
+            {
+                coughSFX.Play();
+                coughSFX.DOFade(1, 1).SetUpdate(true);
+            }
         }
     }
 
@@ -22,8 +33,16 @@ public class SmokeInhalation : MonoBehaviour
         {
             if(!GameOver.instance.gameOverHUDCG.gameObject.activeSelf)
             {
-                Debug.Log("Player inside Smoke");
-                Act2Scene2SceneManager.instance.playerHealth -= .5f;
+                if (isFire)
+                {
+                    Debug.Log("Player inside Fire");
+                    Act2Scene2SceneManager.instance.playerHealth -= .55f;
+                }
+                else
+                {
+                    Debug.Log("Player inside Smoke");
+                    Act2Scene2SceneManager.instance.playerHealth -= .4f;
+                }
 
             }
         }
@@ -33,7 +52,14 @@ public class SmokeInhalation : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            coughSFX.DOFade(0, 1).SetUpdate(true);
+            if (isFire)
+            {
+                hurtSFX.DOFade(0, 1).SetUpdate(true);
+            }
+            else
+            {
+                coughSFX.DOFade(0, 1).SetUpdate(true);
+            }
         }
     }
 

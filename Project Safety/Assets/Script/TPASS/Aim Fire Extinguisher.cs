@@ -80,28 +80,30 @@ public class AimFireExtinguisher : MonoBehaviour
     private void ToDrop(InputAction.CallbackContext context)
     {
         Debug.Log("Drop!~");
-        if(canInput)
+        // if(canInput)
+        // {
+
+        // }
+
+        if (PlayerScript.instance.interact.inHandItem != null)
         {
-            if (PlayerScript.instance.interact.inHandItem != null)
+            HUDManager.instance.missionHUD.SetActive(true);
+            PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
+            PlayerScript.instance.interact.inHandItem.layer = 6;
+
+            if (PlayerScript.instance.interact.inHandItemRB != null)
             {
-                HUDManager.instance.missionHUD.SetActive(true);
-                PlayerScript.instance.interact.inHandItem.transform.SetParent(null);
-                PlayerScript.instance.interact.inHandItem.layer = 6;
-
-                if (PlayerScript.instance.interact.inHandItemRB != null)
-                {
-                    PlayerScript.instance.interact.inHandItemRB.isKinematic = false;
-                }
-
-                PlayerScript.instance.interact.inHandItem = null;
-                PlayerScript.instance.interact.inHandItemRB = null;
-
-                PlayerScript.instance.interact.leftHandExtinguisher.weight = 0;
-                PlayerScript.instance.interact.rightHandExtinguisher.weight = 0;
-
-                PlayerScript.instance.interact.enabled = true;
-                this.enabled = false;
+                PlayerScript.instance.interact.inHandItemRB.isKinematic = false;
             }
+
+            PlayerScript.instance.interact.inHandItem = null;
+            PlayerScript.instance.interact.inHandItemRB = null;
+
+            PlayerScript.instance.interact.leftHandExtinguisher.weight = 0;
+            PlayerScript.instance.interact.rightHandExtinguisher.weight = 0;
+
+            PlayerScript.instance.interact.enabled = true;
+            this.enabled = false;
         }
     }
 
@@ -111,6 +113,8 @@ public class AimFireExtinguisher : MonoBehaviour
         aimHUD.gameObject.SetActive(false);
 
         playerControls.AimFE.Disable();
+
+        canInput = false;
     }
 
     public void AimFireExtinguisherInstance()
@@ -150,8 +154,6 @@ public class AimFireExtinguisher : MonoBehaviour
         {
             sequence.Join(tpass.tpassBackgroundCG.DOFade(0f, 1f));
             Debug.Log("Sequence Completed!");
-
-            canInput = true;
         });
     }
 
@@ -165,7 +167,7 @@ public class AimFireExtinguisher : MonoBehaviour
         if (hit.collider != null)
         {
             extinguishImage.SetActive(false);
-            
+            canInput = false;
         }
 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -226,11 +228,12 @@ public class AimFireExtinguisher : MonoBehaviour
             K (Kitchen Fires)                13
         */
 
-        else if (hit.collider.gameObject.layer == 13)
-        {
-            canInput = false;
-            // DISPLAY WRONG
-        }
+        // else if (hit.collider.gameObject.layer == 13)
+        // {
+        //     canInput = false;
+        //     // DISPLAY WRONG
+        // }
+
     }
 
     void FoamFEType()
@@ -256,12 +259,12 @@ public class AimFireExtinguisher : MonoBehaviour
             K (Kitchen Fires)                13
         */
 
-        else if (hit.collider.gameObject.layer == 11 || hit.collider.gameObject.layer == 12 ||
-                hit.collider.gameObject.layer == 13)
-        {
-            // DISPLAY WRONG
-            canInput = false;
-        }
+        // else if (hit.collider.gameObject.layer == 11 || hit.collider.gameObject.layer == 12 ||
+        //         hit.collider.gameObject.layer == 13)
+        // {
+        //     // DISPLAY WRONG
+        //     canInput = false;
+        // }
     }
 
     void CO2FEType()
@@ -287,12 +290,12 @@ public class AimFireExtinguisher : MonoBehaviour
             K (Kitchen Fires)                13
         */
 
-        else if (hit.collider.gameObject.layer == 9 || hit.collider.gameObject.layer == 12 ||
-                hit.collider.gameObject.layer == 13)
-        {
-            // DISPLAY WRONG
-            canInput = false;
-        }
+        // else if (hit.collider.gameObject.layer == 9 || hit.collider.gameObject.layer == 12 ||
+        //         hit.collider.gameObject.layer == 13)
+        // {
+        //     // DISPLAY WRONG
+        //     canInput = false;
+        // }
     }
 
     void WaterFEType()
@@ -318,12 +321,12 @@ public class AimFireExtinguisher : MonoBehaviour
             K (Kitchen Fires)                13
         */
 
-        else if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 || 
-                hit.collider.gameObject.layer == 12 || hit.collider.gameObject.layer == 13)
-        {
-            // DISPLAY WRONG
-            canInput = false;
-        }
+        // else if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 || 
+        //         hit.collider.gameObject.layer == 12 || hit.collider.gameObject.layer == 13)
+        // {
+        //     // DISPLAY WRONG
+        //     canInput = false;
+        // }
     }
 
     void WetChemicalFEType()
@@ -348,11 +351,11 @@ public class AimFireExtinguisher : MonoBehaviour
             D (Metal Fires)                  12
         */
 
-        else if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 || 
-                hit.collider.gameObject.layer == 12)
-        {
-            // DISPLAY VISUAL
-            canInput = false;
-        }
+        // else if (hit.collider.gameObject.layer == 10 || hit.collider.gameObject.layer == 11 || 
+        //         hit.collider.gameObject.layer == 12)
+        // {
+        //     // DISPLAY VISUAL
+        //     canInput = false;
+        // }
     }
 }

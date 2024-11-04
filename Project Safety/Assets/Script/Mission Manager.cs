@@ -33,7 +33,7 @@ public class MissionManager : MonoBehaviour
 
     void Start()
     {
-        SceneChecker();
+
     }
 
     [ContextMenu("Display Mission")]
@@ -89,85 +89,5 @@ public class MissionManager : MonoBehaviour
         });
     }
 
-    void SceneChecker()
-    {
-        if(SceneManager.GetActiveScene().name == "Prologue")
-        {
-            if (PrologueSceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 1")
-        {
-            if (Act1StudentSceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if(SceneManager.GetActiveScene().name == "Act 1 Scene 2")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 3")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 1 Scene 4")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 1")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Act 2 Scene 2")
-        {
-            if (Act1Scene2SceneManager.instance.languageIndex == 0)
-            {
-                missionLanguageIndex = 0;
-            }
-            else
-            {
-                missionLanguageIndex = 1;
-            }
-        }
-    }
 
 }

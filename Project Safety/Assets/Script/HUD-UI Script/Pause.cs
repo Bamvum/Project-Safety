@@ -235,6 +235,7 @@ public class Pause : MonoBehaviour
                 pauseButtonCG.interactable = true;
                 isGamepad = false;
                 isPause = true;
+                PauseAudio(false);
             });
     }
     
@@ -255,6 +256,9 @@ public class Pause : MonoBehaviour
                 isGamepad = false;
                 isPause = false;
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                PauseAudio(true);
+                
             });
     }
 
@@ -315,6 +319,7 @@ public class Pause : MonoBehaviour
             if(pauseHUDRectTransform.gameObject.activeSelf || settingRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 EventSystem.current.SetSelectedGameObject(null);
                 isGamepad = false;
             }
@@ -323,8 +328,9 @@ public class Pause : MonoBehaviour
         else if (DeviceManager.instance.gamepadDevice)
         {
             Cursor.lockState = CursorLockMode.Locked;
-
-            if(!isGamepad)
+            Cursor.visible = false;
+            
+            if (!isGamepad)
             {
                 if(pauseHUDRectTransform.gameObject.activeSelf)
                 {
@@ -390,44 +396,70 @@ public class Pause : MonoBehaviour
 
     public void DisplaySetting()
     {
-        settingRectTransform.sizeDelta = new Vector2(0, 1080);
+        // settingRectTransform.sizeDelta = new Vector2(0, 1080);
+
+
+        // settingRectTransform.gameObject.SetActive(true);
+        // settingRectTransform.DOSizeDelta(new Vector2(1920, settingRectTransform.sizeDelta.y), .25f)
+        //     .SetEase(Ease.InFlash)
+        //     .SetUpdate(true)
+        //     .OnComplete(() =>
+        //     {
+        //         settingButtonCG.gameObject.SetActive(true);
+        //         settingButtonCG.DOFade(1, .25f).SetUpdate(true).OnComplete(() =>
+        //         {
+        //             settingButtonCG.interactable = true;
+        //             isGamepad = false;
+        //         });
+        //     });
 
         pauseButtonCG.interactable = false;
         isGamepad = true;
-
         settingRectTransform.gameObject.SetActive(true);
-        settingRectTransform.DOSizeDelta(new Vector2(1920, settingRectTransform.sizeDelta.y), .25f)
-            .SetEase(Ease.InFlash)
+
+        settingRectTransform.DOAnchorPos(new Vector2(0, 0), .5f)
+            .SetEase(Ease.OutBack)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                settingButtonCG.gameObject.SetActive(true);
-                settingButtonCG.DOFade(1, .25f).SetUpdate(true).OnComplete(() =>
-                {
-                    settingButtonCG.interactable = true;
-                    isGamepad = false;
-                });
+                settingButtonCG.interactable = true;
+                isGamepad = false;
             });
+
+
     }
 
     public void SettingBack()
     {
-        settingButtonCG.DOFade(0, .25f).SetUpdate(true).OnComplete(() =>
-        {
-            settingButtonCG.gameObject.SetActive(false);
-            settingButtonCG.interactable = false;
-            isGamepad = true;
+        // settingButtonCG.DOFade(0, .25f).SetUpdate(true).OnComplete(() =>
+        // {
+        //     settingButtonCG.gameObject.SetActive(false);
+        //     settingButtonCG.interactable = false;
+        //     isGamepad = true;
 
-            settingRectTransform.DOSizeDelta(new Vector2(settingRectTransform.sizeDelta.x, 0), .25f)
-                .SetEase(Ease.OutFlash)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    settingRectTransform.gameObject.SetActive(false);
-                    pauseButtonCG.interactable = true;
-                    isGamepad = false;
-                });
-        });
+        //     settingRectTransform.DOSizeDelta(new Vector2(settingRectTransform.sizeDelta.x, 0), .25f)
+        //         .SetEase(Ease.OutFlash)
+        //         .SetUpdate(true)
+        //         .OnComplete(() =>
+        //         {
+        //             settingRectTransform.gameObject.SetActive(false);
+        //             pauseButtonCG.interactable = true;
+        //             isGamepad = false;
+        //         });
+        // });
+
+        settingButtonCG.interactable = false;
+        isGamepad = true;
+
+        settingRectTransform.DOAnchorPos(new Vector2(1920, 0), .5f)
+            .SetEase(Ease.OutExpo)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                settingRectTransform.gameObject.SetActive(false);
+                pauseButtonCG.interactable = true;
+                isGamepad = false;
+            });
     }
 
     #region - SETTING BUTTONS -
@@ -489,6 +521,15 @@ public class Pause : MonoBehaviour
     public void PauseCanInput(bool status)
     {
         canInput = status;
+    }
+
+    #endregion
+
+    #region  - AUDIO LISTENER -
+
+    public void PauseAudio(bool status)
+    {
+        AudioListener.pause = status;
     }
 
     #endregion

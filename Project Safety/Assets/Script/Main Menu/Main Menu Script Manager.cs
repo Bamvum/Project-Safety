@@ -502,7 +502,7 @@ public class MainMenuScriptManager : MonoBehaviour
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 selectSceneRectTransform.gameObject.SetActive(true);
 
-                selectSceneRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                selectSceneRectTransform.DOAnchorPos(new Vector2(0, 0), .5f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
@@ -524,7 +524,7 @@ public class MainMenuScriptManager : MonoBehaviour
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 settingRectTransform.gameObject.SetActive(true);
 
-                settingRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                settingRectTransform.DOAnchorPos(new Vector2(0, 0), .5f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
@@ -546,7 +546,7 @@ public class MainMenuScriptManager : MonoBehaviour
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 achievementRectTransform.gameObject.SetActive(true);
 
-                achievementRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                achievementRectTransform.DOAnchorPos(new Vector2(0, 0), .5f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
@@ -570,7 +570,7 @@ public class MainMenuScriptManager : MonoBehaviour
                 mainMenuHUDRectTransform.gameObject.SetActive(false);
                 creditsRectTransform.gameObject.SetActive(true);
 
-                creditsRectTransform.DOAnchorPos(new Vector2(-960, 0), .5f)
+                creditsRectTransform.DOAnchorPos(new Vector2(0, 0), .5f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
@@ -618,7 +618,7 @@ public class MainMenuScriptManager : MonoBehaviour
     public void selectSceneBack()
     {
         selectSceneButtonCG.interactable = false;
-        selectSceneRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+        selectSceneRectTransform.DOAnchorPos(new Vector2(1960, 0), .5f)
             .SetEase(Ease.OutExpo)
             .OnComplete(() =>
             {
@@ -632,6 +632,9 @@ public class MainMenuScriptManager : MonoBehaviour
 
     public void SelectScene(string sceneName)
     {
+        selectSceneButtonCG.interactable = false;
+        selectSceneRectTransform.gameObject.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
         
         bgm.DOFade(0, LoadingSceneManager.instance.fadeDuration).SetEase(Ease.Linear);
@@ -656,7 +659,7 @@ public class MainMenuScriptManager : MonoBehaviour
     public void SettingBack()
     {
         settingButtonCG.interactable = false;
-        settingRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+        settingRectTransform.DOAnchorPos(new Vector2(1920, 0), .5f)
             .SetEase(Ease.OutExpo)
             .OnComplete(() =>
             {
@@ -706,7 +709,7 @@ public class MainMenuScriptManager : MonoBehaviour
     public void AchievementBack()
     {
         achievementButtonCG.interactable = false;
-        achievementRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+        achievementRectTransform.DOAnchorPos(new Vector2(1920, 0), .5f)
             .SetEase(Ease.OutExpo)
             .OnComplete(() =>
             {
@@ -724,7 +727,7 @@ public class MainMenuScriptManager : MonoBehaviour
     void CreditsBack()
     {
         creditsButtonCG.interactable = false;
-        creditsRectTransform.DOAnchorPos(new Vector2(960, 0), 1)
+        creditsRectTransform.DOAnchorPos(new Vector2(1920, 0), .5f)
             .SetEase(Ease.OutExpo)
             .OnComplete(() =>
             {

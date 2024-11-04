@@ -28,12 +28,12 @@ public class AchievementTrigger : MonoBehaviour
             FirebaseManager.Instance.SaveAchievementToFirebase(achievementSO.achievementPlayerPrefsKey, true);
 
             achievementSFX.Play();
-            achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 425), 1)
+            achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, -200), 1)
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 675), 1)
+                    achievementRectTransform.DOAnchorPos(new Vector2(achievementRectTransform.anchoredPosition.x, 0), 1)
                         .SetEase(Ease.OutQuad)
                         .SetUpdate(true)
                         .SetDelay(5);
