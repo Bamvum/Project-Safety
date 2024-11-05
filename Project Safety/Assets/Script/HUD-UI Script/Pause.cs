@@ -206,6 +206,8 @@ public class Pause : MonoBehaviour
 
     void ShowPause()
     {
+        PauseAudio(true);
+
         Time.timeScale = 0;
 
         if (MissionManager.instance.missionSO != null)
@@ -235,12 +237,14 @@ public class Pause : MonoBehaviour
                 pauseButtonCG.interactable = true;
                 isGamepad = false;
                 isPause = true;
-                PauseAudio(false);
+                
             });
     }
     
     public void HidePause()
     {
+        PauseAudio(false);
+
         if (bgm != null)
         {
             bgm.DOFade(1, 1);
@@ -257,7 +261,7 @@ public class Pause : MonoBehaviour
                 isPause = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                PauseAudio(true);
+                
                 
             });
     }
