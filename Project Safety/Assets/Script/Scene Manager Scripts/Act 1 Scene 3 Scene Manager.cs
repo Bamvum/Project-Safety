@@ -6,7 +6,7 @@ using System.Threading;
 
 using TMPro;
 using Cinemachine;
-using UnityEngine.iOS;
+// using UnityEngine.iOS;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {

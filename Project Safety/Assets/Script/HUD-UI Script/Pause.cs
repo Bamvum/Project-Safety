@@ -257,7 +257,7 @@ public class Pause : MonoBehaviour
                 isGamepad = false;
                 isPause = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                // Cursor.visible = false;
                 
                 
             });
@@ -320,7 +320,7 @@ public class Pause : MonoBehaviour
             if(pauseHUDRectTransform.gameObject.activeSelf || settingRectTransform.gameObject.activeSelf)
             {
                 Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                // Cursor.visible = true;
                 EventSystem.current.SetSelectedGameObject(null);
                 isGamepad = false;
             }

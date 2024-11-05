@@ -158,6 +158,8 @@ public class InstructionManager : MonoBehaviour
     public void ShowInstruction()
     {
         Time.timeScale = 0;
+
+        Cursor.lockState = CursorLockMode.None;
         
         if(alarmSFX != null)
         {
@@ -206,6 +208,7 @@ public class InstructionManager : MonoBehaviour
                 instructionHUD.SetActive(false);
 
                 Cursor.lockState = CursorLockMode.Locked;
+
                 
                 Pause.instance.PauseCanInput(true);
                 
