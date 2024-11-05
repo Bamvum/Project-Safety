@@ -36,7 +36,7 @@ public class SmokeInhalation : MonoBehaviour
                 if (isFire)
                 {
                     Debug.Log("Player inside Fire");
-                    Act2Scene2SceneManager.instance.playerHealth -= .55f;
+                    Act2Scene2SceneManager.instance.playerHealth -= .85f;
                 }
                 else
                 {
