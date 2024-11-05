@@ -138,7 +138,9 @@ public class StatisticSceneManager : MonoBehaviour
 
     void Update()
     {
+        DeviceInputCheckerUI();
         DeviceInputCheckerNavGuide();
+        
 
         // GAMEPAD VIBRATION ON NAVIGATION 
         if (Gamepad.current != null && EventSystem.current.currentSelectedGameObject != null)
@@ -173,6 +175,36 @@ public class StatisticSceneManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         Gamepad.current.SetMotorSpeeds(0, 0);
     }
+
+    #region - DEVICE CHECKER [HUD/UI] -
+
+    public void DeviceInputCheckerUI()
+    {
+        if (DeviceManager.instance.keyboardDevice)
+        {
+            if (statisticRectTransform.gameObject.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                EventSystem.current.SetSelectedGameObject(null);
+                isGamepad = false;
+            }
+        }
+        else if (DeviceManager.instance.gamepadDevice)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+
+            if (!isGamepad)
+            {
+                if (statisticRectTransform.gameObject.activeSelf)
+                {
+                    EventSystem.current.SetSelectedGameObject(statisticSelectedButton);
+                    isGamepad = true;
+                }
+            }
+        }
+    }
+
+    #endregion
 
     #region - NAVIGATION GUIDE -
 

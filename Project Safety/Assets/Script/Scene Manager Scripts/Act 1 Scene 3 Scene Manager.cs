@@ -6,6 +6,7 @@ using System.Threading;
 
 using TMPro;
 using Cinemachine;
+using UnityEngine.iOS;
 
 public class Act1Scene3SceneManager : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class Act1Scene3SceneManager : MonoBehaviour
         FirebaseManager.Instance.SaveChapterUnlockToFirebase("Fire Station Scene", true);
     }
     
+    [Header("Virtual Camera")]
+    [SerializeField] CinemachineVirtualCamera englishFireTruckVC;
+    [SerializeField] CinemachineVirtualCamera englishChairVC;
+    [SerializeField] CinemachineVirtualCamera tagalogFireTruckVC;
+    [SerializeField] CinemachineVirtualCamera tagalogChairVC;
+
     [Header("HUD")]
     [SerializeField] CanvasGroup sceneNameText;
     [SerializeField] Sequence sequence;
@@ -180,7 +187,9 @@ public class Act1Scene3SceneManager : MonoBehaviour
 
     void Update()
     {
-        if(!moveTowardFireTruck)
+        CameraDeviceChecker();
+
+        if (!moveTowardFireTruck)
         {
             if(languageIndex == 0)
             {
@@ -240,6 +249,7 @@ public class Act1Scene3SceneManager : MonoBehaviour
                         });
                     });
 
+
                     moveTowardFireTruck = true;
                 }
             }
@@ -285,5 +295,66 @@ public class Act1Scene3SceneManager : MonoBehaviour
                 LoadingSceneManager.instance.enabled = true;
                 LoadingSceneManager.instance.sceneName = "Act 1 Scene 4";
             });
+    }
+
+    void CameraDeviceChecker()
+    {
+
+        if (languageIndex == 0)
+        {
+            var fireTruckPOV = englishFireTruckVC.GetCinemachineComponent<CinemachinePOV>();
+            var chaiorPOV = englishChairVC.GetCinemachineComponent<CinemachinePOV>();
+
+            if (DeviceManager.instance.keyboardDevice)
+            {
+                
+                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
+                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
+                
+                chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
+                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
+      
+            
+            }
+            else if (DeviceManager.instance.gamepadDevice)
+            {
+                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
+                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
+                
+                chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
+                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
+                  
+            }
+
+        }
+        else
+        {
+            var fireTruckPOV = tagalogFireTruckVC.GetCinemachineComponent<CinemachinePOV>();
+            var chaiorPOV = tagalogChairVC.GetCinemachineComponent<CinemachinePOV>();
+
+            if (DeviceManager.instance.keyboardDevice)
+            {
+                
+                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = .1f;
+                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
+                
+                chaiorPOV.m_VerticalAxis.m_MaxSpeed = .1f;
+                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
+      
+            
+            }
+            else if (DeviceManager.instance.gamepadDevice)
+            {
+                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = 1;
+                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = 1;
+                
+                chaiorPOV.m_VerticalAxis.m_MaxSpeed = 1;
+                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = 1;
+                  
+            }
+        }
+
+        
+
     }
 }
