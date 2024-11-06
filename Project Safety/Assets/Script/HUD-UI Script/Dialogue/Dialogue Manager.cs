@@ -29,8 +29,8 @@ public class DialogueManager : MonoBehaviour
     public float typingSpeed = 0.03f;
     List<DialogueProperties> dialogueList;
     int currentDialogueIndex;
-    [SerializeField] float elpasedTime;
-    [SerializeField] float maximumElapsedTime;
+    float elpasedTime;
+    float maximumElapsedTime;
 
     [Header("Dialogue HUD")]
     [SerializeField] RectTransform dialogueBackground;
@@ -56,14 +56,17 @@ public class DialogueManager : MonoBehaviour
 
     [Space(10)]
     
-    [SerializeField] AudioSource dialogueSFX;
     bool isInDialogue;
     bool isSpecialEvent;
     [SerializeField] bool isFloatDelay;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource dialogueSFX;
+    [SerializeField] AudioSource dialogueSpeechSFX;
+
     [Header("DoTween")]
-    [SerializeField] float punchDuration = 0.3f;
-    [SerializeField] float punchScale = 0.2f;
+    float punchDuration = 0.3f;
+    float punchScale = 0.2f;
 
 
     void Start()
@@ -150,6 +153,7 @@ public class DialogueManager : MonoBehaviour
             DialogueProperties line = dialogueList[currentDialogueIndex];
             isSpecialEvent =  line.isOtherEvent;
             maximumElapsedTime = line.delayNextDialogue;
+            dialogueSpeechSFX.clip = line.dialogueSpeech;
             dialogueSFX.clip = line.dialogouAudio;
             dialogueSFX.Play();
             elpasedTime = 0;
@@ -208,6 +212,7 @@ public class DialogueManager : MonoBehaviour
         actionOption.SetActive(false);
         dialogueBackground.gameObject.SetActive(true);
 
+        // DELAY UNTIL NEXT DIALOGUE
         if(dialogueList[currentDialogueIndex].delayNextDialogue != 0)
         {
             isFloatDelay = true;
@@ -217,6 +222,8 @@ public class DialogueManager : MonoBehaviour
             isFloatDelay = false;
         }
 
+
+        // DIALOGUE TEXT SPEED
         foreach(char letter in text.ToCharArray())
         {
             dialogueText.text += letter;
@@ -224,6 +231,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(SettingMenu.instance.dialogueSpeedSlider.value);
         }
 
+        // OTHER EVENT IN DIALOGUE
         if(dialogueList[currentDialogueIndex].isOtherEvent)
         {
             yield return new WaitUntil(() => !dialogueSFX.isPlaying);
@@ -245,6 +253,7 @@ public class DialogueManager : MonoBehaviour
             dialogueBackground.gameObject.SetActive(false);
         }
 
+        // DIALOGUE END
         if(dialogueList[currentDialogueIndex].isEnd)
         {
             dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();

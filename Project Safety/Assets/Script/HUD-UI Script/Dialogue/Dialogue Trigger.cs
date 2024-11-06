@@ -53,31 +53,35 @@ public class DialogueProperties
     public string npcName;
     [TextArea(3, 10)]
     public string dialogue;
+
+    [Space(10)]
     public float delayNextDialogue;
-    public bool isEnd;
+
+    [Header("Audio")]
+    public AudioClip dialogueSpeech;
+    public AudioClip dialogouAudio;
 
     [Header("Choices")]
     public bool isDialogueAQuestion; // DEFAULT CHOICES TO CHOOSE IS 2
     public bool isDialogueA3ChoicesQuestion;
 
-    [Space(20)]
+    [Space(10)]
     public string choiceAnswer1;
     public int choice1JumpTo;
     
-    [Space(10)]
+    [Space(5)]
     public string choiceAnswer2;
     public int choice2JumpTo;
 
-    [Space(10)]
+    [Space(5)]
     public string choiceAnswer3;
     public int choice3JumpTo;
-
-    [Space(20)]
-    public AudioClip dialogouAudio;
-    public bool isOtherEvent; // DEFAULT IS AUTOMATATIC ENABLING PLAYER SCRIPTS
-
 
     [Header("Trigger Event")]
     public UnityEvent startDialogueEvent;
     public UnityEvent endDialogueEvent;
+    
+    [Space(10)]
+    public bool isOtherEvent; // DEFAULT IS AUTOMATATIC ENABLING PLAYER SCRIPTS
+    public bool isEnd;
 }
