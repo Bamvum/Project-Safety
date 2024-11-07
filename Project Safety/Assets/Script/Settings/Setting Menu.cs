@@ -23,6 +23,7 @@ public static SettingMenu instance { get; private set; }
     [Space(5)]
     [SerializeField] Slider masterVolumeSlider;
     [SerializeField] Slider musicVolumeSlider;
+    [SerializeField] Slider voiceVolumeSlider;
     [SerializeField] Slider sfxVolumeSlider;
 
     [Space(5)]
@@ -46,6 +47,7 @@ public static SettingMenu instance { get; private set; }
         // VOLUME PLAYER PREFS
         masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume");
         musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        voiceVolumeSlider.value = PlayerPrefs.GetFloat("VoiceVolume");
         sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume");
 
         // GRAPHICS PLAYER PREFS
@@ -134,6 +136,7 @@ public static SettingMenu instance { get; private set; }
         FirebaseManager.Instance.SaveSettingsToFirebase(
             masterVolumeSlider.value,
             musicVolumeSlider.value,
+            voiceVolumeSlider.value,
             sfxVolumeSlider.value,
             fullScreenToggle.isOn,
             qualityDropdown.value,
@@ -162,6 +165,14 @@ public static SettingMenu instance { get; private set; }
         PlayerPrefs.SetFloat("MusicVolume", musicVolume);
         SaveSettings();
     }
+
+    public void SetVoiceVolume(float voiceVolume)
+    {
+        audioMixer.SetFloat("Voice", voiceVolume);
+        PlayerPrefs.SetFloat("VoiceVolume", voiceVolume);
+        SaveSettings();
+    }
+
 
     public void SetSFXVolume(float sfxVolume)
     {

@@ -55,11 +55,15 @@ public class DialogueProperties
     public string dialogue;
 
     [Space(10)]
+    public bool isDialogueImportant;
+    
+    [Space(10)]
     public float delayNextDialogue;
 
     [Header("Audio")]
     public AudioClip dialogueSpeech;
     public AudioClip dialogouAudio;
+
 
     [Header("Choices")]
     public bool isDialogueAQuestion; // DEFAULT CHOICES TO CHOOSE IS 2

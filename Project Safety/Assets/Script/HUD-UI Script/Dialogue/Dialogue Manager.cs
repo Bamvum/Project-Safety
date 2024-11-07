@@ -154,6 +154,7 @@ public class DialogueManager : MonoBehaviour
             isSpecialEvent =  line.isOtherEvent;
             maximumElapsedTime = line.delayNextDialogue;
             dialogueSpeechSFX.clip = line.dialogueSpeech;
+            dialogueSpeechSFX.Play();
             dialogueSFX.clip = line.dialogouAudio;
             dialogueSFX.Play();
             elpasedTime = 0;
@@ -231,30 +232,63 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(SettingMenu.instance.dialogueSpeedSlider.value);
         }
 
-        // OTHER EVENT IN DIALOGUE
-        if(dialogueList[currentDialogueIndex].isOtherEvent)
-        {
-            yield return new WaitUntil(() => !dialogueSFX.isPlaying);
-            yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
-            yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
-        
-            actionOption.SetActive(true);
-            yield return new WaitUntil(() => actionInput == true);
-            dialogueBackground.gameObject.SetActive(false);
-        }
-        else
-        {
-            yield return new WaitUntil(() => !dialogueSFX.isPlaying);
-            yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
-            yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+        // if(dialogueList[currentDialogueIndex].isDialogueImportant)
+        // {
+        //     yield return new WaitUntil(() => !dialogueSpeechSFX.isPlaying);
 
-            actionOption.SetActive(true);
-            yield return new WaitUntil(() => actionInput == true);
-            dialogueBackground.gameObject.SetActive(false);
+        //     // OTHER EVENT IN DIALOGUE
+        //     if (dialogueList[currentDialogueIndex].isOtherEvent)
+        //     {
+        //         yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+        //         yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
+        //         yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+
+        //         actionOption.SetActive(true);
+        //         yield return new WaitUntil(() => actionInput == true);
+        //         dialogueBackground.gameObject.SetActive(false);
+        //     }
+        //     else
+        //     {
+        //         yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+        //         yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
+        //         yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+
+        //         actionOption.SetActive(true);
+        //         yield return new WaitUntil(() => actionInput == true);
+        //         dialogueBackground.gameObject.SetActive(false);
+        //     }
+
+        // }
+        // else
+        // {
+        //     yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+        //     yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
+        //     yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+
+        //     actionOption.SetActive(true);
+        //     yield return new WaitUntil(() => actionInput == true);
+        //     dialogueBackground.gameObject.SetActive(false);
+        // }
+
+        if (dialogueList[currentDialogueIndex].isDialogueImportant)
+        {
+            yield return new WaitUntil(() => !dialogueSpeechSFX.isPlaying);
         }
+
+        // Shared code between all cases
+        yield return new WaitUntil(() => !dialogueSFX.isPlaying);
+        yield return new WaitUntil(() => !PlayerScript.instance.cinemachineBrain.IsBlending);
+        yield return new WaitUntil(() => elpasedTime >= dialogueList[currentDialogueIndex].delayNextDialogue);
+
+        actionOption.SetActive(true);
+        yield return new WaitUntil(() => actionInput == true);
+        dialogueBackground.gameObject.SetActive(false);
+
+
+
 
         // DIALOGUE END
-        if(dialogueList[currentDialogueIndex].isEnd)
+        if (dialogueList[currentDialogueIndex].isEnd)
         {
             dialogueList[currentDialogueIndex].endDialogueEvent?.Invoke();
             DialogueStop();

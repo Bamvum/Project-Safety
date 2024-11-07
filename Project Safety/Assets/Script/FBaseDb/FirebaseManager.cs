@@ -114,7 +114,7 @@ public class FirebaseManager : MonoBehaviour
 
     #region SettingsDB
 
-    public void SaveSettingsToFirebase(float masterVolume, float musicVolume, float sfxVolume, bool isFullScreen, int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens, float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
+    public void SaveSettingsToFirebase(float masterVolume, float musicVolume, float voiceVolume, float sfxVolume, bool isFullScreen, int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens, float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
     {
         if (auth.CurrentUser != null)
         {
@@ -124,6 +124,7 @@ public class FirebaseManager : MonoBehaviour
 
             userSettingsRef.Child("masterVolume").SetValueAsync(masterVolume);
             userSettingsRef.Child("musicVolume").SetValueAsync(musicVolume);
+            userSettingsRef.Child("voiceVolume").SetValueAsync(voiceVolume);
             userSettingsRef.Child("sfxVolume").SetValueAsync(sfxVolume);
             userSettingsRef.Child("isFullScreen").SetValueAsync(isFullScreen ? 1 : 0);
             userSettingsRef.Child("qualityIndex").SetValueAsync(qualityIndex);
