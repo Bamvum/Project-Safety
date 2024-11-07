@@ -96,11 +96,12 @@ public static SettingMenu instance { get; private set; }
 
     public void FetchSettings()
     {
-        FirebaseManager.Instance.FetchSettingsFromFirebase((masterVolume, musicVolume, sfxVolume, isFullScreen, qualityIndex, resolutionIndex, xMouseSens, yMouseSens, xGamepadSens, yGamepadSens, dialogueSpeed, languageIndex) =>
+        FirebaseManager.Instance.FetchSettingsFromFirebase((masterVolume, musicVolume, voiceVolume, sfxVolume, isFullScreen, qualityIndex, resolutionIndex, xMouseSens, yMouseSens, xGamepadSens, yGamepadSens, dialogueSpeed, languageIndex) =>
         {
             // Set the slider values for audio settings
             masterVolumeSlider.value = masterVolume;
             musicVolumeSlider.value = musicVolume;
+            voiceVolumeSlider.value = voiceVolume;
             sfxVolumeSlider.value = sfxVolume;
 
             // Set the toggle for full-screen mode

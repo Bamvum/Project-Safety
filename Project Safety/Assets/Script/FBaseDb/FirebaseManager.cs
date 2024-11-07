@@ -144,7 +144,7 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public void FetchSettingsFromFirebase(Action<float, float, float, bool, int, int, float, float, float, float, float, int> onSettingsFetched)
+    public void FetchSettingsFromFirebase(Action<float, float, float, float, bool, int, int, float, float, float, float, float, int> onSettingsFetched)
     {
         if (auth.CurrentUser != null)
         {
@@ -160,6 +160,7 @@ public class FirebaseManager : MonoBehaviour
 
                         float masterVolume = float.Parse(settingsSnapshot.Child("masterVolume").Value.ToString());
                         float musicVolume = float.Parse(settingsSnapshot.Child("musicVolume").Value.ToString());
+                        float voiceVolume = float.Parse(settingsSnapshot.Child("voiceVolume").Value.ToString());
                         float sfxVolume = float.Parse(settingsSnapshot.Child("sfxVolume").Value.ToString());
                         bool isFullScreen = settingsSnapshot.Child("isFullScreen").Value.ToString() == "1";
                         int qualityIndex = int.Parse(settingsSnapshot.Child("qualityIndex").Value.ToString());
@@ -171,12 +172,12 @@ public class FirebaseManager : MonoBehaviour
                         float dialogueSpeed = float.Parse(settingsSnapshot.Child("dialogueSpeed").Value.ToString());
                         int languageIndex = int.Parse(settingsSnapshot.Child("languageIndex").Value.ToString());
 
-                        onSettingsFetched(masterVolume, musicVolume, sfxVolume, isFullScreen, qualityIndex, resolutionIndex, xMouseSens, yMouseSens, xGamepadSens, yGamepadSens, dialogueSpeed, languageIndex);
+                        onSettingsFetched(masterVolume, musicVolume, voiceVolume, sfxVolume, isFullScreen, qualityIndex, resolutionIndex, xMouseSens, yMouseSens, xGamepadSens, yGamepadSens, dialogueSpeed, languageIndex);
                     }
                     else
                     {
                         Debug.LogWarning("No settings found for user, using default values.");
-                        onSettingsFetched(1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
+                        onSettingsFetched(1f, 1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
                     }
                 }
                 else
@@ -188,7 +189,7 @@ public class FirebaseManager : MonoBehaviour
         else
         {
             Debug.LogWarning("No user is signed in, cannot fetch settings from Firebase.");
-            onSettingsFetched(1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
+            onSettingsFetched(1f, 1f, 1f, 1f, true, 0, 0, 1f, 1f, 1f, 1f, 1f, 0); // Provide default values
         }
     }
 

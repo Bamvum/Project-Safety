@@ -311,7 +311,7 @@ public class StatisticSceneManager : MonoBehaviour
     #region - STATISTIC Data Set - 
 
     private void OnSettingsFetched(
-    float masterVolume, float musicVolume, float sfxVolume, bool isFullScreen,
+    float masterVolume, float musicVolume, float voiceVolume, float sfxVolume, bool isFullScreen,
     int qualityIndex, int resolutionIndex, float xMouseSens, float yMouseSens,
     float xGamepadSens, float yGamepadSens, float dialogueSpeed, int languageIndex)
     {
