@@ -1347,15 +1347,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""9d1d243a-5745-4694-bade-a9c01a129eab"",
             ""actions"": [
                 {
-                    ""name"": ""Action"",
-                    ""type"": ""Button"",
-                    ""id"": ""62f2bb17-e3b3-42aa-9a43-4b468dde0cac"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Drop"",
                     ""type"": ""Button"",
                     ""id"": ""bf64b167-6616-4e10-9aca-cfbcdd2c7002"",
@@ -1363,31 +1354,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Examine"",
+                    ""type"": ""Button"",
+                    ""id"": ""db150f44-6732-41cb-bacd-f7e8bf2f7a3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""f9f24d60-6a72-457c-bc50-089e5d609219"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Option 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""19f97c96-fb03-48b2-a0aa-b161afcfc154"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Option 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""f19cc28c-6190-40e1-9a91-ef956b48ffe9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""ee74f617-d980-4dab-a498-27adda115460"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""75959208-9809-4a59-8cd5-c379605f1eca"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""07478af7-2503-431d-9438-28b6a85bd413"",
@@ -1407,6 +1412,94 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4010172b-33c0-4629-95f4-4909478e52b3"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Examine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c55b20e-76fa-471d-9a35-b126b28d733e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Examine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89ce9d05-e338-4cf6-b471-fbc0d6d96e7c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc97bcfe-2525-4813-829e-95df9f1cc425"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f885e28-8deb-4fcd-84be-053d3f363b6d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Option 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ae99ab1-ea9c-44df-bedf-15117f905645"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Option 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2351dc09-ce4b-4b83-86cb-4e656b65cacf"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Option 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d9c97a4-ab4a-439e-8b92-f2ea3ae3b436"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Option 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1910,8 +2003,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PullFE_ActionLock = m_PullFE.FindAction("Action Lock", throwIfNotFound: true);
         // AimFE
         m_AimFE = asset.FindActionMap("AimFE", throwIfNotFound: true);
-        m_AimFE_Action = m_AimFE.FindAction("Action", throwIfNotFound: true);
         m_AimFE_Drop = m_AimFE.FindAction("Drop", throwIfNotFound: true);
+        m_AimFE_Examine = m_AimFE.FindAction("Examine", throwIfNotFound: true);
+        m_AimFE_Exit = m_AimFE.FindAction("Exit", throwIfNotFound: true);
+        m_AimFE_Option1 = m_AimFE.FindAction("Option 1", throwIfNotFound: true);
+        m_AimFE_Option2 = m_AimFE.FindAction("Option 2", throwIfNotFound: true);
         // NavigateUI
         m_NavigateUI = asset.FindActionMap("NavigateUI", throwIfNotFound: true);
         m_NavigateUI_Navigate = m_NavigateUI.FindAction("Navigate", throwIfNotFound: true);
@@ -2726,14 +2822,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // AimFE
     private readonly InputActionMap m_AimFE;
     private List<IAimFEActions> m_AimFEActionsCallbackInterfaces = new List<IAimFEActions>();
-    private readonly InputAction m_AimFE_Action;
     private readonly InputAction m_AimFE_Drop;
+    private readonly InputAction m_AimFE_Examine;
+    private readonly InputAction m_AimFE_Exit;
+    private readonly InputAction m_AimFE_Option1;
+    private readonly InputAction m_AimFE_Option2;
     public struct AimFEActions
     {
         private @PlayerControls m_Wrapper;
         public AimFEActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Action => m_Wrapper.m_AimFE_Action;
         public InputAction @Drop => m_Wrapper.m_AimFE_Drop;
+        public InputAction @Examine => m_Wrapper.m_AimFE_Examine;
+        public InputAction @Exit => m_Wrapper.m_AimFE_Exit;
+        public InputAction @Option1 => m_Wrapper.m_AimFE_Option1;
+        public InputAction @Option2 => m_Wrapper.m_AimFE_Option2;
         public InputActionMap Get() { return m_Wrapper.m_AimFE; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2743,22 +2845,40 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_AimFEActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_AimFEActionsCallbackInterfaces.Add(instance);
-            @Action.started += instance.OnAction;
-            @Action.performed += instance.OnAction;
-            @Action.canceled += instance.OnAction;
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
+            @Examine.started += instance.OnExamine;
+            @Examine.performed += instance.OnExamine;
+            @Examine.canceled += instance.OnExamine;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
+            @Option1.started += instance.OnOption1;
+            @Option1.performed += instance.OnOption1;
+            @Option1.canceled += instance.OnOption1;
+            @Option2.started += instance.OnOption2;
+            @Option2.performed += instance.OnOption2;
+            @Option2.canceled += instance.OnOption2;
         }
 
         private void UnregisterCallbacks(IAimFEActions instance)
         {
-            @Action.started -= instance.OnAction;
-            @Action.performed -= instance.OnAction;
-            @Action.canceled -= instance.OnAction;
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
+            @Examine.started -= instance.OnExamine;
+            @Examine.performed -= instance.OnExamine;
+            @Examine.canceled -= instance.OnExamine;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
+            @Option1.started -= instance.OnOption1;
+            @Option1.performed -= instance.OnOption1;
+            @Option1.canceled -= instance.OnOption1;
+            @Option2.started -= instance.OnOption2;
+            @Option2.performed -= instance.OnOption2;
+            @Option2.canceled -= instance.OnOption2;
         }
 
         public void RemoveCallbacks(IAimFEActions instance)
@@ -3144,8 +3264,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public interface IAimFEActions
     {
-        void OnAction(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+        void OnExamine(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
+        void OnOption1(InputAction.CallbackContext context);
+        void OnOption2(InputAction.CallbackContext context);
     }
     public interface INavigateUIActions
     {

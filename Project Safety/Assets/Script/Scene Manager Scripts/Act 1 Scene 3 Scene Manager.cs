@@ -218,7 +218,6 @@ public class Act1Scene3SceneManager : MonoBehaviour
                         {
                             LoadingSceneManager.instance.fadeImage.gameObject.SetActive(false);
 
-                            Debug.LogError("Fire Truck Trigger Dialogue");
                             englishStartDialogue.StartDialogue();
                             streetAmbiance.Play();
                         });

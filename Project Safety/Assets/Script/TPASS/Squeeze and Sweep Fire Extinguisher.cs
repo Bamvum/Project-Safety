@@ -19,9 +19,12 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     [SerializeField] CanvasGroup squeezeAndSweepHUD;
     [SerializeField] RectTransform squeezeAndSweepRectTransform;
     [SerializeField] CanvasGroup squeezeAndSweepCG;
-
+    
     [Space(10)]
     [SerializeField] Slider squeezeAndSweepSlider;
+    [SerializeField] Image fireHealthVisual;
+    [SerializeField] float fireMaxHealth;
+
     
     [Space(10)]
     [SerializeField] Image visualsImage;
@@ -40,10 +43,14 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     bool sliderLoop = true;
     [SerializeField] float sliderSpeed = .2f;
 
-
     [Space(10)]
     public float rotationSpeed = 2.0f; // Speed of rotation
     public float rotationRange = 15.0f; // Range of rotation (-15 to 15)
+
+    [Header("Audio")]
+    [SerializeField] AudioSource badSFX;
+    [SerializeField] AudioSource goodSFX;
+    [SerializeField] AudioSource perfectSFX;
 
     void Awake()
     {
@@ -82,6 +89,10 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         aimFE.aimHUD.gameObject.SetActive(false);
 
         fireInteractedPS = fireInteracted.GetComponent<ParticleSystem>();
+        fireMaxHealth = fireInteractedPS.emission.rateOverTime.constant;
+
+        fireHealthVisual.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
+        // Set fireMaxHealth to Image Filled Amount
 
         rotationSpeed = 0;
         particleParent.transform.localRotation = Quaternion.Euler(0, particleParent.transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z);
@@ -139,43 +150,53 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
             visualsImage.sprite = visualSprite[1];
         }
 
-        if(rotationSpeed >= 50)
+
+        var fireInteractedPSEmission = fireInteractedPS.emission;
+
+        
+        // FIRE IS 0 HEALTH
+        // if ()
+        if (fireHealthVisual.fillAmount <= 0)
         {
-            rotationSpeed = 0;
-
-            Debug.Log("Done");
-            canInput = false;
-            squeezeAndSweepCG.DOFade(0, 1).OnComplete(() =>
+            if (canInput)
             {
-                tpass.checkMarkDone.gameObject.SetActive(true);
-                tpass.correctSFX.Play();
+                Debug.Log("Done");
+                canInput = false;
 
-                tpass.checkMarkDone.DOFade(1, 1).OnComplete(() =>
+                fireHealthVisual.fillAmount = 1;
+
+                squeezeAndSweepCG.DOFade(0, 1).OnComplete(() =>
                 {
-                    tpass.checkMarkDone.DOFade(0, 1).OnComplete(() =>
+                    tpass.checkMarkDone.gameObject.SetActive(true);
+                    tpass.correctSFX.Play();
+
+                    tpass.checkMarkDone.DOFade(1, 1).OnComplete(() =>
                     {
-                        tpass.SqueezeAndSweepVC.Priority= 0;
-                        PlayerScript.instance.playerVC.Priority = 10;
-
-                        tpass.checkMarkDone.gameObject.SetActive(false);
-
-                        squeezeAndSweepHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                        tpass.checkMarkDone.DOFade(0, 1).OnComplete(() =>
                         {
-                            aimFE.aimHUD.gameObject.SetActive(true);
+                            tpass.SqueezeAndSweepVC.Priority = 0;
+                            PlayerScript.instance.playerVC.Priority = 10;
 
-                            squeezeAndSweepHUD.gameObject.SetActive(false);
-                    
-                            HUDManager.instance.playerHUD.SetActive(true);
-                            particleParent.SetActive(false);
-                            
-                            fireInteracted.gameObject.SetActive(false);
+                            tpass.checkMarkDone.gameObject.SetActive(false);
 
-                            this.enabled = false;
-                            aimFE.enabled = true;
+                            squeezeAndSweepHUD.DOFade(0, 1).SetEase(Ease.Linear).OnComplete(() =>
+                            {
+                                aimFE.aimHUD.gameObject.SetActive(true);
+
+                                squeezeAndSweepHUD.gameObject.SetActive(false);
+
+                                HUDManager.instance.playerHUD.SetActive(true);
+                                particleParent.SetActive(false);
+
+                                fireInteracted.gameObject.SetActive(false);
+
+                                this.enabled = false;
+                                aimFE.enabled = true;
+                            });
                         });
                     });
                 });
-            });
+            }
         }
         else
         {
@@ -183,19 +204,22 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
             {
                 if (actionPressed)
                 {
-                    var fireInteractedPSEmission = fireInteractedPS.emission;
-
                     if (squeezeAndSweepSlider.value >= 0.475f && squeezeAndSweepSlider.value <= 0.525f)
                     {
                         Debug.Log("Perfect!");
+                        perfectSFX.Play();
+                        
 
+                        fireHealthVisual.fillAmount -= .09f;
                         rotationSpeed += 15;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 15);
                     }
                     else if ((squeezeAndSweepSlider.value >= 0.3f && squeezeAndSweepSlider.value <= 0.475f) || (squeezeAndSweepSlider.value > 0.525f && squeezeAndSweepSlider.value <= 0.7f))
                     {
                         Debug.Log("Good!");
+                        goodSFX.Play();
 
+                        fireHealthVisual.fillAmount -= .075f;
                         rotationSpeed += 7.5f;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 7.5f);
 
@@ -203,7 +227,9 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                     else if ((squeezeAndSweepSlider.value >= 0f && squeezeAndSweepSlider.value <= 0.3f) || (squeezeAndSweepSlider.value >= 0.7f && squeezeAndSweepSlider.value <= 1f))
                     {
                         Debug.Log("Bad!");
+                        badSFX.Play();
 
+                        fireHealthVisual.fillAmount -= .001f;
                         rotationSpeed += 1;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 1);
                     }
