@@ -106,6 +106,8 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         fireInteractedPS = fireInteracted.GetComponent<ParticleSystem>();
         fireMaxHealth = fireInteractedPS.emission.rateOverTime.constant;
 
+        fireHealthParent2.gameObject.SetActive(false);
+        fireHealthParent3.gameObject.SetActive(false);
         fireHealthVisual1.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
         fireHealthVisual2.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
         fireHealthVisual3.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
@@ -239,18 +241,18 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 
                         fireHealthVisual1.fillAmount -= .09f;
                         rotationSpeed += 15;
-                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 15);
+                        fireInteractedPSEmission.rateOverTime = fireInteractedPSEmission.rateOverTime.constant - 15;
 
                         if (fireSpread1 != null)
                         {
                             fireHealthVisual2.fillAmount -= .09f;
-                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 15);
+                            fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 15;
                         }
 
                         if(fireSpread2 != null)
                         {
                             fireHealthVisual3.fillAmount -= .09f;
-                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 15);
+                            fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 15;
                         }
                     }
                     else if ((squeezeAndSweepSlider.value >= 0.3f && squeezeAndSweepSlider.value <= 0.475f) || (squeezeAndSweepSlider.value > 0.525f && squeezeAndSweepSlider.value <= 0.7f))
@@ -260,18 +262,18 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 
                         fireHealthVisual1.fillAmount -= .075f;
                         rotationSpeed += 7.5f;
-                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 7.5f);
+                        fireInteractedPSEmission.rateOverTime = fireInteractedPSEmission.rateOverTime.constant - 7.5f;
 
                         if (fireSpread1 != null)
                         {
                             fireHealthVisual2.fillAmount -= .075f;
-                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 7.5f);
+                            fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 7.5f;
                         }
 
                         if(fireSpread2 != null)
                         {
                             fireHealthVisual3.fillAmount -= .075f;
-                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 7.5f);
+                            fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 7.5f;
                         }
 
                     }
@@ -283,18 +285,18 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         fireHealthVisual1.fillAmount -= .001f;
                         rotationSpeed += 1;
                         wrongInput++;
-                        fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 1);
+                        fireInteractedPSEmission.rateOverTime = fireInteractedPSEmission.rateOverTime.constant - 1;
 
                         if (fireSpread1 != null)
                         {
                             fireHealthVisual2.fillAmount -= .001f;
-                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 1);
+                            fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 1;
                         }
 
                         if(fireSpread2 != null)
                         {
                             fireHealthVisual3.fillAmount -= .001f;
-                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 1);
+                            fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 1;
                         }
                     }
 
@@ -331,6 +333,8 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                             
                             fireHealthParent3.gameObject.SetActive(true);
                             fireHealthVisual3.fillAmount = fireHealthVisual1.fillAmount;
+
+                            fireSpread++;
                         }
 
                         if (aimFE.stageOfFire.incipientStage)
