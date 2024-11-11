@@ -324,7 +324,7 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         {
                             Debug.LogError("Fire Spread 2! Created");
                             
-                            fireSpread2 = Instantiate(fireInteracted, fireInteracted.transform);
+                            fireSpread2 = Instantiate(fireSpread1, fireInteracted.transform);
                             fireSpread2.transform.localPosition = new Vector3(0.2f, 0, 0);
                             fireSpread2.transform.localRotation = Quaternion.identity;
                             fireSpread2.transform.localScale = Vector3.one;
