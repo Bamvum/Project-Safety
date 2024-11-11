@@ -18,7 +18,7 @@ public class AimFireExtinguisher : MonoBehaviour
     [Header("Script")]
     [SerializeField] TPASS tpass;
     [SerializeField] SqueezeandSweepFireExtinguisher squeezeAndSweepFE;
-    StageOfFire stageOfFire;
+    public StageOfFire stageOfFire;
 
     [Header("Fire Extinguisher Type")]
 
@@ -52,8 +52,6 @@ public class AimFireExtinguisher : MonoBehaviour
     [SerializeField] Image[] choices;
     [SerializeField] Sprite[] keyboardSprite;
     [SerializeField] Sprite[] gamepadSprite;
-    
-    
 
     [Space(10)]
     [SerializeField] GameObject extinguishImage;
@@ -66,6 +64,7 @@ public class AimFireExtinguisher : MonoBehaviour
     [SerializeField] bool isExtinguishable;
     [SerializeField] bool canInput;
     [SerializeField] bool examineMode;
+    [SerializeField] AudioSource wrongSFX;
 
     void Awake()
     {
@@ -229,8 +228,7 @@ public class AimFireExtinguisher : MonoBehaviour
         {
             if (stageOfFire.fullyDevelopStage)
             {
-                // DISPLAY THAT VISUAL THAT FULLY DEVELOP STAGE CAN'T EXTINGUISH
-                // OR AUDIO - WRONG SFX
+                wrongSFX.Play();
             }
             else
             {

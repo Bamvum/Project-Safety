@@ -22,7 +22,12 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     
     [Space(10)]
     [SerializeField] Slider squeezeAndSweepSlider;
-    [SerializeField] Image fireHealthVisual;
+    [SerializeField] Image fireHealthParent1;
+    [SerializeField] Image fireHealthVisual1;
+    [SerializeField] Image fireHealthParent2;
+    [SerializeField] Image fireHealthVisual2;
+    [SerializeField] Image fireHealthParent3;
+    [SerializeField] Image fireHealthVisual3;
     [SerializeField] float fireMaxHealth;
 
     
@@ -36,9 +41,19 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
     [SerializeField] GameObject particleParent;
     [SerializeField] ParticleSystem.MinMaxCurve fireExtinguisherPSEmission;
     [SerializeField] ParticleSystem fireExtinguisherPS;
-    
+
+    [Space(10)]
+    public GameObject fireSpread1;
+    [SerializeField] ParticleSystem fireSpread1PS;
+    public GameObject fireSpread2;
+    [SerializeField] ParticleSystem fireSpread2PS;
+
+
     [Header("Flag")]
     [SerializeField] bool actionPressed;
+    [SerializeField] int wrongInput;
+    [SerializeField] bool stopFireSpread;
+    [SerializeField] int fireSpread;
     [SerializeField] bool canInput;
     bool sliderLoop = true;
     [SerializeField] float sliderSpeed = .2f;
@@ -91,7 +106,9 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
         fireInteractedPS = fireInteracted.GetComponent<ParticleSystem>();
         fireMaxHealth = fireInteractedPS.emission.rateOverTime.constant;
 
-        fireHealthVisual.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
+        fireHealthVisual1.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
+        fireHealthVisual2.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
+        fireHealthVisual3.fillAmount = fireMaxHealth / 100f; // If fireMaxHealth is out of 100
         // Set fireMaxHealth to Image Filled Amount
 
         rotationSpeed = 0;
@@ -153,17 +170,27 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
 
         var fireInteractedPSEmission = fireInteractedPS.emission;
 
+        // FIRE SPREAD (INSTANTIATE)
+        // if (fireSpread1 != null)
+        // {
+            var fireSpread1PSEmission = fireSpread1PS.emission;
+        // }
+
+        // if (fireSpread2 != null)
+        // {
+            var fireSpread2PSEmission = fireSpread2PS.emission;
+        // }
         
         // FIRE IS 0 HEALTH
         // if ()
-        if (fireHealthVisual.fillAmount <= 0)
+        if (fireHealthVisual1.fillAmount <= 0)
         {
             if (canInput)
             {
                 Debug.Log("Done");
                 canInput = false;
 
-                fireHealthVisual.fillAmount = 1;
+                fireHealthVisual1.fillAmount = .01f;
 
                 squeezeAndSweepCG.DOFade(0, 1).OnComplete(() =>
                 {
@@ -210,18 +237,42 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         perfectSFX.Play();
                         
 
-                        fireHealthVisual.fillAmount -= .09f;
+                        fireHealthVisual1.fillAmount -= .09f;
                         rotationSpeed += 15;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 15);
+
+                        if (fireSpread1 != null)
+                        {
+                            fireHealthVisual2.fillAmount -= .09f;
+                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 15);
+                        }
+
+                        if(fireSpread2 != null)
+                        {
+                            fireHealthVisual3.fillAmount -= .09f;
+                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 15);
+                        }
                     }
                     else if ((squeezeAndSweepSlider.value >= 0.3f && squeezeAndSweepSlider.value <= 0.475f) || (squeezeAndSweepSlider.value > 0.525f && squeezeAndSweepSlider.value <= 0.7f))
                     {
                         Debug.Log("Good!");
                         goodSFX.Play();
 
-                        fireHealthVisual.fillAmount -= .075f;
+                        fireHealthVisual1.fillAmount -= .075f;
                         rotationSpeed += 7.5f;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 7.5f);
+
+                        if (fireSpread1 != null)
+                        {
+                            fireHealthVisual2.fillAmount -= .075f;
+                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 7.5f);
+                        }
+
+                        if(fireSpread2 != null)
+                        {
+                            fireHealthVisual3.fillAmount -= .075f;
+                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 7.5f);
+                        }
 
                     }
                     else if ((squeezeAndSweepSlider.value >= 0f && squeezeAndSweepSlider.value <= 0.3f) || (squeezeAndSweepSlider.value >= 0.7f && squeezeAndSweepSlider.value <= 1f))
@@ -229,9 +280,73 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         Debug.Log("Bad!");
                         badSFX.Play();
 
-                        fireHealthVisual.fillAmount -= .001f;
+                        fireHealthVisual1.fillAmount -= .001f;
                         rotationSpeed += 1;
+                        wrongInput++;
                         fireInteractedPSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireInteractedPSEmission.rateOverTime.constant - 1);
+
+                        if (fireSpread1 != null)
+                        {
+                            fireHealthVisual2.fillAmount -= .001f;
+                            fireSpread1PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread1PSEmission.rateOverTime.constant - 1);
+                        }
+
+                        if(fireSpread2 != null)
+                        {
+                            fireHealthVisual3.fillAmount -= .001f;
+                            fireSpread2PSEmission.rateOverTime = new ParticleSystem.MinMaxCurve(fireSpread2PSEmission.rateOverTime.constant - 1);
+                        }
+                    }
+
+                    if (wrongInput == 2)
+                    {
+                        wrongInput = 0;
+
+                        if (fireSpread == 0)
+                        {
+                            Debug.LogError("Fire Spread 1! Created");
+                            
+                            fireSpread1 = Instantiate(fireInteracted, fireInteracted.transform);
+                            fireSpread1.transform.localPosition = new Vector3(-0.2f, 0, 0);
+                            fireSpread1.transform.localRotation = Quaternion.identity;
+                            fireSpread1.transform.localScale = Vector3.one;
+
+                            fireSpread1PS = fireSpread1.GetComponent<ParticleSystem>();
+                            
+                            fireHealthParent2.gameObject.SetActive(true);
+                            fireHealthVisual2.fillAmount = fireHealthVisual1.fillAmount;
+
+                            fireSpread++;
+                        }
+                        else if (fireSpread == 1)
+                        {
+                            Debug.LogError("Fire Spread 2! Created");
+                            
+                            fireSpread2 = Instantiate(fireInteracted, fireInteracted.transform);
+                            fireSpread2.transform.localPosition = new Vector3(0.2f, 0, 0);
+                            fireSpread2.transform.localRotation = Quaternion.identity;
+                            fireSpread2.transform.localScale = Vector3.one;
+
+                            fireSpread2PS = fireSpread2.GetComponent<ParticleSystem>();
+                            
+                            fireHealthParent3.gameObject.SetActive(true);
+                            fireHealthVisual3.fillAmount = fireHealthVisual1.fillAmount;
+                        }
+
+                        if (aimFE.stageOfFire.incipientStage)
+                        {
+                            aimFE.stageOfFire.incipientStage = false;
+                            aimFE.stageOfFire.growthStage = true;
+                        }
+                        else if (aimFE.stageOfFire.growthStage) 
+                        {
+                            // GAME OVER
+                        }
+                        else if (aimFE.stageOfFire.fullyDevelopStage)
+                        {
+
+                        }
+
                     }
 
 
