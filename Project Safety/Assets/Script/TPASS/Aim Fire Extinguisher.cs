@@ -124,73 +124,77 @@ public class AimFireExtinguisher : MonoBehaviour
     {
         if(!examineMode && PlayerScript.instance.interact.inHandItem != null)
         {
-            Debug.Log("Examine Fire!~");
-            examineMode = true;
-            
-            Sequence sequence = DOTween.Sequence();
-
-            // DISABLE MOVEMENT
-            PlayerScript.instance.playerMovement.enabled = false;
-            PlayerScript.instance.cinemachineInputProvider.enabled = false;
-            PlayerScript.instance.stamina.enabled = false;
-
-            // DISABLE AIM HUD
-            aimCG.DOFade(0, 1).SetEase(Ease.Linear).SetUpdate(true);
-            gameplayCG.DOFade(0, 1).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() =>
+            if(canInput)
             {
-                aimRectTransform.gameObject.SetActive(false);
-                gameplayRectTransform.gameObject.SetActive(false);
-                
-                examineFireCG.gameObject.SetActive(true);
-            
-                examineFireCG.DOFade(1, 1).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() =>
+                Debug.Log("Examine Fire!~");
+                examineMode = true;
+
+                Sequence sequence = DOTween.Sequence();
+
+                // DISABLE MOVEMENT
+                PlayerScript.instance.playerMovement.enabled = false;
+                PlayerScript.instance.cinemachineInputProvider.enabled = false;
+                PlayerScript.instance.stamina.enabled = false;
+
+                // DISABLE AIM HUD
+                aimCG.DOFade(0, 1).SetEase(Ease.Linear).SetUpdate(true);
+                gameplayCG.DOFade(0, 1).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() =>
                 {
-                    titleStageOfFire.DOFade(1, 1).SetEase(Ease.Linear).SetUpdate(true);
+                    aimRectTransform.gameObject.SetActive(false);
+                    gameplayRectTransform.gameObject.SetActive(false);
 
-                    choices[0].gameObject.SetActive(true);
-                    choices[1].gameObject.SetActive(true);
-                    
-                    parentChoices[0].DOScale(Vector3.one, .1f).OnComplete(() =>
-                    {
-                        parentChoices[0].DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetUpdate(true);
-                    });
+                    examineFireCG.gameObject.SetActive(true);
 
-                    parentChoices[1].DOScale(Vector3.one, .1f).OnComplete(() =>
+                    examineFireCG.DOFade(1, 1).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() =>
                     {
-                        parentChoices[1].DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetUpdate(true);
+                        titleStageOfFire.DOFade(1, 1).SetEase(Ease.Linear).SetUpdate(true);
+
+                        choices[0].gameObject.SetActive(true);
+                        choices[1].gameObject.SetActive(true);
+
+                        parentChoices[0].DOScale(Vector3.one, .1f).OnComplete(() =>
+                        {
+                            parentChoices[0].DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetUpdate(true);
+                        });
+
+                        parentChoices[1].DOScale(Vector3.one, .1f).OnComplete(() =>
+                        {
+                            parentChoices[1].DOPunchScale(Vector3.one * 0.2f, 0.3f, 10, 1).SetUpdate(true);
+                        });
                     });
                 });
-            });
-            
-            
-            // DISPLAY AIM - EXAMINE HUD  
-            
 
-            // DISPLAY FIRE'S STAGE
-            if (stageOfFire.incipientStage)
-            {
-                stageOfFireTxt.text = "INCIPIENT STAGE";
+
+                // DISPLAY AIM - EXAMINE HUD  
+
+
+                // DISPLAY FIRE'S STAGE
+                if (stageOfFire.incipientStage)
+                {
+                    stageOfFireTxt.text = "INCIPIENT STAGE";
+                }
+                else if (stageOfFire.growthStage)
+                {
+                    stageOfFireTxt.text = "GROWTH STAGE";
+                }
+                else if (stageOfFire.fullyDevelopStage)
+                {
+                    stageOfFireTxt.text = "FULLY DEVELOP STAGE";
+                }
+
+                // IDENTIFY IF FIRE IS EXTINGUISHABLE
+
+
+
+
+
+
+                // IDENTIFY IF CORRECT FIRE EXTINGUISHER IS USING AND WHAT TYPE OF FIRE
+                // IS BURNING
+
+                // CAN EXIT
             }
-            else if (stageOfFire.growthStage)
-            {
-                stageOfFireTxt.text = "GROWTH STAGE";
-            }
-            else if (stageOfFire.fullyDevelopStage)
-            {
-                stageOfFireTxt.text = "FULLY DEVELOP STAGE";
-            }
 
-            // IDENTIFY IF FIRE IS EXTINGUISHABLE
-            
-
-
-            
-
-
-            // IDENTIFY IF CORRECT FIRE EXTINGUISHER IS USING AND WHAT TYPE OF FIRE
-            // IS BURNING
-
-            // CAN EXIT
         }
     }
 
@@ -233,11 +237,11 @@ public class AimFireExtinguisher : MonoBehaviour
             else
             {
                 Debug.Log("Extinguish! -  To Squeeze & Sweep");
-
                 squeezeAndSweepFE.fireInteracted = hit.collider.gameObject;
                 squeezeAndSweepFE.enabled = true;
                 this.enabled = false;
                 examineMode = false;
+
             }
         }
 

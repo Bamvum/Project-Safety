@@ -304,26 +304,26 @@ public class Act1Scene3SceneManager : MonoBehaviour
             var fireTruckPOV = englishFireTruckVC.GetCinemachineComponent<CinemachinePOV>();
             var chaiorPOV = englishChairVC.GetCinemachineComponent<CinemachinePOV>();
 
-            if (DeviceManager.instance.keyboardDevice)
-            {
+            // if (DeviceManager.instance.keyboardDevice)
+            // {
                 
-                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
-                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
+            //     fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
+            //     fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
                 
-                chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
-                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
+            //     chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
+            //     chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
       
             
-            }
-            else if (DeviceManager.instance.gamepadDevice)
-            {
-                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
-                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
+            // }
+            // else if (DeviceManager.instance.gamepadDevice)
+            // {
+            //     fireTruckPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xMouseSensSlider.value;
+            //     fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yMouseSensSlider.value;
                 
-                chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
-                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
+            //     chaiorPOV.m_VerticalAxis.m_MaxSpeed = SettingMenu.instance.xGamepadSensSlider.value;
+            //     chaiorPOV.m_HorizontalAxis.m_MaxSpeed = SettingMenu.instance.yGamepadSensSlider.value;
                   
-            }
+            // }
 
         }
         else
@@ -331,26 +331,26 @@ public class Act1Scene3SceneManager : MonoBehaviour
             var fireTruckPOV = tagalogFireTruckVC.GetCinemachineComponent<CinemachinePOV>();
             var chaiorPOV = tagalogChairVC.GetCinemachineComponent<CinemachinePOV>();
 
-            if (DeviceManager.instance.keyboardDevice)
-            {
+            // if (DeviceManager.instance.keyboardDevice)
+            // {
                 
-                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = .1f;
-                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
+            //     fireTruckPOV.m_VerticalAxis.m_MaxSpeed = .1f;
+            //     fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
                 
-                chaiorPOV.m_VerticalAxis.m_MaxSpeed = .1f;
-                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
+            //     chaiorPOV.m_VerticalAxis.m_MaxSpeed = .1f;
+            //     chaiorPOV.m_HorizontalAxis.m_MaxSpeed = .1f;
       
             
-            }
-            else if (DeviceManager.instance.gamepadDevice)
-            {
-                fireTruckPOV.m_VerticalAxis.m_MaxSpeed = 1;
-                fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = 1;
+            // }
+            // else if (DeviceManager.instance.gamepadDevice)
+            // {
+            //     fireTruckPOV.m_VerticalAxis.m_MaxSpeed = 1;
+            //     fireTruckPOV.m_HorizontalAxis.m_MaxSpeed = 1;
                 
-                chaiorPOV.m_VerticalAxis.m_MaxSpeed = 1;
-                chaiorPOV.m_HorizontalAxis.m_MaxSpeed = 1;
+            //     chaiorPOV.m_VerticalAxis.m_MaxSpeed = 1;
+            //     chaiorPOV.m_HorizontalAxis.m_MaxSpeed = 1;
                   
-            }
+            // }
         }
 
         
