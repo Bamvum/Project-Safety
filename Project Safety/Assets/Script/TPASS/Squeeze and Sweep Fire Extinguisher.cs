@@ -264,17 +264,17 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         rotationSpeed += 7.5f;
                         fireInteractedPSEmission.rateOverTime = fireInteractedPSEmission.rateOverTime.constant - 7.5f;
 
-                        // if (fireSpread1 != null)
-                        // {
-                        //     fireHealthVisual2.fillAmount -= .075f;
-                        //     fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 7.5f;
-                        // }
+                        if (fireSpread1 != null)
+                        {
+                            fireHealthVisual2.fillAmount -= .075f;
+                            fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 7.5f;
+                        }
 
-                        // if(fireSpread2 != null)
-                        // {
-                        //     fireHealthVisual3.fillAmount -= .075f;
-                        //     fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 7.5f;
-                        // }
+                        if(fireSpread2 != null)
+                        {
+                            fireHealthVisual3.fillAmount -= .075f;
+                            fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 7.5f;
+                        }
 
                     }
                     else if ((squeezeAndSweepSlider.value >= 0f && squeezeAndSweepSlider.value <= 0.3f) || (squeezeAndSweepSlider.value >= 0.7f && squeezeAndSweepSlider.value <= 1f))
@@ -287,68 +287,68 @@ public class SqueezeandSweepFireExtinguisher : MonoBehaviour
                         wrongInput++;
                         fireInteractedPSEmission.rateOverTime = fireInteractedPSEmission.rateOverTime.constant - 1;
 
-                        // if (fireSpread1 != null)
-                        // {
-                        //     fireHealthVisual2.fillAmount -= .001f;
-                        //     fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 1;
-                        // }
+                        if (fireSpread1 != null)
+                        {
+                            fireHealthVisual2.fillAmount -= .001f;
+                            fireSpread1PSEmission.rateOverTime = fireSpread1PSEmission.rateOverTime.constant - 1;
+                        }
 
-                        // if(fireSpread2 != null)
-                        // {
-                        //     fireHealthVisual3.fillAmount -= .001f;
-                        //     fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 1;
-                        // }
+                        if(fireSpread2 != null)
+                        {
+                            fireHealthVisual3.fillAmount -= .001f;
+                            fireSpread2PSEmission.rateOverTime = fireSpread2PSEmission.rateOverTime.constant - 1;
+                        }
                     }
 
-                    // if (wrongInput == 2)
-                    // {
-                    //     wrongInput = 0;
+                    if (wrongInput == 2)
+                    {
+                        wrongInput = 0;
 
-                    //     if (fireSpread == 0)
-                    //     {
-                    //         fireSpread1 = Instantiate(fireInteracted, fireInteracted.transform);
-                    //         fireSpread1.transform.localPosition = new Vector3(-0.2f, 0, 0);
-                    //         fireSpread1.transform.localRotation = Quaternion.identity;
-                    //         fireSpread1.transform.localScale = Vector3.one;
+                        if (fireSpread == 0)
+                        {
+                            fireSpread1 = Instantiate(fireInteracted, fireInteracted.transform);
+                            fireSpread1.transform.localPosition = new Vector3(-0.2f, 0, 0);
+                            fireSpread1.transform.localRotation = Quaternion.identity;
+                            fireSpread1.transform.localScale = Vector3.one;
 
-                    //         fireSpread1PS = fireSpread1.GetComponent<ParticleSystem>();
+                            fireSpread1PS = fireSpread1.GetComponent<ParticleSystem>();
                             
-                    //         fireHealthParent2.gameObject.SetActive(true);
-                    //         fireHealthVisual2.fillAmount = fireHealthVisual1.fillAmount;
+                            fireHealthParent2.gameObject.SetActive(true);
+                            fireHealthVisual2.fillAmount = fireHealthVisual1.fillAmount;
 
-                    //         fireSpread++;
-                    //     }
-                    //     else if (fireSpread == 1)
-                    //     {
+                            fireSpread++;
+                        }
+                        else if (fireSpread == 1)
+                        {
                            
-                    //         fireSpread2 = Instantiate(fireSpread1, fireInteracted.transform);
-                    //         fireSpread2.transform.localPosition = new Vector3(0.2f, 0, 0);
-                    //         fireSpread2.transform.localRotation = Quaternion.identity;
-                    //         fireSpread2.transform.localScale = Vector3.one;
+                            fireSpread2 = Instantiate(fireSpread1, fireInteracted.transform);
+                            fireSpread2.transform.localPosition = new Vector3(0.2f, 0, 0);
+                            fireSpread2.transform.localRotation = Quaternion.identity;
+                            fireSpread2.transform.localScale = Vector3.one;
 
-                    //         fireSpread2PS = fireSpread2.GetComponent<ParticleSystem>();
+                            fireSpread2PS = fireSpread2.GetComponent<ParticleSystem>();
                             
-                    //         fireHealthParent3.gameObject.SetActive(true);
-                    //         fireHealthVisual3.fillAmount = fireHealthVisual1.fillAmount;
+                            fireHealthParent3.gameObject.SetActive(true);
+                            fireHealthVisual3.fillAmount = fireHealthVisual1.fillAmount;
 
-                    //         fireSpread++;
-                    //     }
+                            fireSpread++;
+                        }
 
-                    //     if (aimFE.stageOfFire.incipientStage)
-                    //     {
-                    //         aimFE.stageOfFire.incipientStage = false;
-                    //         aimFE.stageOfFire.growthStage = true;
-                    //     }
-                    //     else if (aimFE.stageOfFire.growthStage) 
-                    //     {
-                    //         // GAME OVER
-                    //     }
-                    //     else if (aimFE.stageOfFire.fullyDevelopStage)
-                    //     {
+                        if (aimFE.stageOfFire.incipientStage)
+                        {
+                            aimFE.stageOfFire.incipientStage = false;
+                            aimFE.stageOfFire.growthStage = true;
+                        }
+                        else if (aimFE.stageOfFire.growthStage) 
+                        {
+                            // GAME OVER
+                        }
+                        else if (aimFE.stageOfFire.fullyDevelopStage)
+                        {
 
-                    //     }
+                        }
 
-                    // }
+                    }
 
 
                     StartCoroutine(DelayCanInput());
